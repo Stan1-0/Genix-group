@@ -13,7 +13,7 @@ Upgrades prototype). The Next.js/Payload build comes later and reuses this.
 - How people get a price: **quote form, then a callback**. No instant pricing.
 - Real media: **none yet**. Stock images are labelled "Stock photo"; proof
   (numbers, recent jobs, fleet) lives in clearly marked placeholders.
-- Tagline (official): "San Diego Freight, Handled Right."
+- Tagline (official): "Reliable Freight. Real People. Right on Schedule."
 
 ## 2. Visual direction: "Navy manifest"
 
@@ -51,8 +51,8 @@ Icons: `assets/logistics-icons/` (tags in section 7).
 1. **Header**: logo, nav (Services · How it works · Where we go), "Get a
    quote" button. On phones (≤960px), the pinned bottom quote bar from Home
    Upgrades, hidden over the hero form, the quote section and the footer.
-2. **Hero = quote starter** (navy). Mono eyebrow, H1 "San Diego Freight,
-   Handled Right." (gold on "Handled Right."), one line of lead copy, then
+2. **Hero = quote starter** (navy). Mono eyebrow, H1 "Reliable Freight. Real
+   People. Right on Schedule." (gold on "Right on Schedule."), one line of lead copy, then
    the label form (section 5). Phones: headline and form step 1 fit the
    first screen.
 3. **Two lanes** (paper). "For businesses" (freight; last-mile & courier)
@@ -147,7 +147,7 @@ out Home-Upgrades-specific stays in that page; nothing is forked.
 <link rel="manifest" href="assets/logistics-icons/site.webmanifest" />
 <meta name="theme-color" content="#022248" />
 ```
-Title "Genix Logistics — San Diego Freight, Handled Right.", canonical
+Title "Genix Logistics — Reliable Freight. Real People. Right on Schedule.", canonical
 `https://logistics.thegenixgroup.com/`, `<html data-division="logistics">`.
 The hub's Logistics links keep pointing at the subdomain; the prototype is
 linked from the hub panel for review.
