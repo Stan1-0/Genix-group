@@ -189,3 +189,31 @@ html.lenis, html.lenis body { height: auto; }
   .brand img { height: 48px; }
   .site-footer .legal { flex-direction: column; gap: 8px; }
 }
+
+/* ---------- Phones: sideways swipe rows ----------
+   Put .swipe on a grid inside .wrap. On phones its children become a
+   horizontal snap row with the next card peeking in. `.wrap .swipe`
+   outranks a page's own single-class grid rule. */
+@media (max-width: 960px) {
+  .wrap .swipe {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 360px);
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+    margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 8px; scroll-padding-inline: var(--gutter);
+  }
+  .wrap .swipe::-webkit-scrollbar { display: none; }
+  .wrap .swipe > * { scroll-snap-align: start; }
+}
+
+/* ---------- Phones: pinned "Get a quote" bar (shared/quote-bar.js) ---------- */
+.quote-bar { display: none; } /* wider screens: the header's own button covers it */
+@media (max-width: 960px) {
+  .quote-bar:not([hidden]) {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; gap: 10px;
+    padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+    background: var(--paper); border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(2, 34, 72, 0.08);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .quote-bar .btn-gold { flex: 1; justify-content: center; }
+  .quote-bar.off { transform: translateY(110%); }
+}
+@media (prefers-reduced-motion: reduce) { .quote-bar { transition: none; } }

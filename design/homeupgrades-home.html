@@ -219,22 +219,6 @@
         .hero-copy { display: contents; }
         .hero .label { order: 1; } .hero h1 { order: 2; } .ba-wrap { order: 3; margin-bottom: 24px; }
         .hero .lead { order: 4; } .hero-actions { order: 5; margin-bottom: 20px; } .hero .body { order: 6; margin: 0; }
-        /* services: swipe sideways instead of three tall stacked cards; the next card peeks in */
-        .svc-grid {
-          grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 360px);
-          overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
-          margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 8px; scroll-padding-inline: var(--gutter);
-        }
-        .svc-grid::-webkit-scrollbar { display: none; }
-        .svc { scroll-snap-align: start; }
-        .quote-bar:not([hidden]) {
-          position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; gap: 10px;
-          padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
-          background: var(--paper); border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(2, 34, 72, 0.08);
-          transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
-        }
-        .quote-bar .btn-gold { flex: 1; justify-content: center; }
-        .quote-bar.off { transform: translateY(110%); }
         .work-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: clamp(280px, 48vw, 420px); }
         .work-grid > :first-child { grid-column: 1 / -1; }
         .crew { position: static; }
@@ -250,8 +234,6 @@
       @media (max-width: 760px) {
         .build.is3d { height: 260vh; } /* phones: same five steps, ~2.5 screens of scrolling instead of 4.4 */
       }
-      @media (min-width: 961px) { .quote-bar { display: none; } } /* the header's own button covers wider screens */
-      @media (prefers-reduced-motion: reduce) { .quote-bar { transition: none; } }
       @media (max-width: 560px) {
         .work-grid { grid-template-columns: 1fr; grid-auto-rows: 72vw; }
         .ba-cap { flex-direction: column; gap: 2px; }
@@ -323,7 +305,7 @@
             </div>
             <p class="body" data-reveal>Every project starts with a visit to the space and a written quote. Tell us what you have in mind — we'll tell you what it takes.</p>
           </div>
-          <div class="svc-grid">
+          <div class="svc-grid swipe">
             <article class="svc" data-reveal>
               <div class="svc-img"><img src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=900&q=70&auto=format&fit=crop" alt="A tradesman on a ladder renovating a room" loading="lazy" /><span class="svc-stock">Stock photo</span></div>
               <div class="svc-body">
@@ -475,7 +457,7 @@
     </main>
 
     <!-- Phones: "Get a quote" stays one tap away once the hero button scrolls off -->
-    <div class="quote-bar" id="quoteBar" hidden>
+    <div class="quote-bar" id="quoteBar" data-after=".hero-actions" data-hide-over="#build, #quote, .site-footer" hidden>
       <a class="btn btn-gold" href="#quote">Get a quote <span aria-hidden="true">→</span></a>
       <a class="btn btn-ghost ph" href="tel:+10000000000" aria-label="Call Genix Home Upgrades">Call</a>
     </div>
@@ -520,31 +502,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
     <script src="shared/genix.js"></script>
-    <script>
-      // Pinned "Get a quote" bar (phones). Off while something else already offers
-      // the action or needs the bottom of the screen: the hero buttons, the 3D
-      // stage (its caption card sits at the bottom), the quote section, the footer.
-      (function () {
-        var bar = document.getElementById("quoteBar");
-        var wide = matchMedia("(min-width: 961px)");
-        var watch = [document.querySelector(".hero-actions"), document.getElementById("build"), document.getElementById("quote"), document.querySelector(".site-footer")];
-        var seen = new Map();
-        bar.hidden = false; bar.classList.add("off");
-        function update() {
-          var heroPassed = watch[0].getBoundingClientRect().bottom < 0;
-          var blocked = watch.some(function (el) { return seen.get(el); });
-          var off = wide.matches || !heroPassed || blocked;
-          bar.classList.toggle("off", off);
-          bar.inert = off; // off-screen links stay out of the tab order
-        }
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { seen.set(e.target, e.isIntersecting); });
-          update();
-        });
-        watch.forEach(function (el) { io.observe(el); });
-        wide.addEventListener("change", update);
-      })();
-    </script>
+    <script src="shared/quote-bar.js"></script>
     <script type="module">
       // Load the 3D build only as its section approaches (Three.js is ~340 KB)
       const section = document.getElementById("build");
