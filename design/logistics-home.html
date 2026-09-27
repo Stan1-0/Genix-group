@@ -85,7 +85,7 @@
           </div>
 
           <!-- Prototype: no network call. Real build: POST to Payload Inquiries (division: logistics) + Resend email. -->
-          <form class="label-card quote-form" id="quote-form" action="#" method="post" novalidate aria-labelledby="formTitle">
+          <form class="label-card quote-form" id="quote-form" action="#" method="post" aria-labelledby="formTitle">
             <p class="label-ref mono"><span id="qRef">Quote request · New</span><span class="barcode" aria-hidden="true"></span></p>
             <h2 class="sr-only" id="formTitle">Get a price</h2>
             <fieldset class="kind">
@@ -98,12 +98,12 @@
               <h3 class="step-title" id="qStep1Title" tabindex="-1">1 · The route</h3>
               <div class="field">
                 <label class="mono" for="qFrom">Pickup ZIP</label>
-                <input id="qFrom" name="from" inputmode="numeric" autocomplete="postal-code" required aria-describedby="qFromErr" />
+                <input id="qFrom" name="from" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" title="5-digit ZIP code" required aria-describedby="qFromErr" />
                 <p class="err" id="qFromErr"></p>
               </div>
               <div class="field">
                 <label class="mono" for="qTo">Drop-off ZIP</label>
-                <input id="qTo" name="to" inputmode="numeric" required aria-describedby="qToErr" />
+                <input id="qTo" name="to" inputmode="numeric" pattern="[0-9]{5}" title="5-digit ZIP code" required aria-describedby="qToErr" />
                 <p class="err" id="qToErr"></p>
               </div>
               <p class="area-note" id="qArea" hidden>Outside our usual area, we'll still take a look.</p>

@@ -69,6 +69,8 @@ def t_nojs(b):
     check("[no-js] both kinds of load listed", pg.locator("#qLoad optgroup").count() == 2)
     check("[no-js] Send is available", pg.is_visible("#qSend"))
     check("[no-js] headline visible", pg.is_visible("h1"))
+    check("[no-js] form keeps native validation", pg.get_attribute("#quote-form", "novalidate") is None)
+    check("[no-js] ZIP has a native 5-digit pattern", pg.get_attribute("#qFrom", "pattern") == "[0-9]{5}")
     c.close()
 
 
@@ -85,6 +87,7 @@ def t_form(b):
     c, pg, errs, failed = open_page(b, URL, **DESKTOP)
     v = pg.is_visible
     check("[form] step 2 starts hidden", v("#qFrom") and not v("#qName"))
+    check("[form] JS mode uses custom validation", pg.evaluate("document.getElementById('quote-form').noValidate") is True)
     check("[form] business options by default", load_values(pg) == BUSINESS, str(load_values(pg)))
     pg.fill("#qFrom", "92a10 1x")
     check("[form] ZIP keeps digits only", pg.input_value("#qFrom") == "92101", pg.input_value("#qFrom"))
@@ -150,6 +153,34 @@ def t_lanes(b):
     pg.click("#quote [data-start-quote]")
     pg.wait_for_timeout(1400)
     check("[lanes] 'Start a quote' focuses the first field", pg.evaluate("document.activeElement.id") == "qFrom")
+    c.close()
+
+
+@test("tab-on-step2")
+def t_tab_on_step2(b):
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    v = pg.is_visible
+    pg.fill("#qFrom", "92101"); pg.fill("#qTo", "92024"); pg.fill("#qDate", "2099-01-15")
+    pg.select_option("#qLoad", "parcels")
+    pg.click("#qNext")
+    check("[tab-on-step2] reached step 2", v("#qName") and not v("#qFrom"))
+    pg.click(".kind label:has-text('Plan a move')")
+    check("[tab-on-step2] switching tabs mid-step-2 returns to step 1", v("#qFrom") and not v("#qName"))
+    check("[tab-on-step2] ...with the move options loaded", load_values(pg) == MOVE, str(load_values(pg)))
+    c.close()
+
+
+@test("start-quote-reduced")
+def t_start_quote_reduced(b):
+    ctx = dict(DESKTOP, reduced_motion="reduce")
+    c, pg, errs, failed = open_page(b, URL, **ctx)
+    pg.evaluate("document.getElementById('quote').scrollIntoView()")
+    pg.wait_for_timeout(300)
+    pg.click("#quote [data-start-quote]")
+    pg.wait_for_timeout(300)
+    check("[start-quote-reduced] focus lands on the first field", pg.evaluate("document.activeElement.id") == "qFrom")
+    top = pg.evaluate("document.getElementById('quote-form').getBoundingClientRect().top")
+    check("[start-quote-reduced] the form scrolls into view without Lenis", 0 <= top < 400, f"{top:.0f}px")
     c.close()
 
 

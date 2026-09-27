@@ -50,17 +50,20 @@
     step2.hidden = n !== 2;
     (n === 2 ? $("qStep2Title") : $("qStep1Title")).focus({ preventScroll: true });
   }
+  function applyKind(kind) {
+    showOptions(kind);
+    if (!step2.hidden) goStep(1); // the load choice was reset: back to step 1
+  }
   function selectKind(kind) {
     const radio = form.querySelector(`input[name="kind"][value="${kind}"]`);
     if (!radio || radio.checked) return;
     radio.checked = true;
-    showOptions(kind);
-    if (step1.hidden && !step2.hidden) goStep(1); // the load choice was reset: back to step 1
+    applyKind(kind);
   }
 
   form.addEventListener("change", (e) => {
     const t = e.target;
-    if (t.name === "kind") showOptions(t.value);
+    if (t.name === "kind") applyKind(t.value);
     if (t === load) { $("qPalletsField").hidden = load.value !== "pallets"; setErr(load, ""); }
     if (t.id === "qFlex") {
       const date = $("qDate");
@@ -141,10 +144,14 @@
       // #quote-form (a <form>) is not itself focusable; we own the scroll via Lenis's
       // anchors handling and the focus ourselves, so stop the native jump here.
       e.preventDefault();
+      // Lenis is skipped under prefers-reduced-motion (see shared/genix.js), so there's
+      // no smooth-scroll to bring the form into view: do it ourselves in that case.
+      if (!window.genixLenis) form.scrollIntoView({ block: "start" });
       if (!$("qFrom").closest("[hidden]")) $("qFrom").focus({ preventScroll: true });
     }));
 
   // ---- start: JS mode shows one step at a time ----
+  form.noValidate = true; // JS mode uses the custom inline validation; no-JS keeps the native one
   step2.hidden = true;
   $("qDate").min = todayISO();
   showOptions(kindOf());
