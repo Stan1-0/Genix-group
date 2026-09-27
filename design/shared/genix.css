@@ -1,0 +1,191 @@
+/* Genix shared styles for the division sites: brand tokens, type, buttons,
+   header, footer. Each division page adds only its own sections. */
+
+:root {
+  /* Group brand: black and gold */
+  --black: #0b0b0c;
+  --black-2: #1c1a17;
+  --gold: #c28a2c;
+  --gold-text: #8a5e10;    /* gold dark enough for small text on paper */
+  --gold-display: #a8741a; /* gold for large type on paper */
+
+  --paper: #f5f3ee;
+  --white: #ffffff;
+  --ink: #111110;
+  --ink-2: #3f3c37;
+  --muted: #625d55;
+  --line: #dcd8cf;
+
+  /* Division accents (from their logos), tuned for dark panels */
+  --move: #3d74c4;
+  --make: var(--gold);
+  --tell: #b0529a;
+
+  /* Semantic brand tokens. Components use these, never a raw colour, so a
+     division re-themes by overriding them (see [data-division] below).
+     Defaults = the group's black and gold. */
+  --brand: var(--black);          /* dark surfaces: buttons, footer, dark bands */
+  --brand-deep: #000000;          /* hover / pressed */
+  --heading: var(--ink);          /* display and section headings */
+  --brand-line: #2e2b26;          /* hairlines on dark surfaces */
+  --on-brand-muted: #bfb7a7;      /* secondary text on dark surfaces */
+
+  --f-display: "Schibsted Grotesk", system-ui, sans-serif;
+  --f-body: "Hanken Grotesk", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --max: 1320px;
+  --header: 76px;
+}
+
+/* Division themes: each division's accent comes from its own logo.
+   Gold stays shared across the group. */
+[data-division="homeupgrades"] {
+  --brand: #022248;               /* the navy in the Home Upgrades logo */
+  --brand-deep: #01152e;
+  --heading: #022248;
+  --brand-line: rgba(255, 255, 255, 0.14);
+  --on-brand-muted: #b8c4d6;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header); }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 18px/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Eyebrow label: gold rule + mono caps */
+.label {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 22px;
+  font: 500 12.5px/1.2 var(--f-mono);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+}
+.label::before { content: ""; width: 28px; height: 2px; background: var(--gold); flex: none; }
+.on-dark .label { color: var(--on-brand-muted); }
+
+.h-display { font: 600 clamp(44px, 6vw, 88px)/0.96 var(--f-display); letter-spacing: -0.045em; margin: 0; color: var(--heading); }
+.h-section { font: 600 clamp(36px, 4.6vw, 64px)/1 var(--f-display); letter-spacing: -0.04em; margin: 0; color: var(--heading); }
+.on-dark .h-display, .on-dark .h-section { color: var(--white); }
+.gold { color: var(--gold-display); }
+.on-dark .gold { color: var(--gold); }
+.body { color: var(--ink-2); }
+
+/* Placeholder content: visibly marked until the real value arrives */
+.ph {
+  background: repeating-linear-gradient(135deg, rgba(194, 138, 44, 0.16) 0 6px, transparent 6px 12px);
+  outline: 1px dashed var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  min-height: 52px; padding: 0 24px;
+  font: 600 16px/1 var(--f-body);
+  text-decoration: none; border: 0; cursor: pointer;
+  transition: background 0.2s, color 0.2s, filter 0.2s;
+}
+.btn-sm { min-height: 44px; padding: 0 18px; font-size: 15px; }
+.btn-gold { background: var(--gold); color: var(--heading); } /* navy on gold on Home Upgrades, black on gold on the hub */
+.btn-gold:hover { filter: brightness(1.08); }
+.btn-dark { background: var(--brand); color: var(--white); }
+.btn-dark span { color: var(--gold); }
+.btn-dark:hover { background: var(--brand-deep); }
+.btn-ghost { border: 1.5px solid currentColor; background: transparent; color: var(--heading); }
+.btn-ghost:hover { background: var(--brand); border-color: var(--brand); color: var(--white); }
+.on-dark .btn-ghost { color: var(--white); }
+.on-dark .btn-ghost:hover { background: var(--white); color: var(--black); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header); }
+.brand { display: inline-flex; align-items: center; min-height: 44px; }
+/* division logos are JPGs on white: multiply drops the white onto the paper */
+.brand img { height: 56px; width: auto; mix-blend-mode: multiply; }
+.nav { display: flex; gap: 32px; }
+.nav a { font-size: 15px; font-weight: 500; text-decoration: none; color: var(--ink-2); }
+.nav a:hover { color: var(--heading); }
+.header-end { display: flex; align-items: center; gap: 20px; }
+.parent-link {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font: 500 12px/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+}
+.parent-link:hover { color: var(--black); }
+.menu-btn { display: none; width: 44px; height: 44px; border: 1px solid var(--line); background: var(--white); cursor: pointer; place-items: center; }
+.menu-btn span, .menu-btn span::before, .menu-btn span::after {
+  content: ""; display: block; width: 18px; height: 2px; background: var(--black); position: relative;
+  transition: transform 0.25s, background 0.25s;
+}
+.menu-btn span::before { position: absolute; top: -6px; }
+.menu-btn span::after { position: absolute; top: 6px; }
+.menu-open .menu-btn span { background: transparent; }
+.menu-open .menu-btn span::before { transform: translateY(6px) rotate(45deg); }
+.menu-open .menu-btn span::after { transform: translateY(-6px) rotate(-45deg); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--brand); color: #e9e4da; border-top: 2px solid var(--gold); padding: 64px 0 40px; font-size: 15px; }
+.site-footer .wrap { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px; }
+.site-footer h2 { font: 500 12px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 18px; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { color: var(--white); text-decoration: underline; }
+.footer-logo { display: inline-block; background: var(--paper); padding: 14px 18px; }
+.footer-logo img { height: 72px; width: auto; mix-blend-mode: multiply; }
+.part-of {
+  display: flex; align-items: center; gap: 12px; margin-top: 22px;
+  font-size: 14px; color: var(--on-brand-muted); text-decoration: none;
+}
+/* the group mark has black segments: sit it on a paper chip so it reads on any division colour */
+.part-of img { height: 38px; width: auto; background: var(--paper); padding: 4px; }
+.part-of b { color: var(--white); font-weight: 600; }
+.site-footer .legal {
+  grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 16px;
+  border-top: 1px solid var(--brand-line); padding-top: 24px; margin-top: 24px; color: var(--on-brand-muted); font-size: 14px;
+}
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; }
+
+/* ---------- Motion helpers ---------- */
+.h1-pending [data-split] { visibility: hidden; }
+[data-split] > div { padding-bottom: 0.2em; margin-bottom: -0.2em; } /* keep g/p/y tails inside SplitText masks */
+.js-motion [data-reveal] { opacity: 0; }
+/* Lenis (desktop wheel smoothing) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .nav, .parent-link, .header-end .btn { display: none; }
+  .menu-btn { display: grid; }
+  .menu-open .nav {
+    display: flex; flex-direction: column; gap: 0;
+    position: absolute; left: 0; right: 0; top: var(--header);
+    background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 20px;
+  }
+  .menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
+  .menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
+  .site-footer .wrap { grid-template-columns: 1fr 1fr; }
+  .site-footer .brand-col { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .brand img { height: 48px; }
+  .site-footer .legal { flex-direction: column; gap: 8px; }
+}

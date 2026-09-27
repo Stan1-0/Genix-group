@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Genix Group — We Haul It. We Build It. We Show It.</title>
+    <meta
+      name="description"
+      content="The Genix Group runs three specialist businesses across the US: freight and logistics, home upgrades, and multimedia."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/genix-mark.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32.png"
+    />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="canonical" href="https://thegenixgroup.com/" />
+    <!-- Link previews (social, messaging, Slack…). Crawlers need absolute URLs. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Genix Group" />
+    <meta property="og:url" content="https://thegenixgroup.com/" />
+    <meta
+      property="og:title"
+      content="The Genix Group — We Haul It. We Build It. We Show It."
+    />
+    <meta
+      property="og:description"
+      content="Three specialist businesses across the US: freight and logistics, home upgrades, and multimedia. One group to call."
+    />
+    <meta
+      property="og:image"
+      content="https://thegenixgroup.com/assets/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Genix Group logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Structured data (PRD §8): the group and its three businesses -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "The Genix Group",
+        "url": "https://thegenixgroup.com/",
+        "logo": "https://thegenixgroup.com/assets/og-image.jpg",
+        "email": "hello@thegenixgroup.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "San Diego",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        },
+        "areaServed": { "@type": "Country", "name": "United States" },
+        "subOrganization": [
+          {
+            "@type": "Organization",
+            "name": "Genix Logistics",
+            "url": "https://logistics.thegenixgroup.com/"
+          },
+          {
+            "@type": "Organization",
+            "name": "Genix Home Upgrades",
+            "url": "https://homeupgrades.thegenixgroup.com/"
+          },
+          {
+            "@type": "Organization",
+            "name": "Genix Multimedia",
+            "url": "https://multimedia.thegenixgroup.com/"
+          }
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Keep the headline hidden until SplitText has cut it into lines, so it
+      // never flashes unsplit. Reduced-motion visitors never have it hidden,
+      // and a timer reveals it if the animation scripts fail to load.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("h1-pending");
+        setTimeout(
+          () => document.documentElement.classList.remove("h1-pending"),
+          3000,
+        );
+      }
+    </script>
+    <style>
+      .h1-pending .hero h1 {
+        visibility: hidden;
+      }
+      /* SplitText's line masks clip at the line box; with line-height 1 that
+         cuts the tails of g, p and y. Give each mask room below the baseline
+         and take it back with a negative margin so line spacing is unchanged. */
+      .hero h1 > div {
+        padding-bottom: 0.2em;
+        margin-bottom: -0.2em;
+      }
+      :root {
+        /* Group brand: black and gold */
+        --black: #0b0b0c;
+        --black-2: #1c1a17;
+        --gold: #c28a2c;
+        --gold-text: #8a5e10;
+        --gold-display: #a8741a;
+
+        --paper: #f5f3ee;
+        --white: #ffffff;
+        --ink: #111110;
+        --ink-2: #3f3c37;
+        --muted: #625d55;
+        --line: #dcd8cf;
+
+        /* Division accents (from their logos), tuned for dark panels */
+        --move: #3d74c4;
+        --make: var(--gold);
+        --tell: #b0529a;
+
+        --f-display: "Schibsted Grotesk", system-ui, sans-serif;
+        --f-body: "Hanken Grotesk", system-ui, sans-serif;
+        --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+        --gutter: clamp(16px, 4vw, 56px);
+        --max: 1320px;
+        --header: 72px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        scroll-padding-top: var(--header);
+      }
+      /* Lenis (desktop wheel smoothing) */
+      html.lenis,
+      html.lenis body {
+        height: auto;
+      }
+      .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 400 18px/1.6 var(--f-body);
+        -webkit-font-smoothing: antialiased;
+      }
+      img,
+      svg,
+      video {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+      }
+
+      .label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font: 500 12.5px/1.2 var(--f-mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .label::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: var(--gold);
+        flex: none;
+      }
+      .gold {
+        color: var(--gold-display);
+      }
+
+      /* ---------- Wordmark ---------- */
+      /* Group logo: hex mark + GENIX GROUP wordmark (tagline dropped at this size) */
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px; /* 0.19 × the 42px mark — same proportion as the hero lockup, so the handover is seamless */
+        min-height: 44px;
+        text-decoration: none;
+      }
+      .logo .logo-mark {
+        height: 42px;
+        width: auto;
+      }
+      .logo .logo-word {
+        height: 30px;
+        width: auto;
+      }
+      /* Footer lockup: mark + wordmark + tagline as live text (the logo file's
+         tagline says "Construction"; the division is Home Upgrades).
+         On a light tile so the black lettering reads on the black footer. */
+      .logo-tile {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 12px;
+        background: var(--paper);
+        padding: 18px 22px;
+        text-decoration: none;
+      }
+      .logo-tile-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo-tile-row .logo-mark {
+        height: 64px;
+        width: auto;
+      }
+      .logo-tile-row .logo-word {
+        height: 46px;
+        width: auto;
+      }
+      .logo-tagline {
+        font: 500 10.5px/1 var(--f-mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--black);
+      }
+
+      /* ---------- Header ---------- */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: color-mix(in srgb, var(--paper) 92%, transparent);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .site-header .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--header);
+        gap: 24px;
+      }
+      .nav {
+        display: flex;
+        gap: 36px;
+      }
+      .nav a {
+        font-size: 15px;
+        font-weight: 500;
+        text-decoration: none;
+        color: var(--ink-2);
+      }
+      .nav a:hover {
+        color: var(--black);
+      }
+      .header-cta {
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        color: var(--black);
+      }
+      .header-cta span {
+        color: var(--gold);
+        transition: transform 0.25s;
+      }
+      .header-cta:hover span {
+        transform: translate(2px, -2px);
+      }
+      .menu-btn {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line);
+        background: var(--white);
+        cursor: pointer;
+        place-items: center;
+      }
+      .menu-btn span,
+      .menu-btn span::before,
+      .menu-btn span::after {
+        content: "";
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--black);
+        position: relative;
+        transition:
+          transform 0.25s,
+          background 0.25s;
+      }
+      .menu-btn span::before {
+        position: absolute;
+        top: -6px;
+      }
+      .menu-btn span::after {
+        position: absolute;
+        top: 6px;
+      }
+      .menu-open .menu-btn span {
+        background: transparent;
+      }
+      .menu-open .menu-btn span::before {
+        transform: translateY(6px) rotate(45deg);
+      }
+      .menu-open .menu-btn span::after {
+        transform: translateY(-6px) rotate(-45deg);
+      }
+
+      /* ---------- Hero: the group logo as supplied + a footage reel ---------- */
+      .hero {
+        background: var(--paper);
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: clamp(32px, 5vw, 80px);
+        align-items: center;
+        min-height: calc(100svh - var(--header));
+        padding-top: clamp(32px, 6vh, 72px);
+        padding-bottom: clamp(32px, 6vh, 72px);
+      }
+      /* The logo is a trademark: shown whole, never recoloured, reshaped or
+         masked. Heights stay below the files' native pixel sizes (mark 418px,
+         wordmark 296px) so it stays sharp. */
+      /* On scroll the hero lockup rises and shrinks into the header's logo
+         slot, then hands over to the header logo (one logo on screen at a
+         time). Uniform move + scale only — the mark is never reshaped. The
+         gap is 0.19 × the mark height, matching the header logo exactly. */
+      .lockup {
+        position: relative;
+        z-index: 41; /* above the sticky header while it docks */
+        display: flex;
+        align-items: center;
+        gap: clamp(14.4px, 1.9vw, 28.5px);
+        margin: 0 0 clamp(28px, 5vh, 48px);
+        transform-origin: 0 0;
+        will-change: transform;
+      }
+      .logo-dock:not(.logo-docked) .site-header .logo {
+        visibility: hidden;
+      }
+      .lockup .lockup-mark {
+        height: clamp(76px, 10vw, 150px);
+        width: auto;
+      }
+      .lockup .lockup-word {
+        /* always 30/42 of the mark — the header logo's exact proportion */
+        height: clamp(54.29px, 7.143vw, 107.14px);
+        width: auto;
+      }
+      .hero h1 {
+        font: 600 clamp(34px, 4vw, 58px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 20px;
+        padding-top: clamp(20px, 3vh, 32px);
+        border-top: 2px solid var(--black);
+        max-width: 16ch;
+      }
+      .hero .body {
+        color: var(--ink-2);
+        margin: 0 0 24px;
+        max-width: 44ch;
+      }
+      .routes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .route-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 0 18px;
+        font: 600 15px/1 var(--f-body);
+        text-decoration: none;
+        color: var(--black);
+        border: 1.5px solid var(--black);
+        background: transparent;
+        transition:
+          background 0.25s,
+          color 0.25s;
+      }
+      .route-btn i {
+        font-style: normal;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--c);
+      }
+      .route-btn:hover {
+        background: var(--black);
+        color: var(--white);
+      }
+
+      /* Footage reel: one clip per business */
+      .reel {
+        margin: 0;
+      }
+      .reel-frame {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        max-height: calc(100svh - var(--header) - 150px);
+        width: 100%;
+        overflow: hidden;
+        background: var(--black);
+      }
+      /* Crossfade: the incoming slide fades in on top; the outgoing one stays
+         fully visible underneath and only drops away once it's covered, so the
+         frame never dips to black mid-transition. */
+      .slide {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0;
+        transition: opacity 0s linear 0.9s;
+      }
+      .slide.on {
+        z-index: 1;
+        opacity: 1;
+        transition: opacity 0.9s ease;
+      }
+      .slide img,
+      .slide video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      /* The video sits over the project photo and only shows once it plays,
+         so no-JS and reduced-motion visitors see the photo. Framed to keep
+         the CapCut mark out of view. */
+      .slide video {
+        object-position: 50% 72%;
+        opacity: 0;
+        transition: opacity 0.6s;
+      }
+      .slide video.playing {
+        opacity: 1;
+      }
+      .reel-cap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 48px 20px 18px;
+        background: linear-gradient(transparent, rgba(11, 11, 12, 0.82));
+        color: var(--white);
+        font: 500 11px/1.3 var(--f-mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        /* only the active slide's caption shows: the old one leaves fast, the
+           new one arrives once its picture is mostly in */
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .slide.on .reel-cap {
+        opacity: 1;
+        transition: opacity 0.4s ease 0.45s;
+      }
+      .reel-cap b {
+        display: block;
+        margin-top: 4px;
+        font: 600 19px/1.2 var(--f-display);
+        letter-spacing: -0.01em;
+        text-transform: none;
+      }
+      .now {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 10px;
+        font: 500 12px/1.2 var(--f-mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .now-dots {
+        display: flex;
+        gap: 0;
+      }
+      .now-dots button {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      .now-dots button::before {
+        content: "";
+        width: 18px;
+        height: 3px;
+        background: var(--line);
+        transition:
+          background 0.3s,
+          width 0.3s;
+      }
+      .now-dots button[aria-pressed="true"]::before {
+        background: var(--black);
+        width: 26px;
+      }
+      .now b {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .slide,
+        .slide.on,
+        .slide video,
+        .reel-cap,
+        .slide.on .reel-cap {
+          transition: none;
+        }
+      }
+
+      /* ---------- Intro ---------- */
+      .intro {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0;
+      }
+      .intro .grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: clamp(32px, 6vw, 96px);
+        align-items: end;
+      }
+      .intro h2 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .intro .body {
+        color: var(--ink-2);
+        margin: 0 0 28px;
+      }
+      .facts {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--line);
+      }
+      .facts li {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 16px;
+      }
+      .facts li span:first-child {
+        font: 500 12px/1.6 var(--f-mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .facts li span:last-child {
+        font-weight: 600;
+        text-align: right;
+      }
+
+      /* ---------- Division panels ---------- */
+      .panel {
+        position: relative;
+        min-height: 100svh;
+        color: var(--white);
+        background: var(--black);
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+      }
+      .panel[data-key="move"] {
+        --accent: var(--move);
+        --on-accent: #fff;
+      }
+      /* the button blue is too dark for small text on the dark photo */
+      .panel[data-key="move"] .verb {
+        color: #8db3ec;
+      }
+      .panel[data-key="move"] .verb::before {
+        background: #8db3ec;
+      }
+      .panel[data-key="make"] {
+        --accent: var(--make);
+        --on-accent: var(--black);
+      }
+      .panel[data-key="tell"] {
+        --accent: var(--tell);
+        --on-accent: #fff;
+      }
+      .panel-media {
+        position: absolute;
+        inset: 0;
+      }
+      .panel-media img,
+      .panel-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .panel-media::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(11, 11, 12, 0.94) 0%,
+          rgba(11, 11, 12, 0.78) 42%,
+          rgba(11, 11, 12, 0.2) 100%
+        );
+      }
+      .panel .wrap {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding-top: 120px;
+        padding-bottom: clamp(48px, 8vh, 96px);
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: clamp(32px, 5vw, 80px);
+        align-items: end;
+      }
+      .panel .verb {
+        font: 500 13px/1 var(--f-mono);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .panel .verb::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: var(--accent);
+      }
+      .brand-tile {
+        width: 184px;
+        height: 104px;
+        background: var(--white);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        margin-bottom: 28px;
+      }
+      .brand-tile img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform: scale(var(--zoom, 1.1));
+      }
+      /* portrait-ish logos: size by height (a % height collapses in the grid cell) */
+      .brand-tile img.tall {
+        width: auto;
+        height: 84px;
+        max-width: 100%;
+      }
+      .brand-tile .wm {
+        text-align: center;
+      }
+      .brand-tile .wm b {
+        display: block;
+        font: 700 22px/1 var(--f-display);
+        color: var(--black);
+        letter-spacing: 0.06em;
+      }
+      .brand-tile .wm b i {
+        font-style: normal;
+        color: var(--gold);
+      }
+      .brand-tile .wm small {
+        display: block;
+        margin-top: 8px;
+        font: 500 9px/1 var(--f-mono);
+        letter-spacing: 0.34em;
+        color: #7a2e68;
+      }
+      .panel h3 {
+        font: 600 clamp(44px, 5.6vw, 84px)/0.95 var(--f-display);
+        letter-spacing: -0.045em;
+        margin: 0 0 20px;
+      }
+      .panel .lead {
+        font: 500 clamp(19px, 1.7vw, 22px)/1.4 var(--f-body);
+        margin: 0 0 10px;
+        max-width: 32ch;
+      }
+      .panel .body {
+        color: #d2ccc1;
+        margin: 0 0 24px;
+        max-width: 46ch;
+      }
+      .chips {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 32px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chips li {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 7px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+      }
+      .panel-cta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 24px;
+      }
+      .btn-accent {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 24px;
+        background: var(--accent);
+        color: var(--on-accent);
+        font: 600 16px/1 var(--f-body);
+        text-decoration: none;
+        transition: filter 0.2s;
+      }
+      .btn-accent:hover {
+        filter: brightness(1.1);
+      }
+      .host {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        font: 500 12.5px/1 var(--f-mono);
+        color: #bfb7a7;
+        text-decoration: none;
+      }
+      .host:hover {
+        color: var(--white);
+      }
+
+      .cases {
+        display: grid;
+        gap: 12px;
+      }
+      .cases h4 {
+        font: 500 12px/1 var(--f-mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #bfb7a7;
+        margin: 0 0 4px;
+      }
+      .case {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 12px;
+        background: rgba(11, 11, 12, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(8px);
+        margin: 0;
+      }
+      .case-thumb {
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: var(--black);
+      }
+      .case-thumb img,
+      .case-thumb video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .case-thumb video {
+        object-position: 50% 58%;
+      }
+      .case b {
+        display: block;
+        font: 600 17px/1.25 var(--f-display);
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+      .case span {
+        font-size: 14px;
+        color: #d2ccc1;
+      }
+      .case.placeholder {
+        border-style: dashed;
+        background: rgba(11, 11, 12, 0.35);
+      }
+      .case.placeholder .case-thumb {
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.06);
+        font: 500 10px/1.3 var(--f-mono);
+        letter-spacing: 0.12em;
+        color: #9c9484;
+        text-align: center;
+        padding: 8px;
+      }
+
+      /* ---------- Route: what do you need? ---------- */
+      .route {
+        padding: clamp(96px, 12vw, 160px) 0 clamp(80px, 10vw, 120px);
+      }
+      .route h2 {
+        font: 600 clamp(48px, 7.4vw, 112px)/0.94 var(--f-display);
+        letter-spacing: -0.045em;
+        margin: 0 0 clamp(40px, 5vw, 64px);
+      }
+      .options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 300px;
+        padding: 28px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        text-decoration: none;
+        overflow: hidden;
+        transition:
+          color 0.35s,
+          border-color 0.35s;
+      }
+      .option::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--black);
+        transform: translateY(101%);
+        transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+      }
+      .option > * {
+        position: relative;
+      }
+      .option:hover,
+      .option:focus-visible {
+        color: var(--white);
+        border-color: var(--black);
+      }
+      .option:hover::before,
+      .option:focus-visible::before {
+        transform: none;
+      }
+      .option .verb {
+        font: 500 12.5px/1 var(--f-mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--c);
+      }
+      .option b {
+        display: block;
+        font: 600 clamp(28px, 2.8vw, 40px)/1 var(--f-display);
+        letter-spacing: -0.035em;
+        margin: 18px 0 12px;
+      }
+      .option p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 16px;
+        transition: color 0.35s;
+      }
+      .option:hover p,
+      .option:focus-visible p {
+        color: #d2ccc1;
+      }
+      /* division colours are too dark to read on the black hover fill */
+      .option:hover .verb,
+      .option:focus-visible .verb {
+        color: var(--gold);
+      }
+      .option .go {
+        margin-top: auto;
+        padding-top: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .option .go svg {
+        width: 34px;
+        height: 34px;
+        transition: transform 0.45s;
+        color: var(--gold);
+      }
+      .option:hover .go svg,
+      .option:focus-visible .go svg {
+        transform: translate(3px, -3px);
+      }
+      .route-alt {
+        margin-top: 28px;
+        color: var(--ink-2);
+        font-size: 16px;
+      }
+      .route-alt a {
+        color: var(--black);
+        font-weight: 600;
+      }
+
+      /* ---------- Footer ---------- */
+      .site-footer {
+        background: var(--black);
+        border-top: 2px solid var(--gold);
+        padding: 64px 0 40px;
+        font-size: 15px;
+        color: #e9e4da;
+      }
+      .site-footer .wrap {
+        display: grid;
+        grid-template-columns: 1.5fr repeat(3, 1fr);
+        gap: 32px;
+      }
+      .site-footer h2 {
+        font: 500 12px/1 var(--f-mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin: 0 0 18px;
+      }
+      .site-footer ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+      .site-footer a {
+        text-decoration: none;
+      }
+      .site-footer a:hover {
+        color: var(--white);
+        text-decoration: underline;
+      }
+      .site-footer .legal {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #2e2b26;
+        padding-top: 24px;
+        margin-top: 24px;
+        color: #9c9484;
+        font-size: 14px;
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 960px) {
+        .nav,
+        .header-cta {
+          display: none;
+        }
+        .menu-btn {
+          display: grid;
+        }
+        .menu-open .nav {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: var(--header);
+          background: var(--paper);
+          border-bottom: 1px solid var(--line);
+          padding: 8px var(--gutter) 20px;
+        }
+        .menu-open .nav a {
+          padding: 14px 0;
+          font-size: 18px;
+          border-bottom: 1px solid var(--line);
+        }
+        .menu-open .nav a:last-child {
+          border-bottom: 0;
+          color: var(--black);
+          font-weight: 600;
+        }
+
+        .hero-grid,
+        .intro .grid,
+        .panel .wrap {
+          grid-template-columns: 1fr;
+        }
+        /* Phones: bring the reel up between the logo and the headline so real
+           work is on the first screen, not below it */
+        .hero-grid {
+          min-height: 0;
+          align-items: start;
+          row-gap: 0;
+        }
+        .hero-copy {
+          display: contents;
+        }
+        .hero .label {
+          order: 1;
+        }
+        .lockup {
+          order: 2;
+          margin-bottom: 20px;
+        }
+        .reel {
+          order: 3;
+          margin-bottom: 28px;
+        }
+        .hero h1 {
+          order: 4;
+        }
+        .hero .body {
+          order: 5;
+        }
+        .routes {
+          order: 6;
+        }
+        .reel-frame {
+          aspect-ratio: 16 / 10;
+          max-height: none;
+        }
+        .panel-media::after {
+          background: linear-gradient(
+            0deg,
+            rgba(11, 11, 12, 0.96) 0%,
+            rgba(11, 11, 12, 0.82) 55%,
+            rgba(11, 11, 12, 0.35) 100%
+          );
+        }
+        .panel .wrap {
+          padding-top: 96px;
+        }
+        .options {
+          grid-template-columns: 1fr;
+        }
+        .option {
+          min-height: 0;
+        }
+        .site-footer .wrap {
+          grid-template-columns: 1fr 1fr;
+        }
+        .site-footer .brand {
+          grid-column: 1 / -1;
+        }
+      }
+      @media (max-width: 560px) {
+        .route-btn {
+          flex: 1 1 100%;
+          justify-content: flex-start;
+        }
+        .case {
+          grid-template-columns: 96px 1fr;
+        }
+        .brand-tile {
+          width: 156px;
+          height: 88px;
+        }
+        .brand-tile img.tall {
+          height: 70px;
+        }
+        .site-footer .legal {
+          flex-direction: column;
+          gap: 8px;
+        }
+      }
+
+      .js-motion [data-reveal] {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap">
+        <a class="logo" href="#top" aria-label="The Genix Group home">
+          <img
+            class="logo-mark"
+            src="assets/genix-mark.svg"
+            alt=""
+            width="360"
+            height="421"
+          />
+          <img
+            class="logo-word"
+            src="assets/genix-wordmark.svg"
+            alt=""
+            width="874"
+            height="298"
+          />
+        </a>
+        <nav class="nav" id="nav" aria-label="Primary">
+          <a href="#about">Who we are</a>
+          <a href="#businesses">Our businesses</a>
+          <a href="#contact">Get a quote</a>
+          <a href="#contact" class="nav-contact" hidden>Start a conversation</a>
+        </nav>
+        <a class="header-cta" href="#contact"
+          >Start a conversation <span aria-hidden="true">↗</span></a
+        >
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          aria-expanded="false"
+          aria-controls="nav"
+          aria-label="Open menu"
+        >
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero -->
+      <section class="hero" id="hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="label">An American company · San Diego, California</p>
+            <div class="lockup">
+              <img
+                class="lockup-mark"
+                src="assets/genix-mark.svg"
+                alt=""
+                width="360"
+                height="421"
+              />
+              <img
+                class="lockup-word"
+                src="assets/genix-wordmark.svg"
+                alt="The Genix Group"
+                width="874"
+                height="298"
+              />
+            </div>
+            <h1>
+              We Haul It. We Build It.
+              <span class="gold">We Show It.</span>
+            </h1>
+            <p class="body">
+              Logistics, home upgrades and multimedia: three specialist
+              businesses, one group. Tell us what you need and we'll put the right crew on it.
+            </p>
+            <div class="routes">
+              <a class="route-btn" href="#div-move" style="--c: var(--move)"
+                ><i></i>Ship something</a
+              >
+              <a class="route-btn" href="#div-make" style="--c: var(--gold)"
+                ><i></i>Upgrade a space</a
+              >
+              <a class="route-btn" href="#div-tell" style="--c: var(--tell)"
+                ><i></i>Tell your story</a
+              >
+            </div>
+          </div>
+
+          <figure class="reel" aria-label="Work from each Genix business">
+            <div class="reel-frame">
+              <div class="slide" data-name="Logistics">
+                <img
+                  src="https://images.unsplash.com/photo-1786081061992-640cfd629fdc?w=1200&q=70&auto=format&fit=crop"
+                  alt="A semi-truck on the highway at night"
+                />
+                <p class="reel-cap">Move<b>Genix Logistics</b></p>
+              </div>
+              <div class="slide on" data-name="Home Upgrades">
+                <img
+                  src="assets/hu-project-marble-wall.jpg"
+                  alt="Backlit marble feature wall by Genix Home Upgrades"
+                />
+                <video
+                  src="assets/hu-project.mp4"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-hidden="true"
+                ></video>
+                <p class="reel-cap">Make<b>Genix Home Upgrades</b></p>
+              </div>
+              <div class="slide" data-name="Multimedia">
+                <img
+                  src="https://images.unsplash.com/photo-1625690303837-654c9666d2d0?w=1200&q=70&auto=format&fit=crop"
+                  alt="A camera operator filming under studio light"
+                />
+                <p class="reel-cap">Tell<b>Genix Multimedia</b></p>
+              </div>
+            </div>
+            <div class="now" id="nowBar" hidden>
+              <div
+                class="now-dots"
+                role="group"
+                aria-label="Choose which business the reel shows"
+              >
+                <button
+                  aria-pressed="false"
+                  aria-label="Show Genix Logistics"
+                ></button>
+                <button
+                  aria-pressed="true"
+                  aria-label="Show Genix Home Upgrades"
+                ></button>
+                <button
+                  aria-pressed="false"
+                  aria-label="Show Genix Multimedia"
+                ></button>
+              </div>
+              <span>Now showing: <b id="nowName">Home Upgrades</b></span>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Intro -->
+      <section class="intro" id="about">
+        <div class="wrap grid">
+          <div>
+            <p class="label" data-reveal>Who we are</p>
+            <h2 data-reveal>One group. Three crews. One standard of work.</h2>
+          </div>
+          <div>
+            <p class="body" data-reveal>
+              We run freight, home upgrades and multimedia under one roof, so
+              the care you get from one Genix business is the care you get from
+              all of them. One conversation can cover the move, the build and
+              the photos.
+            </p>
+            <ul class="facts" data-reveal>
+              <li><span>Head office</span><span>San Diego, CA</span></li>
+              <li><span>Serving</span><span>Customers across the USA</span></li>
+              <li>
+                <span>Businesses</span
+                ><span
+                  >Logistics ·&nbsp;Home&nbsp;Upgrades ·&nbsp;Multimedia</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Businesses -->
+      <div id="businesses">
+        <section
+          class="panel"
+          data-key="move"
+          id="div-move"
+          aria-labelledby="h-move"
+        >
+          <div class="panel-media">
+            <img
+              src="https://images.unsplash.com/photo-1766785368863-f2188a8c8b32?w=2000&q=70&auto=format&fit=crop"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="wrap">
+            <div>
+              <p class="verb">Move</p>
+              <div class="brand-tile" style="--zoom: 1; padding: 10px 12px">
+                <img
+                  src="assets/genix-logistics-logo.svg"
+                  alt="Genix Freight &amp; Logistics logo"
+                  width="876"
+                  height="405"
+                />
+              </div>
+              <h3 id="h-move">Genix Logistics</h3>
+              <p class="lead">San Diego Freight, Handled Right.</p>
+              <p class="body">
+                Freight, haulage and last-mile delivery for growing businesses,
+                with clear timelines and a real person to call when plans
+                change.
+              </p>
+              <ul class="chips">
+                <li>Freight &amp; haulage</li>
+                <li>Last-mile delivery</li>
+                <li>Courier</li>
+              </ul>
+              <div class="panel-cta">
+                <a
+                  class="btn-accent"
+                  href="https://logistics.thegenixgroup.com/contact"
+                  >Get a freight quote <span aria-hidden="true">↗</span></a
+                >
+                <a class="host" href="https://logistics.thegenixgroup.com"
+                  >logistics.thegenixgroup.com</a
+                >
+              </div>
+            </div>
+            <div class="cases">
+              <h4>Recent work</h4>
+              <figure class="case placeholder">
+                <div class="case-thumb">Add a real delivery</div>
+                <figcaption>
+                  <b>Placeholder: a recent haul</b
+                  ><span>Route, load and turnaround time go here.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="panel"
+          data-key="make"
+          id="div-make"
+          aria-labelledby="h-make"
+        >
+          <div class="panel-media">
+            <img
+              src="assets/hu-project-marble-wall.jpg"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="wrap">
+            <div>
+              <p class="verb">Make</p>
+              <div class="brand-tile" style="--zoom: 1">
+                <img
+                  class="tall"
+                  src="assets/genix-home-upgrades-logo.svg"
+                  alt="Genix Home Upgrade logo"
+                  width="976"
+                  height="722"
+                />
+              </div>
+              <h3 id="h-make">Genix Home Upgrades</h3>
+              <p class="lead">From Blueprint to Beautiful.</p>
+              <p class="body">
+                Renovations, feature walls, fittings and outdoor builds for
+                homes and commercial buildings, from the first site visit to the
+                final finish.
+              </p>
+              <ul class="chips">
+                <li>Renovation</li>
+                <li>Feature walls</li>
+                <li>Outdoor builds</li>
+              </ul>
+              <div class="panel-cta">
+                <a
+                  class="btn-accent"
+                  href="https://homeupgrades.thegenixgroup.com/contact"
+                  >Plan an upgrade <span aria-hidden="true">↗</span></a
+                >
+                <a class="host" href="https://homeupgrades.thegenixgroup.com"
+                  >homeupgrades.thegenixgroup.com</a
+                >
+              </div>
+            </div>
+            <div class="cases">
+              <h4>Recent work</h4>
+              <figure class="case">
+                <div class="case-thumb">
+                  <img
+                    src="assets/hu-project-marble-wall.jpg"
+                    alt="Backlit marble feature wall with gold veining, a floating media console and slatted wood shelving"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>
+                  <b>Marble feature wall</b
+                  ><span
+                    >Backlit stone panels, floating console and lit
+                    shelving.</span
+                  >
+                </figcaption>
+              </figure>
+              <figure class="case">
+                <div class="case-thumb">
+                  <!-- preload="none" + poster: the video downloads only once
+                       the card is on screen (the hero reel already loads this
+                       file; fetching it twice on page load cost 2.2 MB) -->
+                  <video
+                    src="assets/hu-project.mp4"
+                    poster="assets/hu-project-poster.jpg"
+                    muted
+                    loop
+                    playsinline
+                    preload="none"
+                    aria-label="Genix Home Upgrades crew building a custom TV wall, from framing to the finished, backlit unit"
+                  ></video>
+                </div>
+                <figcaption>
+                  <b>Customized TV unit</b
+                  ><span>Our crew on site, remodeling a TV area.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="panel"
+          data-key="tell"
+          id="div-tell"
+          aria-labelledby="h-tell"
+        >
+          <div class="panel-media">
+            <img
+              src="https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?w=2000&q=70&auto=format&fit=crop"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="wrap">
+            <div>
+              <p class="verb">Tell</p>
+              <div class="brand-tile">
+                <div class="wm">
+                  <b>GENI<i>X</i></b
+                  ><small>MULTIMEDIA</small>
+                </div>
+              </div>
+              <h3 id="h-tell">Genix Multimedia</h3>
+              <p class="lead">Your Story, Captured and Amplified.</p>
+              <p class="body">
+                Photography, video, branding and design for businesses and the
+                people behind them.
+              </p>
+              <ul class="chips">
+                <li>Photography</li>
+                <li>Video production</li>
+                <li>Branding &amp; design</li>
+              </ul>
+              <div class="panel-cta">
+                <a
+                  class="btn-accent"
+                  href="https://multimedia.thegenixgroup.com/contact"
+                  >Book a shoot <span aria-hidden="true">↗</span></a
+                >
+                <a class="host" href="https://multimedia.thegenixgroup.com"
+                  >multimedia.thegenixgroup.com</a
+                >
+              </div>
+            </div>
+            <div class="cases">
+              <h4>Recent work</h4>
+              <figure class="case placeholder">
+                <div class="case-thumb">Add a real shoot</div>
+                <figcaption>
+                  <b>Placeholder: a recent production</b
+                  ><span>Client, deliverable and result go here.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Route -->
+      <section class="route" id="contact">
+        <div class="wrap">
+          <p class="label" data-reveal>Start a conversation</p>
+          <h2 data-reveal>What do you <span class="gold">need?</span></h2>
+          <div class="options">
+            <a
+              class="option"
+              href="https://logistics.thegenixgroup.com/contact"
+              style="--c: var(--move)"
+              data-reveal
+            >
+              <span class="verb">Move</span>
+              <b>Ship something</b>
+              <p>Freight, haulage, last-mile delivery and courier.</p>
+              <span class="go"
+                >Get a freight quote
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M9 7h8v8" /></svg
+              ></span>
+            </a>
+            <a
+              class="option"
+              href="https://homeupgrades.thegenixgroup.com/contact"
+              style="--c: var(--gold-text)"
+              data-reveal
+            >
+              <span class="verb">Make</span>
+              <b>Upgrade a space</b>
+              <p>Renovations, feature walls, fittings and outdoor builds.</p>
+              <span class="go"
+                >Plan an upgrade
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M9 7h8v8" /></svg
+              ></span>
+            </a>
+            <a
+              class="option"
+              href="https://multimedia.thegenixgroup.com/contact"
+              style="--c: #7a2e68"
+              data-reveal
+            >
+              <span class="verb">Tell</span>
+              <b>Tell your story</b>
+              <p>Photography, video, branding and design.</p>
+              <span class="go"
+                >Book a shoot
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M9 7h8v8" /></svg
+              ></span>
+            </a>
+          </div>
+          <p class="route-alt" data-reveal>
+            Need more than one, or not sure? Email
+            <a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a>
+            and we'll bring the right teams together.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="brand">
+          <a class="logo-tile" href="#top" aria-label="The Genix Group home">
+            <span class="logo-tile-row">
+              <img
+                class="logo-mark"
+                src="assets/genix-mark.svg"
+                alt=""
+                width="360"
+                height="421"
+              />
+              <img
+                class="logo-word"
+                src="assets/genix-wordmark.svg"
+                alt=""
+                width="874"
+                height="298"
+              />
+            </span>
+            <span class="logo-tagline" aria-hidden="true"
+              >Logistics | Home Upgrades | Multimedia</span
+            >
+          </a>
+        </div>
+        <div>
+          <h2>Businesses</h2>
+          <ul>
+            <li>
+              <a href="https://logistics.thegenixgroup.com"
+                ><span class="dot" style="background: var(--move)"></span>Genix
+                Logistics</a
+              >
+            </li>
+            <li>
+              <a href="https://homeupgrades.thegenixgroup.com"
+                ><span class="dot" style="background: var(--gold)"></span>Genix
+                Home Upgrades</a
+              >
+            </li>
+            <li>
+              <a href="https://multimedia.thegenixgroup.com"
+                ><span class="dot" style="background: var(--tell)"></span>Genix
+                Multimedia</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>Group</h2>
+          <ul>
+            <li><a href="#about">Who we are</a></li>
+            <li><a href="#businesses">Our businesses</a></li>
+            <li><a href="#contact">Get a quote</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Head office</h2>
+          <ul>
+            <li>San Diego, California, USA</li>
+            <li>
+              <a href="mailto:hello@thegenixgroup.com"
+                >hello@thegenixgroup.com</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="legal">
+          <span>© 2026 The Genix Group</span><span>thegenixgroup.com</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu (independent of GSAP)
+      (() => {
+        const header = document.getElementById("siteHeader");
+        const btn = document.getElementById("menuBtn");
+        const contact = header.querySelector(".nav-contact");
+        const set = (open) => {
+          header.classList.toggle("menu-open", open);
+          btn.setAttribute("aria-expanded", open);
+          btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          contact.hidden = !open;
+        };
+        btn.addEventListener("click", () =>
+          set(!header.classList.contains("menu-open")),
+        );
+        header
+          .querySelectorAll(".nav a")
+          .forEach((a) => a.addEventListener("click", () => set(false)));
+      })();
+
+      // Case-study videos: play only while on screen (which is also when they
+      // first download). Reduced motion: never autoplay; show play controls.
+      (() => {
+        const vids = document.querySelectorAll(".case video");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          vids.forEach((v) => (v.controls = true));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) =>
+            entries.forEach(({ target: v, isIntersecting }) =>
+              isIntersecting ? v.play().catch(() => {}) : v.pause(),
+            ),
+          { threshold: 0.25 },
+        );
+        vids.forEach((v) => io.observe(v));
+      })();
+
+      // One logo at a time: the hero lockup docks into the header as you scroll.
+      // It rides up with the page and shrinks toward the header logo's size and
+      // position; the moment it lands, the header logo takes over. Plain JS so
+      // it works without the animation CDN. Reduced motion: an instant swap.
+      (() => {
+        const root = document.documentElement;
+        const lock = document.querySelector(".lockup");
+        const headMark = document.querySelector(".site-header .logo-mark");
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        let g = null,
+          raf = 0;
+        root.classList.add("logo-dock");
+
+        const measure = () => {
+          const t = lock.style.transform;
+          lock.style.transform = "none";
+          const L = lock.getBoundingClientRect(); // lockup height = its mark's height
+          const H = headMark.getBoundingClientRect(); // sticky: same spot at any scroll
+          lock.style.transform = t;
+          g = {
+            D: Math.max(1, L.top + scrollY - H.top), // scroll at which the lockup's top meets the header mark's top
+            dx: H.left - L.left,
+            s: H.height / L.height,
+          };
+          update();
+        };
+        const update = () => {
+          raf = 0;
+          if (!g) return;
+          const p = Math.min(1, Math.max(0, scrollY / g.D));
+          const docked = p >= 1;
+          if (!reduce) {
+            lock.style.transform = `translate(${g.dx * p}px, 0) scale(${1 + (g.s - 1) * p})`;
+          }
+          lock.style.visibility = docked ? "hidden" : "";
+          root.classList.toggle(
+            "logo-docked",
+            reduce ? scrollY >= g.D : docked,
+          );
+        };
+        addEventListener(
+          "scroll",
+          () => raf || (raf = requestAnimationFrame(update)),
+          { passive: true },
+        );
+        addEventListener("resize", measure);
+        addEventListener("load", measure);
+        measure();
+      })();
+
+      // Hero reel: Logistics → Home Upgrades → Multimedia. Auto-advances only
+      // when motion is allowed and the reel is on screen; the dots always work.
+      (() => {
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const slides = [...document.querySelectorAll(".reel .slide")];
+        const dots = [...document.querySelectorAll(".now-dots button")];
+        const nowName = document.getElementById("nowName");
+        document.getElementById("nowBar").hidden = false;
+        let cur = slides.findIndex((sl) => sl.classList.contains("on"));
+        let timer,
+          labelTimer,
+          visible = true;
+        const show = (i) => {
+          slides.forEach((sl, n) => {
+            const on = n === i;
+            sl.classList.toggle("on", on);
+            dots[n].setAttribute("aria-pressed", on);
+            const v = sl.querySelector("video");
+            if (!v) return;
+            if (on && visible && !reduce)
+              v.play()
+                .then(() => v.classList.add("playing"))
+                .catch(() => {});
+            else v.pause();
+          });
+          // Switch the label at the crossfade's midpoint, when the new
+          // picture is the one people actually see
+          clearTimeout(labelTimer);
+          labelTimer = setTimeout(
+            () => (nowName.textContent = slides[i].dataset.name),
+            i === cur || reduce ? 0 : 450,
+          );
+          cur = i;
+        };
+        const cycle = () => {
+          clearInterval(timer);
+          if (!reduce && visible)
+            timer = setInterval(() => show((cur + 1) % slides.length), 4200);
+        };
+        dots.forEach((d, i) =>
+          d.addEventListener("click", () => {
+            show(i);
+            cycle();
+          }),
+        );
+        new IntersectionObserver(([e]) => {
+          visible = e.isIntersecting;
+          show(cur);
+          cycle();
+        }).observe(document.querySelector(".reel"));
+      })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+    <script>
+      (async () => {
+        const root = document.documentElement;
+        if (
+          !window.gsap ||
+          matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          root.classList.remove("h1-pending");
+          return;
+        }
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Lenis: smooth mouse-wheel scrolling on desktop (touch stays native),
+        // driving ScrollTrigger — same as the division sites
+        if (window.Lenis) {
+          const lenis = new Lenis({ anchors: { offset: -72 } });
+          window.genixLenis = lenis;
+          lenis.on("scroll", ScrollTrigger.update);
+          gsap.ticker.add((t) => lenis.raf(t * 1000));
+          // default lag smoothing kept: a heavy frame must not fast-forward tweens
+        }
+        await document.fonts.ready; // split with the real font, or line breaks come out wrong
+
+        root.classList.add("js-motion");
+
+        // Headline: each line rises out of its own mask, one after another.
+        // autoSplit re-cuts the lines if the width changes (the text re-wraps)
+        // without replaying the animation; SplitText keeps the full sentence
+        // available to screen readers.
+        if (window.SplitText) {
+          gsap.registerPlugin(SplitText);
+          SplitText.create(".hero h1", {
+            type: "lines",
+            mask: "lines",
+            linesClass: "h1-line",
+            autoSplit: true,
+            onSplit(self) {
+              root.classList.remove("h1-pending");
+              return gsap.from(self.lines, {
+                yPercent: 110,
+                duration: 1.05,
+                ease: "power4.out",
+                stagger: 0.12,
+                delay: 0.3,
+              });
+            },
+          });
+        } else {
+          root.classList.remove("h1-pending");
+        }
+
+        // Load: the logo fades in whole (never reshaped), copy follows,
+        // the reel unveils from the bottom
+        gsap
+          .timeline({ defaults: { ease: "power3.out" } })
+          // animate the logo's images, not .lockup itself — .lockup's
+          // transform belongs to the scroll dock
+          .from(".lockup > img", {
+            opacity: 0,
+            y: 24,
+            duration: 1,
+            stagger: 0.06,
+          })
+          .from(
+            ".hero-copy > :not(.lockup, h1)",
+            { opacity: 0, y: 24, duration: 0.9, stagger: 0.08 },
+            0.2,
+          )
+          .from(
+            ".reel-frame",
+            {
+              clipPath: "inset(100% 0% 0% 0%)",
+              duration: 1.2,
+              ease: "power3.inOut",
+            },
+            0.15,
+          )
+          .from(".reel .now", { opacity: 0, duration: 0.6 }, 0.9);
+
+        // Division panels: the photo opens from a framed inset to full bleed
+        document.querySelectorAll(".panel").forEach((panel) => {
+          gsap.fromTo(
+            panel.querySelector(".panel-media"),
+            { clipPath: "inset(12% 8% 12% 8%)" },
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              ease: "none",
+              scrollTrigger: {
+                trigger: panel,
+                start: "top 90%",
+                end: "top 20%",
+                scrub: 0.5,
+              },
+            },
+          );
+          gsap.from(panel.querySelectorAll(".wrap > div > *"), {
+            y: 32,
+            opacity: 0,
+            duration: 0.9,
+            stagger: 0.05,
+            ease: "power3.out",
+            scrollTrigger: { trigger: panel, start: "top 35%", once: true },
+          });
+        });
+
+        // Quiet reveals for everything else
+        gsap.utils.toArray("[data-reveal]").forEach((el) => {
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 24 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: { trigger: el, start: "top 88%", once: true },
+            },
+          );
+        });
+
+        addEventListener("load", () => ScrollTrigger.refresh());
+      })();
+    </script>
+  </body>
+</html>

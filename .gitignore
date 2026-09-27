@@ -1,0 +1,9 @@
+# Brainstorming mockups and SDD workspaces (local scratch)
+.superpowers/
+
+# Python
+__pycache__/
+*.pyc
+
+# Test screenshots
+design/tests/shots/

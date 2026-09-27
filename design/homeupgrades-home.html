@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en" data-division="homeupgrades">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Genix Home Upgrades — Renovations, feature walls & TV units</title>
+    <meta
+      name="description"
+      content="Genix Home Upgrades designs and builds renovations, feature walls, TV units and outdoor projects. Part of The Genix Group."
+    />
+    <link rel="canonical" href="https://homeupgrades.thegenixgroup.com/" />
+    <!-- Home Upgrades icons (house mark on a parchment tile; the group mark stays on the hub) -->
+    <link rel="icon" href="assets/hu-icons/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="assets/hu-icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/hu-icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/hu-icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/hu-icons/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/hu-icons/site.webmanifest" />
+    <meta name="theme-color" content="#fdfdf7" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Genix Home Upgrades" />
+    <meta property="og:url" content="https://homeupgrades.thegenixgroup.com/" />
+    <meta property="og:title" content="Genix Home Upgrades — From Blueprint to Beautiful." />
+    <meta property="og:description" content="Renovations, feature walls, TV units and outdoor builds. Part of The Genix Group." />
+    <meta property="og:image" content="https://homeupgrades.thegenixgroup.com/assets/hu-ba-finished.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HomeAndConstructionBusiness",
+        "name": "Genix Home Upgrades",
+        "url": "https://homeupgrades.thegenixgroup.com/",
+        "image": "https://homeupgrades.thegenixgroup.com/assets/hu-ba-finished.jpg",
+        "email": "hello@thegenixgroup.com",
+        "parentOrganization": { "@type": "Organization", "name": "The Genix Group", "url": "https://thegenixgroup.com/" },
+        "makesOffer": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Renovation" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Feature walls and TV units" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Outdoor builds" } }
+        ]
+      }
+    </script>
+    <script>
+      // Hide split headlines until SplitText has cut them (no unsplit flash);
+      // never for reduced motion, and a timer reveals them if scripts fail.
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("h1-pending");
+        setTimeout(() => document.documentElement.classList.remove("h1-pending"), 3000);
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared/genix.css" />
+    <link rel="stylesheet" href="shared/style-homeupgrades.css" />
+    <script type="importmap">
+      { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js" } }
+    </script>
+    <style>
+      /* ---------- Hero ---------- */
+      .hero { padding: clamp(40px, 7vh, 88px) 0 clamp(56px, 9vh, 104px); }
+      .hero .wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+      .hero h1 { margin-bottom: 24px; font-size: clamp(44px, 5.2vw, 78px); } /* two lines beside the slider, not four */
+      .hero .lead { font: 500 clamp(19px, 1.7vw, 22px)/1.45 var(--f-body); margin: 0 0 12px; max-width: 34ch; }
+      .hero .body { margin: 0 0 32px; max-width: 44ch; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+      /* Before/after slider: drag to see the build */
+      .ba-wrap { margin: 0; }
+      .ba {
+        --pos: 50%;
+        position: relative; aspect-ratio: 1004 / 752; overflow: hidden;
+        background: var(--black); user-select: none; -webkit-user-select: none;
+        touch-action: pan-y; cursor: ew-resize;
+      }
+      .ba img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+      .ba-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+      .ba-tag {
+        position: absolute; top: 16px; padding: 7px 11px;
+        font: 500 11.5px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase;
+        background: color-mix(in srgb, var(--brand) 82%, transparent); color: var(--white); pointer-events: none;
+      }
+      .ba-tag-before { left: 16px; }
+      .ba-tag-after { right: 16px; background: var(--gold); color: var(--heading); }
+      .ba-handle {
+        position: absolute; top: 0; bottom: 0; left: var(--pos);
+        width: 48px; margin-left: -24px;
+        display: grid; place-items: center; cursor: ew-resize; outline: none;
+      }
+      .ba-handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: var(--white); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15); }
+      .ba-knob {
+        position: relative; width: 52px; height: 52px; border-radius: 50%;
+        display: grid; place-items: center;
+        background: var(--gold); color: var(--heading); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s;
+      }
+      .ba-knob svg { width: 26px; height: 26px; }
+      .ba-handle:hover .ba-knob, .ba.dragging .ba-knob { transform: scale(1.08); }
+      .ba-handle:focus-visible .ba-knob { outline: 3px solid var(--white); outline-offset: 3px; }
+      .ba-cap { display: flex; justify-content: space-between; gap: 16px; margin-top: 12px; font-size: 15px; color: var(--muted); }
+      .ba-cap b { color: var(--ink); font-weight: 600; }
+
+      /* ---------- Services ---------- */
+      .services { background: var(--white); padding: clamp(80px, 11vw, 140px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      .sec-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: end; margin-bottom: clamp(40px, 5vw, 64px); }
+      .sec-head .body { margin: 0; max-width: 44ch; }
+      .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .svc { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--paper); }
+      .svc-img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--black); position: relative; }
+      .svc-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+      .svc:hover .svc-img img { transform: scale(1.04); }
+      .svc-stock { position: absolute; left: 10px; bottom: 10px; padding: 5px 8px; font: 500 10px/1 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; background: rgba(245, 243, 238, 0.9); color: var(--ink); }
+      .svc-body { padding: 24px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+      .svc h3 { font: 600 26px/1.1 var(--f-display); letter-spacing: -0.02em; margin: 0 0 10px; }
+      .svc p { margin: 0 0 16px; color: var(--ink-2); font-size: 16px; }
+      .svc ul { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+      .svc li { font-size: 13.5px; font-weight: 500; padding: 6px 10px; background: var(--white); border: 1px solid var(--line); }
+      .svc .more { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 2px solid var(--gold); }
+
+      /* ---------- Watch the build (3D) ----------
+         Default = fallback layout (photo + steps), so no-JS / reduced-motion /
+         no-WebGL visitors get real content. .is3d switches to the scroll track. */
+      .build { position: relative; background: var(--paper); }
+      .build .stage { display: none; }
+      .build .fallback { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; padding-block: clamp(72px, 9vw, 120px); }
+      .build .fallback img { width: 100%; height: auto; }
+      .build .fallback ol { margin: 0; padding-left: 22px; display: grid; gap: 16px; }
+      .build .fallback li b { display: block; font: 600 22px/1.2 var(--f-display); color: var(--heading); }
+      .build.is3d { height: 440vh; }
+      .build.is3d .fallback { display: none; }
+      .build.is3d .stage { display: block; position: sticky; top: var(--header); height: calc(100svh - var(--header)); overflow: hidden; }
+      .build .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      .build .stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(245, 243, 238, 0.55) 100%); }
+      .steps3d { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 2; width: min(400px, 40vw); pointer-events: none; }
+      .step3d { position: absolute; left: 0; top: 0; transform: translateY(-50%); opacity: 0; transition: opacity 0.35s; }
+      .step3d.on { opacity: 1; }
+      .step3d .num { font: 500 12px/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-text); margin: 0 0 14px; display: flex; gap: 12px; align-items: center; }
+      .step3d .num::before { content: ""; width: 28px; height: 2px; background: var(--gold); }
+      .step3d h3 { font: 600 clamp(34px, 3.8vw, 56px)/1 var(--f-display); letter-spacing: -0.04em; color: var(--heading); margin: 0 0 14px; }
+      .step3d p { margin: 0; color: var(--ink-2); font-size: 17px; max-width: 34ch; }
+      .step3d .cta { pointer-events: auto; margin-top: 22px; }
+      .progress3d { position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 2; display: grid; gap: 10px; }
+      .progress3d i { width: 3px; height: 34px; background: color-mix(in srgb, var(--heading) 15%, transparent); position: relative; overflow: hidden; }
+      .progress3d i::after { content: ""; position: absolute; inset: 0; background: var(--gold); transform-origin: top; transform: scaleY(var(--f, 0)); }
+      .scroll-hint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 2; font: 500 11.5px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); transition: opacity 0.4s; }
+
+      /* ---------- Recent work ---------- */
+      .work { padding: clamp(80px, 11vw, 140px) 0; }
+      /* one shared row height so the cards line up */
+      .work-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-auto-rows: clamp(340px, 34vw, 480px); gap: 16px; }
+      .work-card {
+        position: relative; display: block; padding: 0; border: 0; background: var(--black);
+        text-align: left; color: var(--white); cursor: zoom-in; overflow: hidden; font: inherit;
+        width: 100%; height: 100%;
+      }
+      .work-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+      .work-card:hover img { transform: scale(1.04); }
+      .work-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 48px 20px 20px; background: linear-gradient(transparent, color-mix(in srgb, var(--brand) 90%, transparent)); }
+      .work-cap small { display: block; font: 500 11px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+      .work-cap b { display: block; font: 600 22px/1.15 var(--f-display); letter-spacing: -0.01em; }
+      .work-cap span { font-size: 14.5px; color: rgba(255, 255, 255, 0.82); }
+      .work-play { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; background: var(--gold); display: grid; place-items: center; color: var(--heading); }
+      .work-ph {
+        border: 1.5px dashed var(--gold); display: grid; place-items: center; text-align: center; padding: 24px;
+        background: repeating-linear-gradient(135deg, rgba(194, 138, 44, 0.07) 0 8px, transparent 8px 16px);
+      }
+      .work-ph b { display: block; font: 600 20px/1.2 var(--f-display); margin-bottom: 6px; }
+      .work-ph span { font-size: 14.5px; color: var(--muted); }
+
+      /* Project viewer (native dialog; Flip animates the photo out of its card) */
+      .viewer { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; }
+      .viewer::backdrop { background: rgba(11, 11, 12, 0.95); } /* no blur: invisible at 95% and costly per frame */
+      .viewer-inner { position: fixed; inset: 0; display: grid; grid-template-rows: 1fr auto; place-items: center; padding: clamp(16px, 4vw, 56px); gap: 16px; }
+      /* leave room for the caption below: never taller than the screen */
+      .viewer-media { max-width: min(1100px, 100%); max-height: calc(100svh - 190px); width: auto; height: auto; object-fit: contain; }
+      .viewer-cap { color: var(--white); text-align: center; max-width: 60ch; }
+      .viewer-cap b { font: 600 22px/1.2 var(--f-display); display: block; margin-bottom: 4px; }
+      .viewer-cap span { color: #d2ccc1; font-size: 16px; }
+      .viewer-close {
+        position: fixed; top: 16px; right: 16px; width: 48px; height: 48px; border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(11, 11, 12, 0.6); color: var(--white); cursor: pointer; display: grid; place-items: center;
+      }
+
+      /* ---------- How a project runs ---------- */
+      .process { background: var(--brand); color: var(--white); padding: clamp(80px, 11vw, 140px) 0; }
+      .process .wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(40px, 6vw, 96px); align-items: start; }
+      .crew { position: sticky; top: calc(var(--header) + 32px); margin: 0; }
+      .crew img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+      .crew figcaption { margin-top: 12px; font-size: 14.5px; color: var(--on-brand-muted); }
+      .steps { list-style: none; margin: 40px 0 0; padding: 0 0 0 28px; position: relative; counter-reset: step; }
+      .steps::before { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--brand-line); }
+      .steps::after { content: ""; position: absolute; left: 0; top: 6px; bottom: 6px; width: 2px; background: var(--gold); transform-origin: top; transform: scaleY(var(--progress, 1)); }
+      .step { position: relative; z-index: 1; padding: 0 0 44px 24px; counter-increment: step; } /* z-index on the step itself: reveal transforms make each step a stacking context, so the marker alone cannot rise above the line */
+      .step:last-child { padding-bottom: 0; }
+      .step::before {
+        content: counter(step); position: absolute; left: -45px; top: -2px; width: 34px; height: 34px; border-radius: 50%;
+        display: grid; place-items: center; background: var(--brand); border: 2px solid var(--gold); color: var(--gold);
+        font: 600 14px/1 var(--f-mono);
+      }
+      .step h3 { font: 600 26px/1.15 var(--f-display); letter-spacing: -0.02em; margin: 0 0 8px; }
+      .step p { margin: 0; color: rgba(255, 255, 255, 0.8); max-width: 46ch; }
+
+      /* ---------- Quote band ---------- */
+      .quote { padding: clamp(96px, 12vw, 160px) 0; }
+      .quote .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
+      .quote .body { margin: 0 0 28px; max-width: 42ch; }
+      .quote-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+      .quote-note { margin-top: 18px; font-size: 15px; color: var(--muted); }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 960px) {
+        .hero .wrap, .sec-head, .process .wrap, .quote .wrap { grid-template-columns: 1fr; }
+        /* Phones: headline → slider → button → detail, so the tagline, the proof
+           and the main action all fit the first screen */
+        .hero .wrap { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+        .hero-copy { display: contents; }
+        .hero .label { order: 1; } .hero h1 { order: 2; } .ba-wrap { order: 3; margin-bottom: 24px; }
+        .hero .lead { order: 4; } .hero-actions { order: 5; margin-bottom: 20px; } .hero .body { order: 6; margin: 0; }
+        /* services: swipe sideways instead of three tall stacked cards; the next card peeks in */
+        .svc-grid {
+          grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 360px);
+          overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+          margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter) 8px; scroll-padding-inline: var(--gutter);
+        }
+        .svc-grid::-webkit-scrollbar { display: none; }
+        .svc { scroll-snap-align: start; }
+        .quote-bar:not([hidden]) {
+          position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; gap: 10px;
+          padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+          background: var(--paper); border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(2, 34, 72, 0.08);
+          transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+        .quote-bar .btn-gold { flex: 1; justify-content: center; }
+        .quote-bar.off { transform: translateY(110%); }
+        .work-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: clamp(280px, 48vw, 420px); }
+        .work-grid > :first-child { grid-column: 1 / -1; }
+        .crew { position: static; }
+        .build .fallback { grid-template-columns: 1fr; }
+        .steps3d { top: auto; bottom: 28px; transform: none; width: auto; right: var(--gutter); }
+        .step3d { top: auto; bottom: 0; transform: none; background: rgba(245, 243, 238, 0.92); padding: 16px 18px; }
+        .step3d h3 { font-size: 30px; }
+        .progress3d { top: 18px; transform: none; display: flex; gap: 6px; }
+        .progress3d i { width: 26px; height: 3px; }
+        .progress3d i::after { transform-origin: left; transform: scaleX(var(--f, 0)); }
+        .scroll-hint, .build .stage::after { display: none; }
+      }
+      @media (max-width: 760px) {
+        .build.is3d { height: 260vh; } /* phones: same five steps, ~2.5 screens of scrolling instead of 4.4 */
+      }
+      @media (min-width: 961px) { .quote-bar { display: none; } } /* the header's own button covers wider screens */
+      @media (prefers-reduced-motion: reduce) { .quote-bar { transition: none; } }
+      @media (max-width: 560px) {
+        .work-grid { grid-template-columns: 1fr; grid-auto-rows: 72vw; }
+        .ba-cap { flex-direction: column; gap: 2px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap">
+        <a class="brand" href="#top" aria-label="Genix Home Upgrades home">
+          <img src="assets/genix-home-upgrades-logo.svg" alt="" width="976" height="722" />
+        </a>
+        <nav class="nav" id="nav" aria-label="Primary">
+          <a href="#services">Services</a>
+          <a href="#work">Our work</a>
+          <a href="#process">How we work</a>
+          <a href="#quote" class="nav-extra" hidden>Get a quote</a>
+        </nav>
+        <div class="header-end">
+          <a class="parent-link" href="hub-home.html">Part of The Genix Group ↗</a>
+          <a class="btn btn-gold btn-sm" href="#quote">Get a quote</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span></button>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero -->
+      <section class="hero" data-hero>
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="label">Genix Home Upgrades</p>
+            <h1 class="h-display" data-split>From Blueprint <span class="gold">to Beautiful.</span></h1>
+            <p class="lead">Renovations, feature walls and custom TV units, planned with you and built by our own crew.</p>
+            <p class="body">From the first site visit to the final walkthrough, you get one team, a written quote before work starts, and a site kept tidy while we build.</p>
+            <div class="hero-actions">
+              <a class="btn btn-dark" href="#quote">Plan an upgrade <span aria-hidden="true">→</span></a>
+              <a class="btn btn-ghost" href="tel:+10000000000"><span class="ph">Call (000) 000-0000</span></a>
+            </div>
+          </div>
+
+          <figure class="ba-wrap">
+            <div class="ba" id="ba">
+              <img src="assets/hu-ba-finished.jpg" alt="Finished: backlit marble TV wall with slatted wood surround and warm LED glow" width="1004" height="752" />
+              <div class="ba-before">
+                <img src="assets/hu-ba-midbuild.jpg" alt="Mid-build: the same wall with the marble panel and slats up, before lighting and finishing" width="1004" height="752" />
+              </div>
+              <span class="ba-tag ba-tag-before" aria-hidden="true">Mid-build</span>
+              <span class="ba-tag ba-tag-after" aria-hidden="true">Finished</span>
+              <div class="ba-handle" id="baHandle" role="slider" tabindex="0"
+                   aria-label="Compare mid-build and finished" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% mid-build">
+                <span class="ba-knob" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6" /></svg>
+                </span>
+              </div>
+            </div>
+            <figcaption class="ba-cap"><span><b>Drag to see the build.</b></span><span>Backlit marble TV wall · Genix Home Upgrades</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="services" id="services">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label" data-reveal>What we do</p>
+              <h2 class="h-section" data-split>Three kinds of upgrade.</h2>
+            </div>
+            <p class="body" data-reveal>Every project starts with a visit to the space and a written quote. Tell us what you have in mind — we'll tell you what it takes.</p>
+          </div>
+          <div class="svc-grid">
+            <article class="svc" data-reveal>
+              <div class="svc-img"><img src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=900&q=70&auto=format&fit=crop" alt="A tradesman on a ladder renovating a room" loading="lazy" /><span class="svc-stock">Stock photo</span></div>
+              <div class="svc-body">
+                <h3>Renovation</h3>
+                <p>Rooms reworked from the studs out: layouts, walls, flooring, fixtures and finishes.</p>
+                <ul><li>Living spaces</li><li>Kitchens</li><li>Bathrooms</li></ul>
+                <a class="more" href="#quote">Ask about a renovation <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+            <article class="svc" data-reveal>
+              <div class="svc-img"><img src="assets/hu-project-marble-wall.jpg" alt="Backlit marble feature wall with gold veining and a floating media console" loading="lazy" /></div>
+              <div class="svc-body">
+                <h3>Feature walls &amp; TV units</h3>
+                <p>Statement walls built around how you use the room — stone panels, slatted wood, hidden wiring and integrated lighting.</p>
+                <ul><li>Marble panels</li><li>Slat walls</li><li>LED backlighting</li></ul>
+                <a class="more" href="#quote">Ask about a feature wall <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+            <article class="svc" data-reveal>
+              <div class="svc-img"><img src="https://images.unsplash.com/photo-1656646549633-80ad4bd2ab40?w=900&q=70&auto=format&fit=crop" alt="A wooden deck with outdoor seating beside a house" loading="lazy" /><span class="svc-stock">Stock photo</span></div>
+              <div class="svc-body">
+                <h3>Outdoor builds</h3>
+                <p>Decks, patios and outdoor structures that turn a yard into usable space.</p>
+                <ul><li>Decks</li><li>Patios</li><li>Pergolas</li></ul>
+                <a class="more" href="#quote">Ask about an outdoor build <span aria-hidden="true">→</span></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent work -->
+      <section class="work" id="work">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label" data-reveal>Recent work</p>
+              <h2 class="h-section" data-split>Finished, <span class="gold">not just started.</span></h2>
+            </div>
+            <p class="body" data-reveal>Real projects by the Genix crew. Tap one to see it larger.</p>
+          </div>
+          <div class="work-grid">
+            <button class="work-card" data-reveal data-kind="img" data-src="assets/hu-project-marble-wall.jpg"
+                    data-title="Marble feature wall" data-desc="Backlit stone panels, a floating console and lit shelving.">
+              <img src="assets/hu-project-marble-wall.jpg" alt="Backlit marble feature wall with a floating media console" loading="lazy" />
+              <span class="work-cap"><small>Feature wall</small><b>Marble feature wall</b><span>Backlit stone, floating console, lit shelving</span></span>
+            </button>
+            <button class="work-card" data-reveal data-kind="video" data-src="assets/hu-project.mp4" data-poster="assets/hu-project-poster.jpg"
+                    data-title="Custom TV unit, start to finish" data-desc="From cutting the panels to the finished, backlit wall.">
+              <img src="assets/hu-project-poster.jpg" alt="Finished custom TV wall with warm LED backlighting" loading="lazy" />
+              <span class="work-play" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></span>
+              <span class="work-cap"><small>TV unit · video</small><b>Custom TV unit</b><span>Start to finish in 13 seconds</span></span>
+            </button>
+            <div class="work-ph" data-reveal>
+              <div><b>Your next project here</b><span>Placeholder — add a third finished project with photos.</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <dialog class="viewer" id="viewer" aria-labelledby="viewerTitle">
+        <div class="viewer-inner">
+          <div id="viewerMediaSlot" style="display:contents"></div>
+          <p class="viewer-cap"><b id="viewerTitle"></b><span id="viewerDesc"></span></p>
+        </div>
+        <button class="viewer-close" id="viewerClose" aria-label="Close project view">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </dialog>
+
+      <!-- Watch the build (3D). Three.js loads only as this section approaches. -->
+      <section class="build" id="build" aria-labelledby="buildTitle">
+        <h2 class="sr-only" id="buildTitle">Watch a feature wall come together</h2>
+        <script>
+          // Decide during parse, before anything measures the page: switch to
+          // the 3D scroll track if motion is allowed and WebGL exists.
+          (function () {
+            var ok = !matchMedia("(prefers-reduced-motion: reduce)").matches && (function () {
+              try { var c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); }
+              catch (e) { return false; }
+            })();
+            if (ok) document.currentScript.parentElement.classList.add("is3d");
+          })();
+        </script>
+        <div class="stage">
+          <div class="steps3d">
+            <div class="step3d" data-step="0"><p class="num">Step 1 of 5</p><h3>It starts with a bare wall.</h3><p>Every feature wall begins as a blank, measured surface.</p></div>
+            <div class="step3d" data-step="1"><p class="num">Step 2 of 5</p><h3>Slats for warmth.</h3><p>Slatted wood goes up first, spaced by hand, running floor to ceiling.</p></div>
+            <div class="step3d" data-step="2"><p class="num">Step 3 of 5</p><h3>Stone at the centre.</h3><p>A marble panel becomes the backdrop — the piece everything else frames.</p></div>
+            <div class="step3d" data-step="3"><p class="num">Step 4 of 5</p><h3>The screen floats.</h3><p>Mounted flush, with the cables hidden inside the wall.</p></div>
+            <div class="step3d" data-step="4"><p class="num">Step 5 of 5</p><h3>Light it. Done.</h3><p>A floating console and warm backlighting finish the room.</p>
+              <a class="btn btn-dark cta" href="#quote">Plan a wall like this <span aria-hidden="true">→</span></a></div>
+          </div>
+          <div class="progress3d" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="scroll-hint" aria-hidden="true">Scroll to build ↓</span>
+        </div>
+        <div class="wrap fallback">
+          <img src="assets/hu-ba-finished.jpg" alt="Finished backlit marble TV wall with slatted wood surround" width="1004" height="752" loading="lazy" />
+          <div>
+            <p class="label">How a feature wall comes together</p>
+            <ol>
+              <li><b>A bare wall</b>Measured and prepared.</li>
+              <li><b>Slats for warmth</b>Slatted wood, floor to ceiling.</li>
+              <li><b>Stone at the centre</b>A marble panel as the backdrop.</li>
+              <li><b>The screen floats</b>Mounted flush, cables hidden.</li>
+              <li><b>Light it</b>Floating console and warm backlighting.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- How a project runs -->
+      <section class="process on-dark" id="process">
+        <div class="wrap">
+          <figure class="crew" data-reveal>
+            <img src="assets/hu-outdoor-build.jpg" alt="Two Genix crew members cutting panels on a patio at sunset" loading="lazy" width="1004" height="752" />
+            <figcaption>The crew cutting panels on site for the TV-wall build above.</figcaption>
+          </figure>
+          <div>
+            <p class="label" data-reveal>How a project runs</p>
+            <h2 class="h-section" data-split>Four steps, <span class="gold">no surprises.</span></h2>
+            <ol class="steps" id="steps">
+              <li class="step" data-reveal><h3>Site visit</h3><p>We walk the space with you, measure up and talk through what you want it to do.</p></li>
+              <li class="step" data-reveal><h3>Written quote</h3><p>A clear, itemised quote and timeline before any work starts.</p></li>
+              <li class="step" data-reveal><h3>The build</h3><p>The Genix crew does the work and keeps you updated as it goes.</p></li>
+              <li class="step" data-reveal><h3>Final walkthrough</h3><p>We go over the finished space together and put right anything that isn't.</p></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quote band -->
+      <section class="quote" id="quote">
+        <div class="wrap">
+          <div>
+            <p class="label" data-reveal>Get a quote</p>
+            <h2 class="h-display" data-split>Tell us about <span class="gold">the space.</span></h2>
+          </div>
+          <div data-reveal>
+            <p class="body">A few photos and a sentence about what you want is enough to start. We'll arrange a visit and send a written quote.</p>
+            <div class="quote-actions">
+              <a class="btn btn-dark" href="mailto:hello@thegenixgroup.com?subject=Home%20upgrade%20quote">Email about a project <span aria-hidden="true">→</span></a>
+              <a class="btn btn-ghost" href="tel:+10000000000"><span class="ph">Call (000) 000-0000</span></a>
+            </div>
+            <p class="quote-note">Serving <span class="ph">[service area]</span>. The full quote form comes with the Contact page.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Phones: "Get a quote" stays one tap away once the hero button scrolls off -->
+    <div class="quote-bar" id="quoteBar" hidden>
+      <a class="btn btn-gold" href="#quote">Get a quote <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost ph" href="tel:+10000000000" aria-label="Call Genix Home Upgrades">Call</a>
+    </div>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="brand-col">
+          <a class="footer-logo" href="#top" aria-label="Genix Home Upgrades home"><img src="assets/genix-home-upgrades-logo.svg" alt="" width="976" height="722" /></a>
+          <a class="part-of" href="hub-home.html"><img src="assets/genix-mark.svg" alt="" width="360" height="421" /><span>Part of <b>The Genix Group</b></span></a>
+        </div>
+        <div>
+          <h2>Services</h2>
+          <ul><li><a href="#services">Renovation</a></li><li><a href="#services">Feature walls &amp; TV units</a></li><li><a href="#services">Outdoor builds</a></li></ul>
+        </div>
+        <div>
+          <h2>Company</h2>
+          <ul><li><a href="#work">Our work</a></li><li><a href="#process">How we work</a></li><li><a href="#quote">Get a quote</a></li></ul>
+        </div>
+        <div>
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></li>
+            <li><span class="ph">(000) 000-0000</span></li>
+            <li>Serving <span class="ph">[service area]</span></li>
+          </ul>
+        </div>
+        <div class="legal">
+          <span>© 2026 Genix Home Upgrades, part of The Genix Group</span>
+          <span>
+            <a href="https://logistics.thegenixgroup.com"><span class="dot" style="background: var(--move)"></span>Logistics</a> &nbsp;
+            <a href="https://multimedia.thegenixgroup.com"><span class="dot" style="background: var(--tell)"></span>Multimedia</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/InertiaPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+    <script src="shared/genix.js"></script>
+    <script>
+      // Pinned "Get a quote" bar (phones). Off while something else already offers
+      // the action or needs the bottom of the screen: the hero buttons, the 3D
+      // stage (its caption card sits at the bottom), the quote section, the footer.
+      (function () {
+        var bar = document.getElementById("quoteBar");
+        var wide = matchMedia("(min-width: 961px)");
+        var watch = [document.querySelector(".hero-actions"), document.getElementById("build"), document.getElementById("quote"), document.querySelector(".site-footer")];
+        var seen = new Map();
+        bar.hidden = false; bar.classList.add("off");
+        function update() {
+          var heroPassed = watch[0].getBoundingClientRect().bottom < 0;
+          var blocked = watch.some(function (el) { return seen.get(el); });
+          var off = wide.matches || !heroPassed || blocked;
+          bar.classList.toggle("off", off);
+          bar.inert = off; // off-screen links stay out of the tab order
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { seen.set(e.target, e.isIntersecting); });
+          update();
+        });
+        watch.forEach(function (el) { io.observe(el); });
+        wide.addEventListener("change", update);
+      })();
+    </script>
+    <script type="module">
+      // Load the 3D build only as its section approaches (Three.js is ~340 KB)
+      const section = document.getElementById("build");
+      if (section.classList.contains("is3d")) {
+        const fallback = () => { section.classList.remove("is3d"); window.ScrollTrigger && ScrollTrigger.refresh(); };
+        if (!window.gsap || !window.ScrollTrigger) fallback();
+        else {
+          // Wait until the visitor actually scrolls, then load once the section
+          // is within ~800px. Nothing 3D is downloaded for people who never scroll.
+          const load = () => import("./js/build3d.js").then((m) => m.mountBuild(section)).catch(fallback);
+          const arm = () => {
+            removeEventListener("scroll", arm);
+            const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); load(); } }, { rootMargin: "800px 0px" });
+            io.observe(section);
+          };
+          if (scrollY > 0) arm(); else addEventListener("scroll", arm, { passive: true });
+        }
+      }
+    </script>
+    <script>
+      // ---------- Before/after slider ----------
+      // Works everywhere with plain pointer + keyboard input. With GSAP it
+      // gains Draggable + Inertia (fling the handle and it glides), and a
+      // one-time swing on arrival that shows it can be dragged.
+      (() => {
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const ba = document.getElementById("ba");
+        const handle = document.getElementById("baHandle");
+        let pos = 50;
+        let hint = null; // the arrival swing; any user input cancels it
+        const takeOver = () => { if (hint) { hint.kill(); hint = null; } };
+        ba.addEventListener("pointerdown", takeOver, true);
+        handle.addEventListener("keydown", takeOver, true);
+        const set = (p) => {
+          pos = Math.max(0, Math.min(100, p));
+          ba.style.setProperty("--pos", pos + "%");
+          handle.setAttribute("aria-valuenow", Math.round(pos));
+          handle.setAttribute("aria-valuetext", `${Math.round(pos)}% mid-build`);
+        };
+        const fromClientX = (x) => { const r = ba.getBoundingClientRect(); return ((x - r.left) / r.width) * 100; };
+
+        handle.addEventListener("keydown", (e) => {
+          const step = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5, PageDown: -20, PageUp: 20 }[e.key];
+          if (step !== undefined) { set(pos + step); e.preventDefault(); }
+          if (e.key === "Home") { set(0); e.preventDefault(); }
+          if (e.key === "End") { set(100); e.preventDefault(); }
+        });
+
+        const hasDraggable = window.gsap && window.Draggable;
+        if (hasDraggable) {
+          gsap.registerPlugin(Draggable, ...(window.InertiaPlugin && !reduce ? [InertiaPlugin] : []));
+          // Drag a hidden proxy; its x maps to the split position.
+          const proxy = document.createElement("div");
+          const width = () => ba.getBoundingClientRect().width;
+          const [drag] = Draggable.create(proxy, {
+            type: "x", trigger: ba, inertia: !!window.InertiaPlugin && !reduce,
+            bounds: { minX: 0, maxX: width() },
+            onPress(e) { gsap.killTweensOf(proxy); ba.classList.add("dragging");
+              if (!handle.contains(e.target)) { gsap.set(proxy, { x: (fromClientX(this.pointerX) / 100) * width() }); this.update(); set((this.x / width()) * 100); } },
+            onDrag() { set((this.x / width()) * 100); },
+            onThrowUpdate() { set((this.x / width()) * 100); },
+            onRelease() { ba.classList.remove("dragging"); },
+            onThrowComplete() { ba.classList.remove("dragging"); },
+          });
+          const sync = () => { drag.applyBounds({ minX: 0, maxX: width() }); gsap.set(proxy, { x: (pos / 100) * width() }); drag.update(); };
+          handle.addEventListener("keydown", () => requestAnimationFrame(sync));
+          addEventListener("resize", sync);
+          sync();
+
+          // One swing on arrival, so people see it moves
+          if (!reduce && window.ScrollTrigger) {
+            const s = { p: 50 };
+            hint = gsap.timeline({ scrollTrigger: { trigger: ba, start: "top 80%", once: true }, delay: 0.6, onComplete: () => (hint = null) })
+              .to(s, { p: 34, duration: 0.7, ease: "power2.inOut", onUpdate: () => set(s.p) })
+              .to(s, { p: 64, duration: 0.9, ease: "power2.inOut", onUpdate: () => set(s.p) })
+              .to(s, { p: 50, duration: 0.6, ease: "power2.out", onUpdate: () => set(s.p), onComplete: sync });
+          }
+        } else {
+          // No GSAP: plain pointer dragging
+          let down = false;
+          ba.addEventListener("pointerdown", (e) => { down = true; ba.setPointerCapture(e.pointerId); set(fromClientX(e.clientX)); });
+          ba.addEventListener("pointermove", (e) => down && set(fromClientX(e.clientX)));
+          ba.addEventListener("pointerup", () => (down = false));
+        }
+      })();
+
+      // ---------- Project viewer ----------
+      // Native <dialog> (Esc, focus handling for free). With GSAP Flip the
+      // photo grows out of its card; otherwise it simply opens.
+      (() => {
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const dlg = document.getElementById("viewer");
+        const slot = document.getElementById("viewerMediaSlot");
+        const title = document.getElementById("viewerTitle");
+        const desc = document.getElementById("viewerDesc");
+        const canFlip = window.gsap && window.Flip && !reduce;
+        if (canFlip) gsap.registerPlugin(Flip);
+        let opener = null;
+
+        document.querySelectorAll(".work-card").forEach((card, i) => {
+          card.addEventListener("click", () => {
+            opener = card;
+            const thumb = card.querySelector("img");
+            const flipId = "work-" + i;
+            thumb.dataset.flipId = flipId;
+            const state = canFlip ? Flip.getState(thumb) : null;
+
+            slot.innerHTML = "";
+            let media;
+            if (card.dataset.kind === "video") {
+              media = document.createElement("video");
+              Object.assign(media, { src: card.dataset.src, poster: card.dataset.poster, controls: true, playsInline: true, muted: true, loop: true });
+              media.setAttribute("aria-label", card.dataset.title);
+              if (!reduce) media.autoplay = true;
+            } else {
+              media = document.createElement("img");
+              media.src = card.dataset.src; media.alt = thumb.alt;
+            }
+            media.className = "viewer-media";
+            media.dataset.flipId = flipId;
+            slot.appendChild(media);
+            title.textContent = card.dataset.title;
+            desc.textContent = card.dataset.desc;
+            dlg.showModal();
+            window.genixLenis?.stop();
+            if (canFlip) {
+              Flip.from(state, { targets: media, duration: 0.65, ease: "power3.inOut", scale: true, absolute: true });
+              gsap.from(".viewer-cap, .viewer-close", { opacity: 0, y: 12, duration: 0.4, delay: 0.35 });
+            }
+          });
+        });
+
+        const close = () => {
+          if (!dlg.open) return;
+          const done = () => { dlg.close(); };
+          if (canFlip) gsap.to(dlg, { opacity: 0, duration: 0.2, onComplete: () => { done(); gsap.set(dlg, { opacity: 1 }); } });
+          else done();
+        };
+        document.getElementById("viewerClose").addEventListener("click", close);
+        dlg.addEventListener("click", (e) => { if (e.target === dlg || e.target.classList.contains("viewer-inner")) close(); });
+        dlg.addEventListener("close", () => {
+          slot.querySelector("video")?.pause();
+          slot.innerHTML = "";
+          window.genixLenis?.start();
+          opener?.focus();
+        });
+      })();
+
+      // ---------- Process: the gold line fills as you read the steps ----------
+      (() => {
+        if (!window.gsap || !window.ScrollTrigger || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        gsap.fromTo("#steps", { "--progress": 0 }, {
+          "--progress": 1, ease: "none",
+          scrollTrigger: { trigger: "#steps", start: "top 70%", end: "bottom 60%", scrub: 0.4 },
+        });
+      })();
+    </script>
+  </body>
+</html>

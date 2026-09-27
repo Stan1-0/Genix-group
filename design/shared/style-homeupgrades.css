@@ -1,0 +1,148 @@
+/* Home Upgrades style layer — "sunlit architectural model".
+   Adapted from a style reference (parchment paper, light airy headlines,
+   12px radii, soft shadows, generous space), blended with the Genix brand:
+   navy + gold stay the brand colours; a sky-blue accent is used only for
+   links and small interactive details.
+   Load after shared/genix.css, on Home Upgrades pages only. Every rule is
+   scoped to [data-division="homeupgrades"] so it outranks page-level rules. */
+
+[data-division="homeupgrades"] {
+  /* Type: one geometric family, light for display */
+  --f-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --f-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --f-mono: "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* Surfaces */
+  --paper: #fdfdf7;            /* parchment page background */
+  --surface: #f7f7f0;          /* standard card */
+  --sand: #f5f2de;             /* warm feature card */
+  --driftwood: #e7e3e1;        /* quiet button surface */
+  --line: rgba(0, 0, 0, 0.1);
+  --graphite: #666666;
+  --muted: #666666;
+  --ink-2: #3a3a3a;
+
+  /* Accent for links + small interactive details (not a brand colour) */
+  --sky: #0096f7;              /* graphics / UI parts: 3.1:1 on parchment, OK for non-text */
+  --sky-text: #0072c6;         /* text links: 4.7:1 on parchment (AA) */
+
+  /* Shape + depth */
+  --r: 12px;
+  --r-lg: 18px;
+  --r-pill: 24px;
+  --shadow-subtle: rgba(0, 0, 0, 0.12) 0 0.5px 2px 0;
+  --shadow-sm: rgba(0, 0, 0, 0.12) 0 2px 4px 0;
+  --shadow-hover: rgba(0, 0, 0, 0.08) 0 2px 10px 0;
+}
+
+[data-division="homeupgrades"] body {
+  background: var(--paper);
+  font: 400 18px/1.45 var(--f-body);
+  letter-spacing: 0; /* the reference's -0.01em was tuned for Regola; Jakarta already sits tight */
+  font-feature-settings: "lnum", "tnum";
+}
+[data-division="homeupgrades"] :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+
+/* ---------- Type: light headlines, tight tracking ---------- */
+[data-division="homeupgrades"] .h-display,
+[data-division="homeupgrades"] .hero h1 {
+  font-weight: 300; line-height: 0.92; letter-spacing: -0.047em;
+}
+[data-division="homeupgrades"] .h-section {
+  font-weight: 300; font-size: clamp(40px, 4.8vw, 60px); line-height: 0.98; letter-spacing: -0.041em;
+}
+[data-division="homeupgrades"] .step3d h3,
+[data-division="homeupgrades"] .quote h2 { font-weight: 300; letter-spacing: -0.045em; }
+[data-division="homeupgrades"] .svc h3,
+[data-division="homeupgrades"] .step h3 { font-weight: 400; font-size: 30px; line-height: 1.14; letter-spacing: -0.03em; }
+[data-division="homeupgrades"] .work-cap b,
+[data-division="homeupgrades"] .viewer-cap b,
+[data-division="homeupgrades"] .ba-cap b { font-weight: 500; letter-spacing: -0.02em; }
+[data-division="homeupgrades"] .hero .lead { font-weight: 400; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; }
+[data-division="homeupgrades"] .body { color: var(--ink-2); }
+
+/* Eyebrows: quiet captions instead of mono caps; the short gold rule stays as the brand mark */
+[data-division="homeupgrades"] .label,
+[data-division="homeupgrades"] .step3d .num {
+  font: 500 14px/1.5 var(--f-body); letter-spacing: 0.01em; text-transform: none; color: var(--graphite);
+}
+[data-division="homeupgrades"] .label::before,
+[data-division="homeupgrades"] .step3d .num::before { width: 20px; }
+[data-division="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
+
+/* ---------- Links + small interactive details: sky blue ---------- */
+[data-division="homeupgrades"] .svc .more { color: var(--sky-text); border-bottom-color: currentColor; }
+[data-division="homeupgrades"] .svc .more:hover { color: #005a9e; }
+[data-division="homeupgrades"] .parent-link:hover,
+[data-division="homeupgrades"] .nav a:hover { color: var(--sky-text); }
+[data-division="homeupgrades"] .ba-knob { background: var(--sky); color: #fff; box-shadow: var(--shadow-hover), 0 0 0 4px rgba(0, 150, 247, 0.18); }
+[data-division="homeupgrades"] .ba-handle:focus-visible .ba-knob { outline-color: #fff; }
+[data-division="homeupgrades"] .ba-tag-after { background: var(--sky); color: #fff; }
+[data-division="homeupgrades"] .work-play { background: var(--sky); color: #fff; }
+[data-division="homeupgrades"] .work-cap small { color: #7cc4ff; }
+
+/* ---------- Buttons: 12px radius; brand colours carry the main actions ---------- */
+[data-division="homeupgrades"] .btn { border-radius: var(--r); min-height: 50px; padding: 0 22px; font-weight: 500; font-size: 15px; letter-spacing: 0; box-shadow: var(--shadow-subtle); }
+[data-division="homeupgrades"] .btn-sm { min-height: 44px; padding: 0 16px; }
+[data-division="homeupgrades"] .btn-dark span { color: var(--gold); }
+/* secondary actions: the pill ghost */
+[data-division="homeupgrades"] .btn-ghost { border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.05); color: var(--heading); box-shadow: none; }
+[data-division="homeupgrades"] .btn-ghost:hover { background: rgba(0, 0, 0, 0.09); color: var(--heading); }
+[data-division="homeupgrades"] .on-dark .btn-ghost { background: rgba(255, 255, 255, 0.12); color: #fff; }
+[data-division="homeupgrades"] .menu-btn { border-radius: var(--r); border-color: var(--line); background: var(--surface); }
+
+/* ---------- Header: parchment glass, hairline ---------- */
+[data-division="homeupgrades"] .site-header { background: var(--paper); backdrop-filter: none; border-bottom-color: rgba(0, 0, 0, 0.06); } /* solid: translucent parchment turned grey over the navy panel */
+
+/* ---------- Sections: space, not dividers ---------- */
+[data-division="homeupgrades"] .hero { padding: clamp(48px, 8vh, 96px) 0 clamp(96px, 10vw, 120px); }
+[data-division="homeupgrades"] .services { background: transparent; border: 0; padding: clamp(96px, 10vw, 120px) 0; }
+[data-division="homeupgrades"] .work { padding: clamp(96px, 10vw, 120px) 0; }
+[data-division="homeupgrades"] .quote { padding: clamp(96px, 10vw, 140px) 0; }
+
+/* ---------- Media + cards: 12px radius, soft lift ---------- */
+[data-division="homeupgrades"] .ba { border-radius: var(--r-lg); box-shadow: var(--shadow-sm); }
+[data-division="homeupgrades"] .ba-tag { border-radius: 8px; font: 500 13px/1 var(--f-body); letter-spacing: 0.01em; text-transform: none; padding: 8px 12px; }
+[data-division="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s; }
+[data-division="homeupgrades"] .svc:hover { box-shadow: var(--shadow-hover); }
+[data-division="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
+[data-division="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
+[data-division="homeupgrades"] .svc-stock { border-radius: 6px; }
+[data-division="homeupgrades"] .work-card { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
+[data-division="homeupgrades"] .work-ph { border-radius: var(--r); background: var(--sand); border: 1.5px dashed rgba(194, 138, 44, 0.6); }
+[data-division="homeupgrades"] .viewer-media { border-radius: var(--r); }
+[data-division="homeupgrades"] .crew img { border-radius: var(--r); }
+
+/* The process band becomes a rounded navy "specialty card" inset from the edges */
+[data-division="homeupgrades"] .process {
+  margin: 0 var(--gutter); border-radius: var(--r-lg);
+  padding: clamp(72px, 9vw, 110px) 0;
+}
+[data-division="homeupgrades"] .step::before { font: 600 14px/1 var(--f-body); }
+
+/* The quote block becomes a warm sand card */
+[data-division="homeupgrades"] .quote .wrap > div:last-child {
+  background: var(--sand); border-radius: var(--r-lg); padding: 36px; box-shadow: var(--shadow-subtle);
+}
+[data-division="homeupgrades"] .quote .body { margin-top: 0; }
+
+/* 3D section: captions sit on soft cards; stage tones matched to parchment */
+[data-division="homeupgrades"] .build { background: var(--paper); }
+[data-division="homeupgrades"] .build .stage::after { background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(253, 253, 247, 0.6) 100%); }
+[data-division="homeupgrades"] .progress3d i { border-radius: 2px; }
+[data-division="homeupgrades"] .build .fallback img { border-radius: var(--r-lg); }
+
+/* Placeholders keep their dashed gold marking, softened */
+[data-division="homeupgrades"] .ph { border-radius: 4px; }
+
+/* Footer: navy, links in parchment; hover shows the sky accent */
+[data-division="homeupgrades"] .footer-logo { border-radius: var(--r); }
+[data-division="homeupgrades"] .part-of img { border-radius: 6px; }
+[data-division="homeupgrades"] .site-footer h2 { font: 500 13px/1 var(--f-body); letter-spacing: 0; text-transform: none; }
+[data-division="homeupgrades"] .site-footer a:hover { color: #7cc4ff; }
+
+@media (max-width: 960px) {
+  [data-division="homeupgrades"] .process { margin: 0 12px; }
+  [data-division="homeupgrades"] .step3d { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
+  [data-division="homeupgrades"] .quote .wrap > div:last-child { padding: 28px; }
+}
