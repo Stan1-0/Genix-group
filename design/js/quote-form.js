@@ -31,9 +31,20 @@
   }
   function report(bad) {
     if (!bad.length) { status.textContent = ""; return true; }
-    status.textContent = bad.length === 1 ? "1 field needs attention." : `${bad.length} fields need attention.`;
+    const msg = bad.length === 1 ? "1 field needs attention." : `${bad.length} fields need attention.`;
+    status.textContent = ""; // clear first so an identical repeat message is re-announced
+    setTimeout(() => { status.textContent = msg; }, 50);
     bad[0].focus();
     return false;
+  }
+
+  // ---- bring the form back into view when a step swap leaves it under the sticky header ----
+  function bringIntoView() {
+    const header = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--header")) || 76;
+    if (form.getBoundingClientRect().top < header) {
+      if (window.genixLenis) genixLenis.scrollTo(form, { offset: -header });
+      else form.scrollIntoView({ block: "start" });
+    }
   }
 
   // ---- tabs: swap the "what's moving" options, keep everything else ----
@@ -48,6 +59,7 @@
   function goStep(n) {
     step1.hidden = n !== 1;
     step2.hidden = n !== 2;
+    bringIntoView();
     (n === 2 ? $("qStep2Title") : $("qStep1Title")).focus({ preventScroll: true });
   }
   function applyKind(kind) {
@@ -74,7 +86,8 @@
   form.addEventListener("input", (e) => {
     const t = e.target;
     if (t.id === "qFrom" || t.id === "qTo") {
-      t.value = t.value.replace(/\D/g, "").slice(0, 5);
+      const filtered = t.value.replace(/\D/g, "").slice(0, 5);
+      if (filtered !== t.value) t.value = filtered;
       setErr(t, "");
       const zips = [$("qFrom").value, $("qTo").value];
       $("qArea").hidden = !zips.every(validZip) || zips.every(isServedZip);
@@ -132,7 +145,8 @@
     step2.hidden = true;
     $("qRef").textContent = "Request received";
     $("qSent").hidden = false;
-    status.textContent = "Request received. We'll call you back.";
+    status.textContent = ""; // focusing #qSent already reads the confirmation
+    bringIntoView();
     $("qSent").focus({ preventScroll: true });
   });
 

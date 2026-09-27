@@ -5,6 +5,7 @@ from harness import BASE, BAR, basics, check, open_page, run, test
 URL = BASE + "logistics-home.html"
 DESKTOP = dict(viewport={"width": 1440, "height": 900})
 PHONE = dict(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+PHONE_SHORT = dict(viewport={"width": 375, "height": 667}, is_mobile=True, has_touch=True)
 
 
 @test("structure")
@@ -71,6 +72,7 @@ def t_nojs(b):
     check("[no-js] headline visible", pg.is_visible("h1"))
     check("[no-js] form keeps native validation", pg.get_attribute("#quote-form", "novalidate") is None)
     check("[no-js] ZIP has a native 5-digit pattern", pg.get_attribute("#qFrom", "pattern") == "[0-9]{5}")
+    check("[no-js] pallets field is visible without JS to select pallets", pg.is_visible("#qPallets"))
     c.close()
 
 
@@ -91,6 +93,12 @@ def t_form(b):
     check("[form] business options by default", load_values(pg) == BUSINESS, str(load_values(pg)))
     pg.fill("#qFrom", "92a10 1x")
     check("[form] ZIP keeps digits only", pg.input_value("#qFrom") == "92101", pg.input_value("#qFrom"))
+    pg.fill("#qFrom", "921"); pg.click("#qNext")
+    check("[form] short ZIP flagged with the 5-digit message", pg.text_content("#qFromErr") == "Enter a 5-digit ZIP code.", pg.text_content("#qFromErr"))
+    pg.fill("#qFrom", "92101")
+    pg.focus("#qFrom")
+    focusColor = pg.evaluate("getComputedStyle(document.getElementById('qFrom')).borderBottomColor")
+    check("[form] focused field underline meets contrast (heading navy, not gold)", focusColor == "rgb(2, 34, 72)", focusColor)
     pg.fill("#qDate", "2099-01-15")
     pg.click(".kind label:has-text('Plan a move')")
     check("[form] the move tab swaps the options", load_values(pg) == MOVE, str(load_values(pg)))
@@ -101,6 +109,7 @@ def t_form(b):
     bad = pg.evaluate("[...document.querySelectorAll('[data-step=\"1\"] .err')].filter(e => e.textContent).map(e => e.id)")
     check("[form] empty step 1 flags ZIPs, date and load", bad == ["qFromErr", "qToErr", "qDateErr", "qLoadErr"], str(bad))
     check("[form] focus jumps to the first problem", pg.evaluate("document.activeElement.id") == "qFrom")
+    pg.wait_for_timeout(100)  # the status message is set on the next tick so a repeat message re-announces
     check("[form] problems announced", pg.text_content("#qStatus") == "4 fields need attention.", pg.text_content("#qStatus"))
     check("[form] invalid fields are marked", pg.get_attribute("#qFrom", "aria-invalid") == "true")
 
@@ -135,9 +144,27 @@ def t_form(b):
     pg.fill("#qEmail", "dana@shop.com"); pg.click("#qSend")
     check("[form] confirmation replaces the form", v("#qSent") and not v("#qName") and not v(".kind"))
     check("[form] label shows the request was received", pg.text_content("#qRef") == "Request received")
-    check("[form] confirmation announced and focused",
-          pg.text_content("#qStatus").startswith("Request received") and pg.evaluate("document.activeElement.id") == "qSent")
+    check("[form] confirmation focused and its heading visible",
+          pg.evaluate("document.activeElement.id") == "qSent" and pg.text_content(".sent-title") == "Request received.")
     check("[form] no console errors", not errs, "; ".join(errs[:3]))
+    c.close()
+
+
+@test("confirmation-scroll")
+def t_confirmation_scroll(b):
+    c, pg, errs, failed = open_page(b, URL, **PHONE_SHORT)
+    pg.fill("#qFrom", "92101"); pg.fill("#qTo", "92024")
+    pg.check("#qFlex")
+    pg.select_option("#qLoad", "parcels")
+    pg.click("#qNext")
+    pg.fill("#qName", "Dana"); pg.fill("#qPhone", "619 555 0142")
+    pg.click("#qSend")
+    pg.wait_for_timeout(300)
+    r = pg.evaluate("""(() => { const ref = document.getElementById('qRef').getBoundingClientRect();
+        const title = document.querySelector('.sent-title').getBoundingClientRect();
+        return { refTop: ref.top, titleTop: title.top, titleBottom: title.bottom, vh: innerHeight }; })()""")
+    check("[confirmation-scroll] #qRef is below the sticky header", r["refTop"] >= 76, str(r))
+    check("[confirmation-scroll] .sent-title is within the viewport", r["titleTop"] >= 0 and r["titleBottom"] <= r["vh"], str(r))
     c.close()
 
 
@@ -150,6 +177,9 @@ def t_lanes(b):
           pg.is_checked("input[name=kind][value=move]") and load_values(pg) == MOVE)
     top = pg.evaluate("document.getElementById('quote-form').getBoundingClientRect().top")
     check("[lanes] ...and brings the form into view", 0 <= top < 400, f"{top:.0f}px")
+    pg.click("a[data-kind=business]")
+    check("[lanes] switching back to business selects it and restores its options",
+          pg.is_checked("input[name=kind][value=business]") and load_values(pg) == BUSINESS)
     pg.click("#quote [data-start-quote]")
     pg.wait_for_timeout(1400)
     check("[lanes] 'Start a quote' focuses the first field", pg.evaluate("document.activeElement.id") == "qFrom")
@@ -230,6 +260,10 @@ def t_signature(b):
     check("[road] truck drives as you scroll", start["x"] < mid["x"] < end["x"], f"{start['x']} {mid['x']} {end['x']}")
     check("[road] stops light up as it passes", end["passed"] == 4, f"{start['passed']} -> {end['passed']}")
     check("[road] DELIVERED stamp lands at the end", end["done"] and end["stamp"] > 0.95 and start["stamp"] < 0.05, f"{start['stamp']} -> {end['stamp']}")
+    pg.evaluate("scrollTo(0, 0)")
+    pg.wait_for_timeout(1400)
+    back = pg.evaluate(ROAD)
+    check("[road] DELIVERED stamp lands once: stays after scrolling back to the start", back["stamp"] > 0.95, str(back["stamp"]))
     check("[road] no pinning, section height unchanged",
           pg.evaluate("document.getElementById('how').offsetHeight") == h0 and pg.locator(".pin-spacer").count() == 0)
     c.close()

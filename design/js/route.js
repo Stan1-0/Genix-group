@@ -13,6 +13,7 @@
   const mark = (p) => {
     stops.forEach((s, i) => s.classList.toggle("is-passed", p >= i / last - 0.001));
     road.classList.toggle("is-done", p >= 0.999);
+    if (p >= 0.999) road.classList.add("was-done"); // sticky: the stamp lands once (spec §4), never removed
   };
   road.classList.add("is-live");
   gsap.fromTo(road, { "--p": 0 }, {

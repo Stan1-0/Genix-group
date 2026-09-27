@@ -241,7 +241,7 @@
                 </select>
                 <p class="err" id="qLoadErr"></p>
               </div>
-              <div class="field full" id="qPalletsField" hidden>
+              <div class="field full" id="qPalletsField">
                 <label class="mono" for="qPallets">How many pallets</label>
                 <input
                   id="qPallets"
@@ -335,7 +335,7 @@
                 <span class="ph">within one business day</span> with a price.
               </p>
             </div>
-            <p class="sr-only" id="qStatus" aria-live="assertive"></p>
+            <p class="sr-only" id="qStatus" aria-live="polite"></p>
           </form>
         </div>
       </section>
@@ -611,7 +611,7 @@
     </main>
 
     <!-- Phones: "Get a quote" stays one tap away once the hero form scrolls off (shared/quote-bar.js) -->
-    <div class="quote-bar" id="quoteBar" data-after="#quote-form" data-hide-over="#quote-form, #quote, .site-footer" hidden>
+    <div class="quote-bar" id="quoteBar" data-after="#quote-form" data-hide-over="#quote, .site-footer" hidden>
       <a class="btn btn-gold" href="#quote-form" data-start-quote>Get a quote <span aria-hidden="true">→</span></a>
       <a class="btn btn-ghost ph" href="tel:+10000000000" aria-label="Call Genix Logistics">Call</a>
     </div>
