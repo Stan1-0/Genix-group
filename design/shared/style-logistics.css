@@ -103,3 +103,79 @@ html:not(.js) .js-only { display: none !important; }
     .area-list { grid-template-columns: 1fr; }
   }
 }
+
+/* ---------- Hero + the shipping-label form ---------- */
+:where([data-division="logistics"]) {
+  .hero { padding: clamp(32px, 6vh, 80px) 0 clamp(56px, 9vh, 104px); }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .hero-eyebrow { margin: 0 0 16px; color: var(--gold); }
+  .hero h1 { margin: 0 0 20px; }
+  .hero .lead { margin: 0; max-width: 40ch; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.5; color: var(--on-brand-muted); }
+
+  /* the label: dashed edge inside a solid paper rim, reference line + barcode */
+  .label-card {
+    position: relative; display: grid; gap: 14px; margin: 8px; padding: 18px;
+    background: var(--paper); color: var(--heading);
+    border: 2px dashed rgba(2, 34, 72, 0.35); border-radius: 4px; outline: 8px solid var(--paper);
+  }
+  .label-ref { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; color: var(--label-ink); }
+  .barcode {
+    flex: 0 0 40%; height: 24px; opacity: 0.85;
+    background: repeating-linear-gradient(90deg, var(--heading) 0 2px, transparent 2px 4px, var(--heading) 4px 7px, transparent 7px 9px);
+  }
+
+  /* tabs: a radio pair styled as a segmented control */
+  .kind { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0; padding: 4px; border: 1px solid rgba(2, 34, 72, 0.25); border-radius: var(--r); }
+  .kind label {
+    position: relative; display: grid; place-items: center; min-height: 44px; padding: 6px;
+    border-radius: 4px; text-align: center; font-weight: 600; font-size: 15px; cursor: pointer;
+  }
+  .kind input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .kind label:has(input:checked) { background: var(--heading); color: var(--white); }
+  .kind label:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* steps and fields: manifest rows */
+  .fields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
+  .step-title { grid-column: 1 / -1; margin: 2px 0 6px; font: 900 18px/1.1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .step-title:focus:not(:focus-visible) { outline: none; }
+  .field { display: grid; align-content: start; gap: 4px; min-width: 0; padding: 10px 2px 12px; border-top: 1px solid rgba(2, 34, 72, 0.25); }
+  .fields .full, .area-note, .hint, .form-actions { grid-column: 1 / -1; }
+  .field > label.mono { color: var(--label-ink); }
+  .field input:not([type="checkbox"]), .field select, .field textarea {
+    width: 100%; min-height: 40px; padding: 4px 0; border: 0; border-bottom: 2px solid rgba(2, 34, 72, 0.2); border-radius: 0;
+    background: transparent; color: var(--heading); font: 600 17px/1.3 var(--f-body);
+  }
+  .field textarea { min-height: 72px; resize: vertical; }
+  .field :is(input, select, textarea):focus { outline: none; border-bottom-color: var(--gold); }
+  .field.invalid :is(input, select, textarea) { border-bottom-color: var(--err); }
+  .err { margin: 2px 0 0; color: var(--err); font-size: 14px; font-weight: 600; }
+  .err:empty { display: none; }
+  .flex-date { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .flex-date input { width: 18px; height: 18px; accent-color: var(--heading); }
+  .area-note { margin: 0 0 4px; padding: 10px 12px; border-left: 4px solid var(--gold); background: rgba(194, 138, 44, 0.14); font-size: 15px; }
+  .hint { margin: 0 0 6px; font-size: 14px; color: var(--label-ink); }
+  .form-actions { display: flex; gap: 12px; padding-top: 12px; }
+  .form-actions .btn-gold { flex: 1; justify-content: center; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+  /* after sending */
+  .sent { display: grid; gap: 8px; padding: 12px 2px; }
+  .sent:focus { outline: none; }
+  .sent-title { margin: 0; font: 900 26px/1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .sent p { margin: 0; }
+
+  /* the final section's card */
+  .final-line { margin: 0; font-size: 18px; font-weight: 600; }
+  .final-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .final-mail { margin: 0; color: var(--label-ink); }
+  .final-mail a { color: var(--heading); }
+
+  @media (max-width: 960px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 560px) {
+    .hero .lead { display: none; } /* phones: headline + form step 1 on the first screen; the lanes carry this message */
+    .label-card { padding: 14px; }
+    .kind label { font-size: 14px; }
+  }
+}
