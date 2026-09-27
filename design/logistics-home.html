@@ -212,7 +212,7 @@
         </div>
       </section>
 
-      <!-- How a job runs (the road signature is added in Task 5) -->
+      <!-- How a job runs: the truck drives the road as the section scrolls past (js/route.js) -->
       <section class="sec route on-dark" id="how" aria-labelledby="howTitle">
         <div class="wrap">
           <div class="sec-head">
@@ -223,26 +223,33 @@
             <p class="body">Four stops, the same for a pallet or a three-bedroom move.</p>
           </div>
           <div class="road" data-road>
+            <div class="road-line" aria-hidden="true"><span class="road-fill"></span></div>
+            <img class="road-truck" src="assets/logistics-truck.svg" alt="" width="486" height="166" />
             <ol class="stops">
               <li class="stop" data-stop>
+                <span class="stop-dot" aria-hidden="true"></span>
                 <p class="mono">01 · Quote</p>
                 <h3>We price it</h3>
                 <p>You send the route; we reply with a price <span class="ph">within one business day</span>.</p>
               </li>
               <li class="stop" data-stop>
+                <span class="stop-dot" aria-hidden="true"></span>
                 <p class="mono">02 · Scheduled</p>
                 <h3>Date confirmed</h3>
                 <p>Pickup date and window agreed, <span class="ph">with a reminder the day before</span>.</p>
               </li>
               <li class="stop" data-stop>
+                <span class="stop-dot" aria-hidden="true"></span>
                 <p class="mono">03 · Picked up</p>
                 <h3>On the road</h3>
                 <p>Loaded and secured. <span class="ph">We text when the driver is on the way.</span></p>
               </li>
               <li class="stop" data-stop>
+                <span class="stop-dot" aria-hidden="true"></span>
                 <p class="mono">04 · Delivered</p>
                 <h3>Signed for</h3>
                 <p>Dropped off and signed for<span class="ph">, with photo proof on request</span>.</p>
+                <span class="stamp" aria-hidden="true">Delivered</span>
               </li>
             </ol>
           </div>
@@ -364,5 +371,6 @@
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
     <script src="shared/genix.js"></script>
     <script src="js/quote-form.js"></script>
+    <script src="js/route.js"></script>
   </body>
 </html>

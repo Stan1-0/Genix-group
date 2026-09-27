@@ -179,3 +179,50 @@ html:not(.js) .js-only { display: none !important; }
     .kind label { font-size: 14px; }
   }
 }
+
+/* ---------- How a job runs: the road ----------
+   --p (0-1) is the truck's progress; route.js drives it. Default 1 = the
+   finished road (no JS / reduced motion). Desktop: left to right through
+   the centres of the four stop columns. Phones: top to bottom. */
+:where([data-division="logistics"]) {
+  .road { --p: 1; position: relative; }
+  .road-line {
+    position: absolute; left: 12.5%; right: 12.5%; top: 62px; height: 4px;
+    background: repeating-linear-gradient(to right, rgba(194, 138, 44, 0.3) 0 22px, transparent 22px 38px);
+  }
+  .road-fill {
+    position: absolute; inset: 0; transform-origin: left center; transform: scaleX(var(--p));
+    background: repeating-linear-gradient(to right, var(--gold) 0 22px, transparent 22px 38px);
+  }
+  .road-truck { position: absolute; z-index: 2; top: 18px; width: 120px; height: auto; left: calc(12.5% + var(--p) * 75% - 60px); }
+  .stops { padding-top: 104px; }
+  .stop { text-align: center; }
+  .stop-dot {
+    position: absolute; top: -50px; left: 50%; width: 20px; height: 20px; margin-left: -10px;
+    border-radius: 50%; border: 3px solid var(--gold); background: var(--gold); transition: background-color 0.3s;
+  }
+  .road.is-live .stop:not(.is-passed) .stop-dot { background: var(--brand); }
+  .stamp {
+    display: inline-block; margin-top: 16px; padding: 6px 12px; border: 2.5px solid var(--gold); border-radius: 3px;
+    color: var(--gold); font: 600 14px/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; transform: rotate(-8deg);
+  }
+  .road.is-live .stamp { opacity: 0; transform: rotate(-8deg) scale(1.6); transition: opacity 0.25s, transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .road.is-live.is-done .stamp { opacity: 1; transform: rotate(-8deg) scale(1); }
+
+  @media (max-width: 760px) {
+    /* road on the left at x = 42px, text from 72px */
+    .road-line {
+      left: 40px; right: auto; top: 0; bottom: 0; width: 4px; height: auto;
+      background: repeating-linear-gradient(to bottom, rgba(194, 138, 44, 0.3) 0 22px, transparent 22px 38px);
+    }
+    .road-fill {
+      transform-origin: center top; transform: scaleY(var(--p));
+      background: repeating-linear-gradient(to bottom, var(--gold) 0 22px, transparent 22px 38px);
+    }
+    /* 84x29 truck turned to face down; its visual box is 29 wide, centred on the road */
+    .road-truck { width: 84px; left: 0; top: calc(var(--p) * (100% - 84px) + 27.5px); transform: rotate(90deg); }
+    .stops { padding: 0 0 0 72px; }
+    .stop { text-align: left; }
+    .stop-dot { top: 0; left: -40px; margin-left: 0; }
+  }
+}

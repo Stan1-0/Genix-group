@@ -203,5 +203,52 @@ def t_keyboard(b):
     c.close()
 
 
+ROAD = """(() => { const r = document.querySelector('[data-road]'); const t = document.querySelector('.road-truck').getBoundingClientRect();
+  return { p: parseFloat(getComputedStyle(r).getPropertyValue('--p')), live: r.classList.contains('is-live'), done: r.classList.contains('is-done'),
+           passed: document.querySelectorAll('[data-stop].is-passed').length, x: Math.round(t.left), y: Math.round(t.top + scrollY),
+           stamp: +getComputedStyle(document.querySelector('.stamp')).opacity }; })()"""
+
+
+def road_positions(pg, vh):
+    top = pg.evaluate("document.querySelector('[data-road]').getBoundingClientRect().top + scrollY")
+    h = pg.evaluate("document.querySelector('[data-road]').offsetHeight")
+    out = []
+    for y in (top - vh * 0.75 - 60, top + h / 2 - vh * 0.6, top + h - vh * 0.45 + 120):
+        pg.evaluate(f"scrollTo(0, {y})")
+        pg.wait_for_timeout(1400)
+        out.append(pg.evaluate(ROAD))
+    return out
+
+
+@test("signature")
+def t_signature(b):
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    h0 = pg.evaluate("document.getElementById('how').offsetHeight")
+    start, mid, end = road_positions(pg, 900)
+    check("[road] animation is live", start["live"])
+    check("[road] truck starts at the first stop", start["p"] < 0.02 and start["passed"] == 1, str(start))
+    check("[road] truck drives as you scroll", start["x"] < mid["x"] < end["x"], f"{start['x']} {mid['x']} {end['x']}")
+    check("[road] stops light up as it passes", end["passed"] == 4, f"{start['passed']} -> {end['passed']}")
+    check("[road] DELIVERED stamp lands at the end", end["done"] and end["stamp"] > 0.95 and start["stamp"] < 0.05, f"{start['stamp']} -> {end['stamp']}")
+    check("[road] no pinning, section height unchanged",
+          pg.evaluate("document.getElementById('how').offsetHeight") == h0 and pg.locator(".pin-spacer").count() == 0)
+    c.close()
+
+    c, pg, errs, failed = open_page(b, URL, reduced_motion="reduce", **DESKTOP)
+    s = pg.evaluate(ROAD)
+    dot = pg.evaluate("getComputedStyle(document.querySelector('.stop-dot')).backgroundColor")
+    check("[road/reduced motion] finished road shown", not s["live"] and s["stamp"] == 1 and dot == "rgb(194, 138, 44)", f"{s} {dot}")
+    c.close()
+
+    c, pg, errs, failed = open_page(b, URL, **PHONE)
+    line = pg.evaluate("(() => { const r = document.querySelector('.road-line').getBoundingClientRect(); return [Math.round(r.width), Math.round(r.height)]; })()")
+    check("[road/phone] road runs top to bottom", line[0] <= 6 and line[1] > 300, str(line))
+    start, mid, end = road_positions(pg, 844)
+    check("[road/phone] truck drives down", start["y"] < mid["y"] < end["y"], f"{start['y']} {mid['y']} {end['y']}")
+    ov = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    check("[road/phone] no horizontal page scroll", ov <= 0, f"{ov}px")
+    c.close()
+
+
 if __name__ == "__main__":
     run(sys.argv)
