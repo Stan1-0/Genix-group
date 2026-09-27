@@ -16,7 +16,7 @@ def t_structure(b):
             g = pg.evaluate("(() => { const g = document.querySelector('.lane-grid'); return [g.scrollWidth, g.clientWidth]; })()")
             check("[phone] service lanes swipe sideways", g[0] > g[1], str(g))
         else:
-            check("title", pg.title() == "Genix Logistics — San Diego Freight, Handled Right.", pg.title())
+            check("title", pg.title() == "Genix Logistics | San Diego Freight, Handled Right.", pg.title())
             check("division theme", pg.evaluate("document.documentElement.dataset.division") == "logistics")
             ids = pg.evaluate("[...document.querySelectorAll('main > section')].map(s => s.id)")
             check("section order", ids == ["hero", "services", "how", "areas", "why", "faq", "quote"], str(ids))
@@ -247,6 +247,42 @@ def t_signature(b):
     check("[road/phone] truck drives down", start["y"] < mid["y"] < end["y"], f"{start['y']} {mid['y']} {end['y']}")
     ov = pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
     check("[road/phone] no horizontal page scroll", ov <= 0, f"{ov}px")
+    c.close()
+
+
+def bar_at(pg, sel, extra=0):
+    pg.evaluate(f"scrollTo(0, document.querySelector('{sel}').getBoundingClientRect().top + scrollY + {extra})")
+    pg.wait_for_timeout(900)
+    return pg.evaluate(BAR)
+
+
+@test("bar")
+def t_bar(b):
+    c, pg, errs, failed = open_page(b, URL, **PHONE)
+    check("[bar] hidden while the hero form is on screen", pg.evaluate(BAR)["off"])
+    check("[bar] shows once the form has scrolled away", not bar_at(pg, "#services", 200)["off"])
+    check("[bar] hides over the final quote section", bar_at(pg, "#quote")["off"])
+    check("[bar] hides over the footer", bar_at(pg, ".site-footer")["off"])
+    bar_at(pg, "#areas")
+    pg.click("#quoteBar [data-start-quote]")
+    pg.wait_for_timeout(1400)
+    check("[bar] its button goes to the form and focuses the first field", pg.evaluate("document.activeElement.id") == "qFrom")
+    c.close()
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    check("[bar] no bar on desktop", not pg.evaluate(BAR)["shown"])
+    c.close()
+
+
+@test("hub")
+def t_hub(b):
+    c, pg, errs, failed = open_page(b, BASE + "hub-home.html", **DESKTOP)
+    href = pg.get_attribute("#div-move a.btn-accent", "href")
+    check("[hub] Logistics quote button opens the prototype form", href == "logistics-home.html#quote-form", str(href))
+    check("[hub] prototype page is served", pg.request.get(URL).status == 200)
+    bg = pg.evaluate("getComputedStyle(document.getElementById('div-move')).backgroundColor")
+    check("[hub] Logistics panel is navy", bg == "rgb(2, 34, 72)", bg)
+    grad = pg.evaluate("getComputedStyle(document.querySelector('#div-move .panel-media'), '::after').backgroundImage")
+    check("[hub] Logistics panel media overlay is navy", "2, 34, 72" in grad, grad)
     c.close()
 
 

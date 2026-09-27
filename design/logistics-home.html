@@ -610,6 +610,12 @@
       </section>
     </main>
 
+    <!-- Phones: "Get a quote" stays one tap away once the hero form scrolls off (shared/quote-bar.js) -->
+    <div class="quote-bar" id="quoteBar" data-after="#quote-form" data-hide-over="#quote-form, #quote, .site-footer" hidden>
+      <a class="btn btn-gold" href="#quote-form" data-start-quote>Get a quote <span aria-hidden="true">→</span></a>
+      <a class="btn btn-ghost ph" href="tel:+10000000000" aria-label="Call Genix Logistics">Call</a>
+    </div>
+
     <footer class="site-footer">
       <div class="wrap">
         <div class="brand-col">
@@ -679,6 +685,7 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
     <script src="shared/genix.js"></script>
+    <script src="shared/quote-bar.js"></script>
     <script src="js/quote-form.js"></script>
     <script src="js/route.js"></script>
   </body>

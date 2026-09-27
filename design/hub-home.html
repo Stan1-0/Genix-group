@@ -606,6 +606,7 @@
       .panel[data-key="move"] {
         --accent: var(--move);
         --on-accent: #fff;
+        background: #022248;
       }
       /* the button blue is too dark for small text on the dark photo */
       .panel[data-key="move"] .verb {
@@ -641,6 +642,14 @@
           rgba(11, 11, 12, 0.94) 0%,
           rgba(11, 11, 12, 0.78) 42%,
           rgba(11, 11, 12, 0.2) 100%
+        );
+      }
+      .panel[data-key="move"] .panel-media::after {
+        background: linear-gradient(
+          90deg,
+          rgba(2, 34, 72, 0.94) 0%,
+          rgba(2, 34, 72, 0.78) 42%,
+          rgba(2, 34, 72, 0.2) 100%
         );
       }
       .panel .wrap {
@@ -1069,6 +1078,14 @@
             rgba(11, 11, 12, 0.35) 100%
           );
         }
+        .panel[data-key="move"] .panel-media::after {
+          background: linear-gradient(
+            0deg,
+            rgba(2, 34, 72, 0.96) 0%,
+            rgba(2, 34, 72, 0.82) 55%,
+            rgba(2, 34, 72, 0.35) 100%
+          );
+        }
         .panel .wrap {
           padding-top: 96px;
         }
@@ -1319,9 +1336,10 @@
                 <li>Courier</li>
               </ul>
               <div class="panel-cta">
+                <!-- prototype review link; the real build uses https://logistics.thegenixgroup.com/#quote-form -->
                 <a
                   class="btn-accent"
-                  href="https://logistics.thegenixgroup.com/contact"
+                  href="logistics-home.html#quote-form"
                   >Get a freight quote <span aria-hidden="true">↗</span></a
                 >
                 <a class="host" href="https://logistics.thegenixgroup.com"
