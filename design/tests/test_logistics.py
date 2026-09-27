@@ -72,5 +72,105 @@ def t_nojs(b):
     c.close()
 
 
+def load_values(pg):
+    return pg.evaluate("[...document.querySelectorAll('#qLoad option')].map(o => o.value)")
+
+
+BUSINESS = ["", "pallets", "parcels", "truckload", "courier"]
+MOVE = ["", "studio", "1-2bed", "3bed", "office"]
+
+
+@test("form")
+def t_form(b):
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    v = pg.is_visible
+    check("[form] step 2 starts hidden", v("#qFrom") and not v("#qName"))
+    check("[form] business options by default", load_values(pg) == BUSINESS, str(load_values(pg)))
+    pg.fill("#qFrom", "92a10 1x")
+    check("[form] ZIP keeps digits only", pg.input_value("#qFrom") == "92101", pg.input_value("#qFrom"))
+    pg.fill("#qDate", "2099-01-15")
+    pg.click(".kind label:has-text('Plan a move')")
+    check("[form] the move tab swaps the options", load_values(pg) == MOVE, str(load_values(pg)))
+    check("[form] switching tabs keeps ZIP and date", pg.input_value("#qFrom") == "92101" and pg.input_value("#qDate") == "2099-01-15")
+
+    pg.fill("#qFrom", ""); pg.fill("#qDate", "")
+    pg.click("#qNext")
+    bad = pg.evaluate("[...document.querySelectorAll('[data-step=\"1\"] .err')].filter(e => e.textContent).map(e => e.id)")
+    check("[form] empty step 1 flags ZIPs, date and load", bad == ["qFromErr", "qToErr", "qDateErr", "qLoadErr"], str(bad))
+    check("[form] focus jumps to the first problem", pg.evaluate("document.activeElement.id") == "qFrom")
+    check("[form] problems announced", pg.text_content("#qStatus") == "4 fields need attention.", pg.text_content("#qStatus"))
+    check("[form] invalid fields are marked", pg.get_attribute("#qFrom", "aria-invalid") == "true")
+
+    pg.fill("#qDate", "2020-01-01"); pg.click("#qNext")
+    check("[form] past date rejected", pg.text_content("#qDateErr") == "Pick a date from today on.", pg.text_content("#qDateErr"))
+    pg.check("#qFlex")
+    check("[form] Flexible disables the date", pg.is_disabled("#qDate") and pg.input_value("#qDate") == "")
+
+    pg.fill("#qFrom", "90210"); pg.fill("#qTo", "92101")
+    check("[form] outside-area note shows", v("#qArea"))
+    pg.fill("#qFrom", "92024")
+    check("[form] note hides for San Diego ZIPs", not v("#qArea"))
+    pg.fill("#qFrom", "90210")
+
+    pg.click(".kind label:has-text('Ship for your business')")
+    pg.select_option("#qLoad", "pallets")
+    check("[form] pallet count appears for pallets", v("#qPallets"))
+    pg.click("#qNext")
+    check("[form] pallet count required", pg.text_content("#qPalletsErr") == "Enter 1 to 26 pallets.", pg.text_content("#qPalletsErr"))
+    pg.fill("#qPallets", "4"); pg.click("#qNext")
+    check("[form] an outside-area ZIP still continues", v("#qName"))
+    check("[form] focus moves to the step 2 heading", pg.evaluate("document.activeElement.id") == "qStep2Title")
+    pg.click("#qBack")
+    check("[form] Back keeps step 1 answers", pg.input_value("#qFrom") == "90210" and pg.input_value("#qPallets") == "4")
+
+    pg.click("#qNext"); pg.click("#qSend")
+    check("[form] name and a way to reply are required",
+          pg.text_content("#qNameErr") == "Enter your name."
+          and pg.text_content("#qPhoneErr") == "Add a phone number or an email so we can reply.")
+    pg.fill("#qName", "Dana"); pg.fill("#qEmail", "dana@"); pg.click("#qSend")
+    check("[form] bad email flagged", pg.text_content("#qEmailErr") == "Enter an email like name@company.com.", pg.text_content("#qEmailErr"))
+    pg.fill("#qEmail", "dana@shop.com"); pg.click("#qSend")
+    check("[form] confirmation replaces the form", v("#qSent") and not v("#qName") and not v(".kind"))
+    check("[form] label shows the request was received", pg.text_content("#qRef") == "Request received")
+    check("[form] confirmation announced and focused",
+          pg.text_content("#qStatus").startswith("Request received") and pg.evaluate("document.activeElement.id") == "qSent")
+    check("[form] no console errors", not errs, "; ".join(errs[:3]))
+    c.close()
+
+
+@test("lanes")
+def t_lanes(b):
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    pg.click("a[data-kind=move]")
+    pg.wait_for_timeout(1400)
+    check("[lanes] 'Get a moving price' selects Plan a move",
+          pg.is_checked("input[name=kind][value=move]") and load_values(pg) == MOVE)
+    top = pg.evaluate("document.getElementById('quote-form').getBoundingClientRect().top")
+    check("[lanes] ...and brings the form into view", 0 <= top < 400, f"{top:.0f}px")
+    pg.click("#quote [data-start-quote]")
+    pg.wait_for_timeout(1400)
+    check("[lanes] 'Start a quote' focuses the first field", pg.evaluate("document.activeElement.id") == "qFrom")
+    c.close()
+
+
+@test("keyboard")
+def t_keyboard(b):
+    c, pg, errs, failed = open_page(b, URL, **DESKTOP)
+    kb = pg.keyboard
+    pg.focus("#qFrom"); kb.type("92101"); kb.press("Tab"); kb.type("92024")
+    pg.focus("#qFlex"); kb.press("Space")
+    kb.press("Tab")
+    check("[keyboard] Tab reaches the load menu", pg.evaluate("document.activeElement.id") == "qLoad")
+    kb.press("ArrowDown"); kb.press("ArrowDown")
+    check("[keyboard] arrow keys choose the load", pg.input_value("#qLoad") == "parcels", pg.input_value("#qLoad"))
+    kb.press("Tab")
+    check("[keyboard] Tab reaches Continue", pg.evaluate("document.activeElement.id") == "qNext")
+    kb.press("Enter")
+    check("[keyboard] Enter moves to step 2", pg.evaluate("document.activeElement.id") == "qStep2Title")
+    kb.press("Tab"); kb.type("Dana"); kb.press("Tab"); kb.type("619 555 0142"); kb.press("Enter")
+    check("[keyboard] Enter sends", pg.is_visible("#qSent") and pg.evaluate("document.activeElement.id") == "qSent")
+    c.close()
+
+
 if __name__ == "__main__":
     run(sys.argv)
