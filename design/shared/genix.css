@@ -49,6 +49,17 @@
   --on-brand-muted: #b8c4d6;
 }
 
+[data-division="logistics"] {
+  --brand: #022248;               /* the navy in the Logistics logo */
+  --brand-deep: #01152e;
+  --heading: #022248;
+  --brand-line: rgba(255, 255, 255, 0.14);
+  --on-brand-muted: #b9c4d3;
+  --paper: #f7f5ef;               /* shipping-label paper */
+  --f-display: "Archivo", system-ui, sans-serif;
+  --f-body: "Archivo", system-ui, sans-serif;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header); }
 body {

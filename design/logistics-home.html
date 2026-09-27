@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en" data-division="logistics">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Genix Logistics — San Diego Freight, Handled Right.</title>
+    <meta
+      name="description"
+      content="Business freight, last-mile courier runs and home or office moves around San Diego County. Get a price in two short steps. Part of The Genix Group."
+    />
+    <link rel="canonical" href="https://logistics.thegenixgroup.com/" />
+    <link rel="icon" href="assets/logistics-icons/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="assets/logistics-icons/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/logistics-icons/apple-touch-icon.png" />
+    <link rel="manifest" href="assets/logistics-icons/site.webmanifest" />
+    <meta name="theme-color" content="#022248" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Genix Logistics" />
+    <meta property="og:url" content="https://logistics.thegenixgroup.com/" />
+    <meta property="og:title" content="Genix Logistics — San Diego Freight, Handled Right." />
+    <meta property="og:description" content="Business freight, courier runs and moves around San Diego County. Part of The Genix Group." />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MovingCompany",
+        "name": "Genix Logistics",
+        "url": "https://logistics.thegenixgroup.com/",
+        "email": "hello@thegenixgroup.com",
+        "areaServed": "San Diego County, CA",
+        "parentOrganization": { "@type": "Organization", "name": "The Genix Group", "url": "https://thegenixgroup.com/" },
+        "makesOffer": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Business freight" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Last-mile and courier delivery" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Home and office moves" } }
+        ]
+      }
+    </script>
+    <script>
+      // Mark JS as available (buttons that only work with JS are hidden without it).
+      // Hide split headlines until SplitText has cut them; never for reduced
+      // motion, and a timer reveals them if scripts fail.
+      document.documentElement.classList.add("js");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("h1-pending");
+        setTimeout(() => document.documentElement.classList.remove("h1-pending"), 3000);
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared/genix.css" />
+    <link rel="stylesheet" href="shared/style-logistics.css" />
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap">
+        <a class="brand" href="#top" aria-label="Genix Logistics home">
+          <img src="assets/genix-logistics-logo.svg" alt="" width="876" height="405" />
+        </a>
+        <nav class="nav" id="nav" aria-label="Primary">
+          <a href="#services">Services</a>
+          <a href="#how">How it works</a>
+          <a href="#areas">Where we go</a>
+          <a href="#quote-form" class="nav-extra" hidden>Get a quote</a>
+        </nav>
+        <div class="header-end">
+          <a class="parent-link" href="hub-home.html">Part of The Genix Group ↗</a>
+          <a class="btn btn-gold btn-sm" href="#quote-form">Get a quote</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span></button>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- Hero: the quote starter -->
+      <section class="hero on-dark" id="hero" data-hero>
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="mono hero-eyebrow">San Diego County · Freight · Moves</p>
+            <h1 class="h-display" data-split>San Diego Freight, <span class="gold">Handled Right.</span></h1>
+            <p class="lead">Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.</p>
+          </div>
+
+          <!-- Prototype: no network call. Real build: POST to Payload Inquiries (division: logistics) + Resend email. -->
+          <form class="label-card quote-form" id="quote-form" action="#" method="post" novalidate aria-labelledby="formTitle">
+            <p class="label-ref mono"><span id="qRef">Quote request · New</span><span class="barcode" aria-hidden="true"></span></p>
+            <h2 class="sr-only" id="formTitle">Get a price</h2>
+            <fieldset class="kind">
+              <legend class="sr-only">What do you need moved?</legend>
+              <label><input type="radio" name="kind" value="business" checked /> Ship for your business</label>
+              <label><input type="radio" name="kind" value="move" /> Plan a move</label>
+            </fieldset>
+
+            <fieldset class="fields" data-step="1" aria-labelledby="qStep1Title">
+              <h3 class="step-title" id="qStep1Title" tabindex="-1">1 · The route</h3>
+              <div class="field">
+                <label class="mono" for="qFrom">Pickup ZIP</label>
+                <input id="qFrom" name="from" inputmode="numeric" autocomplete="postal-code" maxlength="5" required aria-describedby="qFromErr" />
+                <p class="err" id="qFromErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qTo">Drop-off ZIP</label>
+                <input id="qTo" name="to" inputmode="numeric" maxlength="5" required aria-describedby="qToErr" />
+                <p class="err" id="qToErr"></p>
+              </div>
+              <p class="area-note" id="qArea" hidden>Outside our usual area, we'll still take a look.</p>
+              <div class="field">
+                <label class="mono" for="qDate">Date</label>
+                <input id="qDate" name="date" type="date" aria-describedby="qDateErr" />
+                <label class="flex-date"><input type="checkbox" id="qFlex" name="flexible" /> Flexible</label>
+                <p class="err" id="qDateErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qLoad">What's moving</label>
+                <select id="qLoad" name="load" required aria-describedby="qLoadErr">
+                  <option value="">Choose…</option>
+                  <optgroup label="Business" data-kind="business">
+                    <option value="pallets">Pallets</option>
+                    <option value="parcels">Parcels or boxes</option>
+                    <option value="truckload">Full truckload</option>
+                    <option value="courier">Same-day courier</option>
+                  </optgroup>
+                  <optgroup label="Move" data-kind="move">
+                    <option value="studio">Studio</option>
+                    <option value="1-2bed">1–2 bedroom home</option>
+                    <option value="3bed">3+ bedroom home</option>
+                    <option value="office">Office</option>
+                  </optgroup>
+                </select>
+                <p class="err" id="qLoadErr"></p>
+              </div>
+              <div class="field full" id="qPalletsField" hidden>
+                <label class="mono" for="qPallets">How many pallets</label>
+                <input id="qPallets" name="pallets" type="number" min="1" max="26" inputmode="numeric" aria-describedby="qPalletsErr" />
+                <p class="err" id="qPalletsErr"></p>
+              </div>
+              <div class="form-actions js-only">
+                <button type="button" class="btn btn-gold" id="qNext">Continue <span aria-hidden="true">→</span></button>
+              </div>
+            </fieldset>
+
+            <fieldset class="fields" data-step="2" aria-labelledby="qStep2Title">
+              <h3 class="step-title" id="qStep2Title" tabindex="-1">2 · Your details</h3>
+              <div class="field full">
+                <label class="mono" for="qName">Name</label>
+                <input id="qName" name="name" autocomplete="name" required aria-describedby="qNameErr" />
+                <p class="err" id="qNameErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qPhone">Phone</label>
+                <input id="qPhone" name="phone" type="tel" autocomplete="tel" aria-describedby="qPhoneErr qContactHint" />
+                <p class="err" id="qPhoneErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qEmail">Email</label>
+                <input id="qEmail" name="email" type="email" autocomplete="email" aria-describedby="qEmailErr qContactHint" />
+                <p class="err" id="qEmailErr"></p>
+              </div>
+              <p class="hint" id="qContactHint">Phone or email, whichever you prefer.</p>
+              <div class="field full">
+                <label class="mono" for="qNotes">Notes (optional)</label>
+                <textarea id="qNotes" name="notes" rows="3"></textarea>
+              </div>
+              <div class="hp" aria-hidden="true">
+                <label for="qHp">Leave this empty</label>
+                <input id="qHp" name="company_site" tabindex="-1" autocomplete="off" />
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost js-only" id="qBack">← Back</button>
+                <button type="submit" class="btn btn-gold" id="qSend">Send request <span aria-hidden="true">→</span></button>
+              </div>
+            </fieldset>
+
+            <div class="sent" id="qSent" tabindex="-1" hidden>
+              <p class="sent-title">Request received.</p>
+              <p>We'll call you back <span class="ph">within one business day</span> with a price.</p>
+            </div>
+            <p class="sr-only" id="qStatus" aria-live="assertive"></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- Two lanes of services -->
+      <section class="sec lanes" id="services" aria-labelledby="servicesTitle">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label" data-reveal>What we move</p>
+              <h2 class="h-section" id="servicesTitle" data-split>Two ways <span class="gold">we help.</span></h2>
+            </div>
+            <p class="body" data-reveal>For businesses that ship every week, and for people moving once. Either way it starts with the same short form.</p>
+          </div>
+          <div class="lane-grid swipe">
+            <article class="lane-card" data-reveal>
+              <p class="mono lane-tag">For businesses</p>
+              <h3>Freight &amp; deliveries</h3>
+              <p>Pallets, part loads and full truckloads for shops, suppliers and contractors, plus same-day and next-day courier runs around San Diego.</p>
+              <ul class="ticks"><li>Pallets &amp; part loads</li><li>Full truckloads</li><li>Last-mile &amp; courier</li></ul>
+              <a class="btn btn-dark" href="#quote-form" data-kind="business">Get a business price <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="lane-card" data-reveal>
+              <p class="mono lane-tag">For moves</p>
+              <h3>Home &amp; office moves</h3>
+              <p>Apartments, family homes and offices, moved on the day we agree, with the price settled before anything is lifted.</p>
+              <ul class="ticks"><li>Studio to 3+ bedrooms</li><li>Office moves</li><li>Local San Diego moves</li></ul>
+              <a class="btn btn-dark" href="#quote-form" data-kind="move">Get a moving price <span aria-hidden="true">→</span></a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- How a job runs (the road signature is added in Task 5) -->
+      <section class="sec route on-dark" id="how" aria-labelledby="howTitle">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">How a job runs</p>
+              <h2 class="h-section" id="howTitle" data-split>Quote to <span class="gold">delivered.</span></h2>
+            </div>
+            <p class="body">Four stops, the same for a pallet or a three-bedroom move.</p>
+          </div>
+          <div class="road" data-road>
+            <ol class="stops">
+              <li class="stop" data-stop>
+                <p class="mono">01 · Quote</p>
+                <h3>We price it</h3>
+                <p>You send the route; we reply with a price <span class="ph">within one business day</span>.</p>
+              </li>
+              <li class="stop" data-stop>
+                <p class="mono">02 · Scheduled</p>
+                <h3>Date confirmed</h3>
+                <p>Pickup date and window agreed, <span class="ph">with a reminder the day before</span>.</p>
+              </li>
+              <li class="stop" data-stop>
+                <p class="mono">03 · Picked up</p>
+                <h3>On the road</h3>
+                <p>Loaded and secured. <span class="ph">We text when the driver is on the way.</span></p>
+              </li>
+              <li class="stop" data-stop>
+                <p class="mono">04 · Delivered</p>
+                <h3>Signed for</h3>
+                <p>Dropped off and signed for<span class="ph">, with photo proof on request</span>.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Where we go -->
+      <section class="sec areas lane-top" id="areas" aria-labelledby="areasTitle">
+        <div class="wrap">
+          <div>
+            <p class="label">Where we go</p>
+            <h2 class="h-section" id="areasTitle" data-split>Around <span class="gold">San Diego County.</span></h2>
+            <p class="body">Outside these areas? <a href="#quote-form" data-start-quote>Ask us</a>. We'll still take a look.</p>
+          </div>
+          <ul class="area-list ph" data-reveal>
+            <li>Downtown &amp; central San Diego <span>921xx</span></li>
+            <li>North County coastal <span>920xx</span></li>
+            <li>North County inland <span>920xx</span></li>
+            <li>East County <span>920xx</span></li>
+            <li>South Bay <span>919xx</span></li>
+            <li>Beach communities <span>921xx</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Why Genix + proof slots (numbers and photos arrive later) -->
+      <section class="sec why" id="why" aria-labelledby="whyTitle">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">Why Genix</p>
+              <h2 class="h-section" id="whyTitle" data-split>Freight without <span class="gold">the guesswork.</span></h2>
+            </div>
+            <p class="body">What you can count on, from the first call to the signature.</p>
+          </div>
+          <ul class="promises">
+            <li data-reveal><h3>A real person to call</h3><p>Call or text the team handling your load when plans change.</p></li>
+            <li data-reveal><h3>Clear timelines</h3><p>A confirmed date and pickup window before anything moves.</p></li>
+            <li data-reveal><h3>Price first</h3><p>You see the price before we schedule anything.</p></li>
+          </ul>
+          <div class="proof">
+            <div class="ph"><b>—</b><span>Deliveries completed</span></div>
+            <div class="ph"><b>—</b><span>Years on the road</span></div>
+            <div class="ph"><b>—</b><span>Recent jobs: photos go here</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ (answers are placeholders until the owner confirms them) -->
+      <section class="sec faq lane-top" id="faq" aria-labelledby="faqTitle">
+        <div class="wrap">
+          <p class="label">Questions</p>
+          <h2 class="h-section" id="faqTitle" data-split>Before <span class="gold">you ask.</span></h2>
+          <div class="faq-list">
+            <details><summary>How soon can you pick up?</summary><p class="ph">Same-day courier runs when a truck is free; most freight and moves are booked a few days ahead.</p></details>
+            <details><summary>Which areas do you cover?</summary><p class="ph">San Diego County, and further on request. See the list above.</p></details>
+            <details><summary>What won't you move?</summary><p class="ph">Hazardous materials, firearms, live animals and anything illegal to transport.</p></details>
+            <details><summary>Are loads insured?</summary><p class="ph">To confirm before launch: what cover applies and up to what value.</p></details>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final quote: a label card that points back to the hero form -->
+      <section class="sec final lane-top" id="quote" aria-labelledby="quoteTitle">
+        <div class="wrap">
+          <div>
+            <p class="label">Get a quote</p>
+            <h2 class="h-section" id="quoteTitle" data-split>Ready when <span class="gold">you are.</span></h2>
+            <p class="body">Tell us where it's going and what's moving. We'll come back with a price.</p>
+          </div>
+          <div class="label-card">
+            <p class="label-ref mono"><span>Quote request · New</span><span class="barcode" aria-hidden="true"></span></p>
+            <p class="final-line">Two short steps. No account needed.</p>
+            <div class="final-actions">
+              <a class="btn btn-gold" href="#quote-form" data-start-quote>Start a quote <span aria-hidden="true">→</span></a>
+              <a class="btn btn-ghost" href="tel:+10000000000"><span class="ph">Call (000) 000-0000</span></a>
+            </div>
+            <p class="mono final-mail">Or email <a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="brand-col">
+          <a class="footer-logo" href="#top" aria-label="Genix Logistics home"><img src="assets/genix-logistics-logo.svg" alt="" width="876" height="405" /></a>
+          <a class="part-of" href="hub-home.html"><img src="assets/genix-mark.svg" alt="" width="360" height="421" /><span>Part of <b>The Genix Group</b></span></a>
+        </div>
+        <div>
+          <h2>Services</h2>
+          <ul><li><a href="#services">Business freight</a></li><li><a href="#services">Last-mile &amp; courier</a></li><li><a href="#services">Home &amp; office moves</a></li></ul>
+        </div>
+        <div>
+          <h2>Company</h2>
+          <ul><li><a href="#how">How it works</a></li><li><a href="#areas">Where we go</a></li><li><a href="#faq">Questions</a></li></ul>
+        </div>
+        <div>
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></li>
+            <li><span class="ph">(000) 000-0000</span></li>
+            <li><a href="#quote-form">Get a quote</a></li>
+          </ul>
+        </div>
+        <div class="legal">
+          <span>© 2026 Genix Logistics, part of The Genix Group</span>
+          <span>
+            <a href="homeupgrades-home.html"><span class="dot" style="background: var(--gold)"></span>Home Upgrades</a> &nbsp;
+            <a href="https://multimedia.thegenixgroup.com"><span class="dot" style="background: var(--tell)"></span>Multimedia</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+    <script src="shared/genix.js"></script>
+  </body>
+</html>
