@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Tokens come from themeVars() on <html>; Tailwind utilities read them. */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-heading: var(--heading);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-on-brand-muted: var(--on-brand-muted);
+  --color-gold: var(--gold);
+  --color-gold-text: var(--gold-text);
+  --color-gold-display: var(--gold-display);
+  --color-link: var(--link);
+  --font-display: var(--font-display-face);
+  --font-body: var(--font-body-face);
+  --font-mono: var(--font-mono-face);
+  --radius-site: var(--radius);
+}
+
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body-face); line-height: 1.6; }
+:focus-visible { outline: 2px solid var(--heading); outline-offset: 3px; }
+.on-brand :focus-visible { outline-color: var(--gold); }
