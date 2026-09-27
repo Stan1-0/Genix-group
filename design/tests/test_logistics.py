@@ -118,11 +118,15 @@ def t_form(b):
     pg.check("#qFlex")
     check("[form] Flexible disables the date", pg.is_disabled("#qDate") and pg.input_value("#qDate") == "")
 
-    pg.fill("#qFrom", "90210"); pg.fill("#qTo", "92101")
+    pg.fill("#qFrom", "10001"); pg.fill("#qTo", "92101")
     check("[form] outside-area note shows", v("#qArea"))
     pg.fill("#qFrom", "92024")
     check("[form] note hides for San Diego ZIPs", not v("#qArea"))
-    pg.fill("#qFrom", "90210")
+    pg.fill("#qFrom", "85004")
+    check("[form] note hides for Arizona ZIPs", not v("#qArea"))
+    pg.fill("#qFrom", "43215")
+    check("[form] note hides for Ohio ZIPs", not v("#qArea"))
+    pg.fill("#qFrom", "10001")
 
     pg.click(".kind label:has-text('Ship for your business')")
     pg.select_option("#qLoad", "pallets")
@@ -133,7 +137,7 @@ def t_form(b):
     check("[form] an outside-area ZIP still continues", v("#qName"))
     check("[form] focus moves to the step 2 heading", pg.evaluate("document.activeElement.id") == "qStep2Title")
     pg.click("#qBack")
-    check("[form] Back keeps step 1 answers", pg.input_value("#qFrom") == "90210" and pg.input_value("#qPallets") == "4")
+    check("[form] Back keeps step 1 answers", pg.input_value("#qFrom") == "10001" and pg.input_value("#qPallets") == "4")
 
     pg.click("#qNext"); pg.click("#qSend")
     check("[form] name and a way to reply are required",

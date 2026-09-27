@@ -16,8 +16,9 @@
 
   // ---- rules ----
   const validZip = (v) => /^\d{5}$/.test(v);
-  // San Diego County ZIPs start 919-921 (placeholder until the owner's own list)
-  const isServedZip = (v) => { const p = +v.slice(0, 3); return p >= 919 && p <= 921; };
+  // Served (owner, 2026-09-27): all of California (ZIP 900-961), Arizona (850-865) and Ohio (430-459)
+  const SERVED = [[900, 961], [850, 865], [430, 459]];
+  const isServedZip = (v) => { const p = +v.slice(0, 3); return SERVED.some(([lo, hi]) => p >= lo && p <= hi); };
   const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
   const validPhone = (v) => v.replace(/\D/g, "").length >= 10;
   const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
