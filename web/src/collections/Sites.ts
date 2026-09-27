@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
 import { revalidateTag } from 'next/cache'
 import { SITE_KEYS } from '@/sites/config'
-import { anyone, canEditSite, isAdmin } from '@/payload/access'
+import { canEditSite, canReadSite, isAdmin } from '@/payload/access'
 
 export const Sites: CollectionConfig = {
   slug: 'sites',
   admin: { useAsTitle: 'key', defaultColumns: ['key', 'heroHeading', 'updatedAt'] },
-  access: { read: anyone, create: isAdmin, delete: isAdmin, update: canEditSite },
+  access: { read: canReadSite, create: isAdmin, delete: isAdmin, update: canEditSite },
   hooks: {
     afterChange: [
       ({ doc, context }) => {

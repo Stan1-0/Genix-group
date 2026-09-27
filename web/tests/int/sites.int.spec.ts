@@ -47,4 +47,10 @@ describe('sites', () => {
     const res = await payload.find({ collection: 'sites', overrideAccess: false })
     expect(res.totalDocs).toBeGreaterThan(0)
   })
+
+  it('limits an editor to reading only their assigned divisions', async () => {
+    const editor = (await payload.find({ collection: 'users', where: { email: { equals: 'editor@test.local' } } })).docs[0]
+    const res = await payload.find({ collection: 'sites', user: editor, overrideAccess: false })
+    expect(res.docs.map((d) => d.key)).toEqual(['logistics'])
+  })
 })

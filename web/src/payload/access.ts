@@ -23,3 +23,13 @@ export const canEditSite: Access = ({ req }) => {
   const divisions = u.divisions ?? []
   return divisions.length ? ({ key: { in: divisions } } as Where) : false
 }
+
+/** The public (no user) and admins can read every site record, e.g. for the live site render.
+    Editors can only read the divisions they are assigned, so the admin UI matches what they may edit. */
+export const canReadSite: Access = ({ req }) => {
+  const u = staff(req.user)
+  if (!u) return true
+  if (u.role === 'admin') return true
+  const divisions = u.divisions ?? []
+  return divisions.length ? ({ key: { in: divisions } } as Where) : false
+}
