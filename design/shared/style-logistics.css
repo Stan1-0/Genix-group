@@ -14,8 +14,6 @@
 [data-division="logistics"] .h-section { font-weight: 900; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95; }
 [data-division="logistics"] .h-display { font-size: clamp(36px, 5.4vw, 76px); }
 [data-division="logistics"] .h-section { font-size: clamp(30px, 4.2vw, 58px); }
-[data-division="logistics"] .gold { color: var(--gold-text); }
-[data-division="logistics"] .on-dark .gold { color: var(--gold); }
 [data-division="logistics"] .btn { border-radius: var(--r); font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: 0.04em; font-size: 15px; }
 [data-division="logistics"] .brand img { height: 50px; mix-blend-mode: normal; }
 [data-division="logistics"] .footer-logo { border-radius: var(--r); }

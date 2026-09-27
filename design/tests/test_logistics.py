@@ -173,7 +173,7 @@ def t_lanes(b):
     c, pg, errs, failed = open_page(b, URL, **DESKTOP)
     pg.click("a[data-kind=move]")
     pg.wait_for_timeout(1400)
-    check("[lanes] 'Get a moving price' selects Plan a move",
+    check("[lanes] 'Price a move' selects Plan a move",
           pg.is_checked("input[name=kind][value=move]") and load_values(pg) == MOVE)
     top = pg.evaluate("document.getElementById('quote-form').getBoundingClientRect().top")
     check("[lanes] ...and brings the form into view", 0 <= top < 400, f"{top:.0f}px")
