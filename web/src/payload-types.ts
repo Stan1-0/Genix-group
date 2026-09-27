@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    sites: Site;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    sites: SitesSelect<false> | SitesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -123,6 +125,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  role?: ('admin' | 'editor') | null;
+  /**
+   * Editors can only edit these sites. Admins can edit all.
+   */
+  divisions?: ('hub' | 'logistics' | 'homeupgrades' | 'multimedia')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -149,6 +156,9 @@ export interface User {
  */
 export interface Media {
   id: number;
+  /**
+   * Describe the image for people who cannot see it.
+   */
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -161,6 +171,49 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sites".
+ */
+export interface Site {
+  id: number;
+  key: 'hub' | 'logistics' | 'homeupgrades' | 'multimedia';
+  heroHeading?: string | null;
+  heroSubheading?: string | null;
+  /**
+   * US format, e.g. (619) 555-0100
+   */
+  phone?: string | null;
+  email?: string | null;
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zip?: string | null;
+  };
+  social?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Areas served. ZIP ranges are the first three digits, e.g. California 900–961.
+   */
+  coverage?:
+    | {
+        name: string;
+        zipFrom?: number | null;
+        zipTo?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -193,6 +246,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'sites';
+        value: number | Site;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -241,6 +298,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  divisions?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -276,6 +335,44 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sites_select".
+ */
+export interface SitesSelect<T extends boolean = true> {
+  key?: T;
+  heroHeading?: T;
+  heroSubheading?: T;
+  phone?: T;
+  email?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        state?: T;
+        zip?: T;
+      };
+  social?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  coverage?:
+    | T
+    | {
+        name?: T;
+        zipFrom?: T;
+        zipTo?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
