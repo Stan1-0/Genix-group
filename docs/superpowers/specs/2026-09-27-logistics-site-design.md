@@ -98,9 +98,8 @@ Markup: one `<form>` inside the label card; the tabs are a radio group
 
 Step 1 — the route:
 - Pickup ZIP, drop-off ZIP: required, `^\d{5}$`, `inputmode="numeric"`.
-  A ZIP outside the served list does **not** block: a note says "Outside our
-  usual area, we'll still take a look." Served list = placeholder (San Diego
-  County prefixes 919xx–921xx) until the owner supplies it.
+  Service area is the whole USA (owner, 2026-09-27): every valid ZIP is
+  accepted, with no outside-area note.
 - Date: `type="date"`, not in the past; "Flexible" checkbox clears/disables it.
 - What's moving (select; options swap with the tab, choice reset on swap):
   business = pallets (with count), parcels/boxes, full truckload, same-day
@@ -160,7 +159,7 @@ A Playwright suite `test_logistics.py` in the style of `test_hu.py`:
 - tabs: switching keeps ZIP/date, swaps options, lane "Get a price" selects
   the right tab
 - validation: bad ZIP, past date, missing contact each show the right inline
-  error and focus; outside-area ZIP shows the note and still continues
+  error and focus; any valid US ZIP continues
 - keyboard-only walk through both steps; confirmation announced
 - signature: truck position and filled stops advance with scroll; section
   height unchanged by the animation; stamp shown at the end; reduced motion
@@ -170,6 +169,6 @@ A Playwright suite `test_logistics.py` in the style of `test_hu.py`:
 
 ## 9. Open items for the owner (placeholders until supplied)
 
-Served ZIPs/areas · callback time · step captions ("price in 1 business day"
+Callback time · step captions ("price in 1 business day"
 etc.) · FAQ answers · insurance/licensing status · phone and email ·
 numbers, photos, recent jobs.

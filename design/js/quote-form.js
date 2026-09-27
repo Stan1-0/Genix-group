@@ -16,9 +16,6 @@
 
   // ---- rules ----
   const validZip = (v) => /^\d{5}$/.test(v);
-  // Served (owner, 2026-09-27): all of California (ZIP 900-961), Arizona (850-865) and Ohio (430-459)
-  const SERVED = [[900, 961], [850, 865], [430, 459]];
-  const isServedZip = (v) => { const p = +v.slice(0, 3); return SERVED.some(([lo, hi]) => p >= lo && p <= hi); };
   const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
   const validPhone = (v) => v.replace(/\D/g, "").length >= 10;
   const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -90,8 +87,6 @@
       const filtered = t.value.replace(/\D/g, "").slice(0, 5);
       if (filtered !== t.value) t.value = filtered;
       setErr(t, "");
-      const zips = [$("qFrom").value, $("qTo").value];
-      $("qArea").hidden = !zips.every(validZip) || zips.every(isServedZip);
     } else if (t.closest && t.closest(".field") && $(t.id + "Err")) {
       setErr(t, "");
     }
@@ -171,5 +166,5 @@
   $("qDate").min = todayISO();
   showOptions(kindOf());
 
-  window.genixQuote = { selectKind, validZip, isServedZip };
+  window.genixQuote = { selectKind, validZip };
 })();

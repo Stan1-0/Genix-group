@@ -54,7 +54,7 @@ Keys: `hub` (prefix `HUB`), `logistics` (`LOG`), `homeupgrades` (`HUP`), `multim
 
 | Collection | Key fields | Used by |
 |---|---|---|
-| **Sites** (one record per site) | hero heading/subheading/media; about story; values; phone; email; address; social links; **coverage** (list of areas, e.g. California, Arizona, Ohio, with optional ZIP-prefix ranges); default SEO title and description | hero, about, footer, contact, structured data, the form's outside-area note |
+| **Sites** (one record per site) | hero heading/subheading/media; about story; values; phone; email; address; social links; **coverage** (area served, e.g. "United States" for Logistics, plus an optional list of regions to show); default SEO title and description | hero, about, footer, contact, structured data |
 | **Services** | division, title, slug, summary, body (rich text), image, order | Home service lanes, Services page |
 | **Projects** | division, title, description, cover image, gallery, optional before/after pair, optional video (upload or YouTube/Vimeo URL), `featured` | Our work, "Recent work" on Home |
 | **Team** | division (hub = group leadership), name, role, photo, bio, order | About pages — sections hide while empty |
@@ -66,7 +66,7 @@ Keys: `hub` (prefix `HUB`), `logistics` (`LOG`), `homeupgrades` (`HUP`), `multim
 Left out on purpose (YAGNI): client-logo strip, testimonials, blog, pricing tables, multi-language. Each can be added later as a collection.
 
 **Forms are defined in code, one per division; shared fields get columns, division answers go in `details`:**
-- **Logistics quote** (as prototyped in `design/logistics-home.html`): kind (`business` \| `move`); pickup ZIP; drop-off ZIP; date or `flexible`; load (business: pallets + count 1–26, parcels, full truckload, same-day courier; move: studio, 1–2 bedroom, 3+ bedroom, office); name; phone or email (at least one); notes. Outside-area note uses the Logistics coverage (CA 900–961, AZ 850–865, OH 430–459) and never blocks.
+- **Logistics quote** (as prototyped in `design/logistics-home.html`): kind (`business` \| `move`); pickup ZIP; drop-off ZIP; date or `flexible`; load (business: pallets + count 1–26, parcels, full truckload, same-day courier; move: studio, 1–2 bedroom, 3+ bedroom, office); name; phone or email (at least one); notes. Logistics serves the whole USA (owner, 2026-09-27), so any valid 5-digit ZIP is accepted with no outside-area note.
 - **Home Upgrades quote** and **Multimedia booking:** field sets are fixed when their Contact pages are prototyped (a prerequisite for those phases, section 6).
 - **Hub contact:** name, email, phone (optional), message.
 
@@ -125,7 +125,7 @@ Forms work without JavaScript (plain POST to the action; both steps shown).
 
 ## 5. Testing
 
-- **Unit:** form schemas (every rule and message), reference-number formatting, served-ZIP rule, theme contrast test, site resolution from host.
+- **Unit:** form schemas (every rule and message), reference-number formatting, theme contrast test, site resolution from host.
 - **Integration:** the submit pipeline against a test database with Resend and BotID stubbed — save-before-email, fake success for bots, rate limit, email retry.
 - **End to end (Playwright):** port the prototype suites in `design/tests/` to the real sites (they already encode the approved behaviour: form steps, validation, pinned bar, road animation, reduced motion, no-JS), run against preview deployments.
 - **Accessibility:** axe checks on every page template; keyboard walk through each form.

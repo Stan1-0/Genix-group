@@ -139,7 +139,7 @@ html:not(.js) .js-only { display: none !important; }
   .step-title { grid-column: 1 / -1; margin: 2px 0 6px; font: 900 18px/1.1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
   .step-title:focus:not(:focus-visible) { outline: none; }
   .field { display: grid; align-content: start; gap: 4px; min-width: 0; padding: 10px 2px 12px; border-top: 1px solid rgba(2, 34, 72, 0.25); }
-  .fields .full, .area-note, .hint, .form-actions { grid-column: 1 / -1; }
+  .fields .full, .hint, .form-actions { grid-column: 1 / -1; }
   .field > label.mono { color: var(--label-ink); }
   .field input:not([type="checkbox"]), .field select, .field textarea {
     width: 100%; min-height: 40px; padding: 4px 0; border: 0; border-bottom: 2px solid rgba(2, 34, 72, 0.2); border-radius: 0;
@@ -152,7 +152,6 @@ html:not(.js) .js-only { display: none !important; }
   .err:empty { display: none; }
   .flex-date { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer; }
   .flex-date input { width: 18px; height: 18px; accent-color: var(--heading); }
-  .area-note { margin: 0 0 4px; padding: 10px 12px; border-left: 4px solid var(--gold); background: rgba(194, 138, 44, 0.14); font-size: 15px; }
   .hint { margin: 0 0 6px; font-size: 14px; color: var(--label-ink); }
   .form-actions { display: flex; gap: 12px; padding-top: 12px; }
   .form-actions .btn-gold { flex: 1; justify-content: center; }
