@@ -15,3 +15,6 @@ http://homeupgrades.localhost:3000, http://multimedia.localhost:3000.
 
 ## Test
 `npm run test:unit` · `npm run test:int` (needs Docker Postgres) · `npm run test:e2e` (starts `npm run dev`).
+
+## Deploy
+Production migrations run via `npm run build:vercel` (set as the build command in `vercel.json`); create new migrations with `npx payload migrate:create <name>` after changing collections.

@@ -30,7 +30,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // dev and tests sync the schema automatically; production uses migrations (Task 9)
+    // dev and tests sync the schema automatically; production migrates explicitly
+    // via `npm run build:vercel` (see vercel.json) rather than on every connect,
+    // since prodMigrations auto-migrating on connect hangs a local `next build`
+    // against the push-created dev DB (Task 9).
     push: process.env.NODE_ENV !== 'production',
   }),
   sharp,

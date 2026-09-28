@@ -9,6 +9,7 @@
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "prebuild": "vitest run tests/unit/themes.test.ts",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build:vercel": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && npm run build",
     "start": "next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "test:unit": "vitest run tests/unit",
