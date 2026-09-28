@@ -5,6 +5,9 @@ import { SITES, SITE_KEYS, isSiteKey, siteOrigin } from '@/sites/config'
 import { THEMES, themeVars } from '@/sites/themes'
 import { fontClassNames } from '@/sites/fonts'
 import { getSiteData } from '@/sites/data'
+import { Header } from '@/components/site/Header'
+import { Footer } from '@/components/site/Footer'
+import { QuoteBar } from '@/components/site/QuoteBar'
 
 type Props = { children: React.ReactNode; params: Promise<{ site: string }> }
 
@@ -35,13 +38,17 @@ export default async function SiteLayout({ children, params }: Props) {
   const { site } = await params
   if (!isSiteKey(site)) notFound()
   const theme = THEMES[site]
+  const data = await getSiteData(site)
   return (
     <html lang="en" data-site={site} className={fontClassNames(theme)} style={themeVars(theme)}>
       <body>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">
           Skip to content
         </a>
+        <Header site={site} />
         {children}
+        <Footer site={site} data={data} />
+        <QuoteBar href={SITES[site].cta.href} label={SITES[site].cta.label} phone={data.phone} />
       </body>
     </html>
   )
