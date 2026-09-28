@@ -6,6 +6,10 @@ import type { SiteKey } from './config'
 import { toSiteData, type SiteData } from './data-shape'
 import { shouldRethrowOnCmsFailure } from './build-phase'
 
+/** Bump whenever SiteData's shape changes: cached entries can outlive a deploy,
+    and an old-shape entry would otherwise be served until its tag is revalidated. */
+const SITE_DATA_SHAPE = 2
+
 async function readSite(key: SiteKey): Promise<SiteData> {
   const payload = await getPayload({ config })
   const res = await payload.find({ collection: 'sites', where: { key: { equals: key } }, limit: 1, depth: 0 })
@@ -17,7 +21,7 @@ async function readSite(key: SiteKey): Promise<SiteData> {
     but fails the build during `next build`. */
 export async function getSiteData(key: SiteKey): Promise<SiteData> {
   try {
-    return await unstable_cache(() => readSite(key), ['site-data', key], { tags: [`site:${key}`] })()
+    return await unstable_cache(() => readSite(key), ['site-data', `v${SITE_DATA_SHAPE}`, key], { tags: [`site:${key}`] })()
   } catch (err) {
     if (shouldRethrowOnCmsFailure(process.env.NEXT_PHASE)) throw err
     console.error(`getSiteData(${key}) failed; using defaults`, err)

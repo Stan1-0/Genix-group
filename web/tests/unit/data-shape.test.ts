@@ -8,7 +8,8 @@ describe('toSiteData', () => {
       heroSubheading: '',
       phone: null,
       email: 'hello@thegenixgroup.com',
-      coverage: [],
+      areaServed: null,
+      regions: [],
       seoTitle: null,
       seoDescription: null,
     })
@@ -19,7 +20,9 @@ describe('toSiteData', () => {
       heroSubheading: '',
       phone: '(619) 555-0100',
       email: null,
-      coverage: [{ name: 'California', zipFrom: 900, zipTo: 961 }],
+      areaServed: 'United States',
+      areaServedType: 'Country',
+      regions: [{ name: 'California' }, { name: ' ' }],
       seoTitle: null,
       seoDescription: 'Group description',
     })
@@ -27,7 +30,12 @@ describe('toSiteData', () => {
     expect(d.heroSubheading).toBe('')
     expect(d.phone).toBe('(619) 555-0100')
     expect(d.email).toBe('hello@thegenixgroup.com')
-    expect(d.coverage).toEqual([{ name: 'California', zipFrom: 900, zipTo: 961 }])
+    expect(d.areaServed).toEqual({ type: 'Country', name: 'United States' })
+    expect(d.regions).toEqual(['California'])
     expect(d.seoDescription).toBe('Group description')
+  })
+  it('treats a blank area as none and defaults the area type to Country', () => {
+    expect(toSiteData('logistics', { areaServed: '  ', areaServedType: 'State' }).areaServed).toBeNull()
+    expect(toSiteData('logistics', { areaServed: 'United States', areaServedType: null }).areaServed).toEqual({ type: 'Country', name: 'United States' })
   })
 })

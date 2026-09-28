@@ -200,13 +200,16 @@ export interface Site {
       }[]
     | null;
   /**
-   * Areas served. ZIP ranges are the first three digits, e.g. California 900–961.
+   * The whole area you serve, e.g. "United States". Search engines read this.
    */
-  coverage?:
+  areaServed?: string | null;
+  areaServedType?: ('Country' | 'State' | 'City' | 'AdministrativeArea') | null;
+  /**
+   * Optional places to list on the site, e.g. "California".
+   */
+  regions?:
     | {
         name: string;
-        zipFrom?: number | null;
-        zipTo?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -361,12 +364,12 @@ export interface SitesSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
-  coverage?:
+  areaServed?: T;
+  areaServedType?: T;
+  regions?:
     | T
     | {
         name?: T;
-        zipFrom?: T;
-        zipTo?: T;
         id?: T;
       };
   seoTitle?: T;

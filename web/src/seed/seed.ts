@@ -3,7 +3,7 @@ import config from '@payload-config'
 import type { SiteKey } from '@/sites/config'
 
 // Idempotent: creates missing site records, never overwrites edited ones.
-const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; coverage?: { name: string; zipFrom: number; zipTo: number }[] }> = {
+const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; areaServed?: string; areaServedType?: 'Country' }> = {
   hub: {
     heroHeading: 'We Haul It. We Build It. We Show It.',
     heroSubheading: 'Logistics, home upgrades and multimedia: three specialist businesses, one group.',
@@ -11,11 +11,8 @@ const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; cover
   logistics: {
     heroHeading: 'Reliable Freight. Real People. Right on Schedule.',
     heroSubheading: 'Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.',
-    coverage: [
-      { name: 'California', zipFrom: 900, zipTo: 961 },
-      { name: 'Arizona', zipFrom: 850, zipTo: 865 },
-      { name: 'Ohio', zipFrom: 430, zipTo: 459 },
-    ],
+    areaServed: 'United States',
+    areaServedType: 'Country',
   },
   homeupgrades: {
     heroHeading: 'From Blueprint to Beautiful.',

@@ -38,18 +38,18 @@ describe('siteJsonLd', () => {
     expect(ld).toMatchObject({ '@type': 'Organization', name: 'The Genix Group', url: 'https://thegenixgroup.com/' })
     expect((ld.subOrganization as { name: string }[]).map((o) => o.name)).toEqual(['Genix Logistics', 'Genix Home Upgrades', 'Genix Multimedia'])
   })
-  it('gives a division its type, parent and areas served', () => {
-    const data = toSiteData('logistics', { coverage: [{ name: 'California' }, { name: 'Arizona' }, { name: 'Ohio' }] })
+  it('gives a division its type, parent and area served', () => {
+    const data = toSiteData('logistics', { areaServed: 'United States', areaServedType: 'Country', regions: [{ name: 'California' }] })
     const ld = siteJsonLd('logistics', data, root)
     expect(ld).toMatchObject({
       '@type': 'MovingCompany',
       name: 'Genix Logistics',
       slogan: 'Reliable Freight. Real People. Right on Schedule.',
       parentOrganization: { name: 'The Genix Group', url: 'https://thegenixgroup.com/' },
-      areaServed: [{ '@type': 'State', name: 'California' }, { '@type': 'State', name: 'Arizona' }, { '@type': 'State', name: 'Ohio' }],
+      areaServed: { '@type': 'Country', name: 'United States' },
     })
   })
-  it('leaves out areaServed when there is no coverage', () => {
+  it('leaves out areaServed when no area is set', () => {
     expect(siteJsonLd('multimedia', toSiteData('multimedia', null), root)).not.toHaveProperty('areaServed')
   })
 })

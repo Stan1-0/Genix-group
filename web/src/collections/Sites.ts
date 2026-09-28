@@ -57,13 +57,35 @@ export const Sites: CollectionConfig = {
       ],
     },
     {
-      name: 'coverage',
-      type: 'array',
-      admin: { description: 'Areas served. ZIP ranges are the first three digits, e.g. California 900–961.' },
+      type: 'collapsible',
+      label: 'Coverage',
       fields: [
-        { name: 'name', type: 'text', required: true },
-        { name: 'zipFrom', type: 'number', min: 0, max: 999 },
-        { name: 'zipTo', type: 'number', min: 0, max: 999 },
+        {
+          name: 'areaServed',
+          type: 'text',
+          admin: { description: 'The whole area you serve, e.g. "United States". Search engines read this.' },
+        },
+        {
+          name: 'areaServedType',
+          type: 'select',
+          defaultValue: 'Country',
+          options: [
+            { label: 'Country', value: 'Country' },
+            { label: 'State', value: 'State' },
+            { label: 'City', value: 'City' },
+            { label: 'Other area (e.g. a county)', value: 'AdministrativeArea' },
+          ],
+          admin: { condition: (data) => Boolean(data?.areaServed) },
+        },
+        {
+          name: 'regions',
+          type: 'array',
+          // Keeps the table the old `coverage` list used, so the migration only drops its ZIP columns.
+          dbName: 'sites_coverage',
+          labels: { singular: 'Region', plural: 'Regions' },
+          admin: { description: 'Optional places to list on the site, e.g. "California".' },
+          fields: [{ name: 'name', type: 'text', required: true }],
+        },
       ],
     },
     { name: 'seoTitle', type: 'text' },

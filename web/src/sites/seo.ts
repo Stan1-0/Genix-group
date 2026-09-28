@@ -50,10 +50,9 @@ export function siteJsonLd(site: SiteKey, data: SiteData, root?: string): Record
       subOrganization: DIVISION_KEYS.map((k) => ({ '@type': SITES[k].schemaType, name: SITES[k].name, url: `${siteOrigin(k, root)}/` })),
     }
   }
-  const areaServed = data.coverage.map((c) => ({ '@type': 'State', name: c.name }))
   return {
     ...base,
-    ...(areaServed.length ? { areaServed } : {}),
+    ...(data.areaServed ? { areaServed: { '@type': data.areaServed.type, name: data.areaServed.name } } : {}),
     parentOrganization: { '@type': 'Organization', name: SITES.hub.name, url: `${siteOrigin('hub', root)}/` },
   }
 }

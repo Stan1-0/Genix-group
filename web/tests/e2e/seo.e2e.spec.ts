@@ -9,7 +9,7 @@ test('logistics home: title, canonical, JSON-LD and share image', async ({ page 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'http://logistics.localhost:3000')
   const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent()) ?? '{}')
   expect(ld['@type']).toBe('MovingCompany')
-  expect(ld.areaServed.map((a: { name: string }) => a.name)).toEqual(['California', 'Arizona', 'Ohio'])
+  expect(ld.areaServed).toEqual({ '@type': 'Country', name: 'United States' })
   const og = await page.locator('meta[property="og:image"]').first().getAttribute('content')
   expect(og).toBeTruthy()
   // Next 16.3.6 always resolves the file-convention `opengraph-image` route against a
