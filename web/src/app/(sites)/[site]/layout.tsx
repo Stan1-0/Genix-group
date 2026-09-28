@@ -47,7 +47,9 @@ export default async function SiteLayout({ children, params }: Props) {
   const data = await getSiteData(site)
   return (
     <html lang="en" data-site={site} className={fontClassNames(theme)} style={themeVars(theme)}>
-      <body>
+      {/* Browser extensions (e.g. Grammarly) add attributes to <body> before hydration.
+          This ignores attribute mismatches on <body> only; its children are still checked. */}
+      <body suppressHydrationWarning>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">
           Skip to content
         </a>
