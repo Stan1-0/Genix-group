@@ -13,6 +13,10 @@ import { QuoteBar } from '@/components/site/QuoteBar'
 
 type Props = { children: React.ReactNode; params: Promise<{ site: string }> }
 
+// Time-based safety net alongside the Sites afterChange tag revalidation, in
+// case a revalidation event is ever missed.
+export const revalidate = 3600
+
 export function generateStaticParams() {
   return SITE_KEYS.map((site) => ({ site }))
 }

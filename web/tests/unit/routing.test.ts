@@ -40,4 +40,20 @@ describe('routeRequest', () => {
   it('does not treat look-alike paths as Payload', () => {
     expect(routeRequest('hub', '/administration')).toEqual({ kind: 'rewrite', pathname: '/hub/administration' })
   })
+  it('allows media files on every site, but leaves other /api paths hub-only', () => {
+    expect(routeRequest('logistics', '/api/media/file/hero.jpg')).toEqual({ kind: 'next' })
+    expect(routeRequest('multimedia', '/api/media/file/logo.svg')).toEqual({ kind: 'next' })
+    expect(routeRequest('logistics', '/api/media')).toEqual({ kind: 'notFound' })
+    expect(routeRequest('logistics', '/api/users')).toEqual({ kind: 'notFound' })
+  })
+  it('404s Payload paths on an unresolved host in production, except media files', () => {
+    const opts = { hostResolved: false, isProduction: true }
+    expect(routeRequest('hub', '/admin', opts)).toEqual({ kind: 'notFound' })
+    expect(routeRequest('hub', '/api/users', opts)).toEqual({ kind: 'notFound' })
+    expect(routeRequest('hub', '/api/media/file/hero.jpg', opts)).toEqual({ kind: 'next' })
+  })
+  it('does not 404 Payload paths for an unresolved host outside production, or a resolved host in production', () => {
+    expect(routeRequest('hub', '/admin', { hostResolved: false, isProduction: false })).toEqual({ kind: 'next' })
+    expect(routeRequest('hub', '/admin', { hostResolved: true, isProduction: true })).toEqual({ kind: 'next' })
+  })
 })

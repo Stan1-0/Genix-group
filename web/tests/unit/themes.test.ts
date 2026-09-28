@@ -22,6 +22,8 @@ describe.each(SITE_KEYS)('theme %s meets WCAG AA', (key) => {
     ['gold-text on paper', t.goldText, t.paper],
     ['white on brand', '#ffffff', t.brand],
     ['on-brand-muted on brand', t.onBrandMuted, t.brand],
+    ['heading on gold', t.heading, t.gold],
+    ['gold on brand (small text)', t.gold, t.brand],
   ]
   const large: [string, string, string][] = [
     ['gold-display on paper (large text)', t.goldDisplay, t.paper],

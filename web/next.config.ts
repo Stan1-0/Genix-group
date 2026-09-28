@@ -8,6 +8,18 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   allowedDevOrigins: ['*.localhost'],
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        ],
+      },
+    ]
+  },
   images: {
     localPatterns: [
       {

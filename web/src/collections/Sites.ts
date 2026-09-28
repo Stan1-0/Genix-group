@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { revalidateTag } from 'next/cache'
 import { SITE_KEYS } from '@/sites/config'
-import { canEditSite, canReadSite, isAdmin } from '@/payload/access'
+import { canEditSite, canReadSite, isAdmin, isAdminField } from '@/payload/access'
 
 export const Sites: CollectionConfig = {
   slug: 'sites',
@@ -15,9 +15,25 @@ export const Sites: CollectionConfig = {
         return doc
       },
     ],
+    afterDelete: [
+      ({ doc, context }) => {
+        // Seed scripts and tests run outside Next.js and pass disableRevalidate.
+        if (!context?.disableRevalidate) revalidateTag(`site:${doc.key}`, 'max')
+        return doc
+      },
+    ],
   },
   fields: [
-    { name: 'key', type: 'select', required: true, unique: true, options: SITE_KEYS.map((k) => ({ label: k, value: k })) },
+    {
+      name: 'key',
+      type: 'select',
+      required: true,
+      unique: true,
+      options: SITE_KEYS.map((k) => ({ label: k, value: k })),
+      // Editors can update the record they're assigned to, but never repoint
+      // which division key it represents.
+      access: { update: isAdminField },
+    },
     { name: 'heroHeading', type: 'text' },
     { name: 'heroSubheading', type: 'textarea' },
     { name: 'phone', type: 'text', admin: { description: 'US format, e.g. (619) 555-0100' } },

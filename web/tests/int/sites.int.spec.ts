@@ -53,4 +53,38 @@ describe('sites', () => {
     const res = await payload.find({ collection: 'sites', user: editor, overrideAccess: false })
     expect(res.docs.map((d) => d.key)).toEqual(['logistics'])
   })
+
+  it('ignores an editor trying to change a site record\'s key', async () => {
+    const editor = (await payload.find({ collection: 'users', where: { email: { equals: 'editor@test.local' } } })).docs[0]
+    const logistics = (await payload.find({ collection: 'sites', where: { key: { equals: 'logistics' } } })).docs[0]
+    const updated = await payload.update({
+      collection: 'sites', id: logistics.id, data: { key: 'multimedia' }, user: editor, overrideAccess: false, context,
+    })
+    expect(updated.key).toBe('logistics')
+  })
+
+  it('rejects an editor trying to change their own role or divisions', async () => {
+    const editor = (await payload.find({ collection: 'users', where: { email: { equals: 'editor@test.local' } } })).docs[0]
+    const updated = await payload.update({
+      collection: 'users', id: editor.id, data: { role: 'admin', divisions: ['hub'] }, user: editor, overrideAccess: false,
+    })
+    expect(updated.role).toBe('editor')
+    expect(updated.divisions).toEqual(['logistics'])
+  })
+
+  it('lets an editor with no divisions neither read nor update any site record', async () => {
+    const noDivisionsEditor = await payload.create({
+      collection: 'users',
+      data: { email: 'no-divisions-editor@test.local', password: 'test-pass-4', role: 'editor', divisions: [] },
+    })
+    await expect(
+      payload.find({ collection: 'sites', user: noDivisionsEditor, overrideAccess: false }),
+    ).rejects.toThrow()
+    const logistics = (await payload.find({ collection: 'sites', where: { key: { equals: 'logistics' } } })).docs[0]
+    await expect(
+      payload.update({
+        collection: 'sites', id: logistics.id, data: { heroHeading: 'nope' }, user: noDivisionsEditor, overrideAccess: false, context,
+      }),
+    ).rejects.toThrow()
+  })
 })

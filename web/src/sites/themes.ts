@@ -57,10 +57,12 @@ export const THEMES: Record<SiteKey, Theme> = {
     fontDisplay: 'archivo', fontBody: 'archivo', fontMono: 'plexMono',
   },
   multimedia: {
-    // placeholder until the Multimedia logo and design exist
+    // placeholder until the Multimedia logo and design exist; darkened from the
+    // original #5a1f4d prototype plum to clear 4.5:1 against gold (text-gold on
+    // bg-brand eyebrows, text-heading on bg-gold CTAs)
     ...GOLD, ...NEUTRAL,
-    brand: '#5a1f4d', brandDeep: '#3f1536', heading: '#5a1f4d', paper: '#f7f4f6',
-    onBrandMuted: '#e8d3e2', link: '#5a1f4d', radius: '8px',
+    brand: '#44173a', brandDeep: '#2f1029', heading: '#44173a', paper: '#f7f4f6',
+    onBrandMuted: '#e8d3e2', link: '#44173a', radius: '8px',
     fontDisplay: 'schibsted', fontBody: 'hanken', fontMono: 'plexMono',
   },
 }
