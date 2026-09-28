@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import '../sites.css'
 import { SITES, SITE_KEYS, isSiteKey, siteOrigin } from '@/sites/config'
 import { THEMES, themeVars } from '@/sites/themes'
@@ -49,6 +51,8 @@ export default async function SiteLayout({ children, params }: Props) {
         {children}
         <Footer site={site} data={data} />
         <QuoteBar href={SITES[site].cta.href} label={SITES[site].cta.label} phone={data.phone} />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
