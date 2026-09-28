@@ -9,6 +9,7 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
+import { isLocalDatabase } from './payload/local-db'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,11 +31,12 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // dev and tests sync the schema automatically; production migrates explicitly
-    // via `npm run build:vercel` (see vercel.json) rather than on every connect,
-    // since prodMigrations auto-migrating on connect hangs a local `next build`
-    // against the push-created dev DB (Task 9).
-    push: process.env.NODE_ENV !== 'production',
+    // Local dev and tests sync the schema automatically. Every other database
+    // (Neon production and preview branches) changes only through migrations,
+    // run by `npm run build:vercel` (see vercel.json) — never on connect, since
+    // prodMigrations auto-migrating hangs a local `next build` against the
+    // push-created dev DB.
+    push: process.env.NODE_ENV !== 'production' && isLocalDatabase(process.env.DATABASE_URL),
   }),
   sharp,
   plugins: [

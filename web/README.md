@@ -16,14 +16,48 @@ http://homeupgrades.localhost:3000, http://multimedia.localhost:3000.
 ## Test
 `npm run test:unit` · `npm run test:int` (needs Docker Postgres) · `npm run test:e2e` (starts `npm run dev`).
 
-## Deploy
-Production migrations run via `npm run build:vercel` (set as the build command in `vercel.json`); create new migrations with `npx payload migrate:create <name>` after changing collections.
+## Deploy (Vercel)
+The repo is ready to import as one Vercel project serving all four domains.
 
-### Deploy (Vercel)
-- **Root Directory**: set the Vercel project's Root Directory to `web`. If it's left at the repo root, `vercel.json` (and its migrating build command) is ignored and the wrong build runs.
-- **Neon preview branching**: enable Neon's Vercel integration with preview branching on. Each preview deployment then migrates its own database branch — never production. Without it, every preview would run `payload migrate` straight against the production database.
-- **Required environment variables**, per environment:
-  - All environments: `DATABASE_URL`, `PAYLOAD_SECRET`, `BLOB_READ_WRITE_TOKEN`.
-  - All environments: `ROOT_DOMAIN=thegenixgroup.com`. Never `localhost:3000` in Vercel — it breaks subdomain routing and generated URLs.
-  - Production only: `ALLOW_INDEXING=1`.
-- **Seed data** (optional, one-time): after the first deploy, `npm run seed` against the Neon database populates the four site records and any coverage/phone data needed for launch content.
+1. **Push the repo** to GitHub (or GitLab/Bitbucket) and import it in Vercel.
+2. **Root Directory: `web`.** At the repo root, `vercel.json` is ignored and the build skips migrations.
+   Framework preset: Next.js. Node.js: 24.x (from `package.json` `engines`).
+3. **Database: Neon** via the Vercel Marketplace integration, with **preview branching on**, so each
+   preview deployment migrates its own database branch and never production. The integration sets
+   `DATABASE_URL`.
+4. **Uploads: Vercel Blob.** Create a Blob store and connect it; it sets `BLOB_READ_WRITE_TOKEN`.
+5. **Environment variables** (Settings → Environment Variables):
+
+   | Variable | Production | Preview | Notes |
+   |---|---|---|---|
+   | `DATABASE_URL` | Neon (integration) | Neon branch (integration) | |
+   | `PAYLOAD_SECRET` | long random string | a different one | e.g. `openssl rand -hex 32` |
+   | `BLOB_READ_WRITE_TOKEN` | Blob (integration) | Blob (integration) | |
+   | `ROOT_DOMAIN` | `thegenixgroup.com` | `thegenixgroup.com` | never `localhost:3000` |
+   | `ALLOW_INDEXING` | `1` | *(unset)* | unset = `robots.txt` blocks search engines |
+
+   Leave `SEED_ADMIN_*` unset in Vercel.
+6. **Deploy.** The build command (`npm run build:vercel`, from `vercel.json`) runs
+   `payload migrate`, then `next build`. The build reads the CMS, so it fails loudly if the database
+   is unreachable instead of shipping default content.
+7. **Starter content** (once, after the first successful deploy): from this folder, with the Neon
+   production connection string,
+   ```bash
+   DATABASE_URL="<neon production url>" npm run seed
+   ```
+   This creates the four site records, and leaves any existing record alone. Schema push only runs
+   against local databases (`src/payload/local-db.ts`), so this never changes the Neon schema.
+8. **First admin:** open `https://thegenixgroup.com/admin` and create the first user; the first
+   user becomes admin. Invite editors from the admin afterwards.
+9. **Domains:** add `thegenixgroup.com`, `logistics.thegenixgroup.com`,
+   `homeupgrades.thegenixgroup.com` and `multimedia.thegenixgroup.com` to the same project.
+   `www.thegenixgroup.com` should redirect to the apex.
+10. **Check:** each domain shows its own site; `/admin` works on the apex only; each host serves
+    its own `/sitemap.xml` and `robots.txt`.
+
+**Preview deployments** run on `*.vercel.app` hosts, which don't match any site. Add
+`?site=logistics` (or `hub`, `homeupgrades`, `multimedia`) once; it is remembered in a cookie.
+
+**Changing collections later:** run `npx payload migrate:create <name>` against your local
+database, commit the new files in `src/migrations/`, and the next deploy applies them. If a change
+alters the `SiteData` shape, bump `SITE_DATA_SHAPE` in `src/sites/data.ts`.
