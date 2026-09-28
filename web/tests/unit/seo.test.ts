@@ -1,0 +1,55 @@
+import { describe, expect, it } from 'vitest'
+import { pageMetadata, robotsTxt, siteJsonLd, sitemapXml } from '@/sites/seo'
+import { toSiteData } from '@/sites/data-shape'
+
+const root = 'thegenixgroup.com'
+
+describe('pageMetadata', () => {
+  it('uses "<Site> | <Tagline>" on the home page with an absolute canonical', () => {
+    const m = pageMetadata('logistics', '/', {}, root)
+    expect(m.title).toEqual({ absolute: 'Genix Logistics | Reliable Freight. Real People. Right on Schedule.' })
+    expect(m.alternates?.canonical).toBe('https://logistics.thegenixgroup.com/')
+  })
+  it('uses "<Page> | <Site>" elsewhere', () => {
+    const m = pageMetadata('homeupgrades', '/services', { title: 'Services', description: 'What we do' }, root)
+    expect(m.title).toEqual({ absolute: 'Services | Genix Home Upgrades' })
+    expect(m.description).toBe('What we do')
+    expect(m.alternates?.canonical).toBe('https://homeupgrades.thegenixgroup.com/services')
+    expect(m.openGraph).toMatchObject({ url: 'https://homeupgrades.thegenixgroup.com/services', siteName: 'Genix Home Upgrades' })
+  })
+})
+
+describe('sitemapXml / robotsTxt', () => {
+  it('lists the site pages on the site host', () => {
+    const xml = sitemapXml('multimedia', root)
+    expect(xml).toContain('<loc>https://multimedia.thegenixgroup.com/</loc>')
+    expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
+  })
+  it('allows indexing only in production and points at the sitemap', () => {
+    expect(robotsTxt('logistics', true, root)).toBe('User-agent: *\nAllow: /\n\nSitemap: https://logistics.thegenixgroup.com/sitemap.xml\n')
+    expect(robotsTxt('logistics', false, root)).toBe('User-agent: *\nDisallow: /\n')
+    expect(robotsTxt('hub', true, root)).toContain('Disallow: /admin')
+  })
+})
+
+describe('siteJsonLd', () => {
+  it('describes the hub as the parent of the three divisions', () => {
+    const ld = siteJsonLd('hub', toSiteData('hub', null), root)
+    expect(ld).toMatchObject({ '@type': 'Organization', name: 'The Genix Group', url: 'https://thegenixgroup.com/' })
+    expect((ld.subOrganization as { name: string }[]).map((o) => o.name)).toEqual(['Genix Logistics', 'Genix Home Upgrades', 'Genix Multimedia'])
+  })
+  it('gives a division its type, parent and areas served', () => {
+    const data = toSiteData('logistics', { coverage: [{ name: 'California' }, { name: 'Arizona' }, { name: 'Ohio' }] })
+    const ld = siteJsonLd('logistics', data, root)
+    expect(ld).toMatchObject({
+      '@type': 'MovingCompany',
+      name: 'Genix Logistics',
+      slogan: 'Reliable Freight. Real People. Right on Schedule.',
+      parentOrganization: { name: 'The Genix Group', url: 'https://thegenixgroup.com/' },
+      areaServed: [{ '@type': 'State', name: 'California' }, { '@type': 'State', name: 'Arizona' }, { '@type': 'State', name: 'Ohio' }],
+    })
+  })
+  it('leaves out areaServed when there is no coverage', () => {
+    expect(siteJsonLd('multimedia', toSiteData('multimedia', null), root)).not.toHaveProperty('areaServed')
+  })
+})

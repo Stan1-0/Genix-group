@@ -1,12 +1,22 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { JsonLd } from '@/components/site/JsonLd'
 import { SITES, SITE_KEYS, isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
+import { pageMetadata, siteJsonLd } from '@/sites/seo'
 
 type Props = { params: Promise<{ site: string }> }
 
 export function generateStaticParams() {
   return SITE_KEYS.map((site) => ({ site }))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { site } = await params
+  if (!isSiteKey(site)) return {}
+  const data = await getSiteData(site)
+  return pageMetadata(site, '/', { description: data.seoDescription })
 }
 
 export default async function HomePage({ params }: Props) {
@@ -16,6 +26,7 @@ export default async function HomePage({ params }: Props) {
   const data = await getSiteData(site)
   return (
     <main id="main">
+      <JsonLd data={siteJsonLd(site, data)} />
       <section data-quote-bar-after className="on-brand bg-brand px-[clamp(16px,4vw,56px)] py-[clamp(64px,10vw,128px)] text-white">
         <div className="mx-auto max-w-[1320px]">
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-gold">{cfg.name}</p>
