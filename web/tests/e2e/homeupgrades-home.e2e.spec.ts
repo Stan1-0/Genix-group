@@ -48,8 +48,11 @@ for (const [label, viewport, mobile] of [
       test('tapping the image moves the split', async ({ page }) => {
         await page.goto(URL)
         const box = (await page.locator('#ba').boundingBox())!
-        await page.touchscreen.tap(box.x + box.width * 0.2, box.y + box.height / 2)
-        await expect.poll(() => pos(page)).toBeLessThan(35)
+        // A tap before hydration reaches no handler; retry the same tap until the slider is live.
+        await expect(async () => {
+          await page.touchscreen.tap(box.x + box.width * 0.2, box.y + box.height / 2)
+          await expect.poll(() => pos(page), { timeout: 1500 }).toBeLessThan(35)
+        }).toPass({ timeout: 30_000 })
       })
 
       test('tap targets are at least 40px', async ({ page }) => {
@@ -143,7 +146,8 @@ test.describe('interactions (desktop)', () => {
 
   test('clicking during the swing keeps your position', async ({ page }) => {
     await page.goto(URL, { waitUntil: 'commit' })
-    await page.waitForFunction(() => +document.getElementById('baHandle')!.getAttribute('aria-valuenow')! < 45, null, { timeout: 8000 })
+    // Wide bound: hydration on a loaded dev server can take a while; the swing itself is wall-clock.
+    await page.waitForFunction(() => +document.getElementById('baHandle')!.getAttribute('aria-valuenow')! < 45, null, { timeout: 30_000 })
     const bx = (await page.locator('#ba').boundingBox())!
     await page.mouse.click(bx.x + bx.width * 0.85, bx.y + bx.height / 2)
     await page.waitForTimeout(2500)
@@ -209,17 +213,20 @@ test.describe('interactions (desktop)', () => {
     })
 
     test('fling keeps gliding after release (inertia)', async ({ page }) => {
-      await page.mouse.move(bx.x + bx.width * 0.3, cy)
-      await page.mouse.down()
-      // Paced moves: Draggable derives velocity from event timestamps, and unpaced CDP moves land in one timestamp.
-      for (const f of [0.35, 0.4, 0.45]) {
-        await page.mouse.move(bx.x + bx.width * f, cy)
-        await page.waitForTimeout(16)
-      }
-      await page.mouse.up()
-      const right = await pos(page)
-      await page.waitForTimeout(1200)
-      expect(await pos(page)).toBeGreaterThan(right + 2)
+      // Draggable derives the fling velocity from event timestamps, so a stall between the last move and the
+      // release (a loaded machine) reads as "stopped". The same gesture is retried; the assertion is unchanged.
+      await expect(async () => {
+        await page.mouse.move(bx.x + bx.width * 0.3, cy)
+        await page.mouse.down()
+        // Paced moves: unpaced CDP moves land in one timestamp.
+        for (const f of [0.35, 0.4, 0.45]) {
+          await page.mouse.move(bx.x + bx.width * f, cy)
+          await page.waitForTimeout(16)
+        }
+        await page.mouse.up()
+        const right = await pos(page)
+        await expect.poll(() => pos(page), { timeout: 2500 }).toBeGreaterThan(right + 2)
+      }).toPass({ timeout: 30_000 })
     })
 
     test('clicking the image jumps the split there', async ({ page }) => {

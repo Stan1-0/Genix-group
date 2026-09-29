@@ -61,7 +61,7 @@ export function Businesses() {
 
       <section className="panel" data-key="make" id="div-make" aria-labelledby="h-make">
         <div className="panel-media">
-          <Image src="/brand/hu-project-marble-wall.jpg" alt="" width={1200} height={900} sizes="100vw" loading="lazy" />
+          <Image src="/brand/hu-project-marble-wall.jpg" alt="" width={1122} height={1402} sizes="100vw" loading="lazy" />
         </div>
         <div className="wrap">
           <div>
@@ -97,8 +97,8 @@ export function Businesses() {
                 <Image
                   src="/brand/hu-project-marble-wall.jpg"
                   alt="Backlit marble feature wall with gold veining, a floating media console and slatted wood shelving"
-                  width={1200}
-                  height={900}
+                  width={1122}
+                  height={1402}
                   sizes="(max-width: 900px) 90vw, 33vw"
                   loading="lazy"
                 />

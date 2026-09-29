@@ -292,12 +292,14 @@ test.describe('confirmation scroll (short phone)', () => {
     await page.fill('#qName', 'Dana'); await page.fill('#qPhone', '619 555 0142')
     await page.click('#qSend')
     await expect(page.locator('#qSent')).toBeVisible()
-    await page.waitForTimeout(1500) // Lenis's smooth scroll settles
-    const r = await page.evaluate(() => {
+    const measure = () => page.evaluate(() => {
       const ref = document.getElementById('qRef')!.getBoundingClientRect()
       const title = document.querySelector('.sent-title')!.getBoundingClientRect()
-      return { refTop: ref.top, titleTop: title.top, titleBottom: title.bottom, vh: innerHeight }
+      return { refTop: ref.top, titleTop: title.top, titleBottom: title.bottom, vh: innerHeight, scrolling: !!window.genixLenis?.isScrolling }
     })
+    // Lenis's smooth scroll settles: wait for the confirmation to sit where the assertions below want it, then for Lenis to idle.
+    await expect.poll(async () => { const m = await measure(); return !m.scrolling && m.refTop >= 76 && m.titleTop >= 0 && m.titleBottom <= m.vh }, { timeout: 10_000 }).toBe(true)
+    const r = await measure()
     expect(r.refTop, '#qRef below the sticky header').toBeGreaterThanOrEqual(76)
     expect(r.titleTop).toBeGreaterThanOrEqual(0)
     expect(r.titleBottom).toBeLessThanOrEqual(r.vh)
@@ -350,7 +352,8 @@ test.describe('lanes (desktop)', () => {
   test('lane buttons pick the tab and Start a quote focuses the first field', async ({ page }) => {
     await gotoForm(page)
     await page.click('a[data-kind=move]')
-    await page.waitForTimeout(1400) // Lenis's smooth scroll settles
+    // Lenis's smooth scroll settles: the form has arrived (see the bounds asserted below) and Lenis is idle.
+    await expect.poll(() => page.evaluate(() => !window.genixLenis?.isScrolling && document.getElementById('quote-form')!.getBoundingClientRect().top < 400), { timeout: 10_000 }).toBe(true)
     const top = await page.evaluate(() => document.getElementById('quote-form')!.getBoundingClientRect().top)
     expect(top, 'form brought into view').toBeGreaterThanOrEqual(0)
     expect(top).toBeLessThan(400)
@@ -378,17 +381,40 @@ const ROAD = () => {
   }
 }
 
-/** Scroll to three points along the road (start, middle, end) and sample each once the scrub settles. */
+/** Scroll to three points along the road (start, middle, end) and sample each once the scrub has caught up. */
 async function roadPositions(page: Page, vh: number) {
   const top = await page.evaluate(() => document.querySelector('[data-road]')!.getBoundingClientRect().top + scrollY)
   const h = await page.evaluate(() => (document.querySelector('[data-road]') as HTMLElement).offsetHeight)
   const out = []
   for (const y of [top - vh * 0.75 - 60, top + h / 2 - vh * 0.6, top + h - vh * 0.45 + 120]) {
     await page.evaluate((y) => scrollTo(0, y), y)
-    await page.waitForTimeout(1400) // scrub: 0.5 settles
+    await roadSettled(page)
     out.push(await page.evaluate(ROAD))
   }
   return out
+}
+
+/** The scrub (0.5s) has caught up when --p equals the progress the current scroll position calls for
+    (ScrollTrigger start "top 75%", end "bottom 45%") and the stamp's transition has stopped changing. */
+async function roadSettled(page: Page) {
+  await expect.poll(() => page.evaluate(() => {
+    const r = document.querySelector('[data-road]')!
+    const box = r.getBoundingClientRect()
+    const start = box.top + scrollY - innerHeight * 0.75
+    const end = box.bottom + scrollY - innerHeight * 0.45
+    const want = Math.max(0, Math.min(1, (scrollY - start) / (end - start)))
+    return Math.abs(parseFloat(getComputedStyle(r).getPropertyValue('--p')) - want) < 0.005
+  }), { message: 'road scrub caught up with the scroll', timeout: 10_000 }).toBe(true)
+  await page.evaluate(async () => {
+    const stamp = document.querySelector('.stamp')!
+    let last = '', still = 0
+    while (still < 10) { // ten unchanged frames: the stamp transition is over
+      await new Promise((r) => requestAnimationFrame(r))
+      const now = getComputedStyle(stamp).opacity
+      still = now === last ? still + 1 : 0
+      last = now
+    }
+  })
 }
 
 test.describe('road signature (desktop)', () => {
@@ -407,7 +433,7 @@ test.describe('road signature (desktop)', () => {
     expect(end.stamp, 'DELIVERED stamp lands at the end').toBeGreaterThan(0.95)
     expect(start.stamp).toBeLessThan(0.05)
     await page.evaluate(() => scrollTo(0, 0))
-    await page.waitForTimeout(1400)
+    await roadSettled(page)
     expect((await page.evaluate(ROAD)).stamp, 'stamp stays after scrolling back to the start').toBeGreaterThan(0.95)
     expect(await page.evaluate(() => document.getElementById('how')!.offsetHeight), 'section height unchanged').toBe(h0)
     await expect(page.locator('.pin-spacer'), 'no pinning').toHaveCount(0)
@@ -445,18 +471,18 @@ test.describe('road (phone)', () => {
 test.describe('pinned bar (phone)', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
   const barOff = (page: Page) => page.evaluate(() => document.getElementById('quoteBar')!.classList.contains('off'))
-  const barAt = async (page: Page, sel: string, extra = 0) => {
+  /** Scroll to an anchor and wait for the bar to reach `want` (the bar reacts a frame or two after the scroll). */
+  const barAt = async (page: Page, sel: string, want: boolean, message: string, extra = 0) => {
     await page.evaluate(([s, e]) => scrollTo(0, document.querySelector(s as string)!.getBoundingClientRect().top + scrollY + (e as number)), [sel, extra])
-    await page.waitForTimeout(900)
-    return barOff(page)
+    await expect.poll(() => barOff(page), { message, timeout: 8000 }).toBe(want)
   }
   test('shows after the form, hides over #quote and footer, button focuses first field', async ({ page }) => {
     await gotoForm(page)
     expect(await barOff(page), 'hidden while the hero form is on screen').toBe(true)
-    expect(await barAt(page, '#services', 200), 'shows once the form has scrolled away').toBe(false)
-    expect(await barAt(page, '#quote'), 'hides over the final quote section').toBe(true)
-    expect(await barAt(page, '.site-footer'), 'hides over the footer').toBe(true)
-    await barAt(page, '#areas')
+    await barAt(page, '#services', false, 'shows once the form has scrolled away', 200)
+    await barAt(page, '#quote', true, 'hides over the final quote section')
+    await barAt(page, '.site-footer', true, 'hides over the footer')
+    await barAt(page, '#areas', false, 'shows again at the areas section')
     await page.click('#quoteBar [data-start-quote]')
     await expect.poll(() => activeId(page), { message: 'button goes to the form and focuses the first field' }).toBe('qFrom')
   })

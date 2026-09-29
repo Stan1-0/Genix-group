@@ -51,8 +51,8 @@ export function Hero({ data }: { data: SiteData }) {
               <Image
                 src="/brand/hu-project-marble-wall.jpg"
                 alt="Backlit marble feature wall by Genix Home Upgrades"
-                width={1200}
-                height={900}
+                width={1122}
+                height={1402}
                 sizes="(max-width: 900px) 100vw, 50vw"
                 priority
               />

@@ -443,13 +443,26 @@ test.describe('headline split (desktop)', () => {
   test.use({ viewport: { width: 1440, height: 900 } })
 
   test('lines are moving mid-animation', async ({ page }) => {
+    // Watch every frame from inside the page, from before its scripts run, so a loaded machine's slow
+    // polling cannot step over the short animation. `moved` is the same measure as H1's.
+    await page.addInitScript(() => {
+      const w = window as unknown as { __h1Moved: number }
+      w.__h1Moved = 0
+      const tick = () => {
+        const h = document.querySelector('.hero h1')
+        if (h) {
+          const inner = [...h.querySelectorAll('div, span')].filter((e) => getComputedStyle(e).display === 'block' && e.textContent!.trim())
+          const moved = inner.map((e) => new DOMMatrix(getComputedStyle(e).transform).m42).filter((y) => Math.abs(y) > 0.5).length
+          if (moved) { w.__h1Moved = moved; return }
+        }
+        requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    })
     await page.goto(URL, { waitUntil: 'commit' })
-    // sample from load until a line is caught mid-flight (animation timing depends on cache)
-    let moved = 0
-    for (let i = 0; i < 200 && !moved; i++) {
-      moved = await page.evaluate(H1).then((s) => (s as H1State).moved, () => 0)
-      if (!moved) await page.waitForTimeout(40)
-    }
+    // a line is caught mid-flight (animation timing depends on cache)
+    await expect.poll(() => page.evaluate(() => (window as unknown as { __h1Moved: number }).__h1Moved).catch(() => 0), { timeout: 30_000 }).toBeGreaterThan(0)
+    const moved = await page.evaluate(() => (window as unknown as { __h1Moved: number }).__h1Moved)
     expect(moved).toBeGreaterThan(0)
   })
 
