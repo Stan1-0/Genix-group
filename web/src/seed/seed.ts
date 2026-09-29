@@ -3,7 +3,7 @@ import config from '@payload-config'
 import type { SiteKey } from '@/sites/config'
 
 // Idempotent: creates missing site records, never overwrites edited ones.
-const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; areaServed?: string; areaServedType?: 'Country' }> = {
+const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; seoDescription?: string; areaServed?: string; areaServedType?: 'Country' }> = {
   hub: {
     heroHeading: 'We Haul It. We Build It. We Show It.',
     heroSubheading: 'Logistics, home upgrades and multimedia: three specialist businesses, one group.',
@@ -11,6 +11,7 @@ const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; areaS
   logistics: {
     heroHeading: 'Reliable Freight. Real People. On Time, Every Time.',
     heroSubheading: 'Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.',
+    seoDescription: 'Business freight, last-mile courier runs and home or office moves anywhere in the USA, from our base in San Diego. Get a price in two short steps. Part of The Genix Group.',
     areaServed: 'United States',
     areaServedType: 'Country',
   },

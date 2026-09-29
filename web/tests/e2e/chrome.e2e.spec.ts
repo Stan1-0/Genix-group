@@ -49,9 +49,7 @@ test.describe('phones', () => {
     await expect(page.locator('#siteHeader')).not.toHaveClass(/menu-open/)
   })
 
-  // Enabled in Task 4 when the Logistics page body (#quote-form) exists.
   test('quote bar: appears after the quote form, hidden over #quote and the footer', async ({ page }) => {
-    test.fixme(true, 'enabled in Task 4 when #quote-form exists')
     await page.goto(LOGISTICS + '/')
     const bar = page.getByTestId('quote-bar')
     await expect(bar).toHaveAttribute('data-off', 'true')

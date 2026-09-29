@@ -3,8 +3,10 @@ import { expectSameLook, hideOverlays, PROTOTYPE, settle, VIEWPORTS } from './pa
 
 /* Each ported site against its prototype. `chrome` (header + footer) turns on in Task 3;
    `sections` turns on in the task that ports that site's page body. */
-const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean }[] = [
-  { site: 'logistics', proto: '/logistics-home.html', app: 'http://logistics.localhost:3000/', chrome: true, sections: false },
+/* `skip`: section indexes not comparable yet. Logistics section 1 (hero): the prototype's quote-form.js hides
+   step 2 and the pallets field at load; that behaviour is ported in Task 5, which removes this skip. */
+const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean; skip?: number[] }[] = [
+  { site: 'logistics', proto: '/logistics-home.html', app: 'http://logistics.localhost:3000/', chrome: true, sections: true, skip: [0] },
   { site: 'homeupgrades', proto: '/homeupgrades-home.html', app: 'http://homeupgrades.localhost:3000/', chrome: true, sections: false },
   { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: false },
 ]
@@ -42,7 +44,7 @@ for (const p of PARITY) {
       if (p.sections) {
         const n = await proto.locator('main > section').count()
         expect(await app.locator('main > section').count(), 'same number of sections').toBe(n)
-        for (let i = 0; i < n; i++) await expectSameLook(proto, app, `main > section >> nth=${i}`, `${p.site}-${vp}-section${i + 1}`)
+        for (let i = 0; i < n; i++) if (!p.skip?.includes(i)) await expectSameLook(proto, app, `main > section >> nth=${i}`, `${p.site}-${vp}-section${i + 1}`)
       }
       if (p.chrome) await expectSameLook(proto, app, 'footer.site-footer', `${p.site}-${vp}-footer`)
     })
