@@ -1,3 +1,4 @@
+import { ProcessLine } from '@/components/motion/ProcessLine'
 import Image from 'next/image'
 
 /* How a project runs: crew photo and four steps (the progress line is added by an enhancer). */
@@ -43,6 +44,7 @@ export function Process() {
           </ol>
         </div>
       </div>
+      <ProcessLine />
     </section>
   )
 }

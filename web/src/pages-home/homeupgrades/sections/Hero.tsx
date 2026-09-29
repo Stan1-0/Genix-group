@@ -1,3 +1,4 @@
+import { BeforeAfter } from '@/components/motion/BeforeAfter'
 import Image from 'next/image'
 import { GoldHeading } from '../../GoldHeading'
 import type { SiteData } from '@/sites/data-shape'
@@ -78,6 +79,7 @@ export function Hero({ data }: { data: SiteData }) {
             <span>Backlit marble TV wall · Genix Home Upgrades</span>
           </figcaption>
         </figure>
+        <BeforeAfter />
       </div>
     </section>
   )

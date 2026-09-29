@@ -1,3 +1,4 @@
+import { ProjectViewer } from '@/components/motion/ProjectViewer'
 import Image from 'next/image'
 
 /* Recent work: two project cards and a placeholder, plus the (empty) viewer dialog.
@@ -95,6 +96,7 @@ export function Work() {
           </svg>
         </button>
       </dialog>
+      <ProjectViewer />
     </>
   )
 }
