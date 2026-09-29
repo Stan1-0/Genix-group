@@ -16,7 +16,7 @@ export function Hero({ data }: { data: SiteData }) {
           <p className="lead">{data.heroSubheading || LEAD}</p>
         </div>
 
-        <form className="label-card quote-form" id="quote-form" action="#" method="post" aria-labelledby="formTitle"
+        <form className="label-card quote-form" id="quote-form" action="#" method="dialog" aria-labelledby="formTitle"
           data-send-mode={quoteSendMode(process.env.VERCEL_ENV)} data-offline-message={offlineMessage(data.phone)}>
           <p className="label-ref mono">
             <span id="qRef">Quote request · New</span>
@@ -110,6 +110,7 @@ export function Hero({ data }: { data: SiteData }) {
               <label htmlFor="qHp">Leave this empty</label>
               <input id="qHp" name="company_site" tabIndex={-1} autoComplete="off" />
             </div>
+            <p className="mono no-js-note">Online requests aren&apos;t available yet — call or email us.</p>
             <div className="form-actions">
               <button type="button" className="btn btn-ghost js-only" id="qBack">← Back</button>
               <button type="submit" className="btn btn-gold" id="qSend">

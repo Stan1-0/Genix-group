@@ -116,6 +116,10 @@ test.describe('no JavaScript', () => {
   test('ZIP has a native 5-digit pattern', async ({ page }) => {
     expect(await page.getAttribute('#qFrom', 'pattern')).toBe('[0-9]{5}')
   })
+  test('form sends nothing and says requests are offline', async ({ page }) => {
+    expect(await page.evaluate(() => document.querySelector<HTMLFormElement>('#quote-form')!.method)).toBe('dialog')
+    await expect(page.locator('#quote-form')).toContainText("Online requests aren't available yet")
+  })
   test('pallets field is visible without JS', async ({ page }) => {
     await expect(page.locator('#qPallets')).toBeVisible()
   })
