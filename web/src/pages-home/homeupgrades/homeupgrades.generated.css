@@ -256,116 +256,116 @@ html[data-site="homeupgrades"] {
   --shadow-hover: rgba(0, 0, 0, 0.08) 0 2px 10px 0;
 }
 
-html[data-site="homeupgrades"] body {
+html[data-site="homeupgrades"][data-site="homeupgrades"] body {
   background: var(--paper);
   font: 400 18px/1.45 var(--f-body);
   letter-spacing: 0; /* the reference's -0.01em was tuned for Regola; Jakarta already sits tight */
   font-feature-settings: "lnum", "tnum";
 }
-html[data-site="homeupgrades"] :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
 
 /* ---------- Type: light headlines, tight tracking ---------- */
-html[data-site="homeupgrades"] .h-display,
-html[data-site="homeupgrades"] .hero h1 {
+html[data-site="homeupgrades"][data-site="homeupgrades"] .h-display,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .hero h1 {
   font-weight: 300; line-height: 0.92; letter-spacing: -0.047em;
 }
-html[data-site="homeupgrades"] .h-section {
+html[data-site="homeupgrades"][data-site="homeupgrades"] .h-section {
   font-weight: 300; font-size: clamp(40px, 4.8vw, 60px); line-height: 0.98; letter-spacing: -0.041em;
 }
-html[data-site="homeupgrades"] .step3d h3,
-html[data-site="homeupgrades"] .quote h2 { font-weight: 300; letter-spacing: -0.045em; }
-html[data-site="homeupgrades"] .svc h3,
-html[data-site="homeupgrades"] .step h3 { font-weight: 400; font-size: 30px; line-height: 1.14; letter-spacing: -0.03em; }
-html[data-site="homeupgrades"] .work-cap b,
-html[data-site="homeupgrades"] .viewer-cap b,
-html[data-site="homeupgrades"] .ba-cap b { font-weight: 500; letter-spacing: -0.02em; }
-html[data-site="homeupgrades"] .hero .lead { font-weight: 400; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; }
-html[data-site="homeupgrades"] .body { color: var(--ink-2); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .step3d h3,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .quote h2 { font-weight: 300; letter-spacing: -0.045em; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc h3,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .step h3 { font-weight: 400; font-size: 30px; line-height: 1.14; letter-spacing: -0.03em; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work-cap b,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .viewer-cap b,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-cap b { font-weight: 500; letter-spacing: -0.02em; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .hero .lead { font-weight: 400; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .body { color: var(--ink-2); }
 
 /* Eyebrows: quiet captions instead of mono caps; the short gold rule stays as the brand mark */
-html[data-site="homeupgrades"] .label,
-html[data-site="homeupgrades"] .step3d .num {
+html[data-site="homeupgrades"][data-site="homeupgrades"] .label,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .step3d .num {
   font: 500 14px/1.5 var(--f-body); letter-spacing: 0.01em; text-transform: none; color: var(--graphite);
 }
-html[data-site="homeupgrades"] .label::before,
-html[data-site="homeupgrades"] .step3d .num::before { width: 20px; }
-html[data-site="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .label::before,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .step3d .num::before { width: 20px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
 
 /* ---------- Links + small interactive details: sky blue ---------- */
-html[data-site="homeupgrades"] .svc .more { color: var(--sky-text); border-bottom-color: currentColor; }
-html[data-site="homeupgrades"] .svc .more:hover { color: #005a9e; }
-html[data-site="homeupgrades"] .parent-link:hover,
-html[data-site="homeupgrades"] .nav a:hover { color: var(--sky-text); }
-html[data-site="homeupgrades"] .ba-knob { background: var(--sky); color: #fff; box-shadow: var(--shadow-hover), 0 0 0 4px rgba(0, 150, 247, 0.18); }
-html[data-site="homeupgrades"] .ba-handle:focus-visible .ba-knob { outline-color: #fff; }
-html[data-site="homeupgrades"] .ba-tag-after { background: var(--sky); color: #fff; }
-html[data-site="homeupgrades"] .work-play { background: var(--sky); color: #fff; }
-html[data-site="homeupgrades"] .work-cap small { color: #7cc4ff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc .more { color: var(--sky-text); border-bottom-color: currentColor; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc .more:hover { color: #005a9e; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .parent-link:hover,
+html[data-site="homeupgrades"][data-site="homeupgrades"] .nav a:hover { color: var(--sky-text); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-knob { background: var(--sky); color: #fff; box-shadow: var(--shadow-hover), 0 0 0 4px rgba(0, 150, 247, 0.18); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-handle:focus-visible .ba-knob { outline-color: #fff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-tag-after { background: var(--sky); color: #fff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work-play { background: var(--sky); color: #fff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work-cap small { color: #7cc4ff; }
 
 /* ---------- Buttons: 12px radius; brand colours carry the main actions ---------- */
-html[data-site="homeupgrades"] .btn { border-radius: var(--r); min-height: 50px; padding: 0 22px; font-weight: 500; font-size: 15px; letter-spacing: 0; box-shadow: var(--shadow-subtle); }
-html[data-site="homeupgrades"] .btn-sm { min-height: 44px; padding: 0 16px; }
-html[data-site="homeupgrades"] .btn-dark span { color: var(--gold); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .btn { border-radius: var(--r); min-height: 50px; padding: 0 22px; font-weight: 500; font-size: 15px; letter-spacing: 0; box-shadow: var(--shadow-subtle); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .btn-sm { min-height: 44px; padding: 0 16px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .btn-dark span { color: var(--gold); }
 /* secondary actions: the pill ghost */
-html[data-site="homeupgrades"] .btn-ghost { border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.05); color: var(--heading); box-shadow: none; }
-html[data-site="homeupgrades"] .btn-ghost:hover { background: rgba(0, 0, 0, 0.09); color: var(--heading); }
-html[data-site="homeupgrades"] .on-dark .btn-ghost { background: rgba(255, 255, 255, 0.12); color: #fff; }
-html[data-site="homeupgrades"] .menu-btn { border-radius: var(--r); border-color: var(--line); background: var(--surface); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .btn-ghost { border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.05); color: var(--heading); box-shadow: none; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .btn-ghost:hover { background: rgba(0, 0, 0, 0.09); color: var(--heading); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .btn-ghost { background: rgba(255, 255, 255, 0.12); color: #fff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .menu-btn { border-radius: var(--r); border-color: var(--line); background: var(--surface); }
 
 /* ---------- Header: parchment glass, hairline ---------- */
-html[data-site="homeupgrades"] .site-header { background: var(--paper); backdrop-filter: none; border-bottom-color: rgba(0, 0, 0, 0.06); } /* solid: translucent parchment turned grey over the navy panel */
+html[data-site="homeupgrades"][data-site="homeupgrades"] .site-header { background: var(--paper); backdrop-filter: none; border-bottom-color: rgba(0, 0, 0, 0.06); } /* solid: translucent parchment turned grey over the navy panel */
 
 /* ---------- Sections: space, not dividers ---------- */
-html[data-site="homeupgrades"] .hero { padding: clamp(48px, 8vh, 96px) 0 clamp(96px, 10vw, 120px); }
-html[data-site="homeupgrades"] .services { background: transparent; border: 0; padding: clamp(96px, 10vw, 120px) 0; }
-html[data-site="homeupgrades"] .work { padding: clamp(96px, 10vw, 120px) 0; }
-html[data-site="homeupgrades"] .quote { padding: clamp(96px, 10vw, 140px) 0; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .hero { padding: clamp(48px, 8vh, 96px) 0 clamp(96px, 10vw, 120px); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .services { background: transparent; border: 0; padding: clamp(96px, 10vw, 120px) 0; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work { padding: clamp(96px, 10vw, 120px) 0; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .quote { padding: clamp(96px, 10vw, 140px) 0; }
 
 /* ---------- Media + cards: 12px radius, soft lift ---------- */
-html[data-site="homeupgrades"] .ba { border-radius: var(--r-lg); box-shadow: var(--shadow-sm); }
-html[data-site="homeupgrades"] .ba-tag { border-radius: 8px; font: 500 13px/1 var(--f-body); letter-spacing: 0.01em; text-transform: none; padding: 8px 12px; }
-html[data-site="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s; }
-html[data-site="homeupgrades"] .svc:hover { box-shadow: var(--shadow-hover); }
-html[data-site="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
-html[data-site="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
-html[data-site="homeupgrades"] .svc-stock { border-radius: 6px; }
-html[data-site="homeupgrades"] .work-card { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
-html[data-site="homeupgrades"] .work-ph { border-radius: var(--r); background: var(--sand); border: 1.5px dashed rgba(194, 138, 44, 0.6); }
-html[data-site="homeupgrades"] .viewer-media { border-radius: var(--r); }
-html[data-site="homeupgrades"] .crew img { border-radius: var(--r); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba { border-radius: var(--r-lg); box-shadow: var(--shadow-sm); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-tag { border-radius: 8px; font: 500 13px/1 var(--f-body); letter-spacing: 0.01em; text-transform: none; padding: 8px 12px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc:hover { box-shadow: var(--shadow-hover); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-stock { border-radius: 6px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work-card { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .work-ph { border-radius: var(--r); background: var(--sand); border: 1.5px dashed rgba(194, 138, 44, 0.6); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .viewer-media { border-radius: var(--r); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .crew img { border-radius: var(--r); }
 
 /* The process band becomes a rounded navy "specialty card" inset from the edges */
-html[data-site="homeupgrades"] .process {
+html[data-site="homeupgrades"][data-site="homeupgrades"] .process {
   margin: 0 var(--gutter); border-radius: var(--r-lg);
   padding: clamp(72px, 9vw, 110px) 0;
 }
-html[data-site="homeupgrades"] .step::before { font: 600 14px/1 var(--f-body); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .step::before { font: 600 14px/1 var(--f-body); }
 
 /* The quote block becomes a warm sand card */
-html[data-site="homeupgrades"] .quote .wrap > div:last-child {
+html[data-site="homeupgrades"][data-site="homeupgrades"] .quote .wrap > div:last-child {
   background: var(--sand); border-radius: var(--r-lg); padding: 36px; box-shadow: var(--shadow-subtle);
 }
-html[data-site="homeupgrades"] .quote .body { margin-top: 0; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .quote .body { margin-top: 0; }
 
 /* 3D section: captions sit on soft cards; stage tones matched to parchment */
-html[data-site="homeupgrades"] .build { background: var(--paper); }
-html[data-site="homeupgrades"] .build .stage::after { background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(253, 253, 247, 0.6) 100%); }
-html[data-site="homeupgrades"] .progress3d i { border-radius: 2px; }
-html[data-site="homeupgrades"] .build .fallback img { border-radius: var(--r-lg); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .build { background: var(--paper); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .build .stage::after { background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(253, 253, 247, 0.6) 100%); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .progress3d i { border-radius: 2px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .build .fallback img { border-radius: var(--r-lg); }
 
 /* Placeholders keep their dashed gold marking, softened */
-html[data-site="homeupgrades"] .ph { border-radius: 4px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .ph { border-radius: 4px; }
 
 /* Footer: navy, links in parchment; hover shows the sky accent */
-html[data-site="homeupgrades"] .footer-logo { border-radius: var(--r); }
-html[data-site="homeupgrades"] .part-of img { border-radius: 6px; }
-html[data-site="homeupgrades"] .site-footer h2 { font: 500 13px/1 var(--f-body); letter-spacing: 0; text-transform: none; }
-html[data-site="homeupgrades"] .site-footer a:hover { color: #7cc4ff; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .footer-logo { border-radius: var(--r); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .part-of img { border-radius: 6px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer h2 { font: 500 13px/1 var(--f-body); letter-spacing: 0; text-transform: none; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { color: #7cc4ff; }
 
 @media (max-width: 960px) {
-  html[data-site="homeupgrades"] .process { margin: 0 12px; }
-  html[data-site="homeupgrades"] .step3d { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
-  html[data-site="homeupgrades"] .quote .wrap > div:last-child { padding: 28px; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .process { margin: 0 12px; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .step3d { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .quote .wrap > div:last-child { padding: 28px; }
 }
 
 

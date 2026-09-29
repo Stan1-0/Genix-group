@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/site/JsonLd'
+import { HomeUpgradesHome } from '@/pages-home/homeupgrades/HomeUpgradesHome'
 import { LogisticsHome } from '@/pages-home/logistics/LogisticsHome'
 import { SITES, SITE_KEYS, isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
@@ -30,6 +31,7 @@ export default async function HomePage({ params }: Props) {
   const cfg = SITES[site]
   const data = await getSiteData(site)
   if (site === 'logistics') return <LogisticsHome data={data} />
+  if (site === 'homeupgrades') return <HomeUpgradesHome data={data} />
   // Other sites: foundation placeholder until their pages are ported.
   return (
     <main id="main">

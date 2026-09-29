@@ -13,7 +13,15 @@ const root = (site: SiteKey) => `html[data-site="${site}"]`
 export function scopeSelector(selector: string, site: SiteKey): string | null {
   const sel = selector.trim()
   const division = /^(?::where\(\[data-division="([a-z]+)"\]\)|\[data-division="([a-z]+)"\])/.exec(sel)
-  if (division) return (division[1] ?? division[2]) === site ? root(site) + sel.slice(division[0].length) : null
+  if (division) {
+    if ((division[1] ?? division[2]) !== site) return null
+    const rest = sel.slice(division[0].length)
+    // A bare [data-division] attribute outweighs an unprefixed rule by one class in the prototype; scoping
+    // gives every rule the same html[data-site] prefix, so repeat the attribute to keep that difference
+    // (an :where() division scope has no weight and stays a single root).
+    const weighted = !division[1] && /^[\s>+~]/.test(rest) && rest.trim() !== '' ? `[data-site="${site}"]` : ''
+    return root(site) + weighted + rest
+  }
   if (/^:root(?![\w-])/.test(sel)) return root(site) + sel.slice(':root'.length)
   if (/^html(?![\w-])/.test(sel)) return root(site) + sel.slice('html'.length)
   const cls = /^\.([\w-]+)/.exec(sel)

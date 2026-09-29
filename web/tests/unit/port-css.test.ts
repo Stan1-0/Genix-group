@@ -10,7 +10,8 @@ describe('scopeSelector', () => {
     expect(scopeSelector('html', 'logistics')).toBe(S)
     expect(scopeSelector('html.lenis body', 'logistics')).toBe(`${S}.lenis body`)
     expect(scopeSelector('[data-division="logistics"]', 'logistics')).toBe(S)
-    expect(scopeSelector('[data-division="logistics"] .hero', 'logistics')).toBe(`${S} .hero`)
+    expect(scopeSelector('[data-division="logistics"] .hero', 'logistics')).toBe(`${S}[data-site="logistics"] .hero`)
+    expect(scopeSelector(':where([data-division="logistics"]) .hero', 'logistics')).toBe(`${S} .hero`)
   })
   it('drops rules for another division', () => {
     expect(scopeSelector('[data-division="homeupgrades"] .x', 'logistics')).toBeNull()

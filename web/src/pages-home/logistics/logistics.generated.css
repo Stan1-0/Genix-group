@@ -234,18 +234,18 @@ html[data-site="logistics"] .quote-bar { display: none; } /* wider screens: the 
 
 /* ---------- Overrides of shared classes ---------- */
 html[data-site="logistics"] { --truck: #37404a; --label-ink: #7a6a4a; --err: #b3261e; --r: 6px; }
-html[data-site="logistics"] body { font-size: 17px; }
-html[data-site="logistics"] .h-display,
-html[data-site="logistics"] .h-section { font-weight: 900; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95; }
-html[data-site="logistics"] .h-display { font-size: clamp(36px, 5.4vw, 76px); }
-html[data-site="logistics"] .h-section { font-size: clamp(30px, 4.2vw, 58px); }
-html[data-site="logistics"] .btn { border-radius: var(--r); font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: 0.04em; font-size: 15px; }
-html[data-site="logistics"] .brand img { height: 50px; mix-blend-mode: normal; }
-html[data-site="logistics"] .footer-logo { border-radius: var(--r); }
-html[data-site="logistics"] .part-of img { border-radius: 4px; }
-html[data-site="logistics"] .on-dark { background: var(--brand); color: var(--white); }
-html[data-site="logistics"] .on-dark .body { color: var(--on-brand-muted); }
-html[data-site="logistics"] [hidden] { display: none !important; }
+html[data-site="logistics"][data-site="logistics"] body { font-size: 17px; }
+html[data-site="logistics"][data-site="logistics"] .h-display,
+html[data-site="logistics"][data-site="logistics"] .h-section { font-weight: 900; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95; }
+html[data-site="logistics"][data-site="logistics"] .h-display { font-size: clamp(36px, 5.4vw, 76px); }
+html[data-site="logistics"][data-site="logistics"] .h-section { font-size: clamp(30px, 4.2vw, 58px); }
+html[data-site="logistics"][data-site="logistics"] .btn { border-radius: var(--r); font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: 0.04em; font-size: 15px; }
+html[data-site="logistics"][data-site="logistics"] .brand img { height: 50px; mix-blend-mode: normal; }
+html[data-site="logistics"][data-site="logistics"] .footer-logo { border-radius: var(--r); }
+html[data-site="logistics"][data-site="logistics"] .part-of img { border-radius: 4px; }
+html[data-site="logistics"][data-site="logistics"] .on-dark { background: var(--brand); color: var(--white); }
+html[data-site="logistics"][data-site="logistics"] .on-dark .body { color: var(--on-brand-muted); }
+html[data-site="logistics"][data-site="logistics"] [hidden] { display: none !important; }
 html[data-site="logistics"]:not(.js) .js-only { display: none !important; }
 
 /* ---------- Logistics components ---------- */
