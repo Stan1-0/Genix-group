@@ -5,7 +5,7 @@ describe('site registry', () => {
   it('has the four sites with their exact names, taglines and prefixes', () => {
     expect(SITE_KEYS).toEqual(['hub', 'logistics', 'homeupgrades', 'multimedia'])
     expect(SITES.hub).toMatchObject({ name: 'The Genix Group', tagline: 'We Haul It. We Build It. We Show It.', inquiryPrefix: 'HUB' })
-    expect(SITES.logistics).toMatchObject({ name: 'Genix Logistics', tagline: 'Reliable Freight. Real People. Right on Schedule.', inquiryPrefix: 'LOG' })
+    expect(SITES.logistics).toMatchObject({ name: 'Genix Logistics', tagline: 'Reliable Freight. Real People. On Time, Every Time.', inquiryPrefix: 'LOG' })
     expect(SITES.homeupgrades).toMatchObject({ name: 'Genix Home Upgrades', tagline: 'From Blueprint to Beautiful.', inquiryPrefix: 'HUP' })
     expect(SITES.multimedia).toMatchObject({ name: 'Genix Multimedia', tagline: 'Your Story, Captured and Amplified.', inquiryPrefix: 'MED' })
   })

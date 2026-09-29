@@ -53,7 +53,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     shortName: 'Logistics',
     subdomain: 'logistics',
     inquiryPrefix: 'LOG',
-    tagline: 'Reliable Freight. Real People. Right on Schedule.',
+    tagline: 'Reliable Freight. Real People. On Time, Every Time.',
     schemaType: 'MovingCompany',
     logo: { src: '/brand/genix-logistics-logo.svg', width: 876, height: 405 },
     icons: '/icons/logistics',

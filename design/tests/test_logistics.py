@@ -17,7 +17,7 @@ def t_structure(b):
             g = pg.evaluate("(() => { const g = document.querySelector('.lane-grid'); return [g.scrollWidth, g.clientWidth]; })()")
             check("[phone] service lanes swipe sideways", g[0] > g[1], str(g))
         else:
-            check("title", pg.title() == "Genix Logistics | Reliable Freight. Real People. Right on Schedule.", pg.title())
+            check("title", pg.title() == "Genix Logistics | Reliable Freight. Real People. On Time, Every Time.", pg.title())
             check("division theme", pg.evaluate("document.documentElement.dataset.division") == "logistics")
             ids = pg.evaluate("[...document.querySelectorAll('main > section')].map(s => s.id)")
             check("section order", ids == ["hero", "services", "how", "areas", "why", "faq", "quote"], str(ids))

@@ -4,7 +4,7 @@ import { toSiteData } from '@/sites/data-shape'
 describe('toSiteData', () => {
   it('falls back to registry values when there is no CMS record', () => {
     expect(toSiteData('logistics', null)).toEqual({
-      heroHeading: 'Reliable Freight. Real People. Right on Schedule.',
+      heroHeading: 'Reliable Freight. Real People. On Time, Every Time.',
       heroSubheading: '',
       phone: null,
       email: 'hello@thegenixgroup.com',

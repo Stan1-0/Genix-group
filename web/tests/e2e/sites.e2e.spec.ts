@@ -9,7 +9,7 @@ const ORIGINS = {
 } as const
 const HEADINGS = {
   hub: 'We Haul It. We Build It. We Show It.',
-  logistics: 'Reliable Freight. Real People. Right on Schedule.',
+  logistics: 'Reliable Freight. Real People. On Time, Every Time.',
   homeupgrades: 'From Blueprint to Beautiful.',
   multimedia: 'Your Story, Captured and Amplified.',
 } as const

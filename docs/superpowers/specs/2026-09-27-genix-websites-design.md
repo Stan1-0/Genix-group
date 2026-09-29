@@ -8,7 +8,7 @@ Scope: the production build of four sites — the group hub and three divisions 
 - **Brand:** The Genix Group (spelling "Genix"). Divisions: Genix Logistics, Genix Home Upgrades, Genix Multimedia. Never "Construction" for Home Upgrades.
 - **Market:** USA; head office San Diego, California.
 - **Domains:** `thegenixgroup.com` (hub), `logistics.thegenixgroup.com`, `homeupgrades.thegenixgroup.com`, `multimedia.thegenixgroup.com`.
-- **Taglines (exact):** Group "We Haul It. We Build It. We Show It."; Logistics "Reliable Freight. Real People. Right on Schedule."; Home Upgrades "From Blueprint to Beautiful."; Multimedia "Your Story, Captured and Amplified."
+- **Taglines (exact):** Group "We Haul It. We Build It. We Show It."; Logistics "Reliable Freight. Real People. On Time, Every Time."; Home Upgrades "From Blueprint to Beautiful."; Multimedia "Your Story, Captured and Amplified."
 - **Visual reference (source of truth for look and behaviour):** `design/hub-home.html`, `design/homeupgrades-home.html`, `design/logistics-home.html`, with their shared files in `design/shared/`, `design/js/`, `design/assets/`, and their Playwright suites in `design/tests/`.
 - **Staff:** non-technical; edit content rarely.
 
@@ -36,7 +36,7 @@ visitor → logistics.thegenixgroup.com/services
 **Site registry — `sites.config.ts`, the single source of truth for structure**
 ```ts
 { key: "logistics", name: "Genix Logistics", host: "logistics.thegenixgroup.com",
-  theme: "logistics", inquiryPrefix: "LOG", tagline: "Reliable Freight. Real People. Right on Schedule." }
+  theme: "logistics", inquiryPrefix: "LOG", tagline: "Reliable Freight. Real People. On Time, Every Time." }
 ```
 Keys: `hub` (prefix `HUB`), `logistics` (`LOG`), `homeupgrades` (`HUP`), `multimedia` (`MED`). The proxy, themes, sitemaps, footers and the hub's division panels read from it. Adding a division = one entry + a theme file + CMS content.
 

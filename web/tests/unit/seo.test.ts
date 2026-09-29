@@ -7,7 +7,7 @@ const root = 'thegenixgroup.com'
 describe('pageMetadata', () => {
   it('uses "<Site> | <Tagline>" on the home page with an absolute canonical', () => {
     const m = pageMetadata('logistics', '/', {}, root)
-    expect(m.title).toEqual({ absolute: 'Genix Logistics | Reliable Freight. Real People. Right on Schedule.' })
+    expect(m.title).toEqual({ absolute: 'Genix Logistics | Reliable Freight. Real People. On Time, Every Time.' })
     expect(m.alternates?.canonical).toBe('https://logistics.thegenixgroup.com/')
   })
   it('uses "<Page> | <Site>" elsewhere', () => {
@@ -44,7 +44,7 @@ describe('siteJsonLd', () => {
     expect(ld).toMatchObject({
       '@type': 'MovingCompany',
       name: 'Genix Logistics',
-      slogan: 'Reliable Freight. Real People. Right on Schedule.',
+      slogan: 'Reliable Freight. Real People. On Time, Every Time.',
       parentOrganization: { name: 'The Genix Group', url: 'https://thegenixgroup.com/' },
       areaServed: { '@type': 'Country', name: 'United States' },
     })

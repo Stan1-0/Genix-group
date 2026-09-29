@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test('logistics home: title, canonical, JSON-LD and share image', async ({ page }) => {
   await page.goto('http://logistics.localhost:3000/')
-  await expect(page).toHaveTitle('Genix Logistics | Reliable Freight. Real People. Right on Schedule.')
+  await expect(page).toHaveTitle('Genix Logistics | Reliable Freight. Real People. On Time, Every Time.')
   // Next 16.3.6's metadata resolver renders a root canonical as the bare origin (no
   // trailing slash) unless `trailingSlash: true` is set in next.config — see
   // node_modules/next/dist/lib/metadata/resolvers/resolve-url.js resolveAbsoluteUrlWithPathname.
