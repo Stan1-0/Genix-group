@@ -13,11 +13,26 @@ declare global {
   interface Window { __build?: { mode: string; state: BuildState } }
 }
 
+/** Mounts the scene. Returns a dispose function; if mounting throws part-way, whatever was already created is
+    unwound (same disposers, in reverse) before the error is rethrown, so the caller's fallback starts clean. */
 export function mountBuild(section: HTMLElement): () => void {
+  const cleanups: (() => void)[] = [];
+  const dispose = () => { while (cleanups.length) { try { cleanups.pop()!(); } catch { /* keep unwinding */ } } };
+  try {
+    build(section, cleanups);
+  } catch (e) {
+    dispose();
+    throw e;
+  }
+  return dispose;
+}
+
+function build(section: HTMLElement, cleanups: (() => void)[]): void {
   const root = document.documentElement;
   const stage = section.querySelector<HTMLElement>(".stage")!;
   let disposed = false;
   const ctx = gsap.context(() => {}, section); // owns the timeline + ScrollTrigger; ctx.revert() kills them
+  cleanups.push(() => { disposed = true; ctx.revert(); });
   const textures: THREE.Texture[] = [];
   const materials: THREE.Material[] = [];
   const geometries: THREE.BufferGeometry[] = [];
@@ -29,6 +44,7 @@ export function mountBuild(section: HTMLElement): () => void {
   const headerH = parseFloat(getComputedStyle(root).getPropertyValue("--header")) || 76;
   const screenObserver = new IntersectionObserver(([e]) => (onScreen = e.isIntersecting), { rootMargin: `-${headerH}px 0px 0px 0px` });
   screenObserver.observe(section);
+  cleanups.push(() => screenObserver.disconnect());
 
   const mobile = innerWidth < 760;
 
@@ -38,6 +54,12 @@ export function mountBuild(section: HTMLElement): () => void {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
+  cleanups.push(() => {
+    renderer.setAnimationLoop(null);
+    renderer.forceContextLoss(); // free the GL context now; browsers cap live contexts (~16)
+    renderer.dispose();
+    renderer.domElement.remove();
+  });
   stage.prepend(renderer.domElement);
   renderer.domElement.setAttribute("aria-hidden", "true");
 
@@ -45,6 +67,19 @@ export function mountBuild(section: HTMLElement): () => void {
   const background = new THREE.Color("#ece8e1"), fog = new THREE.Fog("#ece8e1", 12, 26);
   scene.background = background;
   scene.fog = fog;
+  cleanups.push(() => { // geometries, materials and their textures (walks the scene at dispose time)
+    scene.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.geometry) geometries.push(m.geometry);
+      if (m.material) materials.push(...(Array.isArray(m.material) ? m.material : [m.material]));
+    });
+    new Set(geometries).forEach((g) => g.dispose());
+    new Set(materials).forEach((m) => {
+      for (const v of Object.values(m)) if (v instanceof THREE.Texture) textures.push(v);
+      m.dispose();
+    });
+    new Set(textures).forEach((t) => t.dispose());
+  });
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 60);
 
   // ---------- materials ----------
@@ -209,6 +244,7 @@ export function mountBuild(section: HTMLElement): () => void {
   const look = { x: 0, y: 0 };
   const onPointerMove = (e: PointerEvent) => { look.x = (e.clientX / innerWidth - 0.5) * 2; look.y = (e.clientY / innerHeight - 0.5) * 2; };
   addEventListener("pointermove", onPointerMove);
+  cleanups.push(() => removeEventListener("pointermove", onPointerMove));
 
   // ---------- per-frame: read the numbers, place things ----------
   const fitDist = () => { // distance at which the feature wall (plus margin) fits the width
@@ -225,13 +261,16 @@ export function mountBuild(section: HTMLElement): () => void {
     if (w >= 760) camera.setViewOffset(w, h, -w * 0.17, 0, w, h); else camera.setViewOffset(w, h, 0, h * 0.16, w, h);
     camera.updateProjectionMatrix();
   };
-  addEventListener("resize", resize); resize();
+  addEventListener("resize", resize);
+  cleanups.push(() => removeEventListener("resize", resize));
+  resize();
   // Compile every shader up front, off the critical path (parallel where the GPU
   // supports it), so the first on-screen frame never stalls a click or a scroll.
   const usedIdle = typeof window.requestIdleCallback === "function";
   const idleId: number = usedIdle
     ? window.requestIdleCallback(() => { if (!disposed) renderer.compileAsync(scene, camera).catch(() => {}); })
     : window.setTimeout(() => { if (!disposed) renderer.compileAsync(scene, camera).catch(() => {}); }, 200);
+  cleanups.push(() => { if (usedIdle) window.cancelIdleCallback(idleId); else clearTimeout(idleId); });
 
   const lerp = THREE.MathUtils.lerp;
   const smooth = { x: 0, y: 0 };
@@ -276,31 +315,9 @@ export function mountBuild(section: HTMLElement): () => void {
     renderer.render(scene, camera);
   });
 
-  // ---------- cleanup: everything above that outlives this call ----------
-  return () => {
-    if (disposed) return;
-    disposed = true;
-    renderer.setAnimationLoop(null);
-    screenObserver.disconnect();
-    removeEventListener("resize", resize);
-    removeEventListener("pointermove", onPointerMove);
-    if (usedIdle) window.cancelIdleCallback(idleId); else clearTimeout(idleId);
-    ctx.revert(); // kills the timeline and the ScrollTrigger
+  cleanups.push(() => {
     if (window.__build?.state === b) delete window.__build;
-    scene.traverse((o) => {
-      const m = o as THREE.Mesh;
-      if (m.geometry) geometries.push(m.geometry);
-      if (m.material) materials.push(...(Array.isArray(m.material) ? m.material : [m.material]));
-    });
-    new Set(geometries).forEach((g) => g.dispose());
-    new Set(materials).forEach((m) => {
-      for (const v of Object.values(m)) if (v instanceof THREE.Texture) textures.push(v);
-      m.dispose();
-    });
-    new Set(textures).forEach((t) => t.dispose());
     slats.dispose(); // InstancedMesh instance buffers
-    renderer.dispose();
-    renderer.domElement.remove();
     steps.forEach((s) => s.classList.remove("on"));
-  };
+  });
 }

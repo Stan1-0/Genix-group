@@ -24,6 +24,7 @@ export function Build3D() {
     let dispose: (() => void) | undefined
     let io: IntersectionObserver | undefined
     const fallback = () => {
+      if (signal.aborted) return // a newer setup may own is3d now
       section.classList.remove('is3d')
       ScrollTrigger.refresh()
     }

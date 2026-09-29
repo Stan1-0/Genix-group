@@ -468,6 +468,9 @@ test.describe('3D build (desktop)', () => {
     await expect.poll(() => page.evaluate(() => window.__build?.mode)).toBe('3d')
     expect(await threeCount()).toBeGreaterThanOrEqual(1)
   })
+  test('exactly one canvas is mounted in the stage', async () => {
+    expect(await page.locator('#build .stage canvas').count(), 'one WebGL canvas').toBe(1)
+  })
   test('scroll through the build', async () => {
     for (const f of [0.0, 0.2, 0.4, 0.56, 0.7, 0.92]) {
       await scrollAndWait(page, t.top + t.len * f)
@@ -508,8 +511,12 @@ test.describe('3D build (desktop)', () => {
 
 test.describe('3D build (phone)', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 })
+  let page: Page
+  test.describe.configure({ mode: 'serial' })
 
-  test('builds and lights; no horizontal overflow', async ({ page }) => {
+  test.beforeAll(async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 })
+    page = await ctx.newPage()
     await page.goto(URL, { waitUntil: 'load' })
     await settled(page)
     await page.waitForTimeout(1000)
@@ -517,25 +524,37 @@ test.describe('3D build (phone)', () => {
     await scrollAndWait(page, t.top - 1400)
     await scrollAndWait(page, t.top + t.len * 0.92)
     await page.waitForTimeout(300)
+  })
+  test.afterAll(async () => { await page.context().close() })
+
+  test('[phone] builds and lights', async () => {
     const st = await page.evaluate(STATE)
-    expect(st?.light ?? 0).toBeGreaterThan(0.95)
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0)
+    expect(st?.light ?? 0, 'light is on at the end of the track').toBeGreaterThan(0.95)
+  })
+  test('[phone] no horizontal overflow', async () => {
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 'overflow px').toBeLessThanOrEqual(0)
   })
 })
 
 test.describe('3D build (reduced motion)', () => {
   test.use({ viewport: { width: 1280, height: 800 }, contextOptions: { reducedMotion: 'reduce' } })
+  let threeCount: () => Promise<number>
 
-  test('photo and steps instead of 3D; Three.js never downloaded', async ({ page }) => {
-    const threeCount = watchThree(page)
+  test.beforeEach(async ({ page }) => {
+    threeCount = watchThree(page)
     await page.goto(URL, { waitUntil: 'load' })
     await settled(page)
     await page.evaluate(() => document.getElementById('build')!.scrollIntoView())
     await page.waitForTimeout(1200)
-    expect(await page.evaluate(() => document.getElementById('build')!.classList.contains('is3d'))).toBe(false)
-    expect(await page.locator('#build .fallback li').count()).toBe(5)
+  })
+
+  test('photo and steps instead of 3D', async ({ page }) => {
+    expect(await page.evaluate(() => document.getElementById('build')!.classList.contains('is3d')), 'is3d is off').toBe(false)
+    expect(await page.locator('#build .fallback li').count(), 'five fallback steps').toBe(5)
     await expect(page.locator('#build .fallback img')).toBeVisible()
-    expect(await threeCount()).toBe(0)
+  })
+  test('Three.js never downloaded', async () => {
+    expect(await threeCount(), 'scripts containing Three.js').toBe(0)
   })
 })
 
