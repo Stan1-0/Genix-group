@@ -6,14 +6,12 @@ import '../sites.css'
 import '@/pages-home/logistics/logistics.generated.css'
 import '@/pages-home/homeupgrades/homeupgrades.generated.css'
 import '@/pages-home/hub/hub.generated.css'
-import { EARLY_SCRIPT } from '@/pages-home/early-script'
+import { EARLY_SCRIPT, HUB_EARLY_SCRIPT } from '@/pages-home/early-script'
 import { SITES, SITE_KEYS, isSiteKey, siteOrigin } from '@/sites/config'
 import { THEMES, themeVars } from '@/sites/themes'
 import { fontClassNames } from '@/sites/fonts'
 import { getSiteData } from '@/sites/data'
-import { Header } from '@/components/site/Header'
-import { Footer } from '@/components/site/Footer'
-import { QuoteBar } from '@/components/site/QuoteBar'
+import { SiteHeader, SiteFooter, SiteQuoteBar } from '@/components/site/SiteChrome'
 
 type Props = { children: React.ReactNode; params: Promise<{ site: string }> }
 
@@ -53,7 +51,7 @@ export default async function SiteLayout({ children, params }: Props) {
     <html lang="en" data-site={site} className={fontClassNames(theme)} style={themeVars(theme)} suppressHydrationWarning>
       {site !== 'multimedia' && (
         <head>
-          <script dangerouslySetInnerHTML={{ __html: EARLY_SCRIPT }} />
+          <script dangerouslySetInnerHTML={{ __html: site === 'hub' ? HUB_EARLY_SCRIPT : EARLY_SCRIPT }} />
         </head>
       )}
       {/* Browser extensions (e.g. Grammarly) add attributes to <body> before hydration.
@@ -62,10 +60,10 @@ export default async function SiteLayout({ children, params }: Props) {
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">
           Skip to content
         </a>
-        <Header site={site} />
+        <SiteHeader site={site} />
         {children}
-        <Footer site={site} data={data} />
-        <QuoteBar href={SITES[site].cta.href} label={SITES[site].cta.label} phone={data.phone} />
+        <SiteFooter site={site} data={data} />
+        <SiteQuoteBar site={site} data={data} />
         <Analytics />
         <SpeedInsights />
       </body>

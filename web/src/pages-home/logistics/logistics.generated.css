@@ -141,9 +141,9 @@ html[data-site="logistics"] .menu-btn span, html[data-site="logistics"] .menu-bt
 }
 html[data-site="logistics"] .menu-btn span::before { position: absolute; top: -6px; }
 html[data-site="logistics"] .menu-btn span::after { position: absolute; top: 6px; }
-html[data-site="logistics"].menu-open .menu-btn span { background: transparent; }
-html[data-site="logistics"].menu-open .menu-btn span::before { transform: translateY(6px) rotate(45deg); }
-html[data-site="logistics"].menu-open .menu-btn span::after { transform: translateY(-6px) rotate(-45deg); }
+html[data-site="logistics"] .menu-open .menu-btn span { background: transparent; }
+html[data-site="logistics"] .menu-open .menu-btn span::before { transform: translateY(6px) rotate(45deg); }
+html[data-site="logistics"] .menu-open .menu-btn span::after { transform: translateY(-6px) rotate(-45deg); }
 
 /* ---------- Footer ---------- */
 html[data-site="logistics"] .site-footer { background: var(--brand); color: #e9e4da; border-top: 2px solid var(--gold); padding: 64px 0 40px; font-size: 15px; }
@@ -180,13 +180,13 @@ html[data-site="logistics"].lenis.lenis-stopped { overflow: hidden; }
 @media (max-width: 960px) {
   html[data-site="logistics"] .nav, html[data-site="logistics"] .parent-link, html[data-site="logistics"] .header-end .btn { display: none; }
   html[data-site="logistics"] .menu-btn { display: grid; }
-  html[data-site="logistics"].menu-open .nav {
+  html[data-site="logistics"] .menu-open .nav {
     display: flex; flex-direction: column; gap: 0;
     position: absolute; left: 0; right: 0; top: var(--header);
     background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 20px;
   }
-  html[data-site="logistics"].menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
-  html[data-site="logistics"].menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
+  html[data-site="logistics"] .menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
+  html[data-site="logistics"] .menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
   html[data-site="logistics"] .site-footer .wrap { grid-template-columns: 1fr 1fr; }
   html[data-site="logistics"] .site-footer .brand-col { grid-column: 1 / -1; }
 }

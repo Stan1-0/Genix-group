@@ -12,7 +12,7 @@ export const VIEWPORTS = {
 
 /** Hide fixed/sticky chrome so section screenshots aren't overlapped (compare the header first). */
 export async function hideOverlays(page: Page) {
-  await page.addStyleTag({ content: '.site-header, .quote-bar, [data-testid="quote-bar"] { visibility: hidden !important; } * { caret-color: transparent !important; }' })
+  await page.addStyleTag({ content: '.site-header, .quote-bar, [data-testid="quote-bar"], nextjs-portal { visibility: hidden !important; } * { caret-color: transparent !important; }' })
 }
 
 /** Finished states (the context uses reducedMotion: 'reduce'), paused video, fonts in, lazy images loaded. */

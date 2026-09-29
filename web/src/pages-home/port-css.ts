@@ -5,8 +5,8 @@ import { FONT_VARS, THEMES } from '@/sites/themes'
 /* Build-time only (scripts/port-css.ts and tests): turns prototype CSS into
    CSS scoped to one site. Never imported by app code. */
 
-// Classes the prototypes toggle on <html>; selectors starting with them attach to the root.
-const HTML_CLASSES = ['js', 'js-motion', 'h1-pending', 'lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling', 'menu-open']
+// Classes the prototypes toggle on <html> (menu-open goes on the header, not here); selectors starting with them attach to the root.
+const HTML_CLASSES = ['js', 'js-motion', 'h1-pending', 'lenis', 'lenis-smooth', 'lenis-stopped', 'lenis-scrolling', 'logo-dock', 'logo-docked']
 
 const root = (site: SiteKey) => `html[data-site="${site}"]`
 

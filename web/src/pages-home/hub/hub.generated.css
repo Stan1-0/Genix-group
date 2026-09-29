@@ -235,13 +235,13 @@
         position: absolute;
         top: 6px;
       }
-      html[data-site="hub"].menu-open .menu-btn span {
+      html[data-site="hub"] .menu-open .menu-btn span {
         background: transparent;
       }
-      html[data-site="hub"].menu-open .menu-btn span::before {
+      html[data-site="hub"] .menu-open .menu-btn span::before {
         transform: translateY(6px) rotate(45deg);
       }
-      html[data-site="hub"].menu-open .menu-btn span::after {
+      html[data-site="hub"] .menu-open .menu-btn span::after {
         transform: translateY(-6px) rotate(-45deg);
       }
 
@@ -275,7 +275,7 @@
         transform-origin: 0 0;
         will-change: transform;
       }
-      html[data-site="hub"] .logo-dock:not(.logo-docked) .site-header .logo {
+      html[data-site="hub"].logo-dock:not(.logo-docked) .site-header .logo {
         visibility: hidden;
       }
       html[data-site="hub"] .lockup .lockup-mark {
@@ -917,7 +917,7 @@
         html[data-site="hub"] .menu-btn {
           display: grid;
         }
-        html[data-site="hub"].menu-open .nav {
+        html[data-site="hub"] .menu-open .nav {
           display: flex;
           flex-direction: column;
           gap: 0;
@@ -929,12 +929,12 @@
           border-bottom: 1px solid var(--line);
           padding: 8px var(--gutter) 20px;
         }
-        html[data-site="hub"].menu-open .nav a {
+        html[data-site="hub"] .menu-open .nav a {
           padding: 14px 0;
           font-size: 18px;
           border-bottom: 1px solid var(--line);
         }
-        html[data-site="hub"].menu-open .nav a:last-child {
+        html[data-site="hub"] .menu-open .nav a:last-child {
           border-bottom: 0;
           color: var(--black);
           font-weight: 600;

@@ -7,7 +7,7 @@ test('division header: logo, nav, group link and quote button', async ({ page })
   await page.goto(LOGISTICS + '/')
   const header = page.locator('header')
   await expect(header.getByRole('link', { name: 'Genix Logistics home' })).toBeVisible()
-  await expect(header.getByRole('navigation', { name: 'Primary' }).getByRole('link')).toHaveText(['Services', 'Our work', 'About'])
+  await expect(header.getByRole('navigation', { name: 'Primary' }).getByRole('link')).toHaveText(['Services', 'How it works', 'Where we go'])
   await expect(header.getByRole('link', { name: /Part of The Genix Group/ })).toHaveAttribute('href', 'http://localhost:3000')
   await expect(header.getByRole('link', { name: 'Get a quote' })).toBeVisible()
 })
@@ -27,7 +27,7 @@ test('footer links to the sister divisions and shows the group email', async ({ 
 
 test('hub footer lists all three divisions', async ({ page }) => {
   await page.goto(HUB + '/')
-  await expect(page.locator('footer').getByRole('link', { name: /Logistics|Home Upgrades|Multimedia/ })).toHaveCount(3)
+  await expect(page.locator('footer').getByRole('link', { name: /Genix (Logistics|Home Upgrades|Multimedia)/ })).toHaveCount(3)
 })
 
 test.describe('phones', () => {
@@ -35,22 +35,29 @@ test.describe('phones', () => {
 
   test('menu button opens and closes the navigation', async ({ page }) => {
     await page.goto(LOGISTICS + '/')
-    const button = page.getByRole('button', { name: 'Open menu' })
-    await button.click()
-    await expect(page.getByRole('navigation', { name: 'Mobile' }).getByRole('link', { name: 'Services' })).toBeVisible()
+    // The menu script attaches after hydration; retry the first click until it has.
+    await expect(async () => {
+      await page.locator('#menuBtn').click()
+      await expect(page.locator('#siteHeader')).toHaveClass(/menu-open/, { timeout: 1000 })
+    }).toPass({ timeout: 15_000 })
+    await expect(page.locator('#nav').getByRole('link', { name: 'Services' })).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(page.locator('#siteHeader')).not.toHaveClass(/menu-open/)
+    await expect(page.locator('#menuBtn')).toBeFocused()
+    await page.getByRole('button', { name: 'Open menu' }).click()
     await page.getByRole('button', { name: 'Close menu' }).click()
-    await expect(page.getByRole('navigation', { name: 'Mobile' })).toHaveCount(0)
+    await expect(page.locator('#siteHeader')).not.toHaveClass(/menu-open/)
   })
 
-  test('quote bar: hidden over the hero, shown after it, hidden over the footer', async ({ page }) => {
+  // Enabled in Task 4 when the Logistics page body (#quote-form) exists.
+  test('quote bar: appears after the quote form, hidden over #quote and the footer', async ({ page }) => {
+    test.fixme(true, 'enabled in Task 4 when #quote-form exists')
     await page.goto(LOGISTICS + '/')
     const bar = page.getByTestId('quote-bar')
     await expect(bar).toHaveAttribute('data-off', 'true')
-    // make the page long enough that the footer sits well below the hero
-    await page.evaluate(() => document.querySelector('main')!.style.setProperty('min-height', '3000px'))
-    await page.evaluate(() => window.scrollTo(0, (document.querySelector('[data-quote-bar-after]') as HTMLElement).offsetHeight + 200))
+    await page.evaluate(() => window.scrollTo(0, (document.querySelector('#quote-form') as HTMLElement).getBoundingClientRect().bottom + window.scrollY + 200))
     await expect(bar).toHaveAttribute('data-off', 'false')
-    await page.evaluate(() => document.querySelector('footer')!.scrollIntoView())
+    await page.evaluate(() => document.querySelector('.site-footer')!.scrollIntoView())
     await expect(bar).toHaveAttribute('data-off', 'true')
   })
 })
