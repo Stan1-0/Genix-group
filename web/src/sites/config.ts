@@ -19,6 +19,8 @@ export type SiteConfig = {
   icons: string
   nav: NavItem[]
   cta: NavItem
+  /** Trailing phrase of the hero heading shown in gold (see pages-home/gold.ts) */
+  heroGold: string | null
   /** Paths listed in the sitemap. Later phases add pages here as they ship. */
   pages: string[]
 }
@@ -45,6 +47,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
       { label: 'Contact', href: '/contact' },
     ],
     cta: { label: 'Start a conversation', href: '/contact' },
+    heroGold: 'We Show It.',
     pages: ['/'],
   },
   logistics: {
@@ -59,6 +62,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     icons: '/icons/logistics',
     nav: DIVISION_NAV,
     cta: { label: 'Get a quote', href: '/#quote-form' },
+    heroGold: 'On Time, Every Time.',
     pages: ['/'],
   },
   homeupgrades: {
@@ -73,6 +77,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     icons: '/icons/homeupgrades',
     nav: DIVISION_NAV,
     cta: { label: 'Get a quote', href: '/contact' },
+    heroGold: 'to Beautiful.',
     pages: ['/'],
   },
   multimedia: {
@@ -87,6 +92,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     icons: '/icons/hub',
     nav: DIVISION_NAV,
     cta: { label: 'Get a quote', href: '/contact' },
+    heroGold: null,
     pages: ['/'],
   },
 }
