@@ -16,6 +16,10 @@ http://homeupgrades.localhost:3000, http://multimedia.localhost:3000.
 ## Test
 `npm run test:unit` · `npm run test:int` (needs Docker Postgres) · `npm run test:e2e` (starts `npm run dev`).
 
+`npm run test:e2e` also serves `design/` on :4321 and compares every ported section with its prototype (`tests/e2e/parity.e2e.spec.ts`; diffs land in `test-results/parity/`). After changing a prototype's CSS run `npm run port:css`.
+
+Known issue: `npx eslint` crashes repo-wide (circular ESLint config, pre-existing), so lint is not part of the checks yet.
+
 ## Deploy (Vercel)
 The repo is ready to import as one Vercel project serving all four domains.
 

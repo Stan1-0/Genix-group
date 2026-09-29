@@ -52,4 +52,13 @@ describe('siteJsonLd', () => {
   it('leaves out areaServed when no area is set', () => {
     expect(siteJsonLd('multimedia', toSiteData('multimedia', null), root)).not.toHaveProperty('areaServed')
   })
+  it('lists the division services as offers, as in the prototypes', () => {
+    const ld = siteJsonLd('logistics', toSiteData('logistics', null), root)
+    expect(ld.makesOffer).toEqual([
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Business freight' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Last-mile and courier delivery' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Home and office moves' } },
+    ])
+    expect(siteJsonLd('multimedia', toSiteData('multimedia', null), root)).not.toHaveProperty('makesOffer')
+  })
 })

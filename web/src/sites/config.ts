@@ -21,6 +21,8 @@ export type SiteConfig = {
   cta: NavItem
   /** Trailing phrase of the hero heading shown in gold (see pages-home/gold.ts) */
   heroGold: string | null
+  /** Division services listed as schema.org offers (as in the prototypes) */
+  offers: string[]
   /** Paths listed in the sitemap. Later phases add pages here as they ship. */
   pages: string[]
 }
@@ -49,6 +51,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     ],
     cta: { label: 'Start a conversation', href: '/#contact' },
     heroGold: 'We Show It.',
+    offers: [],
     pages: ['/'],
   },
   logistics: {
@@ -68,6 +71,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     ],
     cta: { label: 'Get a quote', href: '/#quote-form' },
     heroGold: 'On Time, Every Time.',
+    offers: ['Business freight', 'Last-mile and courier delivery', 'Home and office moves'],
     pages: ['/'],
   },
   homeupgrades: {
@@ -87,6 +91,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     ],
     cta: { label: 'Get a quote', href: '/#quote' },
     heroGold: 'to Beautiful.',
+    offers: ['Renovation', 'Feature walls and TV units', 'Outdoor builds'],
     pages: ['/'],
   },
   multimedia: {
@@ -102,6 +107,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: DIVISION_NAV,
     cta: { label: 'Get a quote', href: '/contact' },
     heroGold: null,
+    offers: [],
     pages: ['/'],
   },
 }

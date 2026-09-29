@@ -63,6 +63,8 @@ web/public/brand/…                      prototype images, video, logos, copied
 | `RoadSection` | Logistics | truck along the road, stops fill, DELIVERED stamp; scrubbed, no pinning (`js/route.js`) |
 | `QuoteForm` | Logistics | two steps, tabs, validation and messages (`js/quote-form.js`); look-only Send (section 5) |
 
+`.swipe` rows are CSS-only; no `SwipeRow` component was needed (ruling, plan 2026-09-29).
+
 Rules:
 - `prefers-reduced-motion` and no-JS show every animated section in its finished state; pages are
   fully readable as server HTML.

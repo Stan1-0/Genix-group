@@ -53,6 +53,7 @@ export function siteJsonLd(site: SiteKey, data: SiteData, root?: string): Record
   return {
     ...base,
     ...(data.areaServed ? { areaServed: { '@type': data.areaServed.type, name: data.areaServed.name } } : {}),
+    ...(cfg.offers.length ? { makesOffer: cfg.offers.map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) } : {}),
     parentOrganization: { '@type': 'Organization', name: SITES.hub.name, url: `${siteOrigin('hub', root)}/` },
   }
 }
