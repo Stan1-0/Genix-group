@@ -58,7 +58,7 @@ export default async function SiteLayout({ children, params }: Props) {
       {/* Browser extensions (e.g. Grammarly) add attributes to <body> before hydration.
           This ignores attribute mismatches on <body> only; its children are still checked. */}
       <body suppressHydrationWarning>
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">
+        <a href="#main" className="skip-link">
           Skip to content
         </a>
         <SiteHeader site={site} />

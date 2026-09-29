@@ -7,7 +7,7 @@ export function HubHeader() {
   return (
     <header className="site-header" id="siteHeader">
       <div className="wrap">
-        <a className="logo" href="/" aria-label="The Genix Group home">
+        <a className="logo" href="/#top" aria-label="The Genix Group home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={360} height={421} />
           {/* eslint-disable-next-line @next/next/no-img-element */}

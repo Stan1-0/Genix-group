@@ -13,6 +13,7 @@ import { Why } from './sections/Why'
 export function LogisticsHome({ data }: { data: SiteData }) {
   return (
     <main id="main">
+      <span id="top" />
       <JsonLd data={siteJsonLd('logistics', data)} />
       <Hero data={data} />
       <Lanes />

@@ -8,7 +8,7 @@ export function DivisionHeader({ site }: { site: SiteKey }) {
   return (
     <header className="site-header" id="siteHeader">
       <div className="wrap">
-        <a className="brand" href="/" aria-label={`${cfg.name} home`}>
+        <a className="brand" href="/#top" aria-label={`${cfg.name} home`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={logo.src} alt="" width={logo.width} height={logo.height} />
         </a>

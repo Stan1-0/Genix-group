@@ -12,6 +12,7 @@ import { Work } from './sections/Work'
 export function HomeUpgradesHome({ data }: { data: SiteData }) {
   return (
     <main id="main">
+      <span id="top" />
       <JsonLd data={siteJsonLd('homeupgrades', data)} />
       <Hero data={data} />
       <Services />

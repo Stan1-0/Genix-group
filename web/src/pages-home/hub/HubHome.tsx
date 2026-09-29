@@ -14,6 +14,7 @@ import { Route } from './sections/Route'
 export function HubHome({ data }: { data: SiteData }) {
   return (
     <main id="main">
+      <span id="top" />
       <JsonLd data={siteJsonLd('hub', data)} />
       <LogoDock />
       <HubReel />

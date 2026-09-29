@@ -61,7 +61,7 @@ for (const [label, viewport, mobile] of [
           [...document.querySelectorAll<HTMLElement>('a, button, [role=slider]')]
             .filter((e) => {
               const r = e.getBoundingClientRect(), s = getComputedStyle(e)
-              return r.width && r.height && s.display !== 'none' && s.visibility !== 'hidden' && r.height < 40 && !e.closest('.site-footer, p') && !e.matches('.sr-only') /* the skip link only shows on focus */
+              return r.width && r.height && s.display !== 'none' && s.visibility !== 'hidden' && r.height < 40 && !e.closest('.site-footer, p') && !e.matches('.skip-link') /* the skip link only shows on focus */
             })
             .map((e) => `${e.className || e.tagName}:${Math.round(e.getBoundingClientRect().height)}`),
         )

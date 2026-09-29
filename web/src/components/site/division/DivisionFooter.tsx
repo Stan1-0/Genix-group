@@ -49,7 +49,7 @@ export function DivisionFooter({ site, data }: { site: SiteKey; data: SiteData }
     <footer className="site-footer" data-quote-bar-hide>
       <div className="wrap">
         <div className="brand-col">
-          <a className="footer-logo" href="/" aria-label={`${cfg.name} home`}>
+          <a className="footer-logo" href="/#top" aria-label={`${cfg.name} home`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logo.src} alt="" width={logo.width} height={logo.height} />
           </a>

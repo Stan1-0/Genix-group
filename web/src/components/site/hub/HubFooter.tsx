@@ -8,7 +8,7 @@ export function HubFooter({ data }: { data: SiteData }) {
     <footer className="site-footer" data-quote-bar-hide>
       <div className="wrap">
         <div className="brand">
-          <a className="logo-tile" href="/" aria-label="The Genix Group home">
+          <a className="logo-tile" href="/#top" aria-label="The Genix Group home">
             <span className="logo-tile-row">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={360} height={421} />
