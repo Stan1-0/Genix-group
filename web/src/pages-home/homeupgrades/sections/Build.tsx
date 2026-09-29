@@ -1,13 +1,15 @@
 import Image from 'next/image'
+import { Build3D } from '@/components/motion/Build3D'
 
 /* Watch the build. The static fallback (photo + steps) is the base; the 3D scroll track and the
-   `is3d` decision the prototype made inline are added by the Build3D enhancer (Task 9). */
+   `is3d` decision the prototype made inline are added by the Build3D enhancer. */
 export function Build() {
   return (
     <section className="build" id="build" aria-labelledby="buildTitle">
       <h2 className="sr-only" id="buildTitle">
         Watch a feature wall come together
       </h2>
+      <Build3D />
       <div className="stage">
         <div className="steps3d">
           <div className="step3d" data-step="0">
