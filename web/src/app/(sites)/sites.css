@@ -1,4 +1,17 @@
-@import "tailwindcss";
+/* No Tailwind preflight: the prototype CSS (imported by the layout) carries its own
+   reset. Multimedia, still on foundation components, gets the preflight rules it uses. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@layer base {
+  html[data-site="multimedia"] *, html[data-site="multimedia"] ::before, html[data-site="multimedia"] ::after { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; }
+  html[data-site="multimedia"] a { color: inherit; text-decoration: inherit; }
+  html[data-site="multimedia"] ol, html[data-site="multimedia"] ul { list-style: none; }
+  html[data-site="multimedia"] :is(h1, h2, h3, h4, h5, h6) { font-size: inherit; font-weight: inherit; }
+  html[data-site="multimedia"] :is(img, svg, video) { display: block; max-width: 100%; height: auto; }
+  html[data-site="multimedia"] button { font: inherit; color: inherit; background: transparent; }
+}
 
 /* Tokens come from themeVars() on <html>; Tailwind utilities read them. */
 @theme inline {

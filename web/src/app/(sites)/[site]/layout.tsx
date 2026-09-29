@@ -3,6 +3,10 @@ import { notFound } from 'next/navigation'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import '../sites.css'
+import '@/pages-home/logistics/logistics.generated.css'
+import '@/pages-home/homeupgrades/homeupgrades.generated.css'
+import '@/pages-home/hub/hub.generated.css'
+import { EARLY_SCRIPT } from '@/pages-home/early-script'
 import { SITES, SITE_KEYS, isSiteKey, siteOrigin } from '@/sites/config'
 import { THEMES, themeVars } from '@/sites/themes'
 import { fontClassNames } from '@/sites/fonts'
@@ -46,7 +50,12 @@ export default async function SiteLayout({ children, params }: Props) {
   const theme = THEMES[site]
   const data = await getSiteData(site)
   return (
-    <html lang="en" data-site={site} className={fontClassNames(theme)} style={themeVars(theme)}>
+    <html lang="en" data-site={site} className={fontClassNames(theme)} style={themeVars(theme)} suppressHydrationWarning>
+      {site !== 'multimedia' && (
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: EARLY_SCRIPT }} />
+        </head>
+      )}
       {/* Browser extensions (e.g. Grammarly) add attributes to <body> before hydration.
           This ignores attribute mismatches on <body> only; its children are still checked. */}
       <body suppressHydrationWarning>
