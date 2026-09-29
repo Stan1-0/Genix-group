@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
     ]
   },
   images: {
+    // Home Upgrades stock photos (not vendored).
+    remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' }],
     localPatterns: [
       {
         pathname: '/api/media/file/**',

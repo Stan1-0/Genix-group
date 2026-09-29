@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-/* Services: three upgrade cards. Stock photos are remote (Unsplash) and marked as stock. */
+/* Services: three upgrade cards. Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
 export function Services() {
   return (
     <section className="services" id="services">
@@ -21,10 +21,12 @@ export function Services() {
         <div className="svc-grid swipe">
           <article className="svc" data-reveal>
             <div className="svc-img">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=900&q=70&auto=format&fit=crop"
                 alt="A tradesman on a ladder renovating a room"
+                width={900}
+                height={600}
+                sizes="(max-width: 900px) 80vw, 33vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>
@@ -68,10 +70,12 @@ export function Services() {
           </article>
           <article className="svc" data-reveal>
             <div className="svc-img">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1656646549633-80ad4bd2ab40?w=900&q=70&auto=format&fit=crop"
                 alt="A wooden deck with outdoor seating beside a house"
+                width={900}
+                height={600}
+                sizes="(max-width: 900px) 80vw, 33vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>

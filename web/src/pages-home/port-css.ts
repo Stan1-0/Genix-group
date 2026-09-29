@@ -18,7 +18,8 @@ export function scopeSelector(selector: string, site: SiteKey): string | null {
     const rest = sel.slice(division[0].length)
     // A bare [data-division] attribute outweighs an unprefixed rule by one class in the prototype; scoping
     // gives every rule the same html[data-site] prefix, so repeat the attribute to keep that difference
-    // (an :where() division scope has no weight and stays a single root).
+    // (an :where() division scope has no weight and stays a single root). Only the descendant/child/sibling
+    // form is weighted; a compound `[data-division="x"].foo` is not, and no prototype CSS uses it (unit-tested).
     const weighted = !division[1] && /^[\s>+~]/.test(rest) && rest.trim() !== '' ? `[data-site="${site}"]` : ''
     return root(site) + weighted + rest
   }

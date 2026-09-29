@@ -11,6 +11,8 @@ describe('scopeSelector', () => {
     expect(scopeSelector('html.lenis body', 'logistics')).toBe(`${S}.lenis body`)
     expect(scopeSelector('[data-division="logistics"]', 'logistics')).toBe(S)
     expect(scopeSelector('[data-division="logistics"] .hero', 'logistics')).toBe(`${S}[data-site="logistics"] .hero`)
+    // Known limit: a compound (no combinator) division selector gets no extra weight; no prototype CSS uses that form.
+    expect(scopeSelector('[data-division="logistics"].foo', 'logistics')).toBe(`${S}.foo`)
     expect(scopeSelector(':where([data-division="logistics"]) .hero', 'logistics')).toBe(`${S} .hero`)
   })
   it('drops rules for another division', () => {

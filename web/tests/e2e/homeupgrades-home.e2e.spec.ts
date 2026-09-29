@@ -22,7 +22,9 @@ for (const [label, viewport, mobile] of [
 
     test('placeholders are visibly marked', async ({ page }) => {
       await page.goto(URL)
-      expect(await page.locator('.ph').count()).toBeGreaterThanOrEqual(3)
+      // Three placeholders when no phone is set ([service area] + two Call buttons); with a phone the Call ones are real.
+      const hasPhone = (await page.locator('a[href^="tel:"]:not([href="tel:+10000000000"])').count()) > 0
+      expect(await page.locator('.ph').count()).toBeGreaterThanOrEqual(hasPhone ? 1 : 3)
     })
 
     if (mobile) {
