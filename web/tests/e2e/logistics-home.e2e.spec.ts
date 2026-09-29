@@ -315,3 +315,157 @@ test.describe('start quote (reduced motion)', () => {
     expect(await page.evaluate(() => document.getElementById('quote-form')!.getBoundingClientRect().top)).toBeLessThan(400)
   })
 })
+
+/* Safety net: production relies on Hero rendering these attributes (dev is "preview", so Send confirms). */
+test('quote form carries its send-mode wiring', async ({ page }) => {
+  await page.goto(URL, { waitUntil: 'load' })
+  await expect(page.locator('#quote-form')).toHaveAttribute('data-send-mode', 'preview')
+  expect(await page.getAttribute('#quote-form', 'data-offline-message')).toMatch(/^We can't take requests online yet\./)
+})
+
+/* Ported from t_keyboard, t_lanes, t_signature (road) and t_bar. */
+test.describe('keyboard (desktop)', () => {
+  test.use({ viewport: { width: 1440, height: 900 } })
+  test('the form works from the keyboard alone', async ({ page }) => {
+    await gotoForm(page)
+    const kb = page.keyboard
+    await page.focus('#qFrom'); await kb.type('92101'); await kb.press('Tab'); await kb.type('92024')
+    await page.focus('#qFlex'); await kb.press('Space')
+    await kb.press('Tab')
+    expect(await activeId(page), 'Tab reaches the load menu').toBe('qLoad')
+    await kb.press('ArrowDown'); await kb.press('ArrowDown')
+    expect(await page.inputValue('#qLoad'), 'arrow keys choose the load').toBe('parcels')
+    await kb.press('Tab')
+    expect(await activeId(page), 'Tab reaches Continue').toBe('qNext')
+    await kb.press('Enter')
+    expect(await activeId(page), 'Enter moves to step 2').toBe('qStep2Title')
+    await kb.press('Tab'); await kb.type('Dana'); await kb.press('Tab'); await kb.type('619 555 0142'); await kb.press('Enter')
+    await expect(page.locator('#qSent')).toBeVisible()
+    expect(await activeId(page), 'Enter sends').toBe('qSent')
+  })
+})
+
+test.describe('lanes (desktop)', () => {
+  test.use({ viewport: { width: 1440, height: 900 } })
+  test('lane buttons pick the tab and Start a quote focuses the first field', async ({ page }) => {
+    await gotoForm(page)
+    await page.click('a[data-kind=move]')
+    await page.waitForTimeout(1400) // Lenis's smooth scroll settles
+    const top = await page.evaluate(() => document.getElementById('quote-form')!.getBoundingClientRect().top)
+    expect(top, 'form brought into view').toBeGreaterThanOrEqual(0)
+    expect(top).toBeLessThan(400)
+    expect(await page.isChecked('input[name=kind][value=move]'), "'Price a move' selects Plan a move").toBe(true)
+    expect(await loadValues(page), 'move options loaded').toEqual(MOVE)
+    await page.click('a[data-kind=business]')
+    expect(await page.isChecked('input[name=kind][value=business]'), 'switching back selects business').toBe(true)
+    expect(await loadValues(page), 'business options restored').toEqual(BUSINESS)
+    await page.click('#quote [data-start-quote]')
+    await expect.poll(() => activeId(page), { message: "'Start a quote' focuses the first field" }).toBe('qFrom')
+  })
+})
+
+const ROAD = () => {
+  const r = document.querySelector('[data-road]')!
+  const t = document.querySelector('.road-truck')!.getBoundingClientRect()
+  return {
+    p: parseFloat(getComputedStyle(r).getPropertyValue('--p')),
+    live: r.classList.contains('is-live'),
+    done: r.classList.contains('is-done'),
+    passed: document.querySelectorAll('[data-stop].is-passed').length,
+    x: Math.round(t.left),
+    y: Math.round(t.top + scrollY),
+    stamp: +getComputedStyle(document.querySelector('.stamp')!).opacity,
+  }
+}
+
+/** Scroll to three points along the road (start, middle, end) and sample each once the scrub settles. */
+async function roadPositions(page: Page, vh: number) {
+  const top = await page.evaluate(() => document.querySelector('[data-road]')!.getBoundingClientRect().top + scrollY)
+  const h = await page.evaluate(() => (document.querySelector('[data-road]') as HTMLElement).offsetHeight)
+  const out = []
+  for (const y of [top - vh * 0.75 - 60, top + h / 2 - vh * 0.6, top + h - vh * 0.45 + 120]) {
+    await page.evaluate((y) => scrollTo(0, y), y)
+    await page.waitForTimeout(1400) // scrub: 0.5 settles
+    out.push(await page.evaluate(ROAD))
+  }
+  return out
+}
+
+test.describe('road signature (desktop)', () => {
+  test.use({ viewport: { width: 1440, height: 900 } })
+  test('truck drives, stops light, stamp lands once, no pinning', async ({ page }) => {
+    await gotoForm(page)
+    const h0 = await page.evaluate(() => document.getElementById('how')!.offsetHeight)
+    const [start, mid, end] = await roadPositions(page, 900)
+    expect(start.live, 'animation is live').toBe(true)
+    expect(start.p, 'truck starts at the first stop').toBeLessThan(0.02)
+    expect(start.passed).toBe(1)
+    expect(start.x).toBeLessThan(mid.x)
+    expect(mid.x, 'truck drives as you scroll').toBeLessThan(end.x)
+    expect(end.passed, 'stops light up as it passes').toBe(4)
+    expect(end.done).toBe(true)
+    expect(end.stamp, 'DELIVERED stamp lands at the end').toBeGreaterThan(0.95)
+    expect(start.stamp).toBeLessThan(0.05)
+    await page.evaluate(() => scrollTo(0, 0))
+    await page.waitForTimeout(1400)
+    expect((await page.evaluate(ROAD)).stamp, 'stamp stays after scrolling back to the start').toBeGreaterThan(0.95)
+    expect(await page.evaluate(() => document.getElementById('how')!.offsetHeight), 'section height unchanged').toBe(h0)
+    await expect(page.locator('.pin-spacer'), 'no pinning').toHaveCount(0)
+  })
+})
+
+test.describe('road (reduced motion)', () => {
+  test.use({ viewport: { width: 1440, height: 900 }, contextOptions: { reducedMotion: 'reduce' } })
+  test('finished road shown', async ({ page }) => {
+    await gotoForm(page)
+    const s = await page.evaluate(ROAD)
+    expect(s.live).toBe(false)
+    expect(s.stamp).toBe(1)
+    expect(await page.evaluate(() => getComputedStyle(document.querySelector('.stop-dot')!).backgroundColor)).toBe('rgb(194, 138, 44)')
+  })
+})
+
+test.describe('road (phone)', () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
+  test('runs top to bottom, truck drives down, no horizontal scroll', async ({ page }) => {
+    await gotoForm(page)
+    const line = await page.evaluate(() => {
+      const r = document.querySelector('.road-line')!.getBoundingClientRect()
+      return [Math.round(r.width), Math.round(r.height)]
+    })
+    expect(line[0], 'road is a vertical line').toBeLessThanOrEqual(6)
+    expect(line[1]).toBeGreaterThan(300)
+    const [start, mid, end] = await roadPositions(page, 844)
+    expect(start.y).toBeLessThan(mid.y)
+    expect(mid.y, 'truck drives down').toBeLessThan(end.y)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 'no horizontal page scroll').toBeLessThanOrEqual(0)
+  })
+})
+
+test.describe('pinned bar (phone)', () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
+  const barOff = (page: Page) => page.evaluate(() => document.getElementById('quoteBar')!.classList.contains('off'))
+  const barAt = async (page: Page, sel: string, extra = 0) => {
+    await page.evaluate(([s, e]) => scrollTo(0, document.querySelector(s as string)!.getBoundingClientRect().top + scrollY + (e as number)), [sel, extra])
+    await page.waitForTimeout(900)
+    return barOff(page)
+  }
+  test('shows after the form, hides over #quote and footer, button focuses first field', async ({ page }) => {
+    await gotoForm(page)
+    expect(await barOff(page), 'hidden while the hero form is on screen').toBe(true)
+    expect(await barAt(page, '#services', 200), 'shows once the form has scrolled away').toBe(false)
+    expect(await barAt(page, '#quote'), 'hides over the final quote section').toBe(true)
+    expect(await barAt(page, '.site-footer'), 'hides over the footer').toBe(true)
+    await barAt(page, '#areas')
+    await page.click('#quoteBar [data-start-quote]')
+    await expect.poll(() => activeId(page), { message: 'button goes to the form and focuses the first field' }).toBe('qFrom')
+  })
+})
+
+test.describe('pinned bar (desktop)', () => {
+  test.use({ viewport: { width: 1440, height: 900 } })
+  test('no bar on desktop', async ({ page }) => {
+    await gotoForm(page)
+    expect(await page.evaluate(() => getComputedStyle(document.getElementById('quoteBar')!).display !== 'none')).toBe(false)
+  })
+})

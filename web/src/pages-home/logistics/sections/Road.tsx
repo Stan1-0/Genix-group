@@ -1,3 +1,5 @@
+import { RoadSection } from '@/components/motion/RoadSection'
+
 /* How a job runs: the truck drives the road as the section scrolls past (road enhancer). */
 export function Road() {
   return (
@@ -55,6 +57,7 @@ export function Road() {
           </ol>
         </div>
       </div>
+      <RoadSection />
     </section>
   )
 }

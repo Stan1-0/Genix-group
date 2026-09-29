@@ -189,6 +189,9 @@ export function QuoteForm() {
     // Back to the server-rendered (no-JS) state, so a StrictMode re-run starts clean.
     return () => {
       clearTimeout(statusTimer)
+      status.classList.add('sr-only') // undo an offline send's visible message
+      status.removeAttribute('style')
+      status.textContent = ''
       form.noValidate = false
       step1.hidden = false
       step2.hidden = false
