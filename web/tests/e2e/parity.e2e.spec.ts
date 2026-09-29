@@ -20,7 +20,12 @@ test('parity harness: a page matches itself', async ({ browser }) => {
     return page
   }
   const [a, b] = [await open(), await open()]
-  await expectSameLook(a, b, 'header.site-header', 'self-header', 0)
+  try {
+    await expectSameLook(a, b, 'header.site-header', 'self-header', 0)
+  } finally {
+    await a.context().close()
+    await b.context().close()
+  }
 })
 
 for (const p of PARITY) {
@@ -34,24 +39,29 @@ for (const p of PARITY) {
       }
       const proto = await open(PROTOTYPE + p.proto)
       const app = await open(p.app)
-      await settle(proto)
-      await settle(app)
-      if (p.chrome) await expectSameLook(proto, app, 'header.site-header', `${p.site}-${vp}-header`)
-      await hideOverlays(proto)
-      await hideOverlays(app)
-      if (p.sections) {
-        const n = await proto.locator('main > section').count()
-        expect(await app.locator('main > section').count(), 'same number of sections').toBe(n)
-        for (let i = 0; i < n; i++) await expectSameLook(proto, app, `main > section >> nth=${i}`, `${p.site}-${vp}-section${i + 1}`)
+      try {
+        await settle(proto)
+        await settle(app)
+        if (p.chrome) await expectSameLook(proto, app, 'header.site-header', `${p.site}-${vp}-header`)
+        await hideOverlays(proto)
+        await hideOverlays(app)
+        if (p.sections) {
+          const n = await proto.locator('main > section').count()
+          expect(await app.locator('main > section').count(), 'same number of sections').toBe(n)
+          for (let i = 0; i < n; i++) await expectSameLook(proto, app, `main > section >> nth=${i}`, `${p.site}-${vp}-section${i + 1}`)
+        }
+        if (p.sections && p.extra) {
+          // Sections outside `main > section` (the hub's division panels sit inside div#businesses).
+          const m = await proto.locator(p.extra).count()
+          expect(await app.locator(p.extra).count(), 'same number of extra sections').toBe(m)
+          expect(m, 'three panels').toBe(3)
+          for (let i = 0; i < m; i++) await expectSameLook(proto, app, `${p.extra} >> nth=${i}`, `${p.site}-${vp}-panel${i + 1}`)
+        }
+        if (p.chrome) await expectSameLook(proto, app, 'footer.site-footer', `${p.site}-${vp}-footer`)
+      } finally {
+        await proto.context().close()
+        await app.context().close()
       }
-      if (p.sections && p.extra) {
-        // Sections outside `main > section` (the hub's division panels sit inside div#businesses).
-        const m = await proto.locator(p.extra).count()
-        expect(await app.locator(p.extra).count(), 'same number of extra sections').toBe(m)
-        expect(m, 'three panels').toBe(3)
-        for (let i = 0; i < m; i++) await expectSameLook(proto, app, `${p.extra} >> nth=${i}`, `${p.site}-${vp}-panel${i + 1}`)
-      }
-      if (p.chrome) await expectSameLook(proto, app, 'footer.site-footer', `${p.site}-${vp}-footer`)
     })
   }
 }
