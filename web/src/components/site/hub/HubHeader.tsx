@@ -9,9 +9,9 @@ export function HubHeader() {
       <div className="wrap">
         <a className="logo" href="/#top" aria-label="The Genix Group home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={360} height={421} />
+          <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={290} height={340} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="logo-word" src="/brand/genix-wordmark.svg" alt="" width={874} height={298} />
+          <img className="logo-word" src="/brand/genix-wordmark.svg" alt="" width={832} height={326} />
         </a>
         <nav className="nav" id="nav" aria-label="Primary">
           {cfg.nav.map((n) => (

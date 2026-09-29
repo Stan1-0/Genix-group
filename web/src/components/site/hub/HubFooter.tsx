@@ -11,9 +11,9 @@ export function HubFooter({ data }: { data: SiteData }) {
           <a className="logo-tile" href="/#top" aria-label="The Genix Group home">
             <span className="logo-tile-row">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={360} height={421} />
+              <img className="logo-mark" src="/brand/genix-mark.svg" alt="" width={290} height={340} />
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="logo-word" src="/brand/genix-wordmark.svg" alt="" width={874} height={298} />
+              <img className="logo-word" src="/brand/genix-wordmark.svg" alt="" width={832} height={326} />
             </span>
             <span className="logo-tagline" aria-hidden="true">Logistics | Home Upgrades | Multimedia</span>
           </a>

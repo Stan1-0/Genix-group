@@ -42,7 +42,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     inquiryPrefix: 'HUB',
     tagline: 'We Haul It. We Build It. We Show It.',
     schemaType: 'Organization',
-    logo: { src: '/brand/genix-group-logo.svg', width: 1288, height: 421 },
+    logo: { src: '/brand/genix-group-logo.svg', width: 1161, height: 340 },
     icons: '/icons/hub',
     nav: [
       { label: 'Who we are', href: '/#about' },

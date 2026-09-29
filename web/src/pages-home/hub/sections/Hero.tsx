@@ -14,9 +14,9 @@ export function Hero({ data }: { data: SiteData }) {
           <p className="label">An American company · San Diego, California</p>
           <div className="lockup">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="lockup-mark" src="/brand/genix-mark.svg" alt="" width={360} height={421} />
+            <img className="lockup-mark" src="/brand/genix-mark.svg" alt="" width={290} height={340} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="lockup-word" src="/brand/genix-wordmark.svg" alt="The Genix Group" width={874} height={298} />
+            <img className="lockup-word" src="/brand/genix-wordmark.svg" alt="The Genix Group" width={832} height={326} />
           </div>
           <GoldHeading site="hub" text={data.heroHeading} split={false} />
           <p className="body">{data.heroSubheading || LEAD}</p>
