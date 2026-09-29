@@ -1131,4 +1131,4 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
         }
       }
     
-html[data-site="homeupgrades"] { --f-display: var(--font-jakarta), system-ui, sans-serif; --f-body: var(--font-jakarta), system-ui, sans-serif; --f-mono: var(--font-plex-mono), ui-monospace, monospace; }
+html[data-site="homeupgrades"] { --f-display: var(--font-jakarta), system-ui, sans-serif; --f-body: var(--font-jakarta), system-ui, sans-serif; --f-mono: var(--font-jakarta), ui-monospace, monospace; }

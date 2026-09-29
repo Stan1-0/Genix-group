@@ -534,3 +534,11 @@ test.describe('motion has no errors', () => {
     expect(seen.errors).toEqual([])
   })
 })
+
+const firstFamily = (page: import('@playwright/test').Page, sel: string) => page.evaluate((s) => getComputedStyle(document.querySelector(s)!).fontFamily.split(',')[0].trim().replace(/["']/g, ''), sel)
+
+// The prototype's --f-mono is IBM Plex Mono; a theme change must not swap it silently.
+test('Hub mono labels use IBM Plex Mono', async ({ page }) => {
+  await page.goto(URL)
+  expect(await firstFamily(page, '.label')).toMatch(/Plex.Mono/)
+})

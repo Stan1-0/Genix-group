@@ -156,19 +156,23 @@ test.describe('interactions (desktop)', () => {
     expect(kept).toBeLessThanOrEqual(92)
   })
 
-  // The swing is over in ~2s, so sample from the moment the page starts loading.
+  // The swing is over in ~2s (after a 0.6s delay), so record every frame, from before the page's scripts run,
+  // for 8s: a loaded machine's slow polling cannot step over a leg of the swing.
   async function swingSamples(page: Page) {
-    await page.goto(URL, { waitUntil: 'commit' })
-    const samples: number[] = []
-    for (let i = 0; i < 40; i++) {
-      try {
-        samples.push(await pos(page))
-      } catch {
-        /* mid-navigation */
+    await page.addInitScript(() => {
+      const w = window as unknown as { __swing: number[] }
+      w.__swing = []
+      const t0 = performance.now()
+      const tick = () => {
+        const h = document.getElementById('baHandle')
+        if (h) w.__swing.push(+h.getAttribute('aria-valuenow')!)
+        if (performance.now() - t0 < 8000) requestAnimationFrame(tick)
       }
-      await page.waitForTimeout(100)
-    }
-    return samples
+      requestAnimationFrame(tick)
+    })
+    await page.goto(URL, { waitUntil: 'commit' })
+    await page.waitForFunction(() => performance.now() > 8200)
+    return page.evaluate(() => (window as unknown as { __swing: number[] }).__swing)
   }
   test('slider swings once to show it moves', async ({ page }) => {
     const s = await swingSamples(page)
@@ -574,4 +578,15 @@ test.describe('3D build (no JavaScript)', () => {
     await expect(page.locator('#build .fallback img')).toBeVisible()
     expect(await page.locator('#build .fallback li').count()).toBe(5)
   })
+})
+
+const firstFamily = (page: import('@playwright/test').Page, sel: string) => page.evaluate((s) => getComputedStyle(document.querySelector(s)!).fontFamily.split(',')[0].trim().replace(/["']/g, ''), sel)
+
+// The prototype sets --f-mono to Plus Jakarta Sans; a theme change must not swap it for Plex Mono.
+test('mono-styled labels use the body font, as in the prototype', async ({ page }) => {
+  await page.goto(URL)
+  const body = await firstFamily(page, 'body')
+  expect(body).toMatch(/Plus.Jakarta/)
+  expect(await firstFamily(page, '.parent-link')).toBe(body)
+  expect(await firstFamily(page, '.site-footer h2')).toBe(body)
 })

@@ -495,3 +495,11 @@ test.describe('pinned bar (desktop)', () => {
     expect(await page.evaluate(() => getComputedStyle(document.getElementById('quoteBar')!).display !== 'none')).toBe(false)
   })
 })
+
+const firstFamily = (page: import('@playwright/test').Page, sel: string) => page.evaluate((s) => getComputedStyle(document.querySelector(s)!).fontFamily.split(',')[0].trim().replace(/["']/g, ''), sel)
+
+// The prototype's --f-mono is IBM Plex Mono; a theme change must not swap it silently.
+test('Logistics mono labels use IBM Plex Mono', async ({ page }) => {
+  await page.goto(URL)
+  expect(await firstFamily(page, '.site-footer h2')).toMatch(/Plex.Mono/)
+})
