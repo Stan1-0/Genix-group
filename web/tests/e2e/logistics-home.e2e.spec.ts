@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { expectBasics, settled, watchPage } from './basics'
 
 /* Ported from design/tests/test_logistics.py: t_structure and t_nojs (one check -> one expect). */
 const URL = 'http://logistics.localhost:3000/'
@@ -11,16 +12,10 @@ for (const [label, viewport, mobile] of [
     test.use({ viewport, isMobile: mobile, hasTouch: mobile })
 
     test('basics', async ({ page }) => {
-      const errors: string[] = []
-      const failed: string[] = []
-      page.on('pageerror', (e) => errors.push(e.message))
-      page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
-      page.on('requestfailed', (r) => failed.push(r.url()))
+      const seen = watchPage(page)
       await page.goto(URL, { waitUntil: 'load' })
-      await page.waitForTimeout(500)
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 'no horizontal page scroll').toBeLessThanOrEqual(0)
-      expect(errors, 'no console errors').toEqual([])
-      expect(failed, 'no failed requests').toEqual([])
+      await settled(page)
+      await expectBasics(page, seen)
     })
 
     if (mobile) {
