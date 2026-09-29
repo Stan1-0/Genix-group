@@ -7,10 +7,10 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
       <h1 className="mt-4 font-display text-[clamp(36px,5vw,64px)] font-bold leading-none text-heading">This page didn&apos;t load.</h1>
       <p className="mt-6 max-w-[48ch] text-ink-2">Try again. If it keeps happening, the home page is still available.</p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <button type="button" onClick={reset} className="inline-flex min-h-[52px] items-center rounded-site bg-brand px-6 font-semibold text-white">
+        <button type="button" onClick={reset} className="cta">
           Try again
         </button>
-        <a href="/" className="inline-flex min-h-[52px] items-center rounded-site border border-heading px-6 font-semibold text-heading">
+        <a href="/" className="cta cta-outline">
           Go to the home page
         </a>
       </div>

@@ -45,10 +45,10 @@ export const THEMES: Record<SiteKey, Theme> = {
     fontDisplay: 'schibsted', fontBody: 'hanken', fontMono: 'plexMono',
   },
   homeupgrades: {
-    ...GOLD, ...NEUTRAL,
+    ...GOLD, ...NEUTRAL, ink2: '#3a3a3a', muted: '#666666', // prototype values (approved design)
     brand: '#022248', brandDeep: '#01152e', heading: '#022248', paper: '#fdfdf7',
     onBrandMuted: '#b8c4d6', link: '#0072c6', radius: '12px',
-    fontDisplay: 'jakarta', fontBody: 'jakarta', fontMono: 'plexMono',
+    fontDisplay: 'jakarta', fontBody: 'jakarta', fontMono: 'jakarta',
   },
   logistics: {
     ...GOLD, ...NEUTRAL,

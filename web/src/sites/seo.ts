@@ -47,12 +47,15 @@ export function siteJsonLd(site: SiteKey, data: SiteData, root?: string): Record
   if (site === 'hub') {
     return {
       ...base,
+      address: { '@type': 'PostalAddress', addressLocality: 'San Diego', addressRegion: 'CA', addressCountry: 'US' },
+      areaServed: { '@type': 'Country', name: 'United States' },
       subOrganization: DIVISION_KEYS.map((k) => ({ '@type': SITES[k].schemaType, name: SITES[k].name, url: `${siteOrigin(k, root)}/` })),
     }
   }
   return {
     ...base,
     ...(data.areaServed ? { areaServed: { '@type': data.areaServed.type, name: data.areaServed.name } } : {}),
+    ...(cfg.offers.length ? { makesOffer: cfg.offers.map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) } : {}),
     parentOrganization: { '@type': 'Organization', name: SITES.hub.name, url: `${siteOrigin('hub', root)}/` },
   }
 }

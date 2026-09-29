@@ -16,6 +16,14 @@ http://homeupgrades.localhost:3000, http://multimedia.localhost:3000.
 ## Test
 `npm run test:unit` · `npm run test:int` (needs Docker Postgres) · `npm run test:e2e` (starts `npm run dev`).
 
+`npm run test:e2e` needs `python` on PATH (not only `python3`); it also serves `design/` on :4321 (and reuses whatever is already serving :4321) and compares every ported section with its prototype (`tests/e2e/parity.e2e.spec.ts`; diffs land in `test-results/parity/`). After changing a prototype's CSS run `npm run port:css`.
+
+Known issue: `npx eslint` crashes repo-wide (circular ESLint config, pre-existing), so lint is not part of the checks yet.
+
+Other known issues (inherited from the approved prototypes, left as designed):
+- Home Upgrades: next/image logs a dev warning "only width or height modified" for `.crew img` (Process section). Adding `height: auto` would silence it but changes the prototype's box.
+- Logistics: with JavaScript off, the quote form shows step 2 and its ghost Back button (`#qBack`) fails color-contrast (white on the light card). The prototype has the same issue; axe is checked after JS has run.
+
 ## Deploy (Vercel)
 The repo is ready to import as one Vercel project serving all four domains.
 
@@ -49,6 +57,9 @@ The repo is ready to import as one Vercel project serving all four domains.
    against local databases (`src/payload/local-db.ts`), so this never changes the Neon schema.
 8. **First admin:** open `https://thegenixgroup.com/admin` and create the first user; the first
    user becomes admin. Invite editors from the admin afterwards.
+   `VERCEL_ENV` is baked in at build time (it decides whether the look-only Logistics quote form says
+   "received" or the offline message). Promoting a preview deployment to production therefore needs a
+   fresh production build, not a promote, or the form would show "received" in production.
 9. **Domains:** add `thegenixgroup.com`, `logistics.thegenixgroup.com`,
    `homeupgrades.thegenixgroup.com` and `multimedia.thegenixgroup.com` to the same project.
    `www.thegenixgroup.com` should redirect to the apex.

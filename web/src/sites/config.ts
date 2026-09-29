@@ -19,6 +19,10 @@ export type SiteConfig = {
   icons: string
   nav: NavItem[]
   cta: NavItem
+  /** Trailing phrase of the hero heading shown in gold (see pages-home/gold.ts) */
+  heroGold: string | null
+  /** Division services listed as schema.org offers (as in the prototypes) */
+  offers: string[]
   /** Paths listed in the sitemap. Later phases add pages here as they ship. */
   pages: string[]
 }
@@ -41,10 +45,13 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     logo: { src: '/brand/genix-group-logo.svg', width: 1288, height: 421 },
     icons: '/icons/hub',
     nav: [
-      { label: 'About', href: '/about' },
-      { label: 'Contact', href: '/contact' },
+      { label: 'Who we are', href: '/#about' },
+      { label: 'Our businesses', href: '/#businesses' },
+      { label: 'Get a quote', href: '/#contact' },
     ],
-    cta: { label: 'Start a conversation', href: '/contact' },
+    cta: { label: 'Start a conversation', href: '/#contact' },
+    heroGold: 'We Show It.',
+    offers: [],
     pages: ['/'],
   },
   logistics: {
@@ -57,8 +64,14 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     schemaType: 'MovingCompany',
     logo: { src: '/brand/genix-logistics-logo.svg', width: 876, height: 405 },
     icons: '/icons/logistics',
-    nav: DIVISION_NAV,
+    nav: [
+      { label: 'Services', href: '/#services' },
+      { label: 'How it works', href: '/#how' },
+      { label: 'Where we go', href: '/#areas' },
+    ],
     cta: { label: 'Get a quote', href: '/#quote-form' },
+    heroGold: 'On Time, Every Time.',
+    offers: ['Business freight', 'Last-mile and courier delivery', 'Home and office moves'],
     pages: ['/'],
   },
   homeupgrades: {
@@ -71,8 +84,14 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     schemaType: 'HomeAndConstructionBusiness',
     logo: { src: '/brand/genix-home-upgrades-logo.svg', width: 976, height: 722 },
     icons: '/icons/homeupgrades',
-    nav: DIVISION_NAV,
-    cta: { label: 'Get a quote', href: '/contact' },
+    nav: [
+      { label: 'Services', href: '/#services' },
+      { label: 'Our work', href: '/#work' },
+      { label: 'How we work', href: '/#process' },
+    ],
+    cta: { label: 'Get a quote', href: '/#quote' },
+    heroGold: 'to Beautiful.',
+    offers: ['Renovation', 'Feature walls and TV units', 'Outdoor builds'],
     pages: ['/'],
   },
   multimedia: {
@@ -87,6 +106,8 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     icons: '/icons/hub',
     nav: DIVISION_NAV,
     cta: { label: 'Get a quote', href: '/contact' },
+    heroGold: null,
+    offers: [],
     pages: ['/'],
   },
 }
