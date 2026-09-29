@@ -5,3 +5,9 @@ export function goldTail(heading: string, phrase: string | null): [string, strin
   if (!phrase || !text.endsWith(phrase) || text === phrase) return [text, null]
   return [text.slice(0, -phrase.length).trimEnd(), phrase]
 }
+
+/** Parts of the gold phrase that must not break across lines (split after each comma):
+    "On Time, Every Time." sets as ON TIME, / EVERY TIME. instead of ON / TIME, EVERY / TIME. */
+export function keepTogether(phrase: string): string[] {
+  return phrase.split(/(?<=,)\s+/).filter(Boolean)
+}

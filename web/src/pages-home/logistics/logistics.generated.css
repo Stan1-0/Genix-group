@@ -238,6 +238,9 @@ html[data-site="logistics"][data-site="logistics"] body { font-size: 17px; }
 html[data-site="logistics"][data-site="logistics"] .h-display,
 html[data-site="logistics"][data-site="logistics"] .h-section { font-weight: 900; font-stretch: 118%; text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95; }
 html[data-site="logistics"][data-site="logistics"] .h-display { font-size: clamp(36px, 5.4vw, 76px); }
+/* hero headline a size down so the tagline sets in 5 lines on desktop; .nw keeps short phrases on one line */
+html[data-site="logistics"][data-site="logistics"] .hero h1.h-display { font-size: clamp(36px, 4.6vw, 66px); }
+html[data-site="logistics"][data-site="logistics"] .nw { white-space: nowrap; }
 html[data-site="logistics"][data-site="logistics"] .h-section { font-size: clamp(30px, 4.2vw, 58px); }
 html[data-site="logistics"][data-site="logistics"] .btn { border-radius: var(--r); font-weight: 800; font-stretch: 112%; text-transform: uppercase; letter-spacing: 0.04em; font-size: 15px; }
 html[data-site="logistics"][data-site="logistics"] .brand img { height: 50px; mix-blend-mode: normal; }
