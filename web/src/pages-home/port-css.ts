@@ -12,13 +12,18 @@ const root = (site: SiteKey) => `html[data-site="${site}"]`
 
 export function scopeSelector(selector: string, site: SiteKey): string | null {
   const sel = selector.trim()
-  const division = /^\[data-division="([a-z]+)"\]/.exec(sel)
-  if (division) return division[1] === site ? root(site) + sel.slice(division[0].length) : null
+  const division = /^(?::where\(\[data-division="([a-z]+)"\]\)|\[data-division="([a-z]+)"\])/.exec(sel)
+  if (division) return (division[1] ?? division[2]) === site ? root(site) + sel.slice(division[0].length) : null
   if (/^:root(?![\w-])/.test(sel)) return root(site) + sel.slice(':root'.length)
   if (/^html(?![\w-])/.test(sel)) return root(site) + sel.slice('html'.length)
   const cls = /^\.([\w-]+)/.exec(sel)
   if (cls && HTML_CLASSES.includes(cls[1])) return root(site) + sel
   return `${root(site)} ${sel}`
+}
+
+const hasRuleAncestor = (rule: Rule) => {
+  for (let p = rule.parent; p && p.type !== 'root'; p = p.parent) if (p.type === 'rule') return true
+  return false
 }
 
 const inKeyframes = (rule: Rule) => {
@@ -33,7 +38,7 @@ const inKeyframes = (rule: Rule) => {
 export function portCss(css: string, site: SiteKey): string {
   const tree = postcss.parse(css)
   tree.walkRules((rule) => {
-    if (inKeyframes(rule)) return
+    if (inKeyframes(rule) || hasRuleAncestor(rule)) return // nested rules resolve against their scoped parent
     const scoped = rule.selectors.map((s) => scopeSelector(s, site)).filter((s): s is string => s !== null)
     if (scoped.length === 0) rule.remove()
     else rule.selectors = scoped

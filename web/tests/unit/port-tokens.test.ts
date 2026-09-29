@@ -29,3 +29,20 @@ describe('prototype tokens agree with the app themes', () => {
     })
   }
 })
+
+describe('generated CSS keeps nested rules unscoped', () => {
+  for (const site of PORTED_SITES) {
+    it(site, () => {
+      const css = fs.readFileSync(path.resolve(__dirname, `../../src/pages-home/${site}/${site}.generated.css`), 'utf8')
+      const bad: string[] = []
+      postcss.parse(css).walkRules((r) => {
+        let p = r.parent
+        while (p && p.type !== 'root') {
+          if (p.type === 'rule') { if (r.selector.includes('html[data-site=')) bad.push(r.selector); return }
+          p = p.parent
+        }
+      })
+      expect(bad).toEqual([])
+    })
+  }
+})

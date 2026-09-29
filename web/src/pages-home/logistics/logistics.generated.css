@@ -249,158 +249,158 @@ html[data-site="logistics"] [hidden] { display: none !important; }
 html[data-site="logistics"]:not(.js) .js-only { display: none !important; }
 
 /* ---------- Logistics components ---------- */
-html[data-site="logistics"] :where([data-division="logistics"]) {
-  html[data-site="logistics"] .mono { font: 500 11.5px/1.35 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; }
-  html[data-site="logistics"] .sec { padding: clamp(72px, 10vw, 128px) 0; }
-  html[data-site="logistics"] .sec-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px 48px; align-items: end; margin-bottom: clamp(32px, 5vw, 56px); }
-  html[data-site="logistics"] .sec-head .body { margin: 0; max-width: 46ch; }
+html[data-site="logistics"] {
+  .mono { font: 500 11.5px/1.35 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+  .sec { padding: clamp(72px, 10vw, 128px) 0; }
+  .sec-head { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px 48px; align-items: end; margin-bottom: clamp(32px, 5vw, 56px); }
+  .sec-head .body { margin: 0; max-width: 46ch; }
 
   /* gold lane marking along the top of a section */
-  html[data-site="logistics"] .lane-top { position: relative; }
-  html[data-site="logistics"] .lane-top::before {
+  .lane-top { position: relative; }
+  .lane-top::before {
     content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: min(var(--max) - 2 * var(--gutter), 100% - 2 * var(--gutter)); height: 4px;
     background: repeating-linear-gradient(to right, var(--gold) 0 28px, transparent 28px 48px);
   }
 
   /* two lanes of services */
-  html[data-site="logistics"] .lane-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  html[data-site="logistics"] .lane-card {
+  .lane-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .lane-card {
     display: flex; flex-direction: column; gap: 14px; padding: clamp(24px, 3vw, 36px);
     background: var(--white); border: 1px solid rgba(2, 34, 72, 0.14); border-top: 6px solid var(--heading); border-radius: var(--r);
   }
-  html[data-site="logistics"] .lane-card:nth-child(2) { border-top-color: var(--gold); }
-  html[data-site="logistics"] .lane-card h3 { margin: 0; font: 900 clamp(24px, 2.6vw, 34px)/1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
-  html[data-site="logistics"] .lane-card p { margin: 0; color: var(--ink-2); }
-  html[data-site="logistics"] .lane-tag { color: var(--label-ink); }
-  html[data-site="logistics"] .ticks { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; gap: 8px; }
-  html[data-site="logistics"] .ticks li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--heading); }
-  html[data-site="logistics"] .ticks li::before { content: ""; flex: none; width: 14px; height: 4px; background: var(--gold); }
-  html[data-site="logistics"] .lane-card .btn { margin-top: auto; align-self: flex-start; }
+  .lane-card:nth-child(2) { border-top-color: var(--gold); }
+  .lane-card h3 { margin: 0; font: 900 clamp(24px, 2.6vw, 34px)/1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .lane-card p { margin: 0; color: var(--ink-2); }
+  .lane-tag { color: var(--label-ink); }
+  .ticks { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; gap: 8px; }
+  .ticks li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--heading); }
+  .ticks li::before { content: ""; flex: none; width: 14px; height: 4px; background: var(--gold); }
+  .lane-card .btn { margin-top: auto; align-self: flex-start; }
 
   /* how a job runs: readable list; the road visuals arrive in Task 5 */
-  html[data-site="logistics"] .stops { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-  html[data-site="logistics"] .stop { position: relative; }
-  html[data-site="logistics"] .stop .mono { margin: 0 0 8px; color: var(--gold); }
-  html[data-site="logistics"] .stop h3 { margin: 0 0 8px; font: 900 22px/1.05 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--white); }
-  html[data-site="logistics"] .stop p:not(.mono) { margin: 0; font-size: 16px; color: var(--on-brand-muted); }
+  .stops { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .stop { position: relative; }
+  .stop .mono { margin: 0 0 8px; color: var(--gold); }
+  .stop h3 { margin: 0 0 8px; font: 900 22px/1.05 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--white); }
+  .stop p:not(.mono) { margin: 0; font-size: 16px; color: var(--on-brand-muted); }
 
   /* where we go */
-  html[data-site="logistics"] .areas .wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
-  html[data-site="logistics"] .area-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; border-top: 2px solid var(--heading); }
-  html[data-site="logistics"] .area-list li { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(2, 34, 72, 0.18); font-weight: 600; color: var(--heading); }
-  html[data-site="logistics"] .area-list li span { align-self: center; font: 500 12px/1 var(--f-mono); color: var(--label-ink); }
+  .areas .wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+  .area-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); column-gap: 24px; border-top: 2px solid var(--heading); }
+  .area-list li { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(2, 34, 72, 0.18); font-weight: 600; color: var(--heading); }
+  .area-list li span { align-self: center; font: 500 12px/1 var(--f-mono); color: var(--label-ink); }
 
   /* why genix + proof slots */
-  html[data-site="logistics"] .why { background: var(--white); }
-  html[data-site="logistics"] .promises { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  html[data-site="logistics"] .promises li { padding-top: 18px; border-top: 4px solid var(--gold); }
-  html[data-site="logistics"] .promises h3 { margin: 0 0 8px; font: 900 22px/1.05 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
-  html[data-site="logistics"] .promises p { margin: 0; color: var(--ink-2); }
-  html[data-site="logistics"] .proof { margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  html[data-site="logistics"] .proof > div { display: grid; gap: 8px; padding: 22px; border-radius: var(--r); }
-  html[data-site="logistics"] .proof b { font: 900 40px/1 var(--f-display); font-stretch: 118%; color: var(--heading); }
-  html[data-site="logistics"] .proof span { font: 500 12px/1.3 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--label-ink); }
+  .why { background: var(--white); }
+  .promises { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .promises li { padding-top: 18px; border-top: 4px solid var(--gold); }
+  .promises h3 { margin: 0 0 8px; font: 900 22px/1.05 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .promises p { margin: 0; color: var(--ink-2); }
+  .proof { margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .proof > div { display: grid; gap: 8px; padding: 22px; border-radius: var(--r); }
+  .proof b { font: 900 40px/1 var(--f-display); font-stretch: 118%; color: var(--heading); }
+  .proof span { font: 500 12px/1.3 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--label-ink); }
 
   /* faq */
-  html[data-site="logistics"] .faq-list { max-width: 860px; border-top: 2px solid var(--heading); }
-  html[data-site="logistics"] .faq-list details { border-bottom: 1px solid rgba(2, 34, 72, 0.18); }
-  html[data-site="logistics"] .faq-list summary {
+  .faq-list { max-width: 860px; border-top: 2px solid var(--heading); }
+  .faq-list details { border-bottom: 1px solid rgba(2, 34, 72, 0.18); }
+  .faq-list summary {
     display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 44px; padding: 18px 0;
     list-style: none; cursor: pointer; font: 700 19px/1.3 var(--f-body); color: var(--heading);
   }
-  html[data-site="logistics"] .faq-list summary::-webkit-details-marker { display: none; }
-  html[data-site="logistics"] .faq-list summary::after { content: "+"; font: 500 24px/1 var(--f-mono); color: var(--gold-text); }
-  html[data-site="logistics"] .faq-list details[open] summary::after { content: "−"; }
-  html[data-site="logistics"] .faq-list details p { margin: 0 0 20px; max-width: 64ch; color: var(--ink-2); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after { content: "+"; font: 500 24px/1 var(--f-mono); color: var(--gold-text); }
+  .faq-list details[open] summary::after { content: "−"; }
+  .faq-list details p { margin: 0 0 20px; max-width: 64ch; color: var(--ink-2); }
 
   /* final quote */
-  html[data-site="logistics"] .final .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+  .final .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
 
   @media (max-width: 960px) {
-    html[data-site="logistics"] .sec-head, html[data-site="logistics"] .areas .wrap, html[data-site="logistics"] .final .wrap { grid-template-columns: 1fr; }
-    html[data-site="logistics"] .promises, html[data-site="logistics"] .proof { grid-template-columns: 1fr; }
+    .sec-head, .areas .wrap, .final .wrap { grid-template-columns: 1fr; }
+    .promises, .proof { grid-template-columns: 1fr; }
   }
   @media (max-width: 760px) {
-    html[data-site="logistics"] .stops { grid-template-columns: 1fr; gap: 32px; }
+    .stops { grid-template-columns: 1fr; gap: 32px; }
   }
   @media (max-width: 560px) {
-    html[data-site="logistics"] .area-list { grid-template-columns: 1fr; }
+    .area-list { grid-template-columns: 1fr; }
   }
 }
 
 /* ---------- Hero + the shipping-label form ---------- */
-html[data-site="logistics"] :where([data-division="logistics"]) {
-  html[data-site="logistics"] .hero { padding: clamp(32px, 6vh, 80px) 0 clamp(56px, 9vh, 104px); }
-  html[data-site="logistics"] .hero .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
-  html[data-site="logistics"] .hero-eyebrow { margin: 0 0 16px; color: var(--gold); }
-  html[data-site="logistics"] .hero h1 { margin: 0 0 20px; }
-  html[data-site="logistics"] .hero .lead { margin: 0; max-width: 40ch; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.5; color: var(--on-brand-muted); }
+html[data-site="logistics"] {
+  .hero { padding: clamp(32px, 6vh, 80px) 0 clamp(56px, 9vh, 104px); }
+  .hero .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .hero-eyebrow { margin: 0 0 16px; color: var(--gold); }
+  .hero h1 { margin: 0 0 20px; }
+  .hero .lead { margin: 0; max-width: 40ch; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.5; color: var(--on-brand-muted); }
 
   /* the label: dashed edge inside a solid paper rim, reference line + barcode */
-  html[data-site="logistics"] .label-card {
+  .label-card {
     position: relative; display: grid; gap: 14px; margin: 8px; padding: 18px;
     background: var(--paper); color: var(--heading);
     border: 2px dashed rgba(2, 34, 72, 0.35); border-radius: 4px; outline: 8px solid var(--paper);
   }
-  html[data-site="logistics"] .label-ref { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; color: var(--label-ink); }
-  html[data-site="logistics"] .barcode {
+  .label-ref { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; color: var(--label-ink); }
+  .barcode {
     flex: 0 0 40%; height: 24px; opacity: 0.85;
     background: repeating-linear-gradient(90deg, var(--heading) 0 2px, transparent 2px 4px, var(--heading) 4px 7px, transparent 7px 9px);
   }
 
   /* tabs: a radio pair styled as a segmented control */
-  html[data-site="logistics"] .kind { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0; padding: 4px; border: 1px solid rgba(2, 34, 72, 0.25); border-radius: var(--r); }
-  html[data-site="logistics"] .kind label {
+  .kind { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0; padding: 4px; border: 1px solid rgba(2, 34, 72, 0.25); border-radius: var(--r); }
+  .kind label {
     position: relative; display: grid; place-items: center; min-height: 44px; padding: 6px;
     border-radius: 4px; text-align: center; font-weight: 600; font-size: 15px; cursor: pointer;
   }
-  html[data-site="logistics"] .kind input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
-  html[data-site="logistics"] .kind label:has(input:checked) { background: var(--heading); color: var(--white); }
-  html[data-site="logistics"] .kind label:has(input:focus-visible) { outline: 2px solid var(--heading); outline-offset: 2px; }
+  .kind input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .kind label:has(input:checked) { background: var(--heading); color: var(--white); }
+  .kind label:has(input:focus-visible) { outline: 2px solid var(--heading); outline-offset: 2px; }
 
   /* steps and fields: manifest rows */
-  html[data-site="logistics"] .fields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
-  html[data-site="logistics"] .step-title { grid-column: 1 / -1; margin: 2px 0 6px; font: 900 18px/1.1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
-  html[data-site="logistics"] .step-title:focus:not(:focus-visible) { outline: none; }
-  html[data-site="logistics"] .field { display: grid; align-content: start; gap: 4px; min-width: 0; padding: 10px 2px 12px; border-top: 1px solid rgba(2, 34, 72, 0.25); }
-  html[data-site="logistics"] .fields .full, html[data-site="logistics"] .hint, html[data-site="logistics"] .form-actions { grid-column: 1 / -1; }
-  html[data-site="logistics"] .field > label.mono { color: var(--label-ink); }
-  html[data-site="logistics"] .field input:not([type="checkbox"]), html[data-site="logistics"] .field select, html[data-site="logistics"] .field textarea {
+  .fields { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; min-width: 0; margin: 0; padding: 0; border: 0; }
+  .step-title { grid-column: 1 / -1; margin: 2px 0 6px; font: 900 18px/1.1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .step-title:focus:not(:focus-visible) { outline: none; }
+  .field { display: grid; align-content: start; gap: 4px; min-width: 0; padding: 10px 2px 12px; border-top: 1px solid rgba(2, 34, 72, 0.25); }
+  .fields .full, .hint, .form-actions { grid-column: 1 / -1; }
+  .field > label.mono { color: var(--label-ink); }
+  .field input:not([type="checkbox"]), .field select, .field textarea {
     width: 100%; min-height: 40px; padding: 4px 0; border: 0; border-bottom: 2px solid rgba(2, 34, 72, 0.2); border-radius: 0;
     background: transparent; color: var(--heading); font: 600 17px/1.3 var(--f-body);
   }
-  html[data-site="logistics"] .field textarea { min-height: 72px; resize: vertical; }
-  html[data-site="logistics"] .field :is(input, select, textarea):focus { outline: none; border-bottom-color: var(--heading); border-bottom-width: 3px; padding-bottom: 3px; }
-  html[data-site="logistics"] .field.invalid :is(input, select, textarea) { border-bottom-color: var(--err); }
-  html[data-site="logistics"] .err { margin: 2px 0 0; color: var(--err); font-size: 14px; font-weight: 600; }
-  html[data-site="logistics"] .err:empty { display: none; }
-  html[data-site="logistics"] .flex-date { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer; }
-  html[data-site="logistics"] .flex-date input { width: 18px; height: 18px; accent-color: var(--heading); }
-  html[data-site="logistics"] .hint { margin: 0 0 6px; font-size: 14px; color: var(--label-ink); }
-  html[data-site="logistics"] .form-actions { display: flex; gap: 12px; padding-top: 12px; }
-  html[data-site="logistics"] .form-actions .btn-gold { flex: 1; justify-content: center; }
-  html[data-site="logistics"] .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .field textarea { min-height: 72px; resize: vertical; }
+  .field :is(input, select, textarea):focus { outline: none; border-bottom-color: var(--heading); border-bottom-width: 3px; padding-bottom: 3px; }
+  .field.invalid :is(input, select, textarea) { border-bottom-color: var(--err); }
+  .err { margin: 2px 0 0; color: var(--err); font-size: 14px; font-weight: 600; }
+  .err:empty { display: none; }
+  .flex-date { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .flex-date input { width: 18px; height: 18px; accent-color: var(--heading); }
+  .hint { margin: 0 0 6px; font-size: 14px; color: var(--label-ink); }
+  .form-actions { display: flex; gap: 12px; padding-top: 12px; }
+  .form-actions .btn-gold { flex: 1; justify-content: center; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
   /* after sending */
-  html[data-site="logistics"] .sent { display: grid; gap: 8px; padding: 12px 2px; }
-  html[data-site="logistics"] .sent:focus { outline: none; }
-  html[data-site="logistics"] .sent-title { margin: 0; font: 900 26px/1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
-  html[data-site="logistics"] .sent p { margin: 0; }
+  .sent { display: grid; gap: 8px; padding: 12px 2px; }
+  .sent:focus { outline: none; }
+  .sent-title { margin: 0; font: 900 26px/1 var(--f-display); font-stretch: 118%; text-transform: uppercase; color: var(--heading); }
+  .sent p { margin: 0; }
 
   /* the final section's card */
-  html[data-site="logistics"] .final-line { margin: 0; font-size: 18px; font-weight: 600; }
-  html[data-site="logistics"] .final-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-  html[data-site="logistics"] .final-mail { margin: 0; color: var(--label-ink); }
-  html[data-site="logistics"] .final-mail a { color: var(--heading); }
+  .final-line { margin: 0; font-size: 18px; font-weight: 600; }
+  .final-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .final-mail { margin: 0; color: var(--label-ink); }
+  .final-mail a { color: var(--heading); }
 
   @media (max-width: 960px) {
-    html[data-site="logistics"] .hero .wrap { grid-template-columns: 1fr; gap: 24px; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 24px; }
   }
   @media (max-width: 560px) {
-    html[data-site="logistics"] .hero .lead { display: none; } /* phones: headline + form step 1 on the first screen; the lanes carry this message */
-    html[data-site="logistics"] .label-card { padding: 14px; }
-    html[data-site="logistics"] .kind label { font-size: 14px; }
+    .hero .lead { display: none; } /* phones: headline + form step 1 on the first screen; the lanes carry this message */
+    .label-card { padding: 14px; }
+    .kind label { font-size: 14px; }
   }
 }
 
@@ -408,46 +408,46 @@ html[data-site="logistics"] :where([data-division="logistics"]) {
    --p (0-1) is the truck's progress; route.js drives it. Default 1 = the
    finished road (no JS / reduced motion). Desktop: left to right through
    the centres of the four stop columns. Phones: top to bottom. */
-html[data-site="logistics"] :where([data-division="logistics"]) {
-  html[data-site="logistics"] .road { --p: 1; position: relative; }
-  html[data-site="logistics"] .road-line {
+html[data-site="logistics"] {
+  .road { --p: 1; position: relative; }
+  .road-line {
     position: absolute; left: 12.5%; right: 12.5%; top: 62px; height: 4px;
     background: repeating-linear-gradient(to right, rgba(194, 138, 44, 0.3) 0 22px, transparent 22px 38px);
   }
-  html[data-site="logistics"] .road-fill {
+  .road-fill {
     position: absolute; inset: 0; transform-origin: left center; transform: scaleX(var(--p));
     background: repeating-linear-gradient(to right, var(--gold) 0 22px, transparent 22px 38px);
   }
-  html[data-site="logistics"] .road-truck { position: absolute; z-index: 2; top: 18px; width: 120px; height: auto; left: calc(12.5% + var(--p) * 75% - 60px); }
-  html[data-site="logistics"] .stops { padding-top: 104px; }
-  html[data-site="logistics"] .stop { text-align: center; }
-  html[data-site="logistics"] .stop-dot {
+  .road-truck { position: absolute; z-index: 2; top: 18px; width: 120px; height: auto; left: calc(12.5% + var(--p) * 75% - 60px); }
+  .stops { padding-top: 104px; }
+  .stop { text-align: center; }
+  .stop-dot {
     position: absolute; top: -50px; left: 50%; width: 20px; height: 20px; margin-left: -10px;
     border-radius: 50%; border: 3px solid var(--gold); background: var(--gold); transition: background-color 0.3s;
   }
-  html[data-site="logistics"] .road.is-live .stop:not(.is-passed) .stop-dot { background: var(--brand); }
-  html[data-site="logistics"] .stamp {
+  .road.is-live .stop:not(.is-passed) .stop-dot { background: var(--brand); }
+  .stamp {
     display: inline-block; margin-top: 16px; padding: 6px 12px; border: 2.5px solid var(--gold); border-radius: 3px;
     color: var(--gold); font: 600 14px/1 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; transform: rotate(-8deg);
   }
-  html[data-site="logistics"] .road.is-live .stamp { opacity: 0; transform: rotate(-8deg) scale(1.6); transition: opacity 0.25s, transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1); }
-  html[data-site="logistics"] .road.is-live.was-done .stamp { opacity: 1; transform: rotate(-8deg) scale(1); }
+  .road.is-live .stamp { opacity: 0; transform: rotate(-8deg) scale(1.6); transition: opacity 0.25s, transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .road.is-live.was-done .stamp { opacity: 1; transform: rotate(-8deg) scale(1); }
 
   @media (max-width: 760px) {
     /* road on the left at x = 42px, text from 72px */
-    html[data-site="logistics"] .road-line {
+    .road-line {
       left: 40px; right: auto; top: 0; bottom: 0; width: 4px; height: auto;
       background: repeating-linear-gradient(to bottom, rgba(194, 138, 44, 0.3) 0 22px, transparent 22px 38px);
     }
-    html[data-site="logistics"] .road-fill {
+    .road-fill {
       transform-origin: center top; transform: scaleY(var(--p));
       background: repeating-linear-gradient(to bottom, var(--gold) 0 22px, transparent 22px 38px);
     }
     /* 84x29 truck turned to face down; its visual box is 29 wide, centred on the road */
-    html[data-site="logistics"] .road-truck { width: 84px; left: 0; top: calc(var(--p) * (100% - 84px) + 27.5px); transform: rotate(90deg); }
-    html[data-site="logistics"] .stops { padding: 0 0 0 72px; }
-    html[data-site="logistics"] .stop { text-align: left; }
-    html[data-site="logistics"] .stop-dot { top: 0; left: -40px; margin-left: 0; }
+    .road-truck { width: 84px; left: 0; top: calc(var(--p) * (100% - 84px) + 27.5px); transform: rotate(90deg); }
+    .stops { padding: 0 0 0 72px; }
+    .stop { text-align: left; }
+    .stop-dot { top: 0; left: -40px; margin-left: 0; }
   }
 }
 

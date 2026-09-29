@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import postcss from 'postcss'
 import { fontOverrides, portCss, scopeSelector } from '@/pages-home/port-css'
 
 const S = 'html[data-site="logistics"]'
@@ -37,7 +38,11 @@ describe('portCss', () => {
       'logistics',
     )
     expect(out).toContain(`${S} .a {`)
-    expect(out).not.toContain('.b')
+    const media = postcss.parse(out).first as import('postcss').AtRule
+    expect(media.name).toBe('media')
+    const sels: string[] = []
+    media.walkRules((r) => { sels.push(r.selector) })
+    expect(sels).toEqual([`${S} .a`])
     expect(out).toContain('from { transform: none }')
     expect(out).toContain('url("/brand/hu-ba-finished.jpg")')
     expect(out).toContain('url(/brand/x.svg)')
@@ -50,5 +55,37 @@ describe('fontOverrides', () => {
     expect(fontOverrides('logistics')).toBe(
       `${S} { --f-display: var(--font-archivo), system-ui, sans-serif; --f-body: var(--font-archivo), system-ui, sans-serif; --f-mono: var(--font-plex-mono), ui-monospace, monospace; }`,
     )
+  })
+})
+
+describe('native CSS nesting', () => {
+  const rulesWithRuleAncestor = (css: string) => {
+    const found: string[] = []
+    postcss.parse(css).walkRules((r) => {
+      let p = r.parent
+      while (p && p.type !== 'root') {
+        if (p.type === 'rule') { found.push(r.selector); return }
+        p = p.parent
+      }
+    })
+    return found
+  }
+  it('scopes only the outer rule; nested rules keep their selectors', () => {
+    const out = portCss(
+      `:where([data-division="logistics"]) { .mono { color: red } @media (max-width: 760px) { .road { top: 0 } } }`,
+      'logistics',
+    )
+    const root = postcss.parse(out)
+    const top: string[] = []
+    root.each((n) => { if (n.type === 'rule') top.push(n.selector) })
+    expect(top).toEqual([S])
+    expect(rulesWithRuleAncestor(out).sort()).toEqual(['.mono', '.road'])
+  })
+  it('drops :where() rules for another division', () => {
+    expect(portCss(`:where([data-division="homeupgrades"]) .x { color: red }`, 'logistics').trim()).toBe('')
+  })
+  it('maps a leading :where() own-division to the site root', () => {
+    expect(scopeSelector(':where([data-division="logistics"]) .x', 'logistics')).toBe(`${S} .x`)
+    expect(scopeSelector(':where([data-division="hub"])', 'logistics')).toBeNull()
   })
 })
