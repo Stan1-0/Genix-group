@@ -3,10 +3,10 @@ import { expectSameLook, hideOverlays, PROTOTYPE, settle, VIEWPORTS } from './pa
 
 /* Each ported site against its prototype. `chrome` (header + footer) turns on in Task 3;
    `sections` turns on in the task that ports that site's page body. */
-const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean }[] = [
+const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean; extra?: string }[] = [
   { site: 'logistics', proto: '/logistics-home.html', app: 'http://logistics.localhost:3000/', chrome: true, sections: true },
   { site: 'homeupgrades', proto: '/homeupgrades-home.html', app: 'http://homeupgrades.localhost:3000/', chrome: true, sections: true },
-  { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: true },
+  { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: true, extra: '#businesses > section' },
 ]
 
 test.describe.configure({ timeout: 180_000 })
@@ -43,6 +43,13 @@ for (const p of PARITY) {
         const n = await proto.locator('main > section').count()
         expect(await app.locator('main > section').count(), 'same number of sections').toBe(n)
         for (let i = 0; i < n; i++) await expectSameLook(proto, app, `main > section >> nth=${i}`, `${p.site}-${vp}-section${i + 1}`)
+      }
+      if (p.sections && p.extra) {
+        // Sections outside `main > section` (the hub's division panels sit inside div#businesses).
+        const m = await proto.locator(p.extra).count()
+        expect(await app.locator(p.extra).count(), 'same number of extra sections').toBe(m)
+        expect(m, 'three panels').toBe(3)
+        for (let i = 0; i < m; i++) await expectSameLook(proto, app, `${p.extra} >> nth=${i}`, `${p.site}-${vp}-panel${i + 1}`)
       }
       if (p.chrome) await expectSameLook(proto, app, 'footer.site-footer', `${p.site}-${vp}-footer`)
     })

@@ -44,7 +44,11 @@ for (const [label, viewport, mobile] of [
         [...document.querySelectorAll<HTMLImageElement>('.lockup img')].map((i) => ({ src: i.getAttribute('src'), filter: getComputedStyle(i).filter, t: getComputedStyle(i).transform })),
       )
       expect(logo.every((l) => l.filter === 'none' && ['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(l.t))).toBe(true)
-      expect(logo.map((l) => l.src)).toEqual(['/brand/genix-mark.svg', '/brand/genix-wordmark.svg'])
+    })
+
+    test('hero logo files are the mark and wordmark', async ({ page }) => {
+      await page.goto(URL)
+      expect(await page.$$eval('.lockup img', (els) => els.map((i) => i.getAttribute('src')))).toEqual(['/brand/genix-mark.svg', '/brand/genix-wordmark.svg'])
     })
 
     test('reel is on the first screen', async ({ page }) => {
@@ -88,9 +92,15 @@ for (const [label, viewport, mobile] of [
       expect((await page.locator('.hero h1').textContent())!.replace(/\s+/g, ' ').trim()).toBe('We Haul It. We Build It. We Show It.')
     })
 
-    test('headline is visible under reduced motion, not split', async ({ page }) => {
+    test('headline is visible under reduced motion', async ({ page }) => {
       await page.goto(URL)
       expect(await page.evaluate(() => getComputedStyle(document.querySelector('.hero h1')!).visibility)).toBe('visible')
+    })
+
+    test('headline is not split under reduced motion', async ({ page }) => {
+      await page.goto(URL)
+      // Only the gold span is a child element; SplitText would add line wrappers.
+      expect(await page.$$eval('.hero h1 *', (els) => els.filter((e) => !e.classList.contains('gold')).length)).toBe(0)
     })
 
     test('all content visible under reduced motion', async ({ page }) => {
@@ -133,8 +143,10 @@ test.describe('no JavaScript', () => {
   test('panels readable', async ({ page }) => {
     await expect(page.locator('#div-make h3')).toBeVisible()
   })
-  test('header logo and hero logo both visible', async ({ page }) => {
+  test('header logo visible', async ({ page }) => {
     await expect(page.locator('.site-header .logo')).toBeVisible()
+  })
+  test('hero logo visible', async ({ page }) => {
     await expect(page.locator('.lockup')).toBeVisible()
   })
 })
