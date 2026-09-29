@@ -6,7 +6,7 @@ import { expectSameLook, hideOverlays, PROTOTYPE, settle, VIEWPORTS } from './pa
 const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean }[] = [
   { site: 'logistics', proto: '/logistics-home.html', app: 'http://logistics.localhost:3000/', chrome: true, sections: true },
   { site: 'homeupgrades', proto: '/homeupgrades-home.html', app: 'http://homeupgrades.localhost:3000/', chrome: true, sections: true },
-  { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: false },
+  { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: true },
 ]
 
 test.describe.configure({ timeout: 180_000 })

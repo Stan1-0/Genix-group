@@ -6,7 +6,8 @@ import type { SiteKey } from '@/sites/config'
 const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; seoDescription?: string; areaServed?: string; areaServedType?: 'Country' }> = {
   hub: {
     heroHeading: 'We Haul It. We Build It. We Show It.',
-    heroSubheading: 'Logistics, home upgrades and multimedia: three specialist businesses, one group.',
+    heroSubheading: "Logistics, home upgrades and multimedia: three specialist businesses, one group. Tell us what you need and we'll put the right crew on it.",
+    seoDescription: "The Genix Group runs three specialist businesses across the US: freight and logistics, home upgrades, and multimedia.",
   },
   logistics: {
     heroHeading: 'Reliable Freight. Real People. On Time, Every Time.',

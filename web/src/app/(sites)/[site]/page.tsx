@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { JsonLd } from '@/components/site/JsonLd'
 import { HomeUpgradesHome } from '@/pages-home/homeupgrades/HomeUpgradesHome'
+import { HubHome } from '@/pages-home/hub/HubHome'
 import { LogisticsHome } from '@/pages-home/logistics/LogisticsHome'
 import { SITES, SITE_KEYS, isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
@@ -30,6 +31,7 @@ export default async function HomePage({ params }: Props) {
   if (!isSiteKey(site)) notFound()
   const cfg = SITES[site]
   const data = await getSiteData(site)
+  if (site === 'hub') return <HubHome data={data} />
   if (site === 'logistics') return <LogisticsHome data={data} />
   if (site === 'homeupgrades') return <HomeUpgradesHome data={data} />
   // Other sites: foundation placeholder until their pages are ported.
