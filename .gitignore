@@ -1,9 +1,60 @@
-# Brainstorming mockups and SDD workspaces (local scratch)
-.superpowers/
+# --- Secrets & local environment (never commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
 
-# Python
+# --- Dependencies & build output ---
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+.vercel/
+.turbo/
+
+# --- Logs & debug ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Test output ---
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+design/tests/shots/
+web/tests/shots/
+
+# --- Local uploads (Payload media when Blob token is unset) ---
+web/media/
+
+# --- Python (design/tools) ---
 __pycache__/
 *.pyc
+.venv/
+venv/
 
-# Test screenshots
-design/tests/shots/
+# --- Local AI / scratch workspaces ---
+.superpowers/
+.worktrees/
+.claude/settings.local.json
+.claude/worktrees/
+
+# --- OS & editor junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
