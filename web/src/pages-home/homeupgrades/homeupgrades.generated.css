@@ -931,6 +931,8 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
       }
       html[data-site="homeupgrades"] .crew img {
         width: 100%;
+        /* the img's height attribute would otherwise pin it at 752px and defeat the 4:3 */
+        height: auto;
         aspect-ratio: 4 / 3;
         object-fit: cover;
       }
