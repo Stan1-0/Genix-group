@@ -132,7 +132,7 @@ Forms work without JavaScript (plain POST to the action; both steps shown).
 
 ## 6. Build order
 
-Each phase ends deployable and tested:
+Each phase ends deployable and tested. Reordered by the owner on 2026-09-29: after phase 1, the three prototype home pages are ported first (`docs/superpowers/specs/2026-09-29-home-pages-port-design.md`), then phase 2 onward continues without their home pages.
 1. **Foundation:** Next.js + Payload + Neon + Blob; `sites.config.ts`; `proxy.ts` host routing; themes; shared layout (header, footer, quote bar); 404/error pages; SEO plumbing (sitemaps, robots, canonical, titles, JSON-LD scaffold, share images); analytics.
 2. **Logistics site** (fully prototyped): Home with the quote form and road section; Services, Our work, About, Contact, Privacy; the full inquiry pipeline (4a).
 3. **Home Upgrades site:** Home (slider, 3D section, viewer); prerequisite — prototype the Contact page and fix its quote fields; then the remaining pages.
