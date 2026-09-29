@@ -130,6 +130,11 @@ for (const [label, viewport, mobile] of [
 test.describe('no JavaScript', () => {
   test.use({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } })
 
+  test('inert reel dots are hidden', async ({ page }) => {
+    await page.goto(URL, { waitUntil: 'load' })
+    await expect(page.locator('#nowBar')).not.toBeVisible()
+  })
+
   test.beforeEach(async ({ page }) => {
     await page.goto(URL, { waitUntil: 'load' })
   })
@@ -333,6 +338,13 @@ test.describe('reel (desktop)', () => {
   test('now bar is shown by script', async ({ page }) => {
     await settleMotion(page)
     await expect(page.locator('#nowBar')).toBeVisible()
+  })
+  test('reveal of the now bar shifts no layout', async ({ page }) => {
+    await page.goto(URL, { waitUntil: 'commit' })
+    await page.locator('.reel').waitFor({ state: 'attached' })
+    const before = await page.evaluate(() => document.querySelector('.reel')!.getBoundingClientRect().height)
+    await page.waitForFunction(() => !document.getElementById('nowBar')!.hidden)
+    expect(await page.evaluate(() => document.querySelector('.reel')!.getBoundingClientRect().height)).toBe(before)
   })
 
   test.describe('a full auto-advance', () => {

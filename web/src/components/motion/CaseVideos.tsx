@@ -8,8 +8,9 @@ export function CaseVideos() {
   useEnhance(() => {
     const vids = document.querySelectorAll<HTMLVideoElement>('.case video')
     if (prefersReducedMotion()) {
+      const was = [...vids].map((v) => v.controls)
       vids.forEach((v) => (v.controls = true))
-      return () => vids.forEach((v) => (v.controls = false))
+      return () => vids.forEach((v, i) => (v.controls = was[i]))
     }
     const io = new IntersectionObserver(
       (entries) =>

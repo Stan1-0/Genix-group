@@ -1,0 +1,8 @@
+/* Hand-written overrides for the generated hub CSS (never edit hub.generated.css).
+   The prototype sets `.now{display:flex}`, which defeats the `hidden` attribute. Its inline script
+   revealed the bar instantly, but the app hydrates later, so the reel dots sat visible and inert
+   (and stay so with JS off). Hide the bar until HubReel clears `hidden`. visibility (not display)
+   keeps the bar's space reserved, so revealing it shifts no layout and matches the post-JS layout. */
+html[data-site="hub"] .now[hidden] {
+  visibility: hidden;
+}

@@ -54,6 +54,7 @@ export function LogoDock() {
       lock.style.transform = ''
       lock.style.visibility = ''
       root.classList.remove('logo-docked')
+      // `logo-dock` stays: the early script set it before paint, and the prototype never removes it.
     }
   })
   return null
