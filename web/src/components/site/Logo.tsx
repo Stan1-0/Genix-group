@@ -11,5 +11,5 @@ export function Logo({ site, className }: { site: SiteKey; className?: string })
       </span>
     )
   }
-  return <Image src={logo.src} width={logo.width} height={logo.height} alt="" unoptimized priority className={className} />
+  return <Image src={logo.src} width={logo.width} height={logo.height} alt="" unoptimized preload className={className} />
 }

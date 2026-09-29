@@ -38,6 +38,11 @@ describe('siteJsonLd', () => {
     expect(ld).toMatchObject({ '@type': 'Organization', name: 'The Genix Group', url: 'https://thegenixgroup.com/' })
     expect((ld.subOrganization as { name: string }[]).map((o) => o.name)).toEqual(['Genix Logistics', 'Genix Home Upgrades', 'Genix Multimedia'])
   })
+  it('gives the hub the prototype address and area served', () => {
+    const ld = siteJsonLd('hub', toSiteData('hub', null), root)
+    expect(ld.address).toEqual({ '@type': 'PostalAddress', addressLocality: 'San Diego', addressRegion: 'CA', addressCountry: 'US' })
+    expect(ld.areaServed).toEqual({ '@type': 'Country', name: 'United States' })
+  })
   it('gives a division its type, parent and area served', () => {
     const data = toSiteData('logistics', { areaServed: 'United States', areaServedType: 'Country', regions: [{ name: 'California' }] })
     const ld = siteJsonLd('logistics', data, root)

@@ -47,6 +47,8 @@ export function siteJsonLd(site: SiteKey, data: SiteData, root?: string): Record
   if (site === 'hub') {
     return {
       ...base,
+      address: { '@type': 'PostalAddress', addressLocality: 'San Diego', addressRegion: 'CA', addressCountry: 'US' },
+      areaServed: { '@type': 'Country', name: 'United States' },
       subOrganization: DIVISION_KEYS.map((k) => ({ '@type': SITES[k].schemaType, name: SITES[k].name, url: `${siteOrigin(k, root)}/` })),
     }
   }

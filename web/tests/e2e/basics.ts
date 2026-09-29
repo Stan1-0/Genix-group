@@ -30,7 +30,12 @@ export async function expectBasics(page: Page, seen: Seen) {
   const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0 && i.loading !== 'lazy').map((i) => i.src))
   expect.soft(broken, 'images load').toEqual([])
   const missing = await page.evaluate(() =>
-    [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')!).filter((h) => h.length > 1 && !document.querySelector(h)),
+    [...document.querySelectorAll('a[href^="#"], a[href^="/#"]')]
+      .map((a) => a.getAttribute('href')!)
+      // "/#x" only counts on the home route, where it targets this same page.
+      .filter((h) => h.startsWith('#') || location.pathname === '/')
+      .map((h) => h.replace(/^\//, ''))
+      .filter((h) => h.length > 1 && !document.querySelector(h)),
   )
   expect.soft([...new Set(missing)].sort(), 'in-page links resolve').toEqual([])
   expect.soft(await page.locator('h1').count(), 'exactly one h1').toBe(1)
