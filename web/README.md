@@ -45,6 +45,8 @@ The repo is ready to import as one Vercel project serving all four domains.
    | `ALLOW_INDEXING` | `1` | *(unset)* | unset = `robots.txt` blocks search engines |
 
    Leave `SEED_ADMIN_*` unset in Vercel.
+   The app refuses to start in production without `PAYLOAD_SECRET`, `DATABASE_URL` and (on Vercel)
+   `BLOB_READ_WRITE_TOKEN`; the error names what is missing (`src/payload/env.ts`).
 6. **Deploy.** The build command (`npm run build:vercel`, from `vercel.json`) runs
    `payload migrate`, then `next build`. The build reads the CMS, so it fails loudly if the database
    is unreachable instead of shipping default content.

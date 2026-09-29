@@ -9,10 +9,13 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
+import { assertProductionEnv } from './payload/env'
 import { isLocalDatabase } from './payload/local-db'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+assertProductionEnv(process.env)
 
 export default buildConfig({
   admin: {
