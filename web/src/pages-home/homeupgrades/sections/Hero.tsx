@@ -36,7 +36,8 @@ export function Hero({ data }: { data: SiteData }) {
               width={1004}
               height={752}
               sizes="(max-width: 900px) 100vw, 50vw"
-              preload
+              loading="eager"
+              fetchPriority="high"
             />
             <div className="ba-before">
               <Image
@@ -45,7 +46,8 @@ export function Hero({ data }: { data: SiteData }) {
                 width={1004}
                 height={752}
                 sizes="(max-width: 900px) 100vw, 50vw"
-                preload
+                loading="eager"
+                fetchPriority="high"
               />
             </div>
             <span className="ba-tag ba-tag-before" aria-hidden="true">

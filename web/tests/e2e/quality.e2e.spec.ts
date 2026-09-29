@@ -66,3 +66,31 @@ test('404 call to action is readable on ported sites', async ({ page }) => {
   expect(color).toBe('rgb(255, 255, 255)')
   expect(bg).not.toBe('rgba(0, 0, 0, 0)')
 })
+
+// The early script (js / h1-pending / logo-dock classes) must be a real <script> in the server HTML's <head>,
+// executed while the document is parsed — a queued or client-rendered script would run after first paint and
+// flash the unsplit headline and the hub header logo.
+// (Not checked on 404s: Next renders those from its client error shell — see README known issues.)
+for (const url of ['http://logistics.localhost:3000/', 'http://homeupgrades.localhost:3000/', 'http://localhost:3000/']) {
+  test(`${url}: early script is an inline <script> in the served <head>`, async ({ page }) => {
+    // Fetched from inside the page: Node's resolver doesn't know *.localhost.
+    await page.goto(new URL('/robots.txt', url).href)
+    const html = await page.evaluate(async (u) => (await fetch(u)).text(), url)
+    const head = html.slice(0, html.indexOf('</head>'))
+    expect(head).toMatch(/<script[^>]*>[^<]*document\.documentElement\.classList\.add\("js"\)/)
+  })
+}
+
+// Hero photos are the Largest Contentful Paint: they must load eagerly with high priority (Next 16 guidance),
+// not lazily (next/image's default).
+for (const [url, selector] of [
+  ['http://localhost:3000/', '.hero img[src*="hu-project-marble-wall"], .hero img[srcset*="hu-project-marble-wall"]'],
+  ['http://homeupgrades.localhost:3000/', '[data-hero] img:not([src$=".svg"])'],
+] as const) {
+  test(`${url}: hero photo loads eagerly`, async ({ page }) => {
+    await page.goto(url)
+    const img = page.locator(selector).first()
+    await expect(img).toHaveAttribute('loading', 'eager')
+    await expect(img).toHaveAttribute('fetchpriority', 'high')
+  })
+}

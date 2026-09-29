@@ -21,6 +21,7 @@ http://homeupgrades.localhost:3000, http://multimedia.localhost:3000.
 Known issue: `npx eslint` crashes repo-wide (circular ESLint config, pre-existing), so lint is not part of the checks yet.
 
 Other known issues (inherited from the approved prototypes, left as designed):
+- 404 pages: with two root layouts under a dynamic `[site]` segment, Next serves 404s from its client-rendered error shell (dev and production). The layout's early <head> script is therefore not run there (nothing on a 404 needs it), and dev logs React's "Encountered a script tag while rendering React component". Next's documented remedy, `global-not-found.js`, is experimental and would drop per-site theming.
 - Logistics: with JavaScript off, the quote form shows step 2 and its ghost Back button (`#qBack`) fails color-contrast (white on the light card). The prototype has the same issue; axe is checked after JS has run.
 
 ## Deploy (Vercel)

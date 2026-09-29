@@ -54,7 +54,8 @@ export function Hero({ data }: { data: SiteData }) {
                 width={1122}
                 height={1402}
                 sizes="(max-width: 900px) 100vw, 50vw"
-                preload
+                loading="eager"
+                fetchPriority="high"
               />
               <video src="/brand/hu-project.mp4" muted loop playsInline preload="metadata" aria-hidden="true"></video>
               <p className="reel-cap">
