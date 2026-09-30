@@ -36,6 +36,6 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Everything except Next internals and static brand files.
-  matcher: ['/((?!_next/|brand/|icons/|favicon\\.ico).*)'],
+  // Everything except Next internals and static brand files. /favicon.ico is routed per site.
+  matcher: ['/((?!_next/|brand/|icons/).*)'],
 }

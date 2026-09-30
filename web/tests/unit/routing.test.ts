@@ -24,6 +24,12 @@ describe('routeRequest', () => {
     expect(routeRequest('hub', '/about')).toEqual({ kind: 'rewrite', pathname: '/hub/about' })
     expect(routeRequest('homeupgrades', '/sitemap.xml')).toEqual({ kind: 'rewrite', pathname: '/homeupgrades/sitemap.xml' })
   })
+  it('serves /favicon.ico from each site’s own icon set (Multimedia shares the hub’s)', () => {
+    expect(routeRequest('hub', '/favicon.ico')).toEqual({ kind: 'rewrite', pathname: '/icons/hub/favicon.ico' })
+    expect(routeRequest('logistics', '/favicon.ico')).toEqual({ kind: 'rewrite', pathname: '/icons/logistics/favicon.ico' })
+    expect(routeRequest('homeupgrades', '/favicon.ico')).toEqual({ kind: 'rewrite', pathname: '/icons/homeupgrades/favicon.ico' })
+    expect(routeRequest('multimedia', '/favicon.ico')).toEqual({ kind: 'rewrite', pathname: '/icons/hub/favicon.ico' })
+  })
   it('passes through paths already inside the site segment (generated OG image URLs)', () => {
     expect(routeRequest('logistics', '/logistics/opengraph-image')).toEqual({ kind: 'next' })
   })

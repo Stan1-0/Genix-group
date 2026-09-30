@@ -315,8 +315,12 @@ test.describe('interactions (desktop)', () => {
     test('viewer lands large', async ({ page }) => {
       await page.locator('.work-card').first().click()
       await page.waitForTimeout(2200)
-      const end = await page.evaluate(() => ({ w: document.querySelector('.viewer-media')!.getBoundingClientRect().width, title: document.getElementById('viewerTitle')!.textContent }))
-      expect(end.w > 700 && end.title === 'Marble feature wall').toBe(true)
+      // The first card is a portrait photo, so "large" means it fills most of the height or the width.
+      const end = await page.evaluate(() => {
+        const r = document.querySelector('.viewer-media')!.getBoundingClientRect()
+        return { large: r.height > innerHeight * 0.7 || r.width > innerWidth * 0.55, title: document.getElementById('viewerTitle')!.textContent }
+      })
+      expect(end).toEqual({ large: true, title: 'Accent wall' })
     })
 
     test('Esc closes the viewer', async ({ page }) => {

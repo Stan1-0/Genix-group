@@ -1,4 +1,4 @@
-import { isSiteKey, resolveSite, type SiteKey } from './config'
+import { isSiteKey, resolveSite, SITES, type SiteKey } from './config'
 
 export type RouteDecision = { kind: 'next' } | { kind: 'rewrite'; pathname: string } | { kind: 'notFound' }
 
@@ -34,6 +34,8 @@ const DEFAULT_ROUTE_OPTS: RouteOpts = { hostResolved: true, isProduction: false 
 
 export function routeRequest(site: SiteKey, pathname: string, opts: RouteOpts = DEFAULT_ROUTE_OPTS): RouteDecision {
   if (isMediaFile(pathname)) return { kind: 'next' }
+  // Browsers and search engines ask for /favicon.ico directly, whatever the page links to.
+  if (pathname === '/favicon.ico') return { kind: 'rewrite', pathname: `${SITES[site].icons}/favicon.ico` }
   if (isPayloadPath(pathname)) {
     // An unresolved Host in production never reaches Payload's admin or API,
     // regardless of which site the request otherwise fell back to.
