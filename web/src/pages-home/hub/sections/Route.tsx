@@ -2,7 +2,14 @@ import { siteOrigin } from '@/sites/config'
 import type { SiteData } from '@/sites/data-shape'
 
 const Arrow = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="square"
+    aria-hidden="true"
+  >
     <path d="M7 17L17 7M9 7h8v8" />
   </svg>
 )
@@ -20,7 +27,12 @@ export function Route({ data }: { data: SiteData }) {
           What do you <span className="gold">need?</span>
         </h2>
         <div className="options">
-          <a className="option" href={`${siteOrigin('logistics')}/contact`} style={{ '--c': 'var(--move)' } as React.CSSProperties} data-reveal>
+          <a
+            className="option"
+            href={`${siteOrigin('logistics')}/contact`}
+            style={{ '--c': 'var(--move)' } as React.CSSProperties}
+            data-reveal
+          >
             <span className="verb">Move</span>
             <b>Ship something</b>
             <p>Freight, haulage, last-mile delivery and courier.</p>
@@ -29,7 +41,12 @@ export function Route({ data }: { data: SiteData }) {
               <Arrow />
             </span>
           </a>
-          <a className="option" href={`${siteOrigin('homeupgrades')}/contact`} style={{ '--c': 'var(--gold-text)' } as React.CSSProperties} data-reveal>
+          <a
+            className="option"
+            href={`${siteOrigin('homeupgrades')}/contact`}
+            style={{ '--c': 'var(--gold-text)' } as React.CSSProperties}
+            data-reveal
+          >
             <span className="verb">Make</span>
             <b>Upgrade a space</b>
             <p>Renovations, feature walls, fittings and outdoor builds.</p>
@@ -38,10 +55,15 @@ export function Route({ data }: { data: SiteData }) {
               <Arrow />
             </span>
           </a>
-          <a className="option" href={`${siteOrigin('multimedia')}/contact`} style={{ '--c': '#7a2e68' } as React.CSSProperties} data-reveal>
+          <a
+            className="option"
+            href={`${siteOrigin('multimedia')}/contact`}
+            style={{ '--c': '#7a2e68' } as React.CSSProperties}
+            data-reveal
+          >
             <span className="verb">Tell</span>
             <b>Tell your story</b>
-            <p>Photography, video, branding and design.</p>
+            <p>Photography, videography, branding and design.</p>
             <span className="go">
               Book a shoot
               <Arrow />
@@ -49,8 +71,8 @@ export function Route({ data }: { data: SiteData }) {
           </a>
         </div>
         <p className="route-alt" data-reveal>
-          Need more than one, or not sure? Email <a href={`mailto:${email}`}>{email}</a> and we&apos;ll bring the right
-          teams together.
+          Need more than one, or not sure? Email <a href={`mailto:${email}`}>{email}</a> and
+          we&apos;ll bring the right teams together.
         </p>
       </div>
     </section>

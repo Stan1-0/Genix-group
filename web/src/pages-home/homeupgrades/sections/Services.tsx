@@ -15,7 +15,8 @@ export function Services() {
             </h2>
           </div>
           <p className="body" data-reveal>
-            Every project starts with a visit to the space and a written quote. Tell us what you have in mind — we&apos;ll tell you what it takes.
+            Every project starts with a visit to the space and a written quote. Tell us what you
+            have in mind — we&apos;ll tell you what it takes.
           </p>
         </div>
         <div className="svc-grid swipe">
@@ -33,7 +34,9 @@ export function Services() {
             </div>
             <div className="svc-body">
               <h3>Renovation</h3>
-              <p>Rooms reworked from the studs out: layouts, walls, flooring, fixtures and finishes.</p>
+              <p>
+                Rooms reworked from the studs out: layouts, walls, flooring, fixtures and finishes.
+              </p>
               <ul>
                 <li>Living spaces</li>
                 <li>Kitchens</li>
@@ -57,11 +60,14 @@ export function Services() {
             </div>
             <div className="svc-body">
               <h3>Feature walls &amp; TV units</h3>
-              <p>Statement walls built around how you use the room — stone panels, slatted wood, hidden wiring and integrated lighting.</p>
+              <p>
+                Statement walls built around how you use the room — stone panels, slatted wood,
+                hidden wiring and integrated lighting.
+              </p>
               <ul>
                 <li>Marble panels</li>
-                <li>Slat walls</li>
-                <li>LED backlighting</li>
+                <li>Accent walls</li>
+                <li>Customized TV unit</li>
               </ul>
               <a className="more" href="#quote">
                 Ask about a feature wall <span aria-hidden="true">→</span>

@@ -4,7 +4,8 @@ import { GoldHeading } from '../../GoldHeading'
 import type { SiteData } from '@/sites/data-shape'
 import { telHref } from './phone'
 
-const LEAD = 'Renovations, feature walls and custom TV units, planned with you and built by our own crew.'
+const LEAD =
+  'Renovations, Accent walls and custom TV units, planned with you and built by our own crew.'
 
 /* Hero: headline, lead, actions and the before/after slider (behaviour attaches in the slider enhancer). */
 export function Hero({ data }: { data: SiteData }) {
@@ -16,14 +17,19 @@ export function Hero({ data }: { data: SiteData }) {
           <GoldHeading site="homeupgrades" text={data.heroHeading} className="h-display" />
           <p className="lead">{data.heroSubheading || LEAD}</p>
           <p className="body">
-            From the first site visit to the final walkthrough, you get one team, a written quote before work starts, and a site kept tidy while we build.
+            From the first site visit to the final walkthrough, you get one team, a written quote
+            before work starts, and a site kept tidy while we build.
           </p>
           <div className="hero-actions">
             <a className="btn btn-dark" href="#quote">
               Plan an upgrade <span aria-hidden="true">→</span>
             </a>
             <a className="btn btn-ghost" href={telHref(data.phone)}>
-              {data.phone ? <>Call {data.phone}</> : <span className="ph">Call (000) 000-0000</span>}
+              {data.phone ? (
+                <>Call {data.phone}</>
+              ) : (
+                <span className="ph">Call (000) 000-0000</span>
+              )}
             </a>
           </div>
         </div>
@@ -68,7 +74,14 @@ export function Hero({ data }: { data: SiteData }) {
               aria-valuetext="50% mid-build"
             >
               <span className="ba-knob" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M9 6l-5 6 5 6M15 6l5 6-5 6" />
                 </svg>
               </span>

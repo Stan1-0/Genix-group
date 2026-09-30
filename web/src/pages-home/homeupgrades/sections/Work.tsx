@@ -40,7 +40,7 @@ export function Work() {
               />
               <span className="work-cap">
                 <small>Feature wall</small>
-                <b>Marble feature wall</b>
+                <b>Accent wall</b>
                 <span>Backlit stone, floating console, lit shelving</span>
               </span>
             </button>
@@ -91,7 +91,15 @@ export function Work() {
           </p>
         </div>
         <button className="viewer-close" id="viewerClose" aria-label="Close project view">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          >
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         </button>

@@ -14,21 +14,45 @@ export function Hero({ data }: { data: SiteData }) {
           <p className="label">An American company · San Diego, California</p>
           <div className="lockup">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="lockup-mark" src="/brand/genix-mark.svg" alt="" width={290} height={340} />
+            <img
+              className="lockup-mark"
+              src="/brand/genix-mark.svg"
+              alt=""
+              width={290}
+              height={340}
+            />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="lockup-word" src="/brand/genix-wordmark.svg" alt="The Genix Group" width={832} height={326} />
+            <img
+              className="lockup-word"
+              src="/brand/genix-wordmark.svg"
+              alt="The Genix Group"
+              width={832}
+              height={326}
+            />
           </div>
           <GoldHeading site="hub" text={data.heroHeading} split={false} />
           <p className="body">{data.heroSubheading || LEAD}</p>
           <div className="routes">
-            <a className="route-btn" href="#div-move" style={{ '--c': 'var(--move)' } as React.CSSProperties}>
-              <i></i>Ship something
+            <a
+              className="route-btn"
+              href="#div-move"
+              style={{ '--c': 'var(--move)' } as React.CSSProperties}
+            >
+              <i></i>Logistics
             </a>
-            <a className="route-btn" href="#div-make" style={{ '--c': 'var(--gold)' } as React.CSSProperties}>
-              <i></i>Upgrade a space
+            <a
+              className="route-btn"
+              href="#div-make"
+              style={{ '--c': 'var(--gold)' } as React.CSSProperties}
+            >
+              <i></i>Home Upgrades
             </a>
-            <a className="route-btn" href="#div-tell" style={{ '--c': 'var(--tell)' } as React.CSSProperties}>
-              <i></i>Tell your story
+            <a
+              className="route-btn"
+              href="#div-tell"
+              style={{ '--c': 'var(--tell)' } as React.CSSProperties}
+            >
+              <i></i>Multimedia
             </a>
           </div>
         </div>
@@ -57,7 +81,14 @@ export function Hero({ data }: { data: SiteData }) {
                 loading="eager"
                 fetchPriority="high"
               />
-              <video src="/brand/hu-project.mp4" muted loop playsInline preload="metadata" aria-hidden="true"></video>
+              <video
+                src="/brand/hu-project.mp4"
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+              ></video>
               <p className="reel-cap">
                 Make<b>Genix Home Upgrades</b>
               </p>
@@ -76,7 +107,11 @@ export function Hero({ data }: { data: SiteData }) {
             </div>
           </div>
           <div className="now" id="nowBar" hidden>
-            <div className="now-dots" role="group" aria-label="Choose which business the reel shows">
+            <div
+              className="now-dots"
+              role="group"
+              aria-label="Choose which business the reel shows"
+            >
               <button aria-pressed="false" aria-label="Show Genix Logistics"></button>
               <button aria-pressed="true" aria-label="Show Genix Home Upgrades"></button>
               <button aria-pressed="false" aria-label="Show Genix Multimedia"></button>
