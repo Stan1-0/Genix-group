@@ -48,8 +48,8 @@ export function Route({ data }: { data: SiteData }) {
             data-reveal
           >
             <span className="verb">Make</span>
-            <b>Renovate a space</b>
-            <p>Renovations, feature walls, fittings and outdoor builds.</p>
+            <b>Upgrade a space</b>
+            <p>Accent walls, TV units, fittings and outdoor builds.</p>
             <span className="go">
               Plan an upgrade
               <Arrow />

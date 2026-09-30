@@ -5,7 +5,7 @@ import type { SiteData } from '@/sites/data-shape'
 import { telHref } from './phone'
 
 const LEAD =
-  'Renovations, Accent walls and custom TV units, planned with you and built by our own crew.'
+  'Accent walls, custom TV units and outdoor builds, planned with you and built by our own crew.'
 
 /* Hero: headline, lead, actions and the before/after slider (behaviour attaches in the slider enhancer). */
 export function Hero({ data }: { data: SiteData }) {

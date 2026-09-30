@@ -73,12 +73,12 @@ export function Businesses() {
             <h3 id="h-make">Genix Home Upgrades</h3>
             <p className="lead">From Blueprint to Beautiful.</p>
             <p className="body">
-              Renovations, feature walls, fittings and outdoor builds for homes and commercial buildings, from the first
+              Accent walls, TV units, fittings and outdoor builds for homes and commercial buildings, from the first
               site visit to the final finish.
             </p>
             <ul className="chips">
-              <li>Renovation</li>
-              <li>Feature walls</li>
+              <li>Accent walls</li>
+              <li>TV units</li>
               <li>Outdoor builds</li>
             </ul>
             <div className="panel-cta">

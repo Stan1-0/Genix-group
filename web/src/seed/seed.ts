@@ -18,8 +18,8 @@ const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; seoDe
   },
   homeupgrades: {
     heroHeading: 'From Blueprint to Beautiful.',
-    heroSubheading: 'Renovations, feature walls and custom TV units, planned with you and built by our own crew.',
-    seoDescription: 'Genix Home Upgrades designs and builds renovations, feature walls, TV units and outdoor projects. Part of The Genix Group.',
+    heroSubheading: 'Accent walls, custom TV units and outdoor builds, planned with you and built by our own crew.',
+    seoDescription: 'Genix Home Upgrades designs and builds accent walls, TV units and outdoor projects. Part of The Genix Group.',
   },
   multimedia: {
     heroHeading: 'Your Story, Captured and Amplified.',
