@@ -82,7 +82,7 @@ export function Businesses() {
               <li>Outdoor builds</li>
             </ul>
             <div className="panel-cta">
-              <a className="btn-accent" href={`${homeupgrades}/contact`}>
+              <a className="btn-accent" href={`${homeupgrades}/#quote`}>
                 Plan an upgrade <span aria-hidden="true">↗</span>
               </a>
               <a className="host" href={homeupgrades}>
@@ -162,7 +162,7 @@ export function Businesses() {
               <li>Branding &amp; design</li>
             </ul>
             <div className="panel-cta">
-              <a className="btn-accent" href={`${multimedia}/contact`}>
+              <a className="btn-accent" href="mailto:hello@thegenixgroup.com?subject=Genix%20Multimedia%20enquiry">
                 Book a shoot <span aria-hidden="true">↗</span>
               </a>
               <a className="host" href={multimedia}>

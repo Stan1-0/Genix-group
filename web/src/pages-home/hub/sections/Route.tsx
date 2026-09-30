@@ -29,7 +29,7 @@ export function Route({ data }: { data: SiteData }) {
         <div className="options">
           <a
             className="option"
-            href={`${siteOrigin('logistics')}/contact`}
+            href={`${siteOrigin('logistics')}/#quote`}
             style={{ '--c': 'var(--gold-text)', '--c-dark': 'var(--gold)' } as React.CSSProperties}
             data-reveal
           >
@@ -43,7 +43,7 @@ export function Route({ data }: { data: SiteData }) {
           </a>
           <a
             className="option"
-            href={`${siteOrigin('homeupgrades')}/contact`}
+            href={`${siteOrigin('homeupgrades')}/#quote`}
             style={{ '--c': 'var(--make)', '--c-dark': 'var(--make-light)' } as React.CSSProperties}
             data-reveal
           >
@@ -57,7 +57,7 @@ export function Route({ data }: { data: SiteData }) {
           </a>
           <a
             className="option"
-            href={`${siteOrigin('multimedia')}/contact`}
+            href={`mailto:${email}?subject=Genix%20Multimedia%20enquiry`}
             style={{ '--c': 'var(--tell)', '--c-dark': 'var(--tell-light)' } as React.CSSProperties}
             data-reveal
           >

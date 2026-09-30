@@ -31,11 +31,6 @@ export type SiteConfig = {
   pages: string[]
 }
 
-const DIVISION_NAV: NavItem[] = [
-  { label: 'Services', href: '/services' },
-  { label: 'Our work', href: '/our-work' },
-  { label: 'About', href: '/about' },
-]
 
 export const SITES: Record<SiteKey, SiteConfig> = {
   hub: {
@@ -109,8 +104,8 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     schemaType: 'ProfessionalService',
     logo: null, // no logo supplied yet: text wordmark
     icons: '/icons/hub',
-    nav: DIVISION_NAV,
-    cta: { label: 'Get a quote', href: '/contact' },
+    nav: [], // no pages beyond the home page yet: links would 404
+    cta: { label: 'Get a quote', href: 'mailto:hello@thegenixgroup.com?subject=Genix%20Multimedia%20enquiry' }, // no contact page yet
     heroGold: null,
     offers: [],
     pages: ['/'],

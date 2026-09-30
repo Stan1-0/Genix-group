@@ -73,7 +73,13 @@ for (const [label, viewport, mobile] of [
     test('route cards link to each division', async ({ page }) => {
       await page.goto(URL)
       const hrefs = await page.$$eval('.option', (els) => els.map((e) => e.getAttribute('href')!))
-      expect(hrefs.map((h) => h.replace(/^https?:\/\/([a-z]+)\..*?(\/contact)$/, '$1$2'))).toEqual(['logistics/contact', 'homeupgrades/contact', 'multimedia/contact'])
+      // No division has a /contact page yet: Logistics and Home Upgrades go to their home-page quote
+      // form, Multimedia (no form yet) to an email. links.e2e.spec.ts checks that these resolve.
+      expect(hrefs.map((h) => h.replace(/^https?:\/\/([a-z]+)\..*?\/(#quote)$/, '$1/$2'))).toEqual([
+        'logistics/#quote',
+        'homeupgrades/#quote',
+        'mailto:hello@thegenixgroup.com?subject=Genix%20Multimedia%20enquiry',
+      ])
     })
 
     test('Logistics panel uses the new tagline', async ({ page }) => {
