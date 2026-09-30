@@ -171,7 +171,7 @@ The quote form stays look-only on production until `RESEND_API_KEY`, `INQUIRY_TO
 - [ ] **Step 7: Commit**
 
 ```bash
-git add package.json package-lock.json src/inquiries/mode.ts src/pages-home/logistics src/components/motion/QuoteForm.tsx tests/unit .env.example README.md
+git add package.json package-lock.json src/inquiries/mode.ts src/pages-home/logistics tests/unit .env.example README.md
 git commit -m "feat(inquiries): send mode (live/preview/offline) and email settings"
 ```
 
@@ -1014,7 +1014,7 @@ git commit -m "feat(inquiries): Resend delivery with idempotency, immediate retr
 
 **Interfaces:**
 - Consumes: `processQuote`, `QuoteResult` (Task 5); `deliverInquiry`, `createMailer` (Task 6); `inquirySendMode` (Task 1); `rateLimitedMessage`, `serverErrorMessage` (Task 3); `getSiteData(site)`; `siteOrigin('hub')`.
-- Produces: `submitQuote(prev: QuoteResult | null, formData: FormData): Promise<QuoteResult>` — with `js=1` returns the result; without it redirects.
+- Produces: `submitQuote(prev: QuoteResult | null, formData: FormData): Promise<QuoteResult>` — with `js=1` returns the result; without it redirects. `submitQuoteForm(formData: FormData): Promise<void>` — the form's `action`.
 
 - [ ] **Step 1: Read the Next docs** — `node_modules/next/dist/docs/` guides for Server Actions (`'use server'`, `redirect` inside actions, progressive enhancement), `after`, and `headers`. Read `node_modules/botid/README.md` for Next.js setup. Note deviations in the report.
 
@@ -1146,8 +1146,13 @@ initBotId({ protect: [{ path: '/', method: 'POST' }] })
 (BotID reports `isBot: false` in local development.)
 
 - [ ] **Step 6: Form markup** — in `Hero.tsx`:
-  - `import { submitQuote } from '@/inquiries/actions'`
-  - Replace the `<form … action="#" method="dialog" …>` opening tag's `action="#" method="dialog"` with `action={submitQuote as unknown as (fd: FormData) => Promise<void>}` (the two-argument signature is for the enhancer; a plain post passes `(prevState=FormData?)` — if Next's form action typing requires a one-argument function, export a second action `submitQuoteForm = (fd: FormData) => submitQuote(null, fd)` from `actions.ts` and use that here).
+  - In `actions.ts` also export the one-argument form action used by a plain (no-JS) post:
+    ```ts
+    export async function submitQuoteForm(formData: FormData): Promise<void> {
+      await submitQuote(null, formData) // no `js` field, so submitQuote redirects to /quote/sent
+    }
+    ```
+  - `import { submitQuoteForm } from '@/inquiries/actions'` and replace the form's `action="#" method="dialog"` with `action={submitQuoteForm}`.
   - Inside the form add `<input type="hidden" name="site" value="logistics" />` and `<input type="hidden" name="t" id="qT" />`.
   - Replace `<p className="mono no-js-note">Online requests aren&apos;t available yet — call or email us.</p>` with `<p className="mono privacy-note">We use your details only to reply to this request. Questions? <a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></p>`.
   - In `#qSent`, replace `We&apos;ll call you back <span className="ph">within one business day</span> with a price.` with `We&apos;ll get back to you within two business days with a price.`
@@ -1264,7 +1269,7 @@ git commit -m "feat(logistics): quote form sends through submitQuote; no-JS resu
 
 **Interfaces:**
 - Consumes: `retryUnsent`, `deliverInquiry`, `createMailer` (Task 6); `canReadInquiry` (Task 4); `getSiteData`.
-- Produces: `GET /cron/inquiries` (hub host; `Authorization: Bearer <CRON_SECRET>`); `POST /api/inquiries/:id/resend` (logged-in staff with read access to that inquiry); `resendHandler` exported from `Inquiries.ts` for tests.
+- Produces: `GET /cron/inquiries` (hub host; `Authorization: Bearer <CRON_SECRET>`); `POST /api/inquiries/:id/resend` (logged-in staff with read access to that inquiry); `resendInquiry(payload: Payload, id: number | string, user: unknown, mailer: Mailer, phone?: string | null): Promise<void>` in `deliver.ts`.
 
 - [ ] **Step 1: Write the failing test** — `web/tests/int/inquiry-admin.int.spec.ts`
 
