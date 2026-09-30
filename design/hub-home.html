@@ -116,10 +116,14 @@
         --muted: #625d55;
         --line: #dcd8cf;
 
-        /* Division accents (from their logos), tuned for dark panels */
-        --move: #3d74c4;
-        --make: var(--gold);
-        --tell: #b0529a;
+        /* Division colours, as in the group logo's descriptor (owner, 2026-09-30):
+           Logistics gold, Home Upgrades navy, Multimedia black. On dark grounds the
+           navy and black read as light tints (--*-light). */
+        --move: var(--gold);
+        --make: #012247;
+        --tell: var(--black);
+        --make-light: #9db4d6;
+        --tell-light: #e8e4dc;
 
         --f-display: "Schibsted Grotesk", system-ui, sans-serif;
         --f-body: "Hanken Grotesk", system-ui, sans-serif;
@@ -619,25 +623,24 @@
         display: flex;
         align-items: flex-end;
       }
+      /* --accent: button fill; --on-accent: its text; --verb: the small label.
+         Navy and black buttons get a white edge so they stand off the dark photo. */
       .panel[data-key="move"] {
         --accent: var(--move);
-        --on-accent: #fff;
+        --on-accent: var(--black);
         background: #022248;
-      }
-      /* the button blue is too dark for small text on the dark photo */
-      .panel[data-key="move"] .verb {
-        color: #8db3ec;
-      }
-      .panel[data-key="move"] .verb::before {
-        background: #8db3ec;
       }
       .panel[data-key="make"] {
         --accent: var(--make);
-        --on-accent: var(--black);
+        --on-accent: var(--white);
+        --verb: var(--make-light);
+        --edge: rgba(255, 255, 255, 0.7);
       }
       .panel[data-key="tell"] {
         --accent: var(--tell);
-        --on-accent: #fff;
+        --on-accent: var(--white);
+        --verb: var(--tell-light);
+        --edge: rgba(255, 255, 255, 0.7);
       }
       .panel-media {
         position: absolute;
@@ -683,7 +686,7 @@
         font: 500 13px/1 var(--f-mono);
         letter-spacing: 0.18em;
         text-transform: uppercase;
-        color: var(--accent);
+        color: var(--verb, var(--accent));
         margin: 0 0 20px;
         display: flex;
         align-items: center;
@@ -693,7 +696,7 @@
         content: "";
         width: 28px;
         height: 2px;
-        background: var(--accent);
+        background: var(--verb, var(--accent));
       }
       .brand-tile {
         width: 184px;
@@ -779,12 +782,19 @@
         padding: 0 24px;
         background: var(--accent);
         color: var(--on-accent);
+        box-shadow: inset 0 0 0 1.5px var(--edge, transparent);
         font: 600 16px/1 var(--f-body);
         text-decoration: none;
-        transition: filter 0.2s;
+        transition: filter 0.2s, background 0.2s, color 0.2s;
       }
       .btn-accent:hover {
         filter: brightness(1.1);
+      }
+      .panel[data-key="make"] .btn-accent:hover,
+      .panel[data-key="tell"] .btn-accent:hover {
+        background: var(--white);
+        color: var(--accent);
+        filter: none;
       }
       .host {
         display: inline-flex;
@@ -912,6 +922,12 @@
         letter-spacing: 0.16em;
         text-transform: uppercase;
         color: var(--c);
+        transition: color 0.35s;
+      }
+      /* the option fills black on hover: switch the label to its on-dark colour */
+      .option:hover .verb,
+      .option:focus-visible .verb {
+        color: var(--c-dark, var(--c));
       }
       .option b {
         display: block;
@@ -1013,6 +1029,10 @@
         height: 8px;
         border-radius: 50%;
         margin-right: 10px;
+      }
+      /* the footer is black: ring the dots so the navy and black ones show */
+      .site-footer .dot {
+        box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.6);
       }
 
       /* ---------- Responsive ---------- */
@@ -1217,13 +1237,13 @@
               right crew on it.
             </p>
             <div class="routes">
-              <a class="route-btn" href="#div-move" style="--c: var(--gold)"
+              <a class="route-btn" href="#div-move" style="--c: var(--move)"
                 ><i></i>Logistics</a
               >
-              <a class="route-btn" href="#div-make" style="--c: #012247"
+              <a class="route-btn" href="#div-make" style="--c: var(--make)"
                 ><i></i>Home Upgrades</a
               >
-              <a class="route-btn" href="#div-tell" style="--c: var(--black)"
+              <a class="route-btn" href="#div-tell" style="--c: var(--tell)"
                 ><i></i>Multimedia</a
               >
             </div>
@@ -1532,7 +1552,7 @@
             <a
               class="option"
               href="https://logistics.thegenixgroup.com/contact"
-              style="--c: var(--move)"
+              style="--c: var(--gold-text); --c-dark: var(--gold)"
               data-reveal
             >
               <span class="verb">Move</span>
@@ -1554,7 +1574,7 @@
             <a
               class="option"
               href="https://homeupgrades.thegenixgroup.com/contact"
-              style="--c: var(--gold-text)"
+              style="--c: var(--make); --c-dark: var(--make-light)"
               data-reveal
             >
               <span class="verb">Make</span>
@@ -1576,7 +1596,7 @@
             <a
               class="option"
               href="https://multimedia.thegenixgroup.com/contact"
-              style="--c: #7a2e68"
+              style="--c: var(--tell); --c-dark: var(--tell-light)"
               data-reveal
             >
               <span class="verb">Tell</span>
@@ -1638,7 +1658,7 @@
             </li>
             <li>
               <a href="https://homeupgrades.thegenixgroup.com"
-                ><span class="dot" style="background: var(--gold)"></span>Genix
+                ><span class="dot" style="background: var(--make)"></span>Genix
                 Home Upgrades</a
               >
             </li>

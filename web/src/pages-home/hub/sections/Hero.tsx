@@ -36,21 +36,21 @@ export function Hero({ data }: { data: SiteData }) {
             <a
               className="route-btn"
               href="#div-move"
-              style={{ '--c': 'var(--gold)' } as React.CSSProperties}
+              style={{ '--c': 'var(--move)' } as React.CSSProperties}
             >
               <i></i>Logistics
             </a>
             <a
               className="route-btn"
               href="#div-make"
-              style={{ '--c': '#012247' } as React.CSSProperties}
+              style={{ '--c': 'var(--make)' } as React.CSSProperties}
             >
               <i></i>Home Upgrades
             </a>
             <a
               className="route-btn"
               href="#div-tell"
-              style={{ '--c': 'var(--black)' } as React.CSSProperties}
+              style={{ '--c': 'var(--tell)' } as React.CSSProperties}
             >
               <i></i>Multimedia
             </a>

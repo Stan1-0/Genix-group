@@ -30,7 +30,7 @@ export function Route({ data }: { data: SiteData }) {
           <a
             className="option"
             href={`${siteOrigin('logistics')}/contact`}
-            style={{ '--c': 'var(--move)' } as React.CSSProperties}
+            style={{ '--c': 'var(--gold-text)', '--c-dark': 'var(--gold)' } as React.CSSProperties}
             data-reveal
           >
             <span className="verb">Move</span>
@@ -44,7 +44,7 @@ export function Route({ data }: { data: SiteData }) {
           <a
             className="option"
             href={`${siteOrigin('homeupgrades')}/contact`}
-            style={{ '--c': 'var(--gold-text)' } as React.CSSProperties}
+            style={{ '--c': 'var(--make)', '--c-dark': 'var(--make-light)' } as React.CSSProperties}
             data-reveal
           >
             <span className="verb">Make</span>
@@ -58,7 +58,7 @@ export function Route({ data }: { data: SiteData }) {
           <a
             className="option"
             href={`${siteOrigin('multimedia')}/contact`}
-            style={{ '--c': '#7a2e68' } as React.CSSProperties}
+            style={{ '--c': 'var(--tell)', '--c-dark': 'var(--tell-light)' } as React.CSSProperties}
             data-reveal
           >
             <span className="verb">Tell</span>

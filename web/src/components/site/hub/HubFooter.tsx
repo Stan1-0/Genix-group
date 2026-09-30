@@ -24,7 +24,7 @@ export function HubFooter({ data }: { data: SiteData }) {
               <a href={siteOrigin('logistics')}><span className="dot" style={{ background: 'var(--move)' }}></span>Genix Logistics</a>
             </li>
             <li>
-              <a href={siteOrigin('homeupgrades')}><span className="dot" style={{ background: 'var(--gold)' }}></span>Genix Home Upgrades</a>
+              <a href={siteOrigin('homeupgrades')}><span className="dot" style={{ background: 'var(--make)' }}></span>Genix Home Upgrades</a>
             </li>
             <li>
               <a href={siteOrigin('multimedia')}><span className="dot" style={{ background: 'var(--tell)' }}></span>Genix Multimedia</a>
