@@ -11,3 +11,11 @@ export function goldTail(heading: string, phrase: string | null): [string, strin
 export function keepTogether(phrase: string): string[] {
   return phrase.split(/(?<=,)\s+/).filter(Boolean)
 }
+
+export type Tone = 'logistics' | 'homeupgrades' | 'multimedia'
+
+/** The hub headline colours each sentence in its division's colour from the logo (owner, 2026-09-30).
+    The heading comes from the admin, so a sentence that no longer matches stays plain. */
+export function toneSentences(heading: string, tones: Readonly<Record<string, Tone>>): { text: string; tone: Tone | null }[] {
+  return heading.trim().split(/(?<=\.)\s+/).filter(Boolean).map((text) => ({ text, tone: tones[text] ?? null }))
+}

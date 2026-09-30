@@ -1,3 +1,5 @@
+import type { Tone } from '@/pages-home/gold'
+
 /* Site registry: the single source of truth for structure. Content staff can
    edit (hero copy, contact details, coverage, SEO text) lives in Payload. */
 
@@ -21,6 +23,8 @@ export type SiteConfig = {
   cta: NavItem
   /** Trailing phrase of the hero heading shown in gold (see pages-home/gold.ts) */
   heroGold: string | null
+  /** Sentences of the hero heading shown in a division's colour (hub; see pages-home/gold.ts). */
+  heroTones?: Readonly<Record<string, Tone>>
   /** Division services listed as schema.org offers (as in the prototypes) */
   offers: string[]
   /** Paths listed in the sitemap. Later phases add pages here as they ship. */
@@ -50,7 +54,8 @@ export const SITES: Record<SiteKey, SiteConfig> = {
       { label: 'Get a quote', href: '/#contact' },
     ],
     cta: { label: 'Start a conversation', href: '/#contact' },
-    heroGold: 'We Show It.',
+    heroGold: null,
+    heroTones: { 'We Haul It.': 'logistics', 'We Build It.': 'homeupgrades', 'We Show It.': 'multimedia' },
     offers: [],
     pages: ['/'],
   },

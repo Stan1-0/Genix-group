@@ -91,7 +91,7 @@ export function Hero({ data }: { data: SiteData }) {
             <span>
               <b>Drag to see the build.</b>
             </span>
-            <span>Backlit marble TV wall · Genix Home Upgrades</span>
+            <span>Backlit accent TV wall · Genix Home Upgrades</span>
           </figcaption>
         </figure>
         <BeforeAfter />

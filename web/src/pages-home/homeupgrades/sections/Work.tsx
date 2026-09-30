@@ -1,7 +1,7 @@
 import { ProjectViewer } from '@/components/motion/ProjectViewer'
 import Image from 'next/image'
 
-/* Recent work: two project cards and a placeholder, plus the (empty) viewer dialog.
+/* Recent work: three project cards, plus the (empty) viewer dialog.
    The viewer behaviour attaches in the project-viewer enhancer (Task 8). */
 export function Work() {
   return (
@@ -26,22 +26,22 @@ export function Work() {
               className="work-card"
               data-reveal
               data-kind="img"
-              data-src="/brand/hu-project-marble-wall.jpg"
-              data-title="Marble feature wall"
-              data-desc="Backlit stone panels, a floating console and lit shelving."
+              data-src="/brand/hu-project-feature-wall.jpg"
+              data-title="Accent wall"
+              data-desc="Black diagonal panelling with gold inlay strips."
             >
               <Image
-                src="/brand/hu-project-marble-wall.jpg"
-                alt="Backlit marble feature wall with a floating media console"
-                width={900}
-                height={675}
+                src="/brand/hu-project-feature-wall.jpg"
+                alt="Black accent wall with diagonal panelling and gold inlay strips"
+                width={1289}
+                height={1600}
                 sizes="(max-width: 900px) 90vw, 33vw"
                 loading="lazy"
               />
               <span className="work-cap">
                 <small>Feature wall</small>
                 <b>Accent wall</b>
-                <span>Backlit stone, floating console, lit shelving</span>
+                <span>Black panelling, gold inlays</span>
               </span>
             </button>
             <button
@@ -72,12 +72,28 @@ export function Work() {
                 <span>Start to finish in 13 seconds</span>
               </span>
             </button>
-            <div className="work-ph" data-reveal>
-              <div>
-                <b>Your next project here</b>
-                <span>Placeholder — add a third finished project with photos.</span>
-              </div>
-            </div>
+            <button
+              className="work-card"
+              data-reveal
+              data-kind="img"
+              data-src="/brand/hu-project-slat-wall.jpg"
+              data-title="Slatted feature wall"
+              data-desc="Black slats and diagonal gold inlays framing a floating shelf."
+            >
+              <Image
+                src="/brand/hu-project-slat-wall.jpg"
+                alt="Black feature wall with vertical slats, diagonal gold inlay strips and a floating shelf"
+                width={1200}
+                height={1600}
+                sizes="(max-width: 900px) 90vw, 33vw"
+                loading="lazy"
+              />
+              <span className="work-cap">
+                <small>Feature wall</small>
+                <b>Slatted feature wall</b>
+                <span>Black slats, gold inlays, floating shelf</span>
+              </span>
+            </button>
           </div>
         </div>
       </section>

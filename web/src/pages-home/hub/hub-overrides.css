@@ -6,3 +6,9 @@
 html[data-site="hub"] .now[hidden] {
   visibility: hidden;
 }
+
+/* Hero route dots take their division colour; the navy and black ones would vanish on the black
+   hover fill, so ring them in white (mirrors design/hub-home.html). */
+html[data-site="hub"] .route-btn:hover i {
+  box-shadow: 0 0 0 1.5px var(--white);
+}

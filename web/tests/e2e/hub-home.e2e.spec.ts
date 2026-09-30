@@ -81,10 +81,10 @@ for (const [label, viewport, mobile] of [
       await expect(page.locator('#div-move .lead')).toHaveText('Reliable Freight. Real People. On Time, Every Time.')
     })
 
-    test('gold words keep their gold', async ({ page }) => {
+    test('each phrase takes its division colour (Haul gold, Build navy, Show black)', async ({ page }) => {
       await page.goto(URL)
-      const gold = await page.$$eval('.hero h1 .gold', (els) => els.map((e) => getComputedStyle(e).color))
-      expect(gold).toEqual(['rgb(168, 116, 26)'])
+      const tones = await page.$$eval('.hero h1 [class^="tone-"]', (els) => els.map((e) => [e.className, getComputedStyle(e).color]))
+      expect(tones).toEqual(Object.entries({ 'tone-logistics': 'rgb(168, 116, 26)', 'tone-homeupgrades': 'rgb(1, 34, 71)', 'tone-multimedia': 'rgb(11, 11, 12)' }))
     })
 
     test('headline reads the whole sentence', async ({ page }) => {
@@ -99,8 +99,8 @@ for (const [label, viewport, mobile] of [
 
     test('headline is not split under reduced motion', async ({ page }) => {
       await page.goto(URL)
-      // Only the gold span is a child element; SplitText would add line wrappers.
-      expect(await page.$$eval('.hero h1 *', (els) => els.filter((e) => !e.classList.contains('gold')).length)).toBe(0)
+      // Only the division-colour spans are child elements; SplitText would add line wrappers.
+      expect(await page.$$eval('.hero h1 *', (els) => els.filter((e) => !/^tone-/.test(e.className)).length)).toBe(0)
     })
 
     test('all content visible under reduced motion', async ({ page }) => {
@@ -500,10 +500,11 @@ test.describe('headline split (desktop)', () => {
       })
       expect(step.every((s) => Math.abs(s - 1) < 0.02)).toBe(true)
     })
-    test('gold words keep their gold', async ({ page }) => {
-      const gold = await page.$$eval('.hero h1 .gold', (els) => els.map((e) => getComputedStyle(e).color))
-      // SplitText clones the span onto each line it spans, so there can be several; all must be gold
-      expect(gold.length > 0 && gold.every((g) => g === 'rgb(168, 116, 26)')).toBe(true)
+    test('division colours survive the line split', async ({ page }) => {
+      const expected: Record<string, string> = { 'tone-logistics': 'rgb(168, 116, 26)', 'tone-homeupgrades': 'rgb(1, 34, 71)', 'tone-multimedia': 'rgb(11, 11, 12)' }
+      // SplitText clones a span onto each line it spans, so there can be several per phrase; each keeps its colour
+      const tones = await page.$$eval('.hero h1 [class^="tone-"]', (els) => els.map((e) => [e.className, getComputedStyle(e).color]))
+      expect(tones.length >= 3 && tones.every(([c, col]) => expected[c] === col)).toBe(true)
     })
     test('resize re-splits without replaying', async ({ page }) => {
       await page.setViewportSize({ width: 1000, height: 900 })

@@ -1,9 +1,22 @@
 import { Fragment } from 'react'
 import { SITES, type SiteKey } from '@/sites/config'
-import { goldTail, keepTogether } from './gold'
+import { goldTail, keepTogether, toneSentences } from './gold'
 
 /** Hero <h1>: the admin heading with the site's gold phrase, markup as in the prototypes. */
 export function GoldHeading({ site, text, className, split = true }: { site: SiteKey; text: string; className?: string; split?: boolean }) {
+  const tones = SITES[site].heroTones
+  if (tones) {
+    return (
+      <h1 className={className} data-split={split ? '' : undefined}>
+        {toneSentences(text, tones).map(({ text: sentence, tone }, i) => (
+          <Fragment key={i}>
+            {i > 0 && ' '}
+            {tone ? <span className={`tone-${tone}`}>{sentence}</span> : sentence}
+          </Fragment>
+        ))}
+      </h1>
+    )
+  }
   const [lead, gold] = goldTail(text, SITES[site].heroGold)
   const parts = gold ? keepTogether(gold) : []
   return (

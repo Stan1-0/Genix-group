@@ -84,7 +84,7 @@ for (const url of ['http://logistics.localhost:3000/', 'http://homeupgrades.loca
 // Hero photos are the Largest Contentful Paint: they must load eagerly with high priority (Next 16 guidance),
 // not lazily (next/image's default).
 for (const [url, selector] of [
-  ['http://localhost:3000/', '.hero img[src*="hu-project-marble-wall"], .hero img[srcset*="hu-project-marble-wall"]'],
+  ['http://localhost:3000/', '.hero img[src*="hu-project-feature-wall"], .hero img[srcset*="hu-project-feature-wall"]'],
   ['http://homeupgrades.localhost:3000/', '[data-hero] img:not([src$=".svg"])'],
 ] as const) {
   test(`${url}: hero photo loads eagerly`, async ({ page }) => {

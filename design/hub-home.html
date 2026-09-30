@@ -202,6 +202,18 @@
       .gold {
         color: var(--gold-display);
       }
+      /* Hub headline: each phrase in its division's colour from the logo (owner,
+         2026-09-30). Haul = Logistics gold (display gold: 3:1 on paper at this size),
+         Build = Home Upgrades navy, Show = Multimedia black. */
+      .tone-logistics {
+        color: var(--gold-display);
+      }
+      .tone-homeupgrades {
+        color: #012247;
+      }
+      .tone-multimedia {
+        color: var(--black);
+      }
 
       /* ---------- Wordmark ---------- */
       /* Group logo: hex mark + GENIX GROUP wordmark (tagline dropped at this size) */
@@ -421,6 +433,10 @@
       .route-btn:hover {
         background: var(--black);
         color: var(--white);
+      }
+      /* dark dots (navy, black) would vanish on the black hover fill */
+      .route-btn:hover i {
+        box-shadow: 0 0 0 1.5px var(--white);
       }
 
       /* Footage reel: one clip per business */
@@ -1191,8 +1207,9 @@
               />
             </div>
             <h1>
-              We Haul It. We Build It.
-              <span class="gold">We Show It.</span>
+              <span class="tone-logistics">We Haul It.</span>
+              <span class="tone-homeupgrades">We Build It.</span>
+              <span class="tone-multimedia">We Show It.</span>
             </h1>
             <p class="body">
               Logistics, home upgrades and multimedia: three specialist
@@ -1200,14 +1217,14 @@
               right crew on it.
             </p>
             <div class="routes">
-              <a class="route-btn" href="#div-move" style="--c: var(--move)"
-                ><i></i>Ship something</a
+              <a class="route-btn" href="#div-move" style="--c: var(--gold)"
+                ><i></i>Logistics</a
               >
-              <a class="route-btn" href="#div-make" style="--c: var(--gold)"
-                ><i></i>Upgrade a space</a
+              <a class="route-btn" href="#div-make" style="--c: #012247"
+                ><i></i>Home Upgrades</a
               >
-              <a class="route-btn" href="#div-tell" style="--c: var(--tell)"
-                ><i></i>Tell your story</a
+              <a class="route-btn" href="#div-tell" style="--c: var(--black)"
+                ><i></i>Multimedia</a
               >
             </div>
           </div>
@@ -1223,8 +1240,8 @@
               </div>
               <div class="slide on" data-name="Home Upgrades">
                 <img
-                  src="assets/hu-project-marble-wall.jpg"
-                  alt="Backlit marble feature wall by Genix Home Upgrades"
+                  src="assets/hu-project-feature-wall.jpg"
+                  alt="Black accent wall with diagonal panelling and gold inlay strips, by Genix Home Upgrades"
                 />
                 <video
                   src="assets/hu-project.mp4"
@@ -1368,7 +1385,7 @@
         >
           <div class="panel-media">
             <img
-              src="assets/hu-project-marble-wall.jpg"
+              src="assets/hu-project-feature-wall.jpg"
               alt=""
               loading="lazy"
             />
@@ -1413,16 +1430,14 @@
               <figure class="case">
                 <div class="case-thumb">
                   <img
-                    src="assets/hu-project-marble-wall.jpg"
-                    alt="Backlit marble feature wall with gold veining, a floating media console and slatted wood shelving"
+                    src="assets/hu-project-feature-wall.jpg"
+                    alt="Black accent wall with diagonal panelling and gold inlay strips"
                     loading="lazy"
                   />
                 </div>
                 <figcaption>
-                  <b>Marble feature wall</b
-                  ><span
-                    >Backlit stone panels, floating console and lit
-                    shelving.</span
+                  <b>Accent wall</b
+                  ><span>Black diagonal panelling with gold inlay strips.</span
                   >
                 </figcaption>
               </figure>
@@ -1543,7 +1558,7 @@
               data-reveal
             >
               <span class="verb">Make</span>
-              <b>Upgrade a space</b>
+              <b>Renovate a space</b>
               <p>Renovations, feature walls, fittings and outdoor builds.</p>
               <span class="go"
                 >Plan an upgrade
@@ -1566,7 +1581,7 @@
             >
               <span class="verb">Tell</span>
               <b>Tell your story</b>
-              <p>Photography, video, branding and design.</p>
+              <p>Photography, videography, branding and design.</p>
               <span class="go"
                 >Book a shoot
                 <svg
@@ -1610,9 +1625,6 @@
                 height="326"
               />
             </span>
-            <span class="logo-tagline" aria-hidden="true"
-              >Logistics | Home Upgrades | Multimedia</span
-            >
           </a>
         </div>
         <div>

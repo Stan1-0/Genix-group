@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-/* Services: three upgrade cards. Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
+/* Services: two upgrade cards (Renovation is commented out). Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
 export function Services() {
   return (
     <section className="services" id="services">
@@ -11,7 +11,7 @@ export function Services() {
               What we do
             </p>
             <h2 className="h-section" data-split>
-              Three kinds of upgrade.
+              Two kinds of upgrade.
             </h2>
           </div>
           <p className="body" data-reveal>
@@ -20,6 +20,8 @@ export function Services() {
           </p>
         </div>
         <div className="svc-grid swipe">
+          {/* Renovation: not offered for now (owner, 2026-09-30). Restore this card and set the
+              grid back to 3 columns if it returns.
           <article className="svc" data-reveal>
             <div className="svc-img">
               <Image
@@ -27,7 +29,7 @@ export function Services() {
                 alt="A tradesman on a ladder renovating a room"
                 width={900}
                 height={600}
-                sizes="(max-width: 900px) 80vw, 33vw"
+                sizes="(max-width: 900px) 80vw, 50vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>
@@ -46,20 +48,20 @@ export function Services() {
                 Ask about a renovation <span aria-hidden="true">→</span>
               </a>
             </div>
-          </article>
+          </article> */}
           <article className="svc" data-reveal>
             <div className="svc-img">
               <Image
                 src="/brand/hu-project-marble-wall.jpg"
-                alt="Backlit marble feature wall with gold veining and a floating media console"
-                width={900}
-                height={675}
-                sizes="(max-width: 900px) 80vw, 33vw"
+                alt="Backlit marble TV wall with slatted wood surround"
+                width={1402}
+                height={1122}
+                sizes="(max-width: 900px) 80vw, 50vw"
                 loading="lazy"
               />
             </div>
             <div className="svc-body">
-              <h3>Feature walls &amp; TV units</h3>
+              <h3>Accent walls &amp; TV units</h3>
               <p>
                 Statement walls built around how you use the room — stone panels, slatted wood,
                 hidden wiring and integrated lighting.
@@ -70,7 +72,7 @@ export function Services() {
                 <li>Customized TV unit</li>
               </ul>
               <a className="more" href="#quote">
-                Ask about a feature wall <span aria-hidden="true">→</span>
+                Ask about an accent wall <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
@@ -81,7 +83,7 @@ export function Services() {
                 alt="A wooden deck with outdoor seating beside a house"
                 width={900}
                 height={600}
-                sizes="(max-width: 900px) 80vw, 33vw"
+                sizes="(max-width: 900px) 80vw, 50vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>

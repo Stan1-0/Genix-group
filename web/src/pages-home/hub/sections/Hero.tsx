@@ -36,21 +36,21 @@ export function Hero({ data }: { data: SiteData }) {
             <a
               className="route-btn"
               href="#div-move"
-              style={{ '--c': 'var(--move)' } as React.CSSProperties}
+              style={{ '--c': 'var(--gold)' } as React.CSSProperties}
             >
               <i></i>Logistics
             </a>
             <a
               className="route-btn"
               href="#div-make"
-              style={{ '--c': 'var(--gold)' } as React.CSSProperties}
+              style={{ '--c': '#012247' } as React.CSSProperties}
             >
               <i></i>Home Upgrades
             </a>
             <a
               className="route-btn"
               href="#div-tell"
-              style={{ '--c': 'var(--tell)' } as React.CSSProperties}
+              style={{ '--c': 'var(--black)' } as React.CSSProperties}
             >
               <i></i>Multimedia
             </a>
@@ -73,10 +73,10 @@ export function Hero({ data }: { data: SiteData }) {
             </div>
             <div className="slide on" data-name="Home Upgrades">
               <Image
-                src="/brand/hu-project-marble-wall.jpg"
-                alt="Backlit marble feature wall by Genix Home Upgrades"
-                width={1122}
-                height={1402}
+                src="/brand/hu-project-feature-wall.jpg"
+                alt="Black accent wall with diagonal panelling and gold inlay strips, by Genix Home Upgrades"
+                width={1289}
+                height={1600}
                 sizes="(max-width: 900px) 100vw, 50vw"
                 loading="eager"
                 fetchPriority="high"
