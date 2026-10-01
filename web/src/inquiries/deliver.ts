@@ -12,7 +12,12 @@ const MAX_ATTEMPTS = 5
 
 export function createMailer(env: Env): Mailer {
   if (!env.RESEND_API_KEY) {
-    return async (m) => { console.info(`[inquiry email: not sent, no RESEND_API_KEY] to=${m.to} subject="${m.subject}"\n${m.text}`) }
+    return async (m) => {
+      // Never report success when nothing was sent, so the row stays unsent and the sweep retries it.
+      console.warn(`[inquiry email: not sent, no RESEND_API_KEY] to=${m.to} subject="${m.subject}"`)
+      if (env.NODE_ENV !== 'production') console.info(m.text)
+      throw new Error('not sent: no RESEND_API_KEY')
+    }
   }
   const resend = new Resend(env.RESEND_API_KEY)
   return async (m) => {

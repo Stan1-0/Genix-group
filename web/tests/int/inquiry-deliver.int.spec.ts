@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { getPayload, type Payload } from 'payload'
 import config from '@/payload.config'
-import { deliverInquiry, retryUnsent, type Mail } from '@/inquiries/deliver'
+import { createMailer, deliverInquiry, retryUnsent, type Mail } from '@/inquiries/deliver'
 
 let payload: Payload
 const env = { INQUIRY_TO: 'hello@thegenixgroup.com', INQUIRY_FROM: 'quotes@thegenixgroup.com' }
@@ -43,15 +43,71 @@ describe('deliverInquiry', () => {
   })
 })
 
+describe('deliverInquiry failure modes', () => {
+  it('records a team failure while still sending the customer mail', async () => {
+    const doc = await make()
+    await deliverInquiry(payload, doc.id, async (m) => { if (m.idempotencyKey.endsWith(':team')) throw new Error('team boom') }, opts)
+    const after = await payload.findByID({ collection: 'inquiries', id: doc.id })
+    expect([after.emailSent, after.customerEmailSent, after.lastEmailError]).toEqual([false, true, 'team boom'])
+  })
+  it('succeeds when the immediate retry works and clears lastEmailError', async () => {
+    let calls = 0
+    const doc = await make({ email: null, lastEmailError: 'old' })
+    await deliverInquiry(payload, doc.id, async () => { if (calls++ === 0) throw new Error('blip') }, opts)
+    const after = await payload.findByID({ collection: 'inquiries', id: doc.id })
+    expect([calls, after.emailSent, after.lastEmailError ?? null]).toEqual([2, true, null])
+  })
+})
+
+describe('createMailer', () => {
+  it('rejects without RESEND_API_KEY so nothing is marked sent', async () => {
+    const mail: Mail = { from: 'a', to: 'b', subject: 's', html: 'h', text: 't', idempotencyKey: 'k' }
+    await expect(createMailer({ NODE_ENV: 'production' })(mail)).rejects.toThrow('not sent: no RESEND_API_KEY')
+  })
+})
+
 describe('retryUnsent', () => {
-  it('retries only unsent inquiries under 5 attempts and prunes old rate hits', async () => {
+  const sweepOpts = (now: Date) => ({ env, phoneFor: async () => null, adminOrigin: 'https://thegenixgroup.com', now })
+  const later = () => new Date(Date.now() + 2 * 86_400_000)
+
+  it('retries only unsent inquiries under 5 attempts and leaves the rest unchanged', async () => {
     const a = await make()
-    await make({ emailSent: true, customerEmailSent: true })
-    await make({ emailAttempts: 5 })
-    await payload.create({ collection: 'rate-hits', data: { ipHash: 'x' } })
+    const done = await make({ emailSent: true, customerEmailSent: true })
+    const maxed = await make({ emailAttempts: 5 })
+    const noCustomer = await make({ emailSent: true, email: null })
     const sent: Mail[] = []
-    const r = await retryUnsent(payload, async (m) => { sent.push(m) }, { env, phoneFor: async () => null, adminOrigin: 'https://thegenixgroup.com', now: new Date(Date.now() + 2 * 86_400_000) })
-    expect(r).toEqual({ retried: 1, pruned: 1 })
+    const r = await retryUnsent(payload, async (m) => { sent.push(m) }, sweepOpts(later()))
+    expect(r).toEqual({ retried: 1, pruned: 0 })
     expect(sent.every((m) => m.idempotencyKey.startsWith(a.reference))).toBe(true)
+    const get = (id: number | string) => payload.findByID({ collection: 'inquiries', id })
+    const ra = await get(a.id)
+    expect([ra.emailSent, ra.customerEmailSent, ra.emailAttempts]).toEqual([true, true, 1])
+    expect((await get(done.id)).emailAttempts).toBe(0)
+    const rm = await get(maxed.id)
+    expect([rm.emailSent, rm.emailAttempts]).toEqual([false, 5])
+    expect((await get(noCustomer.id)).emailAttempts).toBe(0)
+  })
+  it('retries a row with only the customer mail pending, sending only that mail', async () => {
+    const doc = await make({ emailSent: true })
+    const sent: Mail[] = []
+    const r = await retryUnsent(payload, async (m) => { sent.push(m) }, sweepOpts(new Date()))
+    expect(r.retried).toBe(1)
+    expect(sent.map((m) => m.idempotencyKey)).toEqual([`${doc.reference}:customer`])
+  })
+  it('does not retry a row that is sent and has no customer email', async () => {
+    await make({ emailSent: true, email: null })
+    const sent: Mail[] = []
+    const r = await retryUnsent(payload, async (m) => { sent.push(m) }, sweepOpts(new Date()))
+    expect([r.retried, sent.length]).toEqual([0, 0])
+  })
+  it('prunes rate hits older than a day and keeps fresh ones', async () => {
+    await payload.create({ collection: 'rate-hits', data: { ipHash: 'old' } })
+    const r1 = await retryUnsent(payload, async () => {}, sweepOpts(later()))
+    expect(r1.pruned).toBe(1)
+    await payload.create({ collection: 'rate-hits', data: { ipHash: 'fresh' } })
+    const r2 = await retryUnsent(payload, async () => {}, sweepOpts(new Date()))
+    expect(r2.pruned).toBe(0)
+    const left = await payload.find({ collection: 'rate-hits', limit: 10 })
+    expect(left.docs.map((h) => h.ipHash)).toEqual(['fresh'])
   })
 })
