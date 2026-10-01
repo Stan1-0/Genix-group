@@ -4,8 +4,7 @@ import { GoldHeading } from '../../GoldHeading'
 import type { SiteData } from '@/sites/data-shape'
 import { telHref } from './phone'
 
-const LEAD =
-  'Accent walls, custom TV units and outdoor builds, planned with you and built by our own crew.'
+const LEAD = 'Handyman services, TV wall mounting, and thoughtful home improvements in Chula Vista.'
 
 /* Hero: headline, lead, actions and the before/after slider (behaviour attaches in the slider enhancer). */
 export function Hero({ data }: { data: SiteData }) {
@@ -17,12 +16,12 @@ export function Hero({ data }: { data: SiteData }) {
           <GoldHeading site="homeupgrades" text={data.heroHeading} className="h-display" />
           <p className="lead">{data.heroSubheading || LEAD}</p>
           <p className="body">
-            From the first site visit to the final walkthrough, you get one team, a written quote
-            before work starts, and a site kept tidy while we build.
+            From the little fixes to the finishing touches, we help make your space feel more like
+            you.
           </p>
           <div className="hero-actions">
             <a className="btn btn-dark" href="#quote">
-              Plan an upgrade <span aria-hidden="true">→</span>
+              Get a Free Quote <span aria-hidden="true">→</span>
             </a>
             <a className="btn btn-ghost" href={telHref(data.phone)}>
               {data.phone ? (

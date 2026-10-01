@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-/* Services: two upgrade cards (Renovation is commented out). Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
+/* Services: three upgrade cards (Renovation is commented out). Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
 export function Services() {
   return (
     <section className="services" id="services">
@@ -11,17 +11,16 @@ export function Services() {
               What we do
             </p>
             <h2 className="h-section" data-split>
-              Two kinds of upgrade.
+              Good things start with the right helping hand.
             </h2>
           </div>
           <p className="body" data-reveal>
-            Every project starts with a visit to the space and a written quote. Tell us what you
-            have in mind — we&apos;ll tell you what it takes.
+            One task or a whole to-do list. We make the next step simple.
           </p>
         </div>
         <div className="svc-grid swipe">
           {/* Renovation: not offered for now (owner, 2026-09-30). Restore this card and set the
-              grid back to 3 columns if it returns.
+              grid to 4 columns if it returns.
           <article className="svc" data-reveal>
             <div className="svc-img">
               <Image
@@ -29,7 +28,7 @@ export function Services() {
                 alt="A tradesman on a ladder renovating a room"
                 width={900}
                 height={600}
-                sizes="(max-width: 900px) 80vw, 50vw"
+                sizes="(max-width: 900px) 80vw, 33vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>
@@ -56,7 +55,7 @@ export function Services() {
                 alt="Backlit marble TV wall with slatted wood surround"
                 width={1402}
                 height={1122}
-                sizes="(max-width: 900px) 80vw, 50vw"
+                sizes="(max-width: 900px) 80vw, 33vw"
                 loading="lazy"
               />
             </div>
@@ -83,7 +82,7 @@ export function Services() {
                 alt="A wooden deck with outdoor seating beside a house"
                 width={900}
                 height={600}
-                sizes="(max-width: 900px) 80vw, 50vw"
+                sizes="(max-width: 900px) 80vw, 33vw"
                 loading="lazy"
               />
               <span className="svc-stock">Stock photo</span>
@@ -98,6 +97,30 @@ export function Services() {
               </ul>
               <a className="more" href="#quote">
                 Ask about an outdoor build <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+          <article className="svc" data-reveal>
+            <div className="svc-img">
+              <Image
+                src="/brand/hu-handyman.jpg"
+                alt="Hands driving a screw into a door lock plate with a cordless screwdriver"
+                width={1600}
+                height={1067}
+                sizes="(max-width: 900px) 80vw, 33vw"
+                loading="lazy"
+              />
+            </div>
+            <div className="svc-body">
+              <h3>Handyman services</h3>
+              <p>The small jobs that make a home work: fixes, fittings and finishing touches.</p>
+              <ul>
+                <li>TV wall mounting</li>
+                <li>Repairs</li>
+                <li>Fittings</li>
+              </ul>
+              <a className="more" href="#quote">
+                Ask about a handyman job <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>

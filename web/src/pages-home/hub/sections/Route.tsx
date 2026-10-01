@@ -49,7 +49,7 @@ export function Route({ data }: { data: SiteData }) {
           >
             <span className="verb">Make</span>
             <b>Upgrade a space</b>
-            <p>Accent walls, TV units, fittings and outdoor builds.</p>
+            <p>Accent walls, TV units, outdoor builds and handyman jobs.</p>
             <span className="go">
               Plan an upgrade
               <Arrow />

@@ -18,8 +18,8 @@ const SEED: Record<SiteKey, { heroHeading: string; heroSubheading: string; seoDe
   },
   homeupgrades: {
     heroHeading: 'From Blueprint to Beautiful.',
-    heroSubheading: 'Accent walls, custom TV units and outdoor builds, planned with you and built by our own crew.',
-    seoDescription: 'Genix Home Upgrades designs and builds accent walls, TV units and outdoor projects. Part of The Genix Group.',
+    heroSubheading: 'Handyman services, TV wall mounting, and thoughtful home improvements in Chula Vista.',
+    seoDescription: 'Genix Home Upgrades designs and builds accent walls, TV units and outdoor projects, and handles handyman jobs. Part of The Genix Group.',
   },
   multimedia: {
     heroHeading: 'Your Story, Captured and Amplified.',

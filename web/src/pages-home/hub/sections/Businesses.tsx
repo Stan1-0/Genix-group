@@ -73,13 +73,14 @@ export function Businesses() {
             <h3 id="h-make">Genix Home Upgrades</h3>
             <p className="lead">From Blueprint to Beautiful.</p>
             <p className="body">
-              Accent walls, TV units, fittings and outdoor builds for homes and commercial buildings, from the first
-              site visit to the final finish.
+              Accent walls, TV units, outdoor builds and handyman jobs for homes and commercial buildings, from the
+              first site visit to the final finish.
             </p>
             <ul className="chips">
               <li>Accent walls</li>
               <li>TV units</li>
               <li>Outdoor builds</li>
+              <li>Handyman</li>
             </ul>
             <div className="panel-cta">
               <a className="btn-accent" href={`${homeupgrades}/#quote`}>

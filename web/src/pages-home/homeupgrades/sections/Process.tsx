@@ -19,7 +19,7 @@ export function Process() {
         </figure>
         <div>
           <p className="label" data-reveal>
-            How a project runs
+            From “someday” to “let's do it”
           </p>
           <h2 className="h-section" data-split>
             Four steps, <span className="gold">no surprises.</span>
