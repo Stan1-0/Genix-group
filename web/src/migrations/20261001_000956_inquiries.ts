@@ -62,22 +62,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+  // Drop the locked-documents FKs and indexes before the tables (DROP TABLE ... CASCADE would remove the FKs first,
+  // making the later plain DROP CONSTRAINT fail).
   await db.execute(sql`
-   ALTER TABLE "inquiries" DISABLE ROW LEVEL SECURITY;
+   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_inquiries_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_inquiry_counters_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_rate_hits_fk";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_inquiries_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_inquiry_counters_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_rate_hits_id_idx";
+  ALTER TABLE "inquiries" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "inquiry_counters" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "rate_hits" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "inquiries" CASCADE;
   DROP TABLE "inquiry_counters" CASCADE;
   DROP TABLE "rate_hits" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_inquiries_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_inquiry_counters_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_rate_hits_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_inquiries_id_idx";
-  DROP INDEX "payload_locked_documents_rels_inquiry_counters_id_idx";
-  DROP INDEX "payload_locked_documents_rels_rate_hits_id_idx";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "inquiries_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "inquiry_counters_id";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "rate_hits_id";
