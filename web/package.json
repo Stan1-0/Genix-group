@@ -29,6 +29,7 @@
     "@payloadcms/ui": "3.90.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "botid": "^1.5.11",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
@@ -38,9 +39,11 @@
     "payload": "3.90.2",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "resend": "^6.31.0",
     "server-only": "0.0.1",
     "sharp": "0.35.4",
-    "three": "0.180.0"
+    "three": "0.180.0",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

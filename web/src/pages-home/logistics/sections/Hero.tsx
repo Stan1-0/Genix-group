@@ -1,7 +1,7 @@
 import { GoldHeading } from '../../GoldHeading'
 import { QuoteForm } from '@/components/motion/QuoteForm'
 import type { SiteData } from '@/sites/data-shape'
-import { offlineMessage, quoteSendMode } from '../send-mode'
+import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
 
 const LEAD = 'Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.'
 
@@ -17,7 +17,7 @@ export function Hero({ data }: { data: SiteData }) {
         </div>
 
         <form className="label-card quote-form" id="quote-form" action="#" method="dialog" aria-labelledby="formTitle"
-          data-send-mode={quoteSendMode(process.env.VERCEL_ENV)} data-offline-message={offlineMessage(data.phone)}>
+          data-send-mode={inquirySendMode(process.env)} data-offline-message={offlineMessage(data.phone)}>
           <p className="label-ref mono">
             <span id="qRef">Quote request · New</span>
             <span className="barcode" aria-hidden="true"></span>

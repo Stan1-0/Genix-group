@@ -74,3 +74,10 @@ The repo is ready to import as one Vercel project serving all four domains.
 **Changing collections later:** run `npx payload migrate:create <name>` against your local
 database, commit the new files in `src/migrations/`, and the next deploy applies them. If a change
 alters the `SiteData` shape, bump `SITE_DATA_SHAPE` in `src/sites/data.ts`.
+
+### Enquiry emails
+The quote form stays look-only on production until `RESEND_API_KEY`, `INQUIRY_TO` and `IP_HASH_SALT` are set.
+1. Resend: add and verify the domain `thegenixgroup.com` (add its DNS records in Vercel → Domains).
+2. Vercel → Settings → Environment Variables (Production): `RESEND_API_KEY`, `INQUIRY_TO=hello@thegenixgroup.com`,
+   `INQUIRY_FROM=quotes@thegenixgroup.com`, `IP_HASH_SALT` (e.g. `openssl rand -hex 32`), `CRON_SECRET` (same way).
+3. Redeploy. Failed emails are retried daily at 14:00 UTC and from the "Send email again" button in /admin.
