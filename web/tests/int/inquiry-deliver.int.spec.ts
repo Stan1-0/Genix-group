@@ -5,7 +5,7 @@ import { createMailer, deliverInquiry, retryUnsent, type Mail } from '@/inquirie
 
 let payload: Payload
 const env = { INQUIRY_TO: 'hello@thegenixgroup.com', INQUIRY_FROM: 'quotes@thegenixgroup.com' }
-const opts = { env, phone: '(619) 555-0100', adminOrigin: 'https://thegenixgroup.com' }
+const opts = { env, phone: '(619) 555-0100', adminOrigin: 'https://thegenixgroup.com', retryDelayMs: 0 }
 const details = { kind: 'business', from: '92101', to: '92024', date: '2026-10-05', flexible: false, load: 'pallets', pallets: 2 }
 async function make(over: Record<string, unknown> = {}) {
   return payload.create({ collection: 'inquiries', data: { reference: `GX-LOG-${String(Math.random()).slice(2, 8)}`, division: 'logistics', type: 'quote', status: 'new', name: 'Ana', phone: '(619) 555-0100', email: 'ana@example.com', details, summary: 's', ...over } })
@@ -43,12 +43,42 @@ describe('deliverInquiry', () => {
   })
 })
 
+describe('customer auto-reply limit', () => {
+  it('sends at most one customer auto-reply per address per 24 h; team mail still goes', async () => {
+    const sent: Mail[] = []
+    const mailer = async (m: Mail) => { sent.push(m) }
+    const first = await make()
+    await deliverInquiry(payload, first.id, mailer, opts)
+    const second = await make({ email: 'ana@example.com' })
+    await deliverInquiry(payload, second.id, mailer, opts)
+    expect(sent.map((m) => m.idempotencyKey)).toEqual([`${first.reference}:team`, `${first.reference}:customer`, `${second.reference}:team`])
+    const after = await payload.findByID({ collection: 'inquiries', id: second.id })
+    expect([after.emailSent, after.customerEmailSent, after.lastEmailError]).toEqual([true, true, 'customer auto-reply skipped: one per address per 24 h'])
+  })
+  it('matches the address case-insensitively', async () => {
+    const sent: Mail[] = []
+    const mailer = async (m: Mail) => { sent.push(m) }
+    await deliverInquiry(payload, (await make({ email: 'Ana@Example.com' })).id, mailer, opts)
+    const second = await make({ email: 'ana@example.COM' })
+    await deliverInquiry(payload, second.id, mailer, opts)
+    expect(sent.filter((m) => m.idempotencyKey.endsWith(':customer'))).toHaveLength(1)
+    expect((await payload.findByID({ collection: 'inquiries', id: second.id })).customerEmailSent).toBe(true)
+  })
+})
+
 describe('deliverInquiry failure modes', () => {
   it('records a team failure while still sending the customer mail', async () => {
     const doc = await make()
     await deliverInquiry(payload, doc.id, async (m) => { if (m.idempotencyKey.endsWith(':team')) throw new Error('team boom') }, opts)
     const after = await payload.findByID({ collection: 'inquiries', id: doc.id })
     expect([after.emailSent, after.customerEmailSent, after.lastEmailError]).toEqual([false, true, 'team boom'])
+  })
+  it('waits retryDelayMs before the immediate retry', async () => {
+    const at: number[] = []
+    const doc = await make({ email: null })
+    await deliverInquiry(payload, doc.id, async () => { at.push(Date.now()); throw new Error('down') }, { ...opts, retryDelayMs: 120 })
+    expect(at).toHaveLength(2)
+    expect(at[1] - at[0]).toBeGreaterThanOrEqual(100)
   })
   it('succeeds when the immediate retry works and clears lastEmailError', async () => {
     let calls = 0
@@ -67,12 +97,12 @@ describe('createMailer', () => {
 })
 
 describe('retryUnsent', () => {
-  const sweepOpts = (now: Date) => ({ env, phoneFor: async () => null, adminOrigin: 'https://thegenixgroup.com', now })
+  const sweepOpts = (now: Date) => ({ env, phoneFor: async () => null, adminOrigin: 'https://thegenixgroup.com', now, retryDelayMs: 0 })
   const later = () => new Date(Date.now() + 2 * 86_400_000)
 
   it('retries only unsent inquiries under 5 attempts and leaves the rest unchanged', async () => {
     const a = await make()
-    const done = await make({ emailSent: true, customerEmailSent: true })
+    const done = await make({ emailSent: true, customerEmailSent: true, email: 'done@example.com' })
     const maxed = await make({ emailAttempts: 5 })
     const noCustomer = await make({ emailSent: true, email: null })
     const sent: Mail[] = []

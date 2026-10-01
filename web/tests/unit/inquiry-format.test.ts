@@ -38,6 +38,20 @@ describe('emails', () => {
     expect(e.text).toContain("We'll get back to you within two business days.")
     expect(e.text).toContain('(619) 555-0100')
   })
+  it('customer email never carries the free-text notes', () => {
+    const e = customerEmail({ site: 'logistics', reference: 'GX-LOG-000001', q: { ...q, notes: 'Visit https://evil.example now' }, phone: null })
+    expect(e.html).not.toContain('evil.example')
+    expect(e.text).not.toContain('evil.example')
+    expect(e.text).not.toContain('Notes')
+    expect(e.text).toContain("What's moving: Pallets")
+  })
+  it('customer email caps the greeting name at 40 characters', () => {
+    const long = 'A'.repeat(120)
+    const e = customerEmail({ site: 'logistics', reference: 'GX-LOG-000001', q: { ...q, name: `  ${long}  ` }, phone: null })
+    expect(e.text).toContain(`Thanks, ${'A'.repeat(40)}. `)
+    expect(e.text).not.toContain('A'.repeat(41))
+    expect(e.html).not.toContain('A'.repeat(41))
+  })
 })
 
 describe('messages', () => {

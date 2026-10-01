@@ -45,11 +45,13 @@ export function teamEmail({ site, reference, q, adminUrl }: { site: SiteKey; ref
 
 export function customerEmail({ site, reference, q, phone }: { site: SiteKey; reference: string; q: QuoteInput; phone: string | null }): EmailContent {
   const name = SITES[site].name
-  const rows = answers(q).filter(([k]) => !['Name', 'Phone', 'Email'].includes(k))
+  // Structured answers only: free text (notes) is never relayed to an address the visitor typed.
+  const rows = answers(q).filter(([k]) => !['Name', 'Phone', 'Email', 'Notes'].includes(k))
+  const greet = q.name.trim().slice(0, 40)
   const promise = "We'll get back to you within two business days."
   const call = phone ? `Need us sooner? Call ${phone}.` : 'Need us sooner? Reply to this email.'
   const subject = `We got your request · ${reference}`
-  const html = shell(`<p style="margin:0 0 12px">Thanks, ${esc(q.name)}. ${promise}</p><p style="margin:0 0 16px">Your reference: <b>${esc(reference)}</b></p>${table(rows, null)}<p style="margin:20px 0 0">${esc(call)}</p><p style="margin:8px 0 0;color:#625d55">${esc(name)} · Part of The Genix Group</p>`)
-  const text = [`Thanks, ${q.name}. ${promise}`, '', `Your reference: ${reference}`, '', ...rows.map(([k, v]) => `${k}: ${v}`), '', call, `${name} · Part of The Genix Group`].join('\n')
+  const html = shell(`<p style="margin:0 0 12px">Thanks, ${esc(greet)}. ${promise}</p><p style="margin:0 0 16px">Your reference: <b>${esc(reference)}</b></p>${table(rows, null)}<p style="margin:20px 0 0">${esc(call)}</p><p style="margin:8px 0 0;color:#625d55">${esc(name)} · Part of The Genix Group</p>`)
+  const text = [`Thanks, ${greet}. ${promise}`, '', `Your reference: ${reference}`, '', ...rows.map(([k, v]) => `${k}: ${v}`), '', call, `${name} · Part of The Genix Group`].join('\n')
   return { subject, html, text }
 }
