@@ -9,6 +9,9 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
+import { Inquiries } from './collections/Inquiries'
+import { InquiryCounters } from './collections/InquiryCounters'
+import { RateHits } from './collections/RateHits'
 import { assertProductionEnv } from './payload/env'
 import { isLocalDatabase } from './payload/local-db'
 
@@ -24,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Sites],
+  collections: [Users, Media, Sites, Inquiries, InquiryCounters, RateHits],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

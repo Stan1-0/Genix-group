@@ -33,3 +33,12 @@ export const canReadSite: Access = ({ req }) => {
   const divisions = u.divisions ?? []
   return divisions.length ? ({ key: { in: divisions } } as Where) : false
 }
+
+/** Admins see every inquiry; editors only their assigned divisions; the public nothing. */
+export const canReadInquiry: Access = ({ req }) => {
+  const u = staff(req.user)
+  if (!u) return false
+  if (u.role === 'admin') return true
+  const divisions = u.divisions ?? []
+  return divisions.length ? ({ division: { in: divisions } } as Where) : false
+}

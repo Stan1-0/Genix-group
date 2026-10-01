@@ -70,6 +70,9 @@ export interface Config {
     users: User;
     media: Media;
     sites: Site;
+    inquiries: Inquiry;
+    'inquiry-counters': InquiryCounter;
+    'rate-hits': RateHit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +83,9 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     sites: SitesSelect<false> | SitesSelect<true>;
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
+    'inquiry-counters': InquiryCountersSelect<false> | InquiryCountersSelect<true>;
+    'rate-hits': RateHitsSelect<false> | RateHitsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -220,6 +226,59 @@ export interface Site {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: number;
+  reference: string;
+  division: 'hub' | 'logistics' | 'homeupgrades' | 'multimedia';
+  type: 'quote' | 'contact' | 'booking';
+  status: 'new' | 'contacted' | 'closed';
+  summary?: string | null;
+  name: string;
+  phone?: string | null;
+  email?: string | null;
+  notes?: string | null;
+  details?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  emailSent?: boolean | null;
+  customerEmailSent?: boolean | null;
+  emailAttempts?: number | null;
+  lastEmailError?: string | null;
+  ipHash?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiry-counters".
+ */
+export interface InquiryCounter {
+  id: number;
+  division: string;
+  value: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-hits".
+ */
+export interface RateHit {
+  id: number;
+  ipHash: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -253,6 +312,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sites';
         value: number | Site;
+      } | null)
+    | ({
+        relationTo: 'inquiries';
+        value: number | Inquiry;
+      } | null)
+    | ({
+        relationTo: 'inquiry-counters';
+        value: number | InquiryCounter;
+      } | null)
+    | ({
+        relationTo: 'rate-hits';
+        value: number | RateHit;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -374,6 +445,48 @@ export interface SitesSelect<T extends boolean = true> {
       };
   seoTitle?: T;
   seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  reference?: T;
+  division?: T;
+  type?: T;
+  status?: T;
+  summary?: T;
+  name?: T;
+  phone?: T;
+  email?: T;
+  notes?: T;
+  details?: T;
+  emailSent?: T;
+  customerEmailSent?: T;
+  emailAttempts?: T;
+  lastEmailError?: T;
+  ipHash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiry-counters_select".
+ */
+export interface InquiryCountersSelect<T extends boolean = true> {
+  division?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-hits_select".
+ */
+export interface RateHitsSelect<T extends boolean = true> {
+  ipHash?: T;
   updatedAt?: T;
   createdAt?: T;
 }
