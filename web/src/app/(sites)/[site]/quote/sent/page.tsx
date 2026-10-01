@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
 import { rateLimitedMessage, serverErrorMessage } from '@/inquiries/messages'
+import { offlineMessage } from '@/inquiries/mode'
 
 export const metadata: Metadata = { title: 'Request', robots: { index: false, follow: false } }
 
@@ -17,6 +18,7 @@ export default async function QuoteSent({ params, searchParams }: { params: Prom
   const ok = typeof ref === 'string' && REF.test(ref)
   const message = ok
     ? "We'll get back to you within two business days with a price."
+    : error === 'offline' ? offlineMessage(phone)
     : error === 'rate' ? rateLimitedMessage(phone)
     : error === 'invalid' ? 'Some answers need another look. Go back to the form and check the highlighted fields.'
     : serverErrorMessage(phone)

@@ -2,7 +2,7 @@
 import { after } from 'next/server'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { getPayload } from 'payload'
+import { getPayload, type Payload } from 'payload'
 import { checkBotId } from 'botid/server'
 import config from '@payload-config'
 import { isSiteKey, siteOrigin, type SiteKey } from '@/sites/config'
@@ -11,6 +11,7 @@ import { formDataToRaw } from './schema'
 import { processQuote, type QuoteResult } from './pipeline'
 import { createMailer, deliverInquiry } from './deliver'
 import { inquirySendMode } from './mode'
+import { botCheckFor } from './bot-check'
 
 const FORM_SITES: SiteKey[] = ['logistics']
 
@@ -18,33 +19,43 @@ export async function submitQuote(_prev: QuoteResult | null, formData: FormData)
   const js = formData.get('js') === '1'
   const siteRaw = String(formData.get('site') ?? '')
   const site: SiteKey = isSiteKey(siteRaw) && FORM_SITES.includes(siteRaw) ? siteRaw : 'logistics'
-  let result: QuoteResult
+  // The enhancer never calls this in offline mode; a no-JS post gets the honest look-only message.
   if (inquirySendMode(process.env) === 'offline') {
-    result = { ok: false, error: 'server' } // the enhancer never calls this in offline mode; a no-JS post lands here
-  } else {
+    if (js) return { ok: false, error: 'server' }
+    redirect('/quote/sent?error=offline')
+  }
+  let result: QuoteResult
+  let payload: Payload | null = null
+  let phone: string | null = null
+  try {
+    const h = await headers()
+    const ip = (h.get('x-real-ip') ?? h.get('x-forwarded-for')?.split(',')[0] ?? 'unknown').trim()
+    payload = await getPayload({ config })
+    phone = (await getSiteData(site)).phone // resolved before saving, so nothing after the save can fail the request
+    const t = Number(formData.get('t'))
+    result = await processQuote(
+      { site, raw: formDataToRaw(formData), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
+      {
+        payload,
+        // BotID only for JS submissions: a no-JS post carries no BotID token (honeypot + rate limit cover it).
+        isBot: botCheckFor(js, checkBotId),
+        now: () => new Date(),
+        salt: process.env.IP_HASH_SALT || 'dev-only-salt',
+        production: process.env.VERCEL_ENV === 'production',
+      },
+    )
+  } catch (err) {
+    console.error('submitQuote failed', err)
+    result = { ok: false, error: 'server' }
+  }
+  if (result.ok && result.inquiryId !== null && payload) {
+    // Saved: from here on only log, never turn the success into a failure.
     try {
-      const h = await headers()
-      const ip = (h.get('x-real-ip') ?? h.get('x-forwarded-for')?.split(',')[0] ?? 'unknown').trim()
-      const payload = await getPayload({ config })
-      const t = Number(formData.get('t'))
-      result = await processQuote(
-        { site, raw: formDataToRaw(formData), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
-        {
-          payload,
-          isBot: async () => (await checkBotId()).isBot,
-          now: () => new Date(),
-          salt: process.env.IP_HASH_SALT || 'dev-only-salt',
-          production: process.env.VERCEL_ENV === 'production',
-        },
-      )
-      if (result.ok && result.inquiryId !== null) {
-        const id = result.inquiryId
-        const phone = (await getSiteData(site)).phone
-        after(() => deliverInquiry(payload, id, createMailer(process.env), { env: process.env, phone, adminOrigin: siteOrigin('hub') }).catch((e) => console.error('deliverInquiry', e)))
-      }
+      const id = result.inquiryId
+      const p = payload
+      after(() => deliverInquiry(p, id, createMailer(process.env), { env: process.env, phone, adminOrigin: siteOrigin('hub') }).catch((e) => console.error('deliverInquiry', e)))
     } catch (err) {
-      console.error('submitQuote failed', err)
-      result = { ok: false, error: 'server' }
+      console.error('submitQuote: scheduling delivery failed (the sweep will retry)', err)
     }
   }
   if (js) return result

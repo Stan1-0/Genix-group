@@ -3,6 +3,8 @@ import { useEnhance } from './useEnhance'
 import { submitQuote } from '@/inquiries/actions'
 import { rateLimitedMessage, serverErrorMessage } from '@/inquiries/messages'
 
+const SEND_TIMEOUT_MS = 15_000
+
 declare global {
   interface Window { genixQuote?: { selectKind: (kind: string) => void; validZip: (v: string) => boolean } }
 }
@@ -38,7 +40,20 @@ export function QuoteForm() {
       else input.removeAttribute('aria-invalid')
       input.closest('.field')!.classList.toggle('invalid', !!msg)
     }
+    // A visible message (offline, rate limit, server error) vs. the screen-reader-only announcements.
+    function showStatus(msg: string) {
+      clearTimeout(statusTimer)
+      status.classList.remove('sr-only') // the message must be visible, not screen-reader only
+      status.style.cssText = 'margin-top:12px;font-weight:600'
+      status.textContent = msg
+      status.focus()
+    }
+    function quietStatus() {
+      status.classList.add('sr-only')
+      status.removeAttribute('style')
+    }
     function report(bad: HTMLElement[]) {
+      quietStatus()
       if (!bad.length) { status.textContent = ''; return true }
       const msg = bad.length === 1 ? '1 field needs attention.' : `${bad.length} fields need attention.`
       status.textContent = '' // clear first so an identical repeat message is re-announced
@@ -149,12 +164,8 @@ export function QuoteForm() {
       if (!checkStep2()) return
       if ($('qHp').value) return // bots fill the hidden field (the real build also checks server-side)
       if (form.dataset.sendMode === 'offline') {
-        // Look-only until the enquiry pipeline exists: never pretend the request was received.
-        clearTimeout(statusTimer)
-        status.classList.remove('sr-only') // the message must be visible, not screen-reader only
-        status.style.cssText = 'margin-top:12px;font-weight:600'
-        status.textContent = form.dataset.offlineMessage ?? ''
-        status.focus()
+        // The deployment can't take requests: never pretend the request was received.
+        showStatus(form.dataset.offlineMessage ?? '')
         return
       }
       const send = $('qSend') as unknown as HTMLButtonElement
@@ -162,9 +173,12 @@ export function QuoteForm() {
       const fd = new FormData(form)
       fd.set('js', '1')
       const phone = form.dataset.phone || null
-      submitQuote(null, fd)
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const timeout = new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('timeout')), SEND_TIMEOUT_MS) })
+      Promise.race([submitQuote(null, fd), timeout])
         .then((r) => {
           if (r.ok) {
+            quietStatus()
             form.querySelector<HTMLElement>('.kind')!.hidden = true
             step1.hidden = true
             step2.hidden = true
@@ -183,16 +197,10 @@ export function QuoteForm() {
             report(bad)
             return
           }
-          status.classList.remove('sr-only')
-          status.textContent = r.error === 'rate' ? rateLimitedMessage(phone) : serverErrorMessage(phone)
-          status.focus()
+          showStatus(r.error === 'rate' ? rateLimitedMessage(phone) : serverErrorMessage(phone))
         })
-        .catch(() => {
-          status.classList.remove('sr-only')
-          status.textContent = serverErrorMessage(phone)
-          status.focus()
-        })
-        .finally(() => { send.disabled = false })
+        .catch(() => showStatus(serverErrorMessage(phone))) // network failure or no answer within SEND_TIMEOUT_MS
+        .finally(() => { clearTimeout(timer); send.disabled = false })
     }, { signal })
 
     // ---- links elsewhere on the page ----
@@ -222,8 +230,7 @@ export function QuoteForm() {
     return () => {
       clearTimeout(statusTimer)
       $('qT').value = ''
-      status.classList.add('sr-only') // undo an offline send's visible message
-      status.removeAttribute('style')
+      quietStatus() // undo a visible offline/error message
       status.textContent = ''
       form.noValidate = false
       step1.hidden = false

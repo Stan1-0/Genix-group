@@ -26,7 +26,7 @@ export function Road() {
               <p className="mono">01 · Quote</p>
               <h3>We price it</h3>
               <p>
-                You send the route; we reply with a price <span className="ph">within one business day</span>.
+                You send the route; we reply with a price within two business days.
               </p>
             </li>
             <li className="stop" data-stop>
