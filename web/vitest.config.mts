@@ -13,5 +13,8 @@ export default defineConfig({
       ROOT_DOMAIN: 'thegenixgroup.com',
     },
     fileParallelism: false,
+    // A cold Payload import on the first run can exceed the 5 s / 10 s defaults.
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
   },
 })

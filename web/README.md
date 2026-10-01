@@ -82,3 +82,6 @@ On production the quote form says it can't take requests online yet until `RESEN
 2. Vercel → Settings → Environment Variables (Production): `RESEND_API_KEY`, `INQUIRY_TO=hello@thegenixgroup.com`,
    `INQUIRY_FROM=quotes@thegenixgroup.com`, `IP_HASH_SALT` (e.g. `openssl rand -hex 32`), `CRON_SECRET` (same way).
 3. Redeploy. Failed emails are retried daily at 14:00 UTC and from the "Send email again" button in /admin.
+
+`CRON_SECRET` is needed for the daily retry; without it, failed emails only go out when someone presses "Send email again" in /admin.
+Vercel BotID needs no dashboard setup: it works once the site is deployed on Vercel, and local dev always passes the check.
