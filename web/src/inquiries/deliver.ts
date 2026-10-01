@@ -1,6 +1,6 @@
-import type { Payload } from 'payload'
+import type { Payload, TypedUser } from 'payload'
 import { Resend } from 'resend'
-import { SITES, type SiteKey } from '@/sites/config'
+import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import { customerEmail, teamEmail } from './email'
 import type { QuoteInput } from './schema'
 
@@ -75,4 +75,13 @@ export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env:
   const cutoff = new Date(opts.now.getTime() - 86_400_000).toISOString()
   const pruned = await payload.delete({ collection: 'rate-hits', where: { createdAt: { less_than: cutoff } } })
   return { retried: docs.length, pruned: pruned.docs.length }
+}
+
+/**
+ * Admin button: checks the user may read this inquiry (throws otherwise), then delivers now.
+ * The caller supplies the division phone (the endpoint looks it up) so this stays free of server-only site data.
+ */
+export async function resendInquiry(payload: Payload, id: number | string, user: unknown, mailer: Mailer, phone: string | null = null) {
+  await payload.findByID({ collection: 'inquiries', id, depth: 0, overrideAccess: false, user: user as TypedUser })
+  await deliverInquiry(payload, id, mailer, { env: process.env, phone, adminOrigin: siteOrigin('hub') })
 }

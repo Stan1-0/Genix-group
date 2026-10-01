@@ -41,3 +41,7 @@ test('the hub cannot be used to reach a division page', async ({ page }) => {
   expect(res?.status()).toBe(404)
   await expect(page.locator('html')).toHaveAttribute('data-site', 'hub')
 })
+
+test('the daily inquiry cron rejects calls without the secret', async ({ request }) => {
+  expect((await request.get(ORIGINS.hub + '/cron/inquiries')).status()).toBe(401)
+})
