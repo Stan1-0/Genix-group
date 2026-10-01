@@ -24,7 +24,15 @@ export type FieldErrors = Partial<Record<Field, string>>
 
 const str = (v: unknown) => (typeof v === 'string' ? v.trim() : '')
 const zip = /^\d{5}$/
-const email = z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+const email = z.string().max(254).regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+
+/** A real calendar date in YYYY-MM-DD form (rejects 2026-02-30, 2026-13-01). */
+const isCalendarDate = (d: string) => /^\d{4}-\d{2}-\d{2}$/.test(d) && !Number.isNaN(Date.parse(`${d}T00:00:00Z`)) && new Date(`${d}T00:00:00Z`).toISOString().slice(0, 10) === d
+/** `today` plus two years, as YYYY-MM-DD. */
+export function twoYearsFrom(today: string): string {
+  const [y, m, d] = today.split('-').map(Number)
+  return new Date(Date.UTC(y + 2, m - 1, d)).toISOString().slice(0, 10)
+}
 
 export function formDataToRaw(fd: FormData): Record<string, unknown> {
   const out: Record<string, unknown> = {}
@@ -43,7 +51,8 @@ export function parseQuote(raw: Record<string, unknown>, today: string): { ok: t
   const date = flexible ? null : str(raw.date) || null
   if (!flexible) {
     if (!date) errors.date = 'Pick a date, or tick Flexible.'
-    else if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date < today) errors.date = 'Pick a date from today on.'
+    else if (!isCalendarDate(date) || date < today) errors.date = 'Pick a date from today on.'
+    else if (date > twoYearsFrom(today)) errors.date = 'Pick a date within the next two years.'
   }
 
   const load = str(raw.load)
@@ -60,7 +69,7 @@ export function parseQuote(raw: Record<string, unknown>, today: string): { ok: t
   const phone = str(raw.phone) || null
   const mail = str(raw.email) || null
   if (!phone && !mail) errors.phone = 'Add a phone number or an email so we can reply.'
-  else if (phone && phone.replace(/\D/g, '').length < 10) errors.phone = 'Enter a phone number with area code.'
+  else if (phone && (phone.length > 40 || phone.replace(/\D/g, '').length < 10)) errors.phone = 'Enter a phone number with area code.'
   if (mail && !email.safeParse(mail).success) errors.email = 'Enter an email like name@company.com.'
 
   if (Object.keys(errors).length) return { ok: false, errors }

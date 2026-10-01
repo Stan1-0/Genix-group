@@ -128,7 +128,7 @@ export function QuoteForm() {
       }
       const date = $('qDate')
       if (!$('qFlex').checked) {
-        const msg = !date.value ? 'Pick a date, or tick Flexible.' : date.value < todayISO() ? 'Pick a date from today on.' : ''
+        const msg = !date.value ? 'Pick a date, or tick Flexible.' : date.value < todayISO() ? 'Pick a date from today on.' : date.value > `${+todayISO().slice(0, 4) + 2}${todayISO().slice(4)}` ? 'Pick a date within the next two years.' : ''
         setErr(date, msg); if (msg) bad.push(date)
       }
       const loadMsg = load.value ? '' : "Choose what's moving."

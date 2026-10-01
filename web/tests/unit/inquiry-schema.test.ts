@@ -23,6 +23,20 @@ describe('parseQuote', () => {
       phone: 'Enter a phone number with area code.', email: 'Enter an email like name@company.com.',
     } })
   })
+  it('caps phone at 40 and email at 254 characters', () => {
+    const phone = '(619) 555-0100' + ' x1'.repeat(10) // 44 chars, still >= 10 digits
+    const email = `${'a'.repeat(250)}@x.com` // 256 chars
+    expect(parseQuote({ ...good, phone, email: 'ana@example.com' }, TODAY)).toEqual({ ok: false, errors: { phone: 'Enter a phone number with area code.' } })
+    expect(parseQuote({ ...good, email }, TODAY)).toEqual({ ok: false, errors: { email: 'Enter an email like name@company.com.' } })
+    expect(parseQuote({ ...good, phone: '6'.repeat(40), email: `${'a'.repeat(248)}@x.com` }, TODAY).ok).toBe(true)
+  })
+  it('requires a real calendar date within the next two years', () => {
+    expect(parseQuote({ ...good, date: '2026-02-30' }, TODAY)).toEqual({ ok: false, errors: { date: 'Pick a date from today on.' } })
+    expect(parseQuote({ ...good, date: '2026-13-01' }, TODAY)).toEqual({ ok: false, errors: { date: 'Pick a date from today on.' } })
+    expect(parseQuote({ ...good, date: '2028-10-02' }, TODAY)).toEqual({ ok: false, errors: { date: 'Pick a date within the next two years.' } })
+    expect(parseQuote({ ...good, date: '2028-10-01' }, TODAY).ok).toBe(true)
+    expect(parseQuote({ ...good, date: '2028-02-29' }, '2028-02-28').ok).toBe(true)
+  })
   it('flexible drops the date; non-pallet loads drop pallets', () => {
     const r = parseQuote({ ...good, flexible: 'on', date: '', load: 'parcels', pallets: '99' }, TODAY)
     expect(r.ok && r.data).toMatchObject({ flexible: true, date: null, load: 'parcels', pallets: null })
