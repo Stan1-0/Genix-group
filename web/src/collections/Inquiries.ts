@@ -20,17 +20,24 @@ export const Inquiries: CollectionConfig = {
       handler: async (req) => {
         if (!req.user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
         const id = req.routeParams?.id as string
+        const { resendInquiry, createMailer } = await import('@/inquiries/deliver')
+        // Access-checked read first (not found / forbidden -> 404); it also gives the division for the customer email's phone number.
+        let division: SiteKey
         try {
-          const { resendInquiry, createMailer } = await import('@/inquiries/deliver')
-          const { getSiteData } = await import('@/sites/data')
-          // Access-checked read first: also tells us the division for the customer email's phone number.
           const found = await req.payload.findByID({ collection: 'inquiries', id, depth: 0, overrideAccess: false, user: req.user })
-          const phone = (await getSiteData(found.division as SiteKey)).phone
+          division = found.division as SiteKey
+        } catch {
+          return Response.json({ error: 'Not found' }, { status: 404 })
+        }
+        try {
+          const { getSiteData } = await import('@/sites/data')
+          const phone = (await getSiteData(division)).phone
           await resendInquiry(req.payload, id, req.user, createMailer(process.env), phone)
           const doc = await req.payload.findByID({ collection: 'inquiries', id, depth: 0 })
           return Response.json({ emailSent: doc.emailSent, customerEmailSent: doc.customerEmailSent, lastEmailError: doc.lastEmailError ?? null })
-        } catch {
-          return Response.json({ error: 'Not found' }, { status: 404 })
+        } catch (err) {
+          console.error('inquiry resend failed', err)
+          return Response.json({ error: 'Could not resend' }, { status: 500 })
         }
       },
     },
