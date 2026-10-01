@@ -3,6 +3,8 @@ import { expectBasics, settled, watchPage } from './basics'
 
 /* Ported from design/tests/test_logistics.py: t_structure and t_nojs (one check -> one expect). */
 const URL = 'http://logistics.localhost:3000/'
+// A valid future date: dates more than two years out are rejected by the form.
+const SOON = new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10)
 
 for (const [label, viewport, mobile] of [
   ['desktop', { width: 1440, height: 900 }, false],
@@ -215,10 +217,10 @@ test.describe('form (desktop)', () => {
     await page.fill('#qFrom', '92101')
     await page.focus('#qFrom')
     expect(await page.evaluate(() => getComputedStyle(document.getElementById('qFrom')!).borderBottomColor), 'focus underline is heading navy, not gold').toBe('rgb(2, 34, 72)')
-    await page.fill('#qDate', '2099-01-15')
+    await page.fill('#qDate', SOON)
     await page.click(".kind label:has-text('Plan a move')")
     expect(await loadValues(page), 'the move tab swaps the options').toEqual(MOVE)
-    expect((await page.inputValue('#qFrom')) === '92101' && (await page.inputValue('#qDate')) === '2099-01-15', 'switching tabs keeps ZIP and date').toBe(true)
+    expect((await page.inputValue('#qFrom')) === '92101' && (await page.inputValue('#qDate')) === SOON, 'switching tabs keeps ZIP and date').toBe(true)
 
     await page.fill('#qFrom', ''); await page.fill('#qDate', '')
     await page.click('#qNext')
@@ -230,6 +232,8 @@ test.describe('form (desktop)', () => {
 
     await page.fill('#qDate', '2020-01-01'); await page.click('#qNext')
     expect(await page.textContent('#qDateErr'), 'past date rejected').toBe('Pick a date from today on.')
+    await page.fill('#qDate', '2099-01-15'); await page.click('#qNext')
+    expect(await page.textContent('#qDateErr'), 'far-future date rejected').toBe('Pick a date within the next two years.')
     await page.check('#qFlex')
     expect((await page.isDisabled('#qDate')) && (await page.inputValue('#qDate')) === '', 'Flexible disables the date').toBe(true)
 
@@ -281,7 +285,7 @@ test.describe('form (desktop)', () => {
 
   test('tab-on-step2: switching tabs mid-step-2 returns to step 1', async ({ page }) => {
     await gotoForm(page)
-    await page.fill('#qFrom', '92101'); await page.fill('#qTo', '92024'); await page.fill('#qDate', '2099-01-15')
+    await page.fill('#qFrom', '92101'); await page.fill('#qTo', '92024'); await page.fill('#qDate', SOON)
     await page.selectOption('#qLoad', 'parcels')
     await page.click('#qNext')
     expect((await page.locator('#qName').isVisible()) && !(await page.locator('#qFrom').isVisible()), 'reached step 2').toBe(true)
