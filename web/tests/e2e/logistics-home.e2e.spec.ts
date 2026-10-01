@@ -116,9 +116,10 @@ test.describe('no JavaScript', () => {
   test('ZIP has a native 5-digit pattern', async ({ page }) => {
     expect(await page.getAttribute('#qFrom', 'pattern')).toBe('[0-9]{5}')
   })
-  test('form sends nothing and says requests are offline', async ({ page }) => {
-    expect(await page.evaluate(() => document.querySelector<HTMLFormElement>('#quote-form')!.method)).toBe('dialog')
-    await expect(page.locator('#quote-form')).toContainText("Online requests aren't available yet")
+  test('form posts to the server and says how details are used', async ({ page }) => {
+    expect(await page.evaluate(() => document.querySelector<HTMLFormElement>('#quote-form')!.method)).toBe('post')
+    await expect(page.locator('.privacy-note')).toBeVisible()
+    await expect(page.locator('.privacy-note')).toContainText('We use your details only to reply to this request.')
   })
   test('pallets field is visible without JS', async ({ page }) => {
     await expect(page.locator('#qPallets')).toBeVisible()
@@ -252,9 +253,11 @@ test.describe('form (desktop)', () => {
     await page.fill('#qName', 'Dana'); await page.fill('#qEmail', 'dana@'); await page.click('#qSend')
     expect(await page.textContent('#qEmailErr'), 'bad email flagged').toBe('Enter an email like name@company.com.')
     await page.fill('#qEmail', 'dana@shop.com'); await page.click('#qSend')
-    expect((await vis('#qSent')) && !(await vis('#qName')) && !(await vis('.kind')), 'confirmation replaces the form').toBe(true)
-    expect(await page.textContent('#qRef'), 'label shows the request was received').toBe('Request received')
+    await expect(page.locator('#qSent'), 'the server confirms the request').toBeVisible({ timeout: 15_000 })
+    expect(!(await vis('#qName')) && !(await vis('.kind')), 'confirmation replaces the form').toBe(true)
+    await expect(page.locator('#qRef'), 'label shows the request reference').toHaveText(/^GX-LOG-\d{6}$/)
     expect(await activeId(page), 'confirmation focused').toBe('qSent')
+    await expect(page.locator('#qSent'), 'reply promise').toContainText('within two business days')
     expect(await page.textContent('.sent-title'), 'confirmation heading').toBe('Request received.')
     expect(seen.errors, 'no console errors').toEqual([])
   })
@@ -264,13 +267,16 @@ test.describe('form (desktop)', () => {
     const msg = "We can't take requests online yet. Email hello@thegenixgroup.com."
     await page.evaluate((m) => { const f = document.getElementById('quote-form')!; f.dataset.sendMode = 'offline'; f.dataset.offlineMessage = m }, msg)
     await fillValidRequest(page)
+    const posts: string[] = []
+    page.on('request', (r) => { if (r.method() === 'POST') posts.push(r.url()) })
     await page.click('#qSend')
     await expect(page.locator('#qStatus')).toHaveText(msg)
     await expect(page.locator('#qStatus')).toBeVisible()
     expect(await activeId(page)).toBe('qStatus')
     await expect(page.locator('#qSent')).toBeHidden()
-    await expect(page.locator('#qRef')).not.toHaveText('Request received')
+    await expect(page.locator('#qRef')).not.toHaveText(/^GX-/)
     await expect(page.locator('#qName')).toBeVisible()
+    expect(posts, 'nothing is sent').toEqual([])
   })
 
   test('tab-on-step2: switching tabs mid-step-2 returns to step 1', async ({ page }) => {
@@ -295,7 +301,7 @@ test.describe('confirmation scroll (short phone)', () => {
     await page.click('#qNext')
     await page.fill('#qName', 'Dana'); await page.fill('#qPhone', '619 555 0142')
     await page.click('#qSend')
-    await expect(page.locator('#qSent')).toBeVisible()
+    await expect(page.locator('#qSent')).toBeVisible({ timeout: 15_000 })
     const measure = () => page.evaluate(() => {
       const ref = document.getElementById('qRef')!.getBoundingClientRect()
       const title = document.querySelector('.sent-title')!.getBoundingClientRect()
@@ -322,7 +328,7 @@ test.describe('start quote (reduced motion)', () => {
   })
 })
 
-/* Safety net: production relies on Hero rendering these attributes (dev is "preview", so Send confirms). */
+/* Safety net: production relies on Hero rendering these attributes (dev is "preview", so Send saves and confirms). */
 test('quote form carries its send-mode wiring', async ({ page }) => {
   await page.goto(URL, { waitUntil: 'load' })
   await expect(page.locator('#quote-form')).toHaveAttribute('data-send-mode', 'preview')
@@ -346,7 +352,7 @@ test.describe('keyboard (desktop)', () => {
     await kb.press('Enter')
     expect(await activeId(page), 'Enter moves to step 2').toBe('qStep2Title')
     await kb.press('Tab'); await kb.type('Dana'); await kb.press('Tab'); await kb.type('619 555 0142'); await kb.press('Enter')
-    await expect(page.locator('#qSent')).toBeVisible()
+    await expect(page.locator('#qSent')).toBeVisible({ timeout: 15_000 })
     expect(await activeId(page), 'Enter sends').toBe('qSent')
   })
 })

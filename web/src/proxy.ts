@@ -36,6 +36,8 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Everything except Next internals and static brand files. /favicon.ico is routed per site.
-  matcher: ['/((?!_next/|brand/|icons/).*)'],
+  // Everything except Next internals, static brand files and BotID's own paths (withBotId in
+  // next.config.ts rewrites those to Vercel; prefixing them with a site would 404 the challenge).
+  // /favicon.ico is routed per site.
+  matcher: ['/((?!_next/|brand/|icons/|149e9513-01fa-4fb0-aad4-566afd725d1b/).*)'],
 }

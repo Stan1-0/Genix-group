@@ -1,13 +1,16 @@
 'use client'
 import { useEnhance } from './useEnhance'
+import { submitQuote } from '@/inquiries/actions'
+import { rateLimitedMessage, serverErrorMessage } from '@/inquiries/messages'
 
 declare global {
   interface Window { genixQuote?: { selectKind: (kind: string) => void; validZip: (v: string) => boolean } }
 }
 
 /** Logistics quote form from design/js/quote-form.js: two tabs, two steps, inline validation.
-    Look-only: nothing is sent. On the production deployment (data-send-mode="offline") Send
-    shows the call/email message instead of the confirmation. */
+    Send posts the form through the submitQuote Server Action and shows the reference it returns
+    (or the server's field errors / a rate-limit or error message). When the deployment can't take
+    requests (data-send-mode="offline") Send shows the call/email message instead and posts nothing. */
 export function QuoteForm() {
   useEnhance((signal) => {
     const form = document.getElementById('quote-form') as HTMLFormElement | null
@@ -141,7 +144,7 @@ export function QuoteForm() {
     $('qNext').addEventListener('click', () => { if (checkStep1()) goStep(2) }, { signal })
     $('qBack').addEventListener('click', () => goStep(1), { signal })
     form.addEventListener('submit', (e) => {
-      e.preventDefault()
+      e.preventDefault(); e.stopImmediatePropagation() // stop React's own form-action handling: only this path posts
       if (step2.hidden) { if (checkStep1()) goStep(2); return } // Enter pressed in step 1
       if (!checkStep2()) return
       if ($('qHp').value) return // bots fill the hidden field (the real build also checks server-side)
@@ -154,14 +157,42 @@ export function QuoteForm() {
         status.focus()
         return
       }
-      form.querySelector<HTMLElement>('.kind')!.hidden = true
-      step1.hidden = true
-      step2.hidden = true
-      $('qRef').textContent = 'Request received'
-      $('qSent').hidden = false
-      status.textContent = '' // focusing #qSent already reads the confirmation
-      bringIntoView()
-      $('qSent').focus({ preventScroll: true })
+      const send = $('qSend') as unknown as HTMLButtonElement
+      send.disabled = true
+      const fd = new FormData(form)
+      fd.set('js', '1')
+      const phone = form.dataset.phone || null
+      submitQuote(null, fd)
+        .then((r) => {
+          if (r.ok) {
+            form.querySelector<HTMLElement>('.kind')!.hidden = true
+            step1.hidden = true
+            step2.hidden = true
+            $('qRef').textContent = r.reference
+            $('qSent').hidden = false
+            status.textContent = ''
+            bringIntoView()
+            $('qSent').focus({ preventScroll: true })
+            return
+          }
+          if (r.fieldErrors) {
+            const order = ['from', 'to', 'date', 'load', 'pallets', 'name', 'phone', 'email'] as const
+            const ids: Record<string, string> = { from: 'qFrom', to: 'qTo', date: 'qDate', load: 'qLoad', pallets: 'qPallets', name: 'qName', phone: 'qPhone', email: 'qEmail' }
+            const bad = order.filter((k) => r.fieldErrors![k]).map((k) => { const el = $(ids[k]); setErr(el, r.fieldErrors![k]!); return el })
+            if (bad.some((el) => step1.contains(el))) goStep(1)
+            report(bad)
+            return
+          }
+          status.classList.remove('sr-only')
+          status.textContent = r.error === 'rate' ? rateLimitedMessage(phone) : serverErrorMessage(phone)
+          status.focus()
+        })
+        .catch(() => {
+          status.classList.remove('sr-only')
+          status.textContent = serverErrorMessage(phone)
+          status.focus()
+        })
+        .finally(() => { send.disabled = false })
     }, { signal })
 
     // ---- links elsewhere on the page ----
@@ -180,6 +211,7 @@ export function QuoteForm() {
 
     // ---- start: JS mode shows one step at a time ----
     form.noValidate = true // JS mode uses the custom inline validation; no-JS keeps the native one
+    $('qT').value = String(Date.now()) // the server's "too fast" guard
     step2.hidden = true
     $('qDate').min = todayISO()
     showOptions(kindOf())
@@ -189,6 +221,7 @@ export function QuoteForm() {
     // Back to the server-rendered (no-JS) state, so a StrictMode re-run starts clean.
     return () => {
       clearTimeout(statusTimer)
+      $('qT').value = ''
       status.classList.add('sr-only') // undo an offline send's visible message
       status.removeAttribute('style')
       status.textContent = ''

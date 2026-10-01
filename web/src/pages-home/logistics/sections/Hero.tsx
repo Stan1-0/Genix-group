@@ -2,10 +2,12 @@ import { GoldHeading } from '../../GoldHeading'
 import { QuoteForm } from '@/components/motion/QuoteForm'
 import type { SiteData } from '@/sites/data-shape'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
+import { submitQuoteForm } from '@/inquiries/actions'
 
 const LEAD = 'Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.'
 
-/* Hero: the quote starter. Form behaviour is attached by the quote-form enhancer. */
+/* Hero: the quote starter. Without JS the form posts to submitQuoteForm (lands on /quote/sent);
+   with JS the quote-form enhancer validates inline and sends through submitQuote. */
 export function Hero({ data }: { data: SiteData }) {
   return (
     <section className="hero on-dark" id="hero" data-hero>
@@ -16,8 +18,10 @@ export function Hero({ data }: { data: SiteData }) {
           <p className="lead">{data.heroSubheading || LEAD}</p>
         </div>
 
-        <form className="label-card quote-form" id="quote-form" action="#" method="dialog" aria-labelledby="formTitle"
-          data-send-mode={inquirySendMode(process.env)} data-offline-message={offlineMessage(data.phone)}>
+        <form className="label-card quote-form" id="quote-form" action={submitQuoteForm} aria-labelledby="formTitle"
+          data-send-mode={inquirySendMode(process.env)} data-offline-message={offlineMessage(data.phone)} data-phone={data.phone ?? ''}>
+          <input type="hidden" name="site" value="logistics" />
+          <input type="hidden" name="t" id="qT" />
           <p className="label-ref mono">
             <span id="qRef">Quote request · New</span>
             <span className="barcode" aria-hidden="true"></span>
@@ -110,7 +114,7 @@ export function Hero({ data }: { data: SiteData }) {
               <label htmlFor="qHp">Leave this empty</label>
               <input id="qHp" name="company_site" tabIndex={-1} autoComplete="off" />
             </div>
-            <p className="mono no-js-note">Online requests aren&apos;t available yet — call or email us.</p>
+            <p className="mono privacy-note">We use your details only to reply to this request. Questions? <a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></p>
             <div className="form-actions">
               <button type="button" className="btn btn-ghost js-only" id="qBack">← Back</button>
               <button type="submit" className="btn btn-gold" id="qSend">
@@ -122,7 +126,7 @@ export function Hero({ data }: { data: SiteData }) {
           <div className="sent" id="qSent" tabIndex={-1} hidden>
             <p className="sent-title">Request received.</p>
             <p>
-              We&apos;ll call you back <span className="ph">within one business day</span> with a price.
+              We&apos;ll get back to you within two business days with a price.
             </p>
           </div>
           <p className="sr-only" id="qStatus" aria-live="polite" tabIndex={-1}></p>

@@ -45,5 +45,3 @@ html[data-site] .skip-link { position: absolute; width: 1px; height: 1px; margin
 html[data-site] .skip-link:focus { position: fixed; left: 16px; top: 16px; z-index: 50; width: auto; height: auto; margin: 0; padding: 8px 16px; overflow: visible; clip: auto; white-space: normal; background: var(--paper); color: var(--heading); }
 html[data-site] .cta { display: inline-flex; min-height: 52px; align-items: center; padding: 0 24px; border: 1.5px solid var(--brand); border-radius: var(--radius); background: var(--brand); color: #fff; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
 html[data-site] .cta-outline { background: transparent; color: var(--heading); border-color: var(--heading); }
-/* Shown only while JavaScript is off (the early script adds `js` to <html>). React does not render <noscript> children. */
-html.js .no-js-note { display: none; }
