@@ -33,4 +33,17 @@ describe('inquiries collection', () => {
     const asAdmin = await payload.find({ collection: 'inquiries', overrideAccess: false, user: admin })
     expect(asAdmin.totalDocs).toBe(2)
   })
+  it('lets editors change only status; system fields and ipHash are locked', async () => {
+    const doc = await payload.create({ collection: 'inquiries', data: { ...base, reference: 'GX-HUP-000002', division: 'homeupgrades', ipHash: 'h'.repeat(64) } })
+    const editor = (await payload.find({ collection: 'users', where: { email: { equals: 'ed@test.local' } } })).docs[0]
+    const admin = (await payload.find({ collection: 'users', where: { email: { equals: 'admin@test.local' } } })).docs[0]
+    await payload.update({ collection: 'inquiries', id: doc.id, overrideAccess: false, user: editor, data: { division: 'logistics', emailSent: true, name: 'Mallory', status: 'contacted' } })
+    const stored = await payload.findByID({ collection: 'inquiries', id: doc.id })
+    expect([stored.division, stored.emailSent, stored.name, stored.status]).toEqual(['homeupgrades', false, 'Ana', 'contacted'])
+    expect(stored.ipHash).toBe('h'.repeat(64))
+    const asEditor = await payload.findByID({ collection: 'inquiries', id: doc.id, overrideAccess: false, user: editor })
+    expect(asEditor).not.toHaveProperty('ipHash')
+    const asAdmin = await payload.findByID({ collection: 'inquiries', id: doc.id, overrideAccess: false, user: admin })
+    expect(asAdmin).not.toHaveProperty('ipHash')
+  })
 })

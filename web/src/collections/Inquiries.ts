@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 import { SITE_KEYS, type SiteKey } from '@/sites/config'
 import { canReadInquiry, isAdmin } from '@/payload/access'
 
+// System or visitor-supplied fields: nobody edits them through the API (the pipeline writes via the Local API, which skips access).
+const locked = { update: () => false }
+
 export const Inquiries: CollectionConfig = {
   slug: 'inquiries',
   admin: {
@@ -43,25 +46,25 @@ export const Inquiries: CollectionConfig = {
     },
   ],
   fields: [
-    { name: 'reference', type: 'text', required: true, unique: true, index: true, admin: { readOnly: true } },
-    { name: 'division', type: 'select', required: true, options: SITE_KEYS.map((k) => ({ label: k, value: k })), admin: { readOnly: true } },
-    { name: 'type', type: 'select', required: true, defaultValue: 'quote', options: ['quote', 'contact', 'booking'], admin: { readOnly: true } },
+    { name: 'reference', type: 'text', required: true, unique: true, index: true, access: locked, admin: { readOnly: true } },
+    { name: 'division', type: 'select', required: true, options: SITE_KEYS.map((k) => ({ label: k, value: k })), access: locked, admin: { readOnly: true } },
+    { name: 'type', type: 'select', required: true, defaultValue: 'quote', options: ['quote', 'contact', 'booking'], access: locked, admin: { readOnly: true } },
     {
       name: 'status', type: 'select', required: true, defaultValue: 'new',
       options: [{ label: 'New', value: 'new' }, { label: 'Contacted', value: 'contacted' }, { label: 'Closed', value: 'closed' }],
       admin: { position: 'sidebar' },
     },
-    { name: 'summary', type: 'text', admin: { readOnly: true } },
-    { name: 'name', type: 'text', required: true, admin: { readOnly: true } },
-    { name: 'phone', type: 'text', admin: { readOnly: true } },
-    { name: 'email', type: 'text', admin: { readOnly: true } },
-    { name: 'notes', type: 'textarea', admin: { readOnly: true } },
-    { name: 'details', type: 'json', admin: { readOnly: true } },
-    { name: 'emailSent', type: 'checkbox', defaultValue: false, label: 'Team email sent', admin: { readOnly: true, position: 'sidebar' } },
-    { name: 'customerEmailSent', type: 'checkbox', defaultValue: false, label: 'Customer email sent', admin: { readOnly: true, position: 'sidebar' } },
-    { name: 'emailAttempts', type: 'number', defaultValue: 0, admin: { readOnly: true, position: 'sidebar' } },
-    { name: 'lastEmailError', type: 'text', admin: { readOnly: true, position: 'sidebar' } },
+    { name: 'summary', type: 'text', access: locked, admin: { readOnly: true } },
+    { name: 'name', type: 'text', required: true, access: locked, admin: { readOnly: true } },
+    { name: 'phone', type: 'text', access: locked, admin: { readOnly: true } },
+    { name: 'email', type: 'text', access: locked, admin: { readOnly: true } },
+    { name: 'notes', type: 'textarea', access: locked, admin: { readOnly: true } },
+    { name: 'details', type: 'json', access: locked, admin: { readOnly: true } },
+    { name: 'emailSent', type: 'checkbox', defaultValue: false, label: 'Team email sent', access: locked, admin: { readOnly: true, position: 'sidebar' } },
+    { name: 'customerEmailSent', type: 'checkbox', defaultValue: false, label: 'Customer email sent', access: locked, admin: { readOnly: true, position: 'sidebar' } },
+    { name: 'emailAttempts', type: 'number', defaultValue: 0, access: locked, admin: { readOnly: true, position: 'sidebar' } },
+    { name: 'lastEmailError', type: 'text', access: locked, admin: { readOnly: true, position: 'sidebar' } },
     { name: 'resend', type: 'ui', admin: { position: 'sidebar', components: { Field: '@/inquiries/admin/ResendButton#ResendButton' } } },
-    { name: 'ipHash', type: 'text', admin: { hidden: true } },
+    { name: 'ipHash', type: 'text', access: { read: () => false, update: () => false }, admin: { hidden: true } },
   ],
 }
