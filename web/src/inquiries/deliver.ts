@@ -43,7 +43,7 @@ async function twice(fn: () => Promise<void>, delayMs: number) {
 /** True when another inquiry to this address (case-insensitive) already got its auto-reply in the last 24 h. */
 async function recentlyAutoReplied(payload: Payload, id: number | string, email: string): Promise<boolean> {
   const { docs } = await payload.find({
-    collection: 'inquiries', depth: 0, limit: 50, pagination: false,
+    collection: 'inquiries', depth: 0, limit: 50,
     // `like` is a case-insensitive contains in Postgres; the exact (lowercased) match is checked below.
     where: { and: [{ id: { not_equals: id } }, { email: { like: email } }, { customerEmailSent: { equals: true } }, { createdAt: { greater_than: new Date(Date.now() - DAY_MS).toISOString() } }] },
   })
