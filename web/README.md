@@ -59,9 +59,10 @@ The repo is ready to import as one Vercel project serving all four domains.
    against local databases (`src/payload/local-db.ts`), so this never changes the Neon schema.
 8. **First admin:** open `https://thegenixgroup.com/admin` and create the first user; the first
    user becomes admin. Invite editors from the admin afterwards.
-   `VERCEL_ENV` is baked in at build time (it decides whether the look-only Logistics quote form says
-   "received" or the offline message). Promoting a preview deployment to production therefore needs a
-   fresh production build, not a promote, or the form would show "received" in production.
+   `VERCEL_ENV` is baked in at build time (it decides whether the Logistics quote form, without email
+   keys, saves and logs emails (non-production) or says it can't take requests online yet (production)).
+   Promoting a preview deployment to production therefore needs a fresh production build, not a
+   promote, or the form would behave like a preview in production.
 9. **Domains:** add `thegenixgroup.com`, `logistics.thegenixgroup.com`,
    `homeupgrades.thegenixgroup.com` and `multimedia.thegenixgroup.com` to the same project.
    `www.thegenixgroup.com` should redirect to the apex.
@@ -76,7 +77,7 @@ database, commit the new files in `src/migrations/`, and the next deploy applies
 alters the `SiteData` shape, bump `SITE_DATA_SHAPE` in `src/sites/data.ts`.
 
 ### Enquiry emails
-The quote form stays look-only on production until `RESEND_API_KEY`, `INQUIRY_TO` and `IP_HASH_SALT` are set.
+On production the quote form says it can't take requests online yet until `RESEND_API_KEY`, `INQUIRY_TO` and `IP_HASH_SALT` are all set (`IP_HASH_SALT` is required for live in production). Outside production without keys, the form saves the inquiry and logs the emails instead of sending them.
 1. Resend: add and verify the domain `thegenixgroup.com` (add its DNS records in Vercel → Domains).
 2. Vercel → Settings → Environment Variables (Production): `RESEND_API_KEY`, `INQUIRY_TO=hello@thegenixgroup.com`,
    `INQUIRY_FROM=quotes@thegenixgroup.com`, `IP_HASH_SALT` (e.g. `openssl rand -hex 32`), `CRON_SECRET` (same way).
