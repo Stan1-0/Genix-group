@@ -53,12 +53,12 @@ Both go through Payload migrations; no hand-written schema.
    - hidden timestamp `t` shows the form was submitted < 2 s after render. The render time can't be baked into a static page, so the enhancer writes `t` (ms since epoch at hydration); with no JS `t` is missing and this check is skipped.
 
    BotID runs only for JS submissions; no-JS posts rely on the honeypot and the rate limit, because BotID can't vouch for clients that run no JS.
-3. **Rate limit**: > 5 `rate-hits` for this `ipHash` in the last 10 minutes → `{ ok: false, formError: "Too many requests. Please call us at <phone>." }` (phone from the Sites record; without one: "…Please email hello@thegenixgroup.com."). Otherwise record a hit. Outside production, loopback IPs (`127.0.0.1`, `::1`, unknown) are exempt so the e2e suite can submit many times from one machine; integration tests cover the limiter.
+3. **Rate limit**: > 5 `rate-hits` for this `ipHash` in the last 10 minutes → `{ ok: false, error: 'rate' }`; the form shows "Too many requests. Please call us at <phone>." (phone from the Sites record; without one: "…Please email hello@thegenixgroup.com."). Otherwise record a hit. Outside production, loopback IPs (`127.0.0.1`, `::1`, unknown) are exempt so the e2e suite can submit many times from one machine; integration tests cover the limiter.
 4. **Save** the inquiry with its reference. The phone is resolved before saving, and nothing after a successful save can report failure to the visitor.
-5. **Email** (§3): one attempt + one immediate retry. Email errors never reach the visitor.
+5. **Email** (§3): one attempt + one retry about 1 s later. Email errors never reach the visitor.
 6. **Return** `{ ok: true, reference }`.
 
-Unexpected server/DB error → `{ ok: false, formError: "Couldn't send. Try again, or call <phone>." }`; the client keeps every input.
+Invalid input → `{ ok: false, fieldErrors }` (per-field messages). Unexpected server/DB error → `{ ok: false, error: 'server' }`; the form shows "Couldn't send. Try again, or call <phone>." and keeps every input.
 
 ### What the visitor sees
 
@@ -75,9 +75,9 @@ The form element changes from `action="#" method="dialog"` to the server action.
 
 ### Live vs look-only
 
-`quoteSendMode(env)` becomes:
+`inquirySendMode(env)` becomes:
 - `live` — `RESEND_API_KEY` and `INQUIRY_TO` both set (any environment); in production `IP_HASH_SALT` is also required;
-- `offline` — production without them: the honest "We can't take requests online yet…" message (current behaviour);
+- `offline` — production without all three of `RESEND_API_KEY`, `INQUIRY_TO` and `IP_HASH_SALT`: the honest "We can't take requests online yet…" message (current behaviour);
 - `preview` — non-production without them: the pipeline runs and saves, emails go to the server log.
 
 ## 3. Emails (Resend)
@@ -92,7 +92,8 @@ New dependencies: `resend`, `zod`, `botid` (none installed today). HTML + plain-
 **Customer auto-reply** (only when an email was given)
 - To the customer; From as above; Reply-To `INQUIRY_TO`.
 - Subject: `We got your request · GX-LOG-000001`.
-- Body: "Thanks, <name>. We'll get back to you within two business days." + summary of their answers + reference + the division's phone.
+- Body: "Thanks, <name>. We'll get back to you within two business days." + summary of their structured answers (no free-text notes) + reference + the division's phone. The greeting name is trimmed and cut to 40 characters.
+- At most one auto-reply per recipient address per 24 h (case-insensitive): when another inquiry to the same address already got its auto-reply in that window, the send is skipped, `customerEmailSent` is set to true and `lastEmailError` records "customer auto-reply skipped: one per address per 24 h" so the sweep doesn't retry it. The team email is unaffected.
 
 **Delivery**
 - The two emails are sent independently; only the team email sets `emailSent`.
@@ -127,7 +128,7 @@ New dependencies: `resend`, `zod`, `botid` (none installed today). HTML + plain-
 
 ## 5. Testing
 
-- **Unit:** zod schema vs the prototype's messages; reference formatting; subject/summary builders; IP hash; `quoteSendMode`.
+- **Unit:** zod schema vs the prototype's messages; reference formatting; subject/summary builders; IP hash; `inquirySendMode`.
 - **Integration** (test DB, Resend + BotID stubbed; also the resend endpoint's 401/404/500 and cron auth): save-before-email; honeypot/bot/too-fast → fake success, nothing saved; 6th submission in 10 min refused; concurrent submissions get distinct sequential references; cron re-sends only unsent and stops at 5 attempts; editor can't read another division's inquiries; API create is rejected.
 - **E2E:** JS flow (both steps → real `GX-LOG-…` reference); no-JS post → `/quote/sent`; field errors; offline message when production lacks keys (JS and no-JS). Finding the reference in `/admin` is covered by integration tests on the saved row, not e2e. Existing parity, a11y and link tests stay green.
 
