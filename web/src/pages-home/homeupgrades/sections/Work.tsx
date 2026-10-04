@@ -39,7 +39,7 @@ export function Work() {
                 loading="lazy"
               />
               <span className="work-cap">
-                <small>Feature wall</small>
+                <small>Accent wall</small>
                 <b>Accent wall</b>
                 <span>Black panelling, gold inlays</span>
               </span>
@@ -75,8 +75,9 @@ export function Work() {
             <button
               className="work-card"
               data-reveal
-              data-kind="img"
-              data-src="/brand/hu-project-slat-wall.jpg"
+              data-kind="video"
+              data-src="/brand/hu-project-slat-wall.mp4"
+              data-poster="/brand/hu-project-slat-wall.jpg"
               data-title="Slatted feature wall"
               data-desc="Black slats and diagonal gold inlays framing a floating shelf."
             >
@@ -88,9 +89,14 @@ export function Work() {
                 sizes="(max-width: 900px) 90vw, 33vw"
                 loading="lazy"
               />
+              <span className="work-play" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
               <span className="work-cap">
-                <small>Feature wall</small>
-                <b>Slatted feature wall</b>
+                <small>Accent wall · video</small>
+                <b>Accent wall</b>
                 <span>Black slats, gold inlays, floating shelf</span>
               </span>
             </button>

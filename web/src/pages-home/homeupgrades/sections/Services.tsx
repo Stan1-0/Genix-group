@@ -1,6 +1,8 @@
 import Image from 'next/image'
 
-/* Services: three upgrade cards (Renovation is commented out). Stock photos are remote (Unsplash, allowed in next.config) and marked as stock. */
+/* Services: upgrade cards with a Home | Business toggle (CSS only: radios + :has in the prototype CSS,
+   cards tagged with data-aud). Renovation is commented out. Stock photos are remote (Unsplash, allowed
+   in next.config) and marked as stock. */
 export function Services() {
   return (
     <section className="services" id="services">
@@ -18,6 +20,13 @@ export function Services() {
             One task or a whole to-do list. We make the next step simple.
           </p>
         </div>
+        <fieldset className="svc-toggle" data-reveal>
+          <legend className="sr-only">Show services for</legend>
+          <input type="radio" name="svc-aud" id="svc-aud-home" value="home" defaultChecked />
+          <label htmlFor="svc-aud-home">Home</label>
+          <input type="radio" name="svc-aud" id="svc-aud-business" value="business" />
+          <label htmlFor="svc-aud-business">Business</label>
+        </fieldset>
         <div className="svc-grid swipe">
           {/* Renovation: not offered for now (owner, 2026-09-30). Restore this card and set the
               grid to 4 columns if it returns.
@@ -48,7 +57,7 @@ export function Services() {
               </a>
             </div>
           </article> */}
-          <article className="svc" data-reveal>
+          <article className="svc" data-aud="home" data-reveal>
             <div className="svc-img">
               <Image
                 src="/brand/hu-project-marble-wall.jpg"
@@ -75,7 +84,7 @@ export function Services() {
               </a>
             </div>
           </article>
-          <article className="svc" data-reveal>
+          <article className="svc" data-aud="home" data-reveal>
             <div className="svc-img">
               <Image
                 src="https://images.unsplash.com/photo-1656646549633-80ad4bd2ab40?w=900&q=70&auto=format&fit=crop"
@@ -100,7 +109,7 @@ export function Services() {
               </a>
             </div>
           </article>
-          <article className="svc" data-reveal>
+          <article className="svc" data-aud="home business" data-reveal>
             <div className="svc-img">
               <Image
                 src="/brand/hu-handyman.jpg"
@@ -121,6 +130,34 @@ export function Services() {
               </ul>
               <a className="more" href="#quote">
                 Ask about a handyman job <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+          <article className="svc" data-aud="business" data-reveal>
+            <div className="svc-img">
+              <Image
+                src="https://images.unsplash.com/photo-1758448093806-88b2089068ab?w=900&q=70&auto=format&fit=crop"
+                alt="A modern reception area with a stone and slatted-wood accent wall behind the front desk"
+                width={900}
+                height={600}
+                sizes="(max-width: 900px) 80vw, 50vw"
+                loading="lazy"
+              />
+              <span className="svc-stock">Stock photo</span>
+            </div>
+            <div className="svc-body">
+              <h3>Accent walls for reception areas</h3>
+              <p>
+                The first thing visitors see, built to set the tone: a statement wall behind your
+                front desk in stone, slatted wood and integrated lighting.
+              </p>
+              <ul>
+                <li>Reception walls</li>
+                <li>Stone &amp; wood finishes</li>
+                <li>Feature lighting</li>
+              </ul>
+              <a className="more" href="#quote">
+                Ask about a reception wall <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>

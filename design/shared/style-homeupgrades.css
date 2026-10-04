@@ -108,6 +108,9 @@
 [data-division="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
 [data-division="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
 [data-division="homeupgrades"] .svc-stock { border-radius: 6px; }
+[data-division="homeupgrades"] .svc-toggle { border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.05); }
+[data-division="homeupgrades"] .svc-toggle label { border-radius: var(--r-pill); font-weight: 500; }
+[data-division="homeupgrades"] .svc-toggle input:checked + label { background: var(--brand); color: #fff; box-shadow: var(--shadow-subtle); }
 [data-division="homeupgrades"] .work-card { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
 [data-division="homeupgrades"] .work-ph { border-radius: var(--r); background: var(--sand); border: 1.5px dashed rgba(194, 138, 44, 0.6); }
 [data-division="homeupgrades"] .viewer-media { border-radius: var(--r); }

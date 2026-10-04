@@ -329,6 +329,9 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .svc:hover { box-shadow
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-stock { border-radius: 6px; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-toggle { border: 0; border-radius: var(--r-pill); background: rgba(0, 0, 0, 0.05); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-toggle label { border-radius: var(--r-pill); font-weight: 500; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-toggle input:checked + label { background: var(--brand); color: #fff; box-shadow: var(--shadow-subtle); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .work-card { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .work-ph { border-radius: var(--r); background: var(--sand); border: 1.5px dashed rgba(194, 138, 44, 0.6); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .viewer-media { border-radius: var(--r); }
@@ -603,6 +606,56 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
         font-size: 15px;
         text-decoration: none;
         border-bottom: 2px solid var(--gold);
+      }
+
+      /* Audience toggle (Home | Business): CSS only. Radios precede their labels;
+         .services:has(...) hides the cards that are not tagged for the chosen audience. */
+      html[data-site="homeupgrades"] .svc-toggle {
+        display: inline-flex;
+        gap: 4px;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        padding: 4px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        min-width: 0;
+      }
+      html[data-site="homeupgrades"] .svc-toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        pointer-events: none;
+      }
+      html[data-site="homeupgrades"] .svc-toggle label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 112px;
+        padding: 0 24px;
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--ink-2);
+        cursor: pointer;
+        transition: background 0.25s, color 0.25s;
+      }
+      html[data-site="homeupgrades"] .svc-toggle input:checked + label {
+        background: var(--black);
+        color: var(--white);
+      }
+      html[data-site="homeupgrades"] .svc-toggle input:focus-visible + label {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+      html[data-site="homeupgrades"] .services:has(#svc-aud-home:checked) .svc:not([data-aud~="home"]),
+      html[data-site="homeupgrades"] .services:has(#svc-aud-business:checked) .svc:not([data-aud~="business"]) {
+        display: none;
+      }
+      @media (min-width: 961px) {
+        html[data-site="homeupgrades"] .services:has(#svc-aud-business:checked) .svc-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       /* ---------- Watch the build (3D) ----------

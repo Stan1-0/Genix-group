@@ -33,7 +33,7 @@ export function Quote({ data }: { data: SiteData }) {
             </a>
           </div>
           <p className="quote-note">
-            Serving <span className="ph">[service area]</span>. The full quote form comes with the
+            Serving <span className="ph">California</span>. The full quote form comes with the
             Contact page.
           </p>
         </div>

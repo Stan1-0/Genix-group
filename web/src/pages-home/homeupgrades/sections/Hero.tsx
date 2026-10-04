@@ -16,7 +16,8 @@ export function Hero({ data }: { data: SiteData }) {
           <GoldHeading site="homeupgrades" text={data.heroHeading} className="h-display" />
           <p className="lead">{data.heroSubheading || LEAD}</p>
           <p className="body">
-            Handyman services, TV wall mounting, and thoughtful home improvements in Chula Vista.
+            Handyman services, TV wall mounting, and thoughtful home and business improvements in
+            Chula Vista.
           </p>
           <div className="hero-actions">
             <a className="btn btn-dark" href="#quote">

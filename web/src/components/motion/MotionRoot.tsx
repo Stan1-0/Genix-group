@@ -54,6 +54,18 @@ export function MotionRoot() {
             scrollTrigger: { trigger: el, start: 'top 88%', once: true },
           })
         })
+        // Cards the Home | Business toggle swaps in were display:none when their reveal was set up,
+        // so it never fires for them. Fade whatever is visible in on every switch.
+        document.querySelectorAll<HTMLInputElement>('.svc-toggle input').forEach((input) =>
+          input.addEventListener(
+            'change',
+            () => {
+              const cards = gsap.utils.toArray<HTMLElement>('.svc').filter((c) => c.offsetParent !== null)
+              gsap.fromTo(cards, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.08, overwrite: true })
+            },
+            { signal },
+          ),
+        )
       })
       if (document.readyState === 'complete') ScrollTrigger.refresh()
       else addEventListener('load', () => ScrollTrigger.refresh(), { once: true, signal })

@@ -342,6 +342,56 @@
         border-bottom: 2px solid var(--gold);
       }
 
+      /* Audience toggle (Home | Business): CSS only. Radios precede their labels;
+         .services:has(...) hides the cards that are not tagged for the chosen audience. */
+      .svc-toggle {
+        display: inline-flex;
+        gap: 4px;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        padding: 4px;
+        border: 1px solid var(--line);
+        background: var(--paper);
+        min-width: 0;
+      }
+      .svc-toggle input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        pointer-events: none;
+      }
+      .svc-toggle label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 112px;
+        padding: 0 24px;
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--ink-2);
+        cursor: pointer;
+        transition: background 0.25s, color 0.25s;
+      }
+      .svc-toggle input:checked + label {
+        background: var(--black);
+        color: var(--white);
+      }
+      .svc-toggle input:focus-visible + label {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+      .services:has(#svc-aud-home:checked) .svc:not([data-aud~="home"]),
+      .services:has(#svc-aud-business:checked) .svc:not([data-aud~="business"]) {
+        display: none;
+      }
+      @media (min-width: 961px) {
+        .services:has(#svc-aud-business:checked) .svc-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
       /* ---------- Watch the build (3D) ----------
          Default = fallback layout (photo + steps), so no-JS / reduced-motion /
          no-WebGL visitors get real content. .is3d switches to the scroll track. */
@@ -1002,6 +1052,13 @@
               takes.
             </p>
           </div>
+          <fieldset class="svc-toggle" data-reveal>
+            <legend class="sr-only">Show services for</legend>
+            <input type="radio" name="svc-aud" id="svc-aud-home" value="home" checked />
+            <label for="svc-aud-home">Home</label>
+            <input type="radio" name="svc-aud" id="svc-aud-business" value="business" />
+            <label for="svc-aud-business">Business</label>
+          </fieldset>
           <div class="svc-grid swipe">
             <!-- Renovation: not offered for now (owner, 2026-09-30). Restore this card and set the grid to 4 columns if it returns.
             <article class="svc" data-reveal>
@@ -1028,7 +1085,7 @@
                 >
               </div>
             </article> -->
-            <article class="svc" data-reveal>
+            <article class="svc" data-aud="home" data-reveal>
               <div class="svc-img">
                 <img
                   src="assets/hu-project-marble-wall.jpg"
@@ -1052,7 +1109,7 @@
                 >
               </div>
             </article>
-            <article class="svc" data-reveal>
+            <article class="svc" data-aud="home" data-reveal>
               <div class="svc-img">
                 <img
                   src="https://images.unsplash.com/photo-1656646549633-80ad4bd2ab40?w=900&q=70&auto=format&fit=crop"
@@ -1077,7 +1134,7 @@
                 >
               </div>
             </article>
-            <article class="svc" data-reveal>
+            <article class="svc" data-aud="home business" data-reveal>
               <div class="svc-img">
                 <img
                   src="assets/hu-handyman.jpg"
@@ -1098,6 +1155,31 @@
                 </ul>
                 <a class="more" href="#quote"
                   >Ask about a handyman job <span aria-hidden="true">→</span></a
+                >
+              </div>
+            </article>
+            <article class="svc" data-aud="business" data-reveal>
+              <div class="svc-img">
+                <img
+                  src="https://images.unsplash.com/photo-1758448093806-88b2089068ab?w=900&q=70&auto=format&fit=crop"
+                  alt="A modern reception area with a stone and slatted-wood accent wall behind the front desk"
+                  loading="lazy"
+                /><span class="svc-stock">Stock photo</span>
+              </div>
+              <div class="svc-body">
+                <h3>Accent walls for reception areas</h3>
+                <p>
+                  The first thing visitors see, built to set the tone: a
+                  statement wall behind your front desk in stone, slatted wood
+                  and integrated lighting.
+                </p>
+                <ul>
+                  <li>Reception walls</li>
+                  <li>Stone &amp; wood finishes</li>
+                  <li>Feature lighting</li>
+                </ul>
+                <a class="more" href="#quote"
+                  >Ask about a reception wall <span aria-hidden="true">→</span></a
                 >
               </div>
             </article>
@@ -1169,8 +1251,9 @@
             <button
               class="work-card"
               data-reveal
-              data-kind="img"
-              data-src="assets/hu-project-slat-wall.jpg"
+              data-kind="video"
+              data-src="assets/hu-project-slat-wall.mp4"
+              data-poster="assets/hu-project-slat-wall.jpg"
               data-title="Slatted feature wall"
               data-desc="Black slats and diagonal gold inlays framing a floating shelf."
             >
@@ -1179,8 +1262,12 @@
                 alt="Black feature wall with vertical slats, diagonal gold inlay strips and a floating shelf"
                 loading="lazy"
               />
+              <span class="work-play" aria-hidden="true"
+                ><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" /></svg
+              ></span>
               <span class="work-cap"
-                ><small>Feature wall</small><b>Slatted feature wall</b
+                ><small>Accent wall · video</small><b>Accent wall</b
                 ><span>Black slats, gold inlays, floating shelf</span></span
               >
             </button>
