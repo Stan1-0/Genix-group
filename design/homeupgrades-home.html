@@ -1258,6 +1258,13 @@
           animation-duration: 2.4s;
         }
       }
+      /* High contrast: the navy fill disappears, so mark the chosen pill with an outline */
+      @media (forced-colors: active) {
+        .pill:has(input:checked) {
+          outline: 3px solid Highlight;
+          outline-offset: 2px;
+        }
+      }
       @media (max-width: 600px) {
         .field-row {
           grid-template-columns: 1fr;
@@ -1920,7 +1927,7 @@
               A few photos and a sentence about what you want is enough to
               start. We'll arrange a visit and send a written quote.
             </p>
-            <form class="hu-form" id="hu-quote-form" action="#" method="post" data-photos="on" novalidate>
+            <form class="hu-form" id="hu-quote-form" action="#" method="post" data-photos="on">
               <input type="hidden" name="site" value="homeupgrades" />
               <div class="hu-steps" id="hqSteps" aria-hidden="true"><span class="on"></span><span></span></div>
               <fieldset class="hu-step" data-step="1">

@@ -220,6 +220,7 @@
   });
 
   // ---- start: JS mode shows one step at a time ----
+  form.noValidate = true; // JS mode uses the inline validation; no-JS keeps the browser's own checks
   step2.hidden = true;
   syncCallTime();
 
