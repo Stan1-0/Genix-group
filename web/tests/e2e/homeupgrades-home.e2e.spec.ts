@@ -81,7 +81,7 @@ for (const [label, viewport, mobile] of [
       test('section order', async ({ page }) => {
         await page.goto(URL)
         const ids = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))
-        expect(ids).toEqual(['', '', 'services', 'work', 'build', 'process', 'quote'])
+        expect(ids).toEqual(['', '', 'services', 'work', 'approach', 'process', 'quote'])
       })
 
       test('promise strip sits between the hero and services with four promises in order', async ({ page }) => {
@@ -434,163 +434,65 @@ test.describe('no JavaScript', () => {
   })
 })
 
-/* "Watch the build" (3D). Ported from design/tests/test_build_section.py. Needs WebGL: Chromium software-renders via SwiftShader (launch args in playwright.config.ts).
-   Three.js is recognised by its code ("KHR_parallel_shader_compile", a string only three's renderer contains) in the JS responses, since Next chunk URLs do not say "three".
-   Differences from the prototype: `is3d` is added after hydration (not during parse), so that check polls. */
-const STATE = () => {
-  const s = window.__build?.state
-  if (!s) return null
-  return {
-    slats: s.slats, marble: s.marble, tv: s.tv, console: s.console, light: s.light,
-    step: [...document.querySelectorAll('#build .step3d')].findIndex((e) => e.classList.contains('on')),
-  }
-}
-type BuildState = ReturnType<typeof STATE>
-const track = (page: Page) => page.evaluate(() => { const b = document.getElementById('build')!; return { top: b.offsetTop - 76, len: b.offsetHeight - innerHeight } })
-const watchThree = (page: Page) => {
-  const found: Promise<boolean>[] = []
-  page.on('response', (r) => {
-    if (r.request().resourceType() === 'script') found.push(r.text().then((t) => t.includes('KHR_parallel_shader_compile')).catch(() => false))
+/* The Genix approach (replaced the 3D "Watch the build" section): photo + gold quote card, copy, three promises, link to the form. */
+test.describe('approach section', () => {
+  test.use({ viewport: { width: 1280, height: 800 } })
+
+  test('sits between Recent work and How a project runs', async ({ page }) => {
+    await page.goto(URL)
+    const ids = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))
+    expect(ids.slice(ids.indexOf('work'), ids.indexOf('work') + 3)).toEqual(['work', 'approach', 'process'])
   })
-  return async () => (await Promise.all(found)).filter(Boolean).length
-}
-const scrollAndWait = async (page: Page, y: number) => {
-  await page.evaluate((v) => scrollTo(0, v), y)
-  await page.waitForTimeout(1400)
-}
-
-test.describe('3D build (desktop)', () => {
-  test.describe.configure({ mode: 'serial' })
-  let page: Page
-  let seen: ReturnType<typeof watchPage>
-  let threeCount: () => Promise<number>
-  let t: { top: number; len: number }
-  const shots = new Map<number, NonNullable<BuildState>>()
-
-  test.beforeAll(async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
-    page = await ctx.newPage()
-    seen = watchPage(page)
-    threeCount = watchThree(page)
+  test('headline, promises, card and link', async ({ page }) => {
+    await page.goto(URL)
+    const s = page.locator('#approach')
+    await expect(s).toHaveAttribute('aria-labelledby', 'approachTitle')
+    // Text content (whitespace normalised): the split headline is hidden until it scrolls in.
+    await expect(s.locator('h2#approachTitle')).toHaveText('Your space matters. So do the details.')
+    await expect(s.locator('.approach-checks li')).toHaveText(['A clear plan before the work begins', 'Care for your home and your time', 'Practical ideas, thoughtfully finished'])
+    await expect(s.locator('.approach-card')).toContainText('The Genix approach')
+    await expect(s.locator('.approach-card')).toContainText("It's the little things that make a home.")
+    expect(await s.locator('a.approach-link').getAttribute('href')).toMatch(/#quote$/)
+    await expect(s.locator('.approach-media img')).toHaveAttribute('alt', 'Slatted wood feature wall with a wall-mounted TV and floating console')
+  })
+  test('the 3D build is gone, and Three.js with it', async ({ page }) => {
+    const found: Promise<boolean>[] = []
+    page.on('response', (r) => {
+      if (r.request().resourceType() === 'script') found.push(r.text().then((t) => t.includes('KHR_parallel_shader_compile')).catch(() => false))
+    })
     await page.goto(URL, { waitUntil: 'load' })
-    await settled(page)
-    await page.waitForTimeout(1500)
+    await page.locator('#approach').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(800)
+    expect(await page.locator('#build, canvas, .step3d').count()).toBe(0)
+    expect((await Promise.all(found)).filter(Boolean).length, 'scripts containing Three.js').toBe(0)
   })
-  test.afterAll(async () => { await page.context().close() })
-
-  test('section sits right after Recent work', async () => {
-    expect(await page.evaluate(() => { let e = document.getElementById('work')!.nextElementSibling; while (e && e.tagName !== 'SECTION') e = e.nextElementSibling; return e?.id })).toBe('build')
-  })
-  test('3D mode chosen once the page is live', async () => {
-    await expect(page.locator('#build.is3d')).toHaveCount(1)
-  })
-  test('Three.js NOT downloaded on first load', async () => {
-    expect(await threeCount()).toBe(0)
-  })
-  test('Three.js loads as the section approaches', async () => {
-    t = await track(page)
-    await scrollAndWait(page, t.top - 1400)
-    await expect.poll(() => page.evaluate(() => window.__build?.mode)).toBe('3d')
-    expect(await threeCount()).toBeGreaterThanOrEqual(1)
-  })
-  test('exactly one canvas is mounted in the stage', async () => {
-    expect(await page.locator('#build .stage canvas').count(), 'one WebGL canvas').toBe(1)
-  })
-  test('scroll through the build', async () => {
-    for (const f of [0.0, 0.2, 0.4, 0.56, 0.7, 0.92]) {
-      await scrollAndWait(page, t.top + t.len * f)
-      shots.set(f, (await page.evaluate(STATE))!)
-    }
-    expect(shots.size).toBe(6)
-  })
-  test('starts as a bare wall', async () => {
-    const s0 = shots.get(0)!
-    expect([s0.slats < 0.05, s0.step]).toEqual([true, 0])
-  })
-  test('fully built and lit near the end', async () => {
-    const s9 = shots.get(0.92)!
-    expect([(['slats', 'marble', 'tv', 'console', 'light'] as const).every((k) => s9[k] > 0.95), s9.step]).toEqual([true, 4])
-  })
-  test('progress bars fill as you scroll', async () => {
-    const bars = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#build .progress3d i')].map((i) => +(i.style.getPropertyValue('--f') || 0)))
-    expect([bars.length, bars.every((v) => v > 0.95)]).toEqual([5, true])
-  })
-  test('steps advance in order', async () => {
-    expect([0.0, 0.2, 0.4, 0.56, 0.7].map((f) => shots.get(f)!.step)).toEqual([0, 1, 2, 3, 4])
-  })
-  test("final step's button goes to the quote section", async () => {
-    const href = await page.evaluate(() => document.querySelector('#build .step3d[data-step="4"] .cta')!.getAttribute('href'))
-    expect([href, await page.locator('#quote').count()]).toEqual(['#quote', 1])
-  })
-  test('How a project runs follows the section', async () => {
-    await scrollAndWait(page, t.top + t.len + 200)
-    expect(await page.evaluate(() => document.getElementById('build')!.nextElementSibling!.id)).toBe('process')
-  })
-  test('no console/page errors', async () => {
-    expect(seen.errors).toEqual([])
-  })
-  test('no horizontal overflow', async () => {
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0)
+  test('[phone] the card stays inside the screen and the headline keeps two lines', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
+    const page = await ctx.newPage()
+    await page.goto(URL, { waitUntil: 'load' })
+    const m = await page.evaluate(() => {
+      const r = document.createRange()
+      r.selectNodeContents(document.getElementById('approachTitle')!)
+      const card = document.querySelector('.approach-card')!.getBoundingClientRect()
+      return { lines: new Set([...r.getClientRects()].map((x) => Math.round(x.top))).size, cardLeft: card.left, cardRight: card.right, overflow: document.documentElement.scrollWidth - innerWidth }
+    })
+    await ctx.close()
+    expect(m.lines, 'headline lines').toBe(2)
+    expect(m.cardLeft).toBeGreaterThanOrEqual(16)
+    expect(m.cardRight).toBeLessThanOrEqual(374)
+    expect(m.overflow, 'overflow px').toBeLessThanOrEqual(0)
   })
 })
 
-test.describe('3D build (phone)', () => {
-  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 })
-  let page: Page
-  test.describe.configure({ mode: 'serial' })
-
-  test.beforeAll(async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 3 })
-    page = await ctx.newPage()
-    await page.goto(URL, { waitUntil: 'load' })
-    await settled(page)
-    await page.waitForTimeout(1000)
-    const t = await track(page)
-    await scrollAndWait(page, t.top - 1400)
-    await scrollAndWait(page, t.top + t.len * 0.92)
-    await page.waitForTimeout(300)
-  })
-  test.afterAll(async () => { await page.context().close() })
-
-  test('[phone] builds and lights', async () => {
-    const st = await page.evaluate(STATE)
-    expect(st?.light ?? 0, 'light is on at the end of the track').toBeGreaterThan(0.95)
-  })
-  test('[phone] no horizontal overflow', async () => {
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 'overflow px').toBeLessThanOrEqual(0)
-  })
-})
-
-test.describe('3D build (reduced motion)', () => {
-  test.use({ viewport: { width: 1280, height: 800 }, contextOptions: { reducedMotion: 'reduce' } })
-  let threeCount: () => Promise<number>
-
-  test.beforeEach(async ({ page }) => {
-    threeCount = watchThree(page)
-    await page.goto(URL, { waitUntil: 'load' })
-    await settled(page)
-    await page.evaluate(() => document.getElementById('build')!.scrollIntoView())
-    await page.waitForTimeout(1200)
-  })
-
-  test('photo and steps instead of 3D', async ({ page }) => {
-    expect(await page.evaluate(() => document.getElementById('build')!.classList.contains('is3d')), 'is3d is off').toBe(false)
-    expect(await page.locator('#build .fallback li').count(), 'five fallback steps').toBe(5)
-    await expect(page.locator('#build .fallback img')).toBeVisible()
-  })
-  test('Three.js never downloaded', async () => {
-    expect(await threeCount(), 'scripts containing Three.js').toBe(0)
-  })
-})
-
-test.describe('3D build (no JavaScript)', () => {
+test.describe('approach section (no JavaScript)', () => {
   test.use({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } })
 
-  test('photo and steps readable', async ({ page }) => {
+  test('photo, card and copy readable', async ({ page }) => {
     await page.goto(URL, { waitUntil: 'load' })
-    await page.locator('#build .fallback').scrollIntoViewIfNeeded()
-    await expect(page.locator('#build .fallback img')).toBeVisible()
-    expect(await page.locator('#build .fallback li').count()).toBe(5)
+    await page.locator('#approach').scrollIntoViewIfNeeded()
+    await expect(page.locator('#approach .approach-media img')).toBeVisible()
+    await expect(page.locator('#approach .approach-card')).toBeVisible()
+    await expect(page.locator('#approach h2')).toBeVisible()
   })
 })
 

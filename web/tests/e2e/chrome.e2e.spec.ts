@@ -63,15 +63,13 @@ test.describe('phones', () => {
 test.describe('Home Upgrades quote bar (phone)', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
 
-  test('off over the hero, on once the hero actions scroll away, off over #build, #quote and the footer', async ({ page }) => {
+  test('off over the hero, on once the hero actions scroll away, off over #quote and the footer', async ({ page }) => {
     await page.goto('http://homeupgrades.localhost:3000/')
     const bar = page.getByTestId('quote-bar')
     await expect(bar).toHaveAttribute('data-off', 'true')
     await page.evaluate(() => window.scrollTo(0, (document.querySelector('.hero-actions') as HTMLElement).getBoundingClientRect().bottom + window.scrollY + 200))
     await expect(bar).toHaveAttribute('data-off', 'false')
-    await page.evaluate(() => document.querySelector('#build')!.scrollIntoView())
-    await expect(bar).toHaveAttribute('data-off', 'true')
-    await page.evaluate(() => document.querySelector('#services')!.scrollIntoView())
+    await page.evaluate(() => document.querySelector('#approach')!.scrollIntoView())
     await expect(bar).toHaveAttribute('data-off', 'false')
     await page.evaluate(() => document.querySelector('#quote')!.scrollIntoView())
     await expect(bar).toHaveAttribute('data-off', 'true')

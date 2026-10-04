@@ -77,12 +77,12 @@ Left out on purpose (YAGNI): client-logo strip, testimonials, blog, pricing tabl
 | Site | Colours | Type | Signature |
 |---|---|---|---|
 | Hub | black `#0B0B0C` + gold `#C28A2C` | Schibsted Grotesk, Hanken Grotesk, IBM Plex Mono | reel hero; logo docks into the header |
-| Home Upgrades | navy `#022248` + gold; parchment `#FDFDF7`; sky blue `#0096F7` for links/details only | Plus Jakarta Sans (light headlines) | before/after slider; 3D "Watch the build" |
+| Home Upgrades | navy `#022248` + gold; parchment `#FDFDF7`; sky blue `#0096F7` for links/details only | Plus Jakarta Sans (light headlines) | before/after slider; split "approach" section (photo + gold quote card; replaced the 3D build on 2026-10-04) |
 | Logistics | navy `#022248` + gold; paper `#F7F5EF`; truck grey `#37404A` | Archivo (900, wide) + IBM Plex Mono | shipping-label quote form; truck-on-the-road |
 | Multimedia | to be decided (no logo yet; plum `#7A2E68` placeholder) | to be decided | to be decided |
 
 - **Logos:** the supplied SVG lockups (`genix-group-logo.svg` / mark + wordmark, `genix-home-upgrades-logo.svg`, `genix-logistics-logo.svg`) are used whole. The gold X in GENIX is a trademark: never masked, reshaped or recoloured. Per-site favicons from `design/assets/*-icons/`.
-- **Motion:** GSAP (ScrollTrigger, SplitText, Flip, Draggable) + Lenis for desktop wheel smoothing; the Home Upgrades 3D section (Three.js) loads only near its section. All motion is off with `prefers-reduced-motion`, and every animated section has a static finished state.
+- **Motion:** GSAP (ScrollTrigger, SplitText, Flip, Draggable) + Lenis for desktop wheel smoothing. (The Home Upgrades 3D "Watch the build" section and Three.js were removed on 2026-10-04.) All motion is off with `prefers-reduced-motion`, and every animated section has a static finished state.
 - **Phones:** pinned "Get a quote / Call" bar (≤960px), swipe rows for card sets — both as already shared in `design/shared/`.
 - **Fonts** self-hosted with `next/font`.
 - **Accessibility:** a unit test checks every theme's text/background pairs for WCAG AA (4.5:1 body, 3:1 large text and focus indicators); a failure breaks the build. 44px tap targets; visible focus; keyboard-complete forms.
@@ -119,7 +119,7 @@ Forms work without JavaScript (plain POST to the action; both steps shown).
 - **Titles:** `<Page> | <Site name>`; home pages use `<Site name> | <Tagline>`. Descriptions and Open Graph data from Payload with defaults from the Sites record.
 - **Share images:** generated per page with `next/og` in the site's theme (logo, page title, tagline).
 - **Structured data (JSON-LD):** hub `Organization` with the divisions as `subOrganization`; Logistics `MovingCompany`, Home Upgrades `HomeAndConstructionBusiness`, Multimedia `ProfessionalService` (revisit when designed); `areaServed` from each Sites record's coverage; `FAQPage` on FAQ sections.
-- **Speed budget:** Lighthouse ≥ 90 on mobile; LCP ≤ 2.5 s, CLS ≤ 0.1, INP ≤ 200 ms; the 3D section and videos load on demand.
+- **Speed budget:** Lighthouse ≥ 90 on mobile; LCP ≤ 2.5 s, CLS ≤ 0.1, INP ≤ 200 ms; videos load on demand.
 - **Analytics:** Vercel Web Analytics + Speed Insights (cookieless, so no consent banner); a custom event `quote_sent` with `division` and `type`.
 - **Launch checklist (not code):** Google Search Console for all four hosts with sitemaps submitted; a Google Business Profile per customer-facing division.
 
@@ -135,7 +135,7 @@ Forms work without JavaScript (plain POST to the action; both steps shown).
 Each phase ends deployable and tested. Reordered by the owner on 2026-09-29: after phase 1, the three prototype home pages are ported first (`docs/superpowers/specs/2026-09-29-home-pages-port-design.md`), then phase 2 onward continues without their home pages.
 1. **Foundation:** Next.js + Payload + Neon + Blob; `sites.config.ts`; `proxy.ts` host routing; themes; shared layout (header, footer, quote bar); 404/error pages; SEO plumbing (sitemaps, robots, canonical, titles, JSON-LD scaffold, share images); analytics.
 2. **Logistics site** (fully prototyped): Home with the quote form and road section; Services, Our work, About, Contact, Privacy; the full inquiry pipeline (4a).
-3. **Home Upgrades site:** Home (slider, 3D section, viewer); prerequisite — prototype the Contact page and fix its quote fields; then the remaining pages.
+3. **Home Upgrades site:** Home (slider, approach section, viewer); prerequisite — prototype the Contact page and fix its quote fields; then the remaining pages.
 4. **Hub:** Home (reel), About, Contact.
 5. **Multimedia:** prerequisite — logo and design; then all pages.
 

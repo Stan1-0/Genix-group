@@ -781,7 +781,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
         margin-bottom: 20px;
       }
       html[data-site="homeupgrades"] .approach-copy .body {
-        max-width: 54ch;
+        max-width: 34em; /* ~60 characters; Jakarta's tabular "0" makes 54ch far wider */
         margin: 0 0 16px;
         font-size: 17px;
         line-height: 1.65;
