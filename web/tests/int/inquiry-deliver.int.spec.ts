@@ -118,7 +118,7 @@ describe('retryUnsent', () => {
     const noCustomer = await make({ emailSent: true, email: null })
     const sent: Mail[] = []
     const r = await retryUnsent(payload, async (m) => { sent.push(m) }, sweepOpts(later()))
-    expect(r).toEqual({ retried: 1, pruned: 0 })
+    expect(r).toEqual({ retried: 1, pruned: 0, photosDeleted: 0 })
     expect(sent.every((m) => m.idempotencyKey.startsWith(a.reference))).toBe(true)
     const get = (id: number | string) => payload.findByID({ collection: 'inquiries', id })
     const ra = await get(a.id)

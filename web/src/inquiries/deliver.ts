@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import { customerEmail, teamEmail } from './email'
 import { formFor } from './forms'
-import { fullUrl, photoSettings, thumbUrl, type PhotoSettings } from './photos'
+import { cloudinaryClient, deleteOrphans, fullUrl, photoSettings, thumbUrl, type PhotoClient, type PhotoSettings } from './photos'
 
 type Env = Record<string, string | undefined>
 export type Mail = { from: string; to: string; replyTo?: string; subject: string; html: string; text: string; idempotencyKey: string }
@@ -108,7 +108,24 @@ export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env:
   }
   const cutoff = new Date(opts.now.getTime() - DAY_MS).toISOString()
   const pruned = await payload.delete({ collection: 'rate-hits', where: { createdAt: { less_than: cutoff } } })
-  return { retried: docs.length, pruned: pruned.docs.length }
+  const s = photoSettings(opts.env)
+  let photosDeleted = 0
+  try { photosDeleted = await cleanupPhotos(payload, s ? cloudinaryClient(s) : null, opts.now) } catch (err) { console.error('photo cleanup failed', err) }
+  return { retried: docs.length, pruned: pruned.docs.length, photosDeleted }
+}
+
+/** Deletes Cloudinary uploads that no enquiry references (see deleteOrphans for the age rule). Returns how many were removed. */
+export async function cleanupPhotos(payload: Payload, client: PhotoClient | null, now: Date): Promise<number> {
+  if (!client) return 0
+  const referenced = new Set<string>()
+  let page = 1
+  for (;;) {
+    const r = await payload.find({ collection: 'inquiries', where: { division: { equals: 'homeupgrades' } }, depth: 0, limit: 500, page, select: { details: true } })
+    for (const d of r.docs) for (const id of ((d.details as { photos?: string[] } | null)?.photos ?? [])) referenced.add(id)
+    if (!r.hasNextPage) break
+    page++
+  }
+  return deleteOrphans(client, referenced, now)
 }
 
 /**

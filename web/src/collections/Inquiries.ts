@@ -2,6 +2,13 @@ import type { CollectionConfig } from 'payload'
 import { SITE_KEYS, type SiteKey } from '@/sites/config'
 import { canReadInquiry, isAdmin } from '@/payload/access'
 
+import { cloudinaryClient, photoSettings, type PhotoClient } from '@/inquiries/photos'
+
+let photoClientFactory: ((env: Record<string, string | undefined>) => PhotoClient | null) | null = null
+/** Tests swap the Cloudinary client; null restores the real one. */
+export function setPhotoClientFactory(f: typeof photoClientFactory) { photoClientFactory = f }
+const makePhotoClient = (env: Record<string, string | undefined>) => (photoClientFactory ? photoClientFactory(env) : (() => { const s = photoSettings(env); return s ? cloudinaryClient(s) : null })())
+
 // System or visitor-supplied fields: nobody edits them through the API (the pipeline writes via the Local API, which skips access).
 const locked = { update: () => false }
 
@@ -16,6 +23,16 @@ export const Inquiries: CollectionConfig = {
   },
   defaultSort: '-createdAt',
   access: { create: () => false, read: canReadInquiry, update: canReadInquiry, delete: isAdmin },
+  hooks: {
+    afterDelete: [
+      async ({ doc }) => {
+        const ids = ((doc.details as { photos?: string[] } | null)?.photos ?? []).filter(Boolean)
+        const client = makePhotoClient(process.env)
+        if (!ids.length || !client) return
+        try { await client.destroy(ids) } catch (err) { console.error('Inquiries afterDelete: photo delete failed (cleanup cron will retry)', err) }
+      },
+    ],
+  },
   endpoints: [
     {
       path: '/:id/resend',
@@ -60,6 +77,7 @@ export const Inquiries: CollectionConfig = {
     { name: 'email', type: 'text', access: locked, admin: { readOnly: true } },
     { name: 'notes', type: 'textarea', access: locked, admin: { readOnly: true } },
     { name: 'details', type: 'json', access: locked, admin: { readOnly: true } },
+    { name: 'photoStrip', type: 'ui', admin: { components: { Field: '@/inquiries/admin/PhotoStrip#PhotoStrip' } } },
     { name: 'emailSent', type: 'checkbox', defaultValue: false, label: 'Team email sent', access: locked, admin: { readOnly: true, position: 'sidebar' } },
     { name: 'customerEmailSent', type: 'checkbox', defaultValue: false, label: 'Customer email sent', access: locked, admin: { readOnly: true, position: 'sidebar' } },
     { name: 'emailAttempts', type: 'number', defaultValue: 0, access: locked, admin: { readOnly: true, position: 'sidebar' } },
