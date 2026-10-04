@@ -17,6 +17,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ site: st
     phoneFor: async (s: SiteKey) => (await getSiteData(s)).phone,
     adminOrigin: siteOrigin('hub'),
     now: new Date(),
+    // Only Production may delete Cloudinary photos: Preview/local share the account but not the database.
+    production: process.env.VERCEL_ENV === 'production',
   })
   return Response.json(result)
 }

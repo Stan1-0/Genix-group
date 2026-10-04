@@ -21,17 +21,20 @@ const shell = (body: string) =>
   `<div style="max-width:560px;margin:0 auto;padding:24px;border-top:4px solid #c28a2c;font:15px/1.5 Arial,sans-serif;color:#111110">${body}</div>`
 
 
-export function teamEmail(a: { site: SiteKey; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[] }): EmailContent {
+/** `unlinkedPhotos`: photos on the enquiry that can't be linked here (Cloudinary settings missing); the team is told to look in the admin. */
+export function teamEmail(a: { site: SiteKey; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[]; unlinkedPhotos?: number }): EmailContent {
   const subject = `[${SITES[a.site].shortName}] Quote · ${a.subjectDetails} · ${a.reference}`
   const links = a.links ?? []
   const photos = a.photos ?? []
+  const note = !photos.length && a.unlinkedPhotos ? `${a.unlinkedPhotos} photo(s) attached — see the admin.` : ''
   const linksHtml = links.length ? `<p style="margin:20px 0 6px;font-weight:600">Inspiration links</p>${links.map((l) => `<p style="margin:0 0 4px"><a href="${esc(l)}" style="color:#012247">${esc(l)}</a></p>`).join('')}` : ''
   const photosHtml = photos.length ? `<p style="margin:20px 0 8px;font-weight:600">Photos (${photos.length})</p><p style="margin:0">${photos.map((p) => `<a href="${esc(p.full)}"><img src="${esc(p.thumb)}" width="120" height="120" alt="Photo" style="border-radius:8px;margin:0 6px 6px 0"></a>`).join('')}</p><p style="margin:4px 0 0;color:#625d55;font-size:13px">Full-size links expire after 30 days; the admin always has them.</p>` : ''
-  const html = shell(`<p style="margin:0 0 16px;font-weight:700">New quote request · ${esc(a.reference)}</p>${table(a.rows, a.phone)}${linksHtml}${photosHtml}<p style="margin:20px 0 0"><a href="${esc(a.adminUrl)}" style="color:#012247">Open in the admin</a></p>`)
+  const html = shell(`<p style="margin:0 0 16px;font-weight:700">New quote request · ${esc(a.reference)}</p>${table(a.rows, a.phone)}${linksHtml}${photosHtml}${note ? `<p style="margin:20px 0 0;font-weight:600">${esc(note)}</p>` : ''}<p style="margin:20px 0 0"><a href="${esc(a.adminUrl)}" style="color:#012247">Open in the admin</a></p>`)
   const text = [
     `New quote request · ${a.reference}`, '', ...a.rows.map(([k, v]) => `${k}: ${v}`),
     ...(links.length ? ['', 'Inspiration links:', ...links] : []),
     ...(photos.length ? ['', `Photos (${photos.length}):`, ...photos.map((p) => p.full)] : []),
+    ...(note ? ['', note] : []),
     '', `Admin: ${a.adminUrl}`,
   ].join('\n')
   return { subject, html, text }

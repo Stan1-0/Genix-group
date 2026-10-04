@@ -1,13 +1,19 @@
 import type { CollectionConfig } from 'payload'
 import { SITE_KEYS, type SiteKey } from '@/sites/config'
 import { canReadInquiry, isAdmin } from '@/payload/access'
-
-import { cloudinaryClient, photoSettings, type PhotoClient } from '@/inquiries/photos'
+import type { PhotoClient } from '@/inquiries/photos'
 
 let photoClientFactory: ((env: Record<string, string | undefined>) => PhotoClient | null) | null = null
 /** Tests swap the Cloudinary client; null restores the real one. */
 export function setPhotoClientFactory(f: typeof photoClientFactory) { photoClientFactory = f }
-const makePhotoClient = (env: Record<string, string | undefined>) => (photoClientFactory ? photoClientFactory(env) : (() => { const s = photoSettings(env); return s ? cloudinaryClient(s) : null })())
+// photos.ts is `server-only`; it's loaded lazily so the Payload CLI (`payload migrate`, no react-server condition) can still load this config.
+const photos = () => import('@/inquiries/photos')
+async function makePhotoClient(env: Record<string, string | undefined>) {
+  if (photoClientFactory) return photoClientFactory(env)
+  const { cloudinaryClient, photoSettings } = await photos()
+  const s = photoSettings(env)
+  return s ? cloudinaryClient(s) : null
+}
 
 // System or visitor-supplied fields: nobody edits them through the API (the pipeline writes via the Local API, which skips access).
 const locked = { update: () => false }
@@ -25,11 +31,23 @@ export const Inquiries: CollectionConfig = {
   access: { create: () => false, read: canReadInquiry, update: canReadInquiry, delete: isAdmin },
   hooks: {
     afterDelete: [
-      async ({ doc }) => {
-        const ids = ((doc.details as { photos?: string[] } | null)?.photos ?? []).filter(Boolean)
-        const client = makePhotoClient(process.env)
-        if (!ids.length || !client) return
-        try { await client.destroy(ids) } catch (err) { console.error('Inquiries afterDelete: photo delete failed (cleanup cron will retry)', err) }
+      async ({ doc, req }) => {
+        if (doc.division !== 'homeupgrades') return
+        const { photoIdsOf } = await photos()
+        const ids = photoIdsOf(doc.details)
+        if (!ids.length) return
+        const client = await makePhotoClient(process.env)
+        if (!client) return
+        try {
+          // Never delete a photo another Home Upgrades enquiry still references; if this lookup fails, delete nothing.
+          const { docs } = await req.payload.find({
+            collection: 'inquiries', depth: 0, pagination: false, select: { details: true }, req,
+            where: { and: [{ division: { equals: 'homeupgrades' } }, { id: { not_equals: doc.id } }] },
+          })
+          const shared = new Set(docs.flatMap((d) => photoIdsOf(d.details)))
+          const mine = ids.filter((id) => !shared.has(id))
+          if (mine.length) await client.destroy(mine)
+        } catch (err) { console.error('Inquiries afterDelete: photo delete failed (cleanup cron will retry)', err) }
       },
     ],
   },

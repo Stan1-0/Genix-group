@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import { customerEmail, teamEmail } from './email'
 import { formFor } from './forms'
-import { cloudinaryClient, deleteOrphans, fullUrl, photoSettings, thumbUrl, type PhotoClient, type PhotoSettings } from './photos'
+import { cloudinaryClient, deleteOrphans, deleteStrays, fullUrl, photoIdsOf, photoSettings, thumbUrl, type PhotoClient, type PhotoSettings } from './photos'
 
 type Env = Record<string, string | undefined>
 export type Mail = { from: string; to: string; replyTo?: string; subject: string; html: string; text: string; idempotencyKey: string }
@@ -71,7 +71,7 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
     const hu = site === 'homeupgrades' ? (data as { links: string[]; photos: string[] }) : null
     const ps = opts.photos?.settings ?? null
     const photoLinks = hu && ps && opts.photos ? hu.photos.map((id) => ({ thumb: thumbUrl(ps, id), full: fullUrl(ps, id, opts.photos!.nowSec + THIRTY_DAYS) })) : []
-    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}`, links: hu?.links ?? [], photos: photoLinks })
+    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}`, links: hu?.links ?? [], photos: photoLinks, unlinkedPhotos: hu && !photoLinks.length ? hu.photos.length : 0 })
     try {
       await twice(() => mailer({ from, to: inbox, replyTo: contact.email ?? undefined, ...e, idempotencyKey: `${doc.reference}:team` }), delay)
       update.emailSent = true
@@ -93,7 +93,8 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
   await payload.update({ collection: 'inquiries', id: doc.id, data: update })
 }
 
-export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env: Env; phoneFor: (site: SiteKey) => Promise<string | null>; adminOrigin: string; now: Date; retryDelayMs?: number }) {
+/** `production` gates photo clean-up: only the Production deployment may delete Cloudinary uploads (default off). */
+export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env: Env; phoneFor: (site: SiteKey) => Promise<string | null>; adminOrigin: string; now: Date; retryDelayMs?: number; production?: boolean }) {
   const { docs } = await payload.find({
     collection: 'inquiries', limit: 100, depth: 0, sort: 'createdAt',
     where: { and: [{ emailAttempts: { less_than: MAX_ATTEMPTS } }, { or: [{ emailSent: { equals: false } }, { and: [{ customerEmailSent: { equals: false } }, { email: { exists: true } }] }] }] },
@@ -110,22 +111,23 @@ export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env:
   const pruned = await payload.delete({ collection: 'rate-hits', where: { createdAt: { less_than: cutoff } } })
   const s = photoSettings(opts.env)
   let photosDeleted = 0
-  try { photosDeleted = await cleanupPhotos(payload, s ? cloudinaryClient(s) : null, opts.now) } catch (err) { console.error('photo cleanup failed', err) }
+  try { photosDeleted = await cleanupPhotos(payload, s ? cloudinaryClient(s) : null, opts.now, { production: opts.production ?? false }) } catch (err) { console.error('photo cleanup failed', err) }
   return { retried: docs.length, pruned: pruned.docs.length, photosDeleted }
 }
 
-/** Deletes Cloudinary uploads that no enquiry references (see deleteOrphans for the age rule). Returns how many were removed. */
-export async function cleanupPhotos(payload: Payload, client: PhotoClient | null, now: Date): Promise<number> {
-  if (!client) return 0
+/**
+ * Deletes Cloudinary uploads that no enquiry references (see deleteOrphans for the age rule and circuit breaker),
+ * plus any raw/video upload under our prefix. Production only: Preview and local share the Cloudinary account
+ * but not the database, so their "unreferenced" photos are Production's live ones. Returns how many were removed.
+ */
+export async function cleanupPhotos(payload: Payload, client: PhotoClient | null, now: Date, opts: { production: boolean }): Promise<number> {
+  if (!client || !opts.production) return 0
+  // Every reference, in one query, before anything is deleted (offset paging could skip rows that move between pages).
+  const { docs } = await payload.find({ collection: 'inquiries', where: { division: { equals: 'homeupgrades' } }, depth: 0, pagination: false, select: { details: true } })
   const referenced = new Set<string>()
-  let page = 1
-  for (;;) {
-    const r = await payload.find({ collection: 'inquiries', where: { division: { equals: 'homeupgrades' } }, depth: 0, limit: 500, page, select: { details: true } })
-    for (const d of r.docs) for (const id of ((d.details as { photos?: string[] } | null)?.photos ?? [])) referenced.add(id)
-    if (!r.hasNextPage) break
-    page++
-  }
-  return deleteOrphans(client, referenced, now)
+  for (const d of docs) for (const id of photoIdsOf(d.details)) referenced.add(id)
+  const orphans = await deleteOrphans(client, referenced, now)
+  return orphans + (await deleteStrays(client))
 }
 
 /**

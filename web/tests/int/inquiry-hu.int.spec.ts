@@ -42,6 +42,16 @@ describe('Home Upgrades enquiries', () => {
     expect(customer.text).not.toContain('pin.it')
     expect(customer.html).not.toContain('genix-inquiries')
   })
+  it('tells the team photos are attached when Cloudinary settings are missing', async () => {
+    const r = await processQuote(input([pid('a'), pid('b')]), deps())
+    if (!r.ok || r.inquiryId === null) throw new Error('expected saved')
+    const sent: Mail[] = []
+    await deliverInquiry(payload, r.inquiryId, async (m) => { sent.push(m) }, { env: {}, phone: null, adminOrigin: 'https://thegenixgroup.com', retryDelayMs: 0, photos: { settings: null, nowSec: 1_791_000_000 } })
+    const team = sent[0]
+    expect(team.text).toContain('2 photo(s) attached — see the admin.')
+    expect(team.html).toContain('2 photo(s) attached — see the admin.')
+    expect(team.html).not.toContain('genix-inquiries')
+  })
   it('logistics enquiries are unaffected', async () => {
     const r = await processQuote({ site: 'logistics', raw: { kind: 'business', from: '92101', to: '92024', date: '', flexible: 'on', load: 'parcels', pallets: '', name: 'Bo', phone: '(619) 555-0100', email: '', notes: '' }, photoIds: [pid('z')], ip: '127.0.0.1', honeypot: '', startedAt: null }, deps())
     expect(r).toMatchObject({ ok: true, reference: 'GX-LOG-000001' })
