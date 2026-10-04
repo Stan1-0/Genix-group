@@ -93,6 +93,19 @@ test.describe('photos (Cloudinary mocked)', () => {
     await expect(page.locator('#hqSend')).toContainText('Uploading photos…')
     await expect(page.locator('#hqSent')).toBeVisible({ timeout: 15_000 })
   })
+  test('without AbortSignal.timeout, a grant that never answers still gives up', async ({ page }) => {
+    await page.addInitScript(() => { Object.defineProperty(AbortSignal, 'timeout', { value: undefined, configurable: true }) })
+    await page.route('**/uploads', () => {}) // never answers
+    await page.goto(URL + '#quote')
+    await page.waitForTimeout(2200)
+    await step1(page)
+    await page.clock.install()
+    await page.setInputFiles('#hqPhotoInput', [IMG])
+    await expect(page.locator('#hqPhotoList [data-state="uploading"]')).toHaveCount(1)
+    await page.clock.runFor(16_000) // past GRANT_TIMEOUT_MS
+    await expect(page.locator('#hqPhotosErr')).toHaveText("That photo didn't upload. Try again, or send without it.")
+    await expect(page.locator('#hqPhotoList [data-state="uploading"]')).toHaveCount(0)
+  })
   test('refuses a 6th photo, a PDF and a huge file before uploading', async ({ page }) => {
     let grants = 0
     await mockUploads(page)

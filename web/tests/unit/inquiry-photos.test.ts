@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { v2 as cloudinary } from 'cloudinary'
-import { cloudinaryClient, deleteOrphans, isPhotoId, newPhotoId, photoSettings, signUpload, verifyPhotos, type PhotoClient } from '@/inquiries/photos'
+import { cloudinaryClient, deleteOrphans, isPhotoId, newPhotoId, photoIdsOf, photoSettings, signUpload, verifyPhotos, type PhotoClient } from '@/inquiries/photos'
+import { PhotoStrip } from '@/inquiries/admin/PhotoStrip'
 
 const S = { cloudName: 'demo-cloud', apiKey: '123456', apiSecret: 'test-secret-not-real' }
 const id = (c: string) => `genix-inquiries/${c.repeat(24)}`
@@ -19,6 +20,19 @@ describe('photo settings', () => {
   it('needs all three values', () => {
     expect(photoSettings({ CLOUDINARY_CLOUD_NAME: 'a', CLOUDINARY_API_KEY: 'b' })).toBeNull()
     expect(photoSettings({ CLOUDINARY_CLOUD_NAME: 'a', CLOUDINARY_API_KEY: 'b', CLOUDINARY_API_SECRET: 'c' })).toEqual({ cloudName: 'a', apiKey: 'b', apiSecret: 'c' })
+  })
+})
+
+describe('photoIdsOf and the admin strip', () => {
+  it('reads only an array of non-empty strings', () => {
+    expect(photoIdsOf({ photos: [id('a'), '', 3, id('b')] })).toEqual([id('a'), id('b')])
+    expect(photoIdsOf({ photos: 'genix-inquiries/x' })).toEqual([])
+    expect(photoIdsOf(null)).toEqual([])
+    expect(photoIdsOf(undefined)).toEqual([])
+  })
+  it('PhotoStrip renders nothing for malformed photos instead of crashing', () => {
+    expect(PhotoStrip({ data: { details: { photos: 'genix-inquiries/x' } } })).toBeNull()
+    expect(PhotoStrip({ data: { details: { photos: { 0: 'x' } } } })).toBeNull()
   })
 })
 

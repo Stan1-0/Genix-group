@@ -1,8 +1,8 @@
-import { fullUrl, photoSettings, thumbUrl } from '@/inquiries/photos'
+import { fullUrl, photoIdsOf, photoSettings, thumbUrl } from '@/inquiries/photos'
 
 /** Admin: thumbnails for a Home Upgrades enquiry's photos; full-size links last one hour. Server component: Payload passes the document as `data`. */
-export function PhotoStrip({ data }: { data?: { details?: { photos?: string[] } } }) {
-  const ids = data?.details?.photos ?? []
+export function PhotoStrip({ data }: { data?: { details?: unknown } }) {
+  const ids = photoIdsOf(data?.details) // `details` is free JSON: tolerate a missing or non-array `photos`
   const s = photoSettings(process.env)
   if (!ids.length) return null
   if (!s) return <p>{ids.length} photo(s) attached; Cloudinary settings are missing, so they can&apos;t be shown.</p>

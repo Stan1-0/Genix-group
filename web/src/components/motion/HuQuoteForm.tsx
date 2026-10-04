@@ -22,7 +22,13 @@ declare global {
   interface Window { genixHuQuote?: { validZip: (v: string) => boolean; okType: (f: File) => boolean } }
 }
 
-const timeoutSignal = (ms: number) => (typeof AbortSignal.timeout === 'function' ? AbortSignal.timeout(ms) : undefined)
+/** A signal that aborts after `ms`; older Safari has no AbortSignal.timeout, so fall back to a controller + timer. */
+function timeoutSignal(ms: number): AbortSignal {
+  if (typeof AbortSignal.timeout === 'function') return AbortSignal.timeout(ms)
+  const c = new AbortController()
+  setTimeout(() => c.abort(), ms)
+  return c.signal
+}
 
 /** Home Upgrades quote form from design/js/hu-quote-form.js: tap-to-pick pills, two steps,
     inline validation and photos. Each photo uploads straight to Cloudinary through a one-time

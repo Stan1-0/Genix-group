@@ -1,3 +1,4 @@
+import 'server-only'
 import { randomBytes } from 'node:crypto'
 import { v2 as cloudinary } from 'cloudinary'
 
