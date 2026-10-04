@@ -1,6 +1,6 @@
 # Home Upgrades quote form — design
 
-**Date:** 2026-10-04 · **Status:** approved in brainstorming, awaiting spec review
+**Date:** 2026-10-04 · **Status:** matches the build (branch `feat/hu-quote-form`)
 **Builds on:** `2026-09-30-enquiry-pipeline-design.md` (the live Logistics pipeline). Everything not restated here — references, spam checks, rate limit, save-first, delivery, retries, daily cron, admin inbox, field access — is reused unchanged.
 
 ## Decisions (owner, 2026-10-04)
@@ -36,7 +36,9 @@ Lives in the Home Upgrades home page's quote band (`id="quote"`); every existing
 | Best time to call | `callTime` | `morning` · `afternoon` · `evening`; shown only once a phone is typed; optional |
 
 Hidden: `site=homeupgrades`, honeypot `company_site`, `t` (render time, JS), `js=1` (JS submits).
-Under the form: "We use your details and photos only to reply to this request."
+Under the form: "We use your details and photos only to reply to this request." The band also keeps "Serving California." under the form.
+
+The `<form>` has no `novalidate` in its markup; JS sets `noValidate` when it takes over, so visitors without JS keep the browser's native required/pattern checks. Selected pills have a high-contrast (forced-colors) outline.
 
 **Confirmation** (JS: replaces the form; no-JS: `/quote/sent`): "Request received · GX-HUP-000001. We'll get back to you within two business days to arrange a visit. Forgot a photo? Just reply to our confirmation email with it."
 
@@ -56,14 +58,16 @@ Under the form: "We use your details and photos only to reply to this request."
 ## 3. Photo uploads (Cloudinary)
 
 **Flow (JS only):**
+0. Browser-side: files over 10 MB, or of the wrong type, are refused before any grant is requested; picking the same photo twice collapses to one; preview URLs are released once the photo is sent; dropping a file outside the photo area doesn't navigate away from the page.
 1. On picking a file, the browser `POST`s `{ name, type, size }` to **`/uploads`** on the Home Upgrades host (route `web/src/app/(sites)/[site]/uploads/route.ts`, `homeupgrades` only, else 404).
-2. The route checks: type ∈ JPEG / PNG / WebP / HEIC / HEIF, size ≤ 10 MB; BotID (`checkBotId`); rate limit 10 upload grants per ipHash per 10 min (rate-hits, distinct key prefix `up:`). It returns a **signed upload** (timestamp, signature, api key, folder `genix-inquiries`, `type=authenticated`, `public_id` = random 24-char id, `max_bytes`/allowed formats bound into the signature where Cloudinary supports it).
+2. The route checks: type ∈ JPEG / PNG / WebP / HEIC / HEIF, size ≤ 10 MB; BotID (`checkBotId`); rate limit 10 upload grants per ipHash per 10 min (rate-hits, distinct key prefix `up:`). It returns a **signed upload** (timestamp, signature, api key, `type=authenticated`, `public_id` = `genix-inquiries/` + a random 24-char id; no separate `folder` parameter, because accounts with dynamic folders don't prefix ids from `folder`).
 3. The browser uploads the file directly to Cloudinary, shows a thumbnail (from the upload response) with a remove ✕, and adds a hidden `photos` input with the public id. Remove ✕ just drops the input (the orphan is cleaned later).
-4. On submit, the server validates each photo id: matches `^genix-inquiries/[A-Za-z0-9_-]{24}$`, ≤ 5, and exists in our account (Cloudinary Admin API lookup; type authenticated). Invalid ids are dropped silently (not an error to the visitor) and logged.
+4. On submit, only the first 10 photo ids sent are considered. The server validates each: matches `^genix-inquiries/[A-Za-z0-9_-]{24}$`, duplicates collapse, ≤ 5 kept, and it exists in our account (Cloudinary Admin API lookup; type authenticated). The server also reads each photo's real `bytes` and `format` from the Admin API and drops (and deletes) anything over 10 MB or of the wrong format, so size is enforced twice (browser and server). Invalid ids are dropped silently (not an error to the visitor) and logged.
+5. **Verification never fails the request:** if Cloudinary is unreachable on submit, the photo ids are dropped (logged) and the enquiry is still saved.
 
-**Viewing:** signed delivery URLs for `type=authenticated` images with a transformation (thumbnail `c_fill,w_240,h_240`; full `c_limit,w_2000,f_jpg`) — HEIC delivered as JPG. Email links expire after 30 days; admin links are generated per view.
+**Viewing:** thumbnails (email and admin) are Cloudinary *signed* delivery URLs for the authenticated asset: unguessable, non-expiring, 240×240 JPG (`c_fill,w_240,h_240`), so HEIC shows as JPG. Full-size links are `private_download_url` links that expire: 30 days in the email, 1 hour in the admin (generated fresh on each view). Reason: Cloudinary's free plan can't time-limit delivery URLs, only download URLs.
 
-**Clean-up:** the daily cron also lists `genix-inquiries/` resources older than 24 h that no inquiry references and deletes them; deleting an inquiry (afterDelete hook) deletes its photos.
+**Clean-up:** the daily cron also lists `genix-inquiries/` resources older than 24 h that no inquiry references and deletes them; it continues past an inquiry it can't deliver rather than stopping. Deleting an inquiry (afterDelete hook) deletes its photos. Because the sweep deletes whatever the connected database doesn't reference, real Cloudinary keys belong only in Vercel Production, never in a local or preview environment.
 
 **Settings** (owner, Vercel): `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. Without all three the photo block is not rendered and `/uploads` returns 404; the form works with links only. Secrets never reach the browser (only the api key and signature).
 
@@ -72,6 +76,10 @@ Under the form: "We use your details and photos only to reply to this request."
 - **Unit:** HU schema (each message; budget/callTime optional; links parsing ≤ 5 http(s); notes 10–2000); HU summary/subject/answers/customerRows (no free text in customer rows); photo-id validation (pattern, count); upload-grant rules (types, size, missing settings → disabled).
 - **Integration** (Cloudinary stubbed): HU submission saves `GX-HUP-…` with details + photos; invalid photo ids dropped; Logistics behaviour unchanged (existing tests stay green); cleanup deletes only unreferenced > 24 h; afterDelete removes photos.
 - **E2E:** pills → step 2 → send → real `GX-HUP-` reference; photo add/remove with Cloudinary mocked at the network level; no-JS post → `/quote/sent`; field errors; parity with the prototype (desktop + phone); links check.
+
+## Related change
+
+At the owner's request, a four-item promise strip sits under the Home Upgrades hero: Care in every detail / Thoughtful craftsmanship; No guesswork / Clear, honest communication; For every kind of space / Residential & commercial; Your local project partner / Serving California.
 
 ## Out of scope
 
