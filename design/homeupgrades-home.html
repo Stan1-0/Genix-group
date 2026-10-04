@@ -80,6 +80,8 @@
       }
     </script>
     <script>
+      // JS mode: the quote form shows one step at a time (see js/hu-quote-form.js)
+      document.documentElement.classList.add("js");
       // Hide split headlines until SplitText has cut them (no unsplit flash);
       // never for reduced motion, and a timer reveals them if scripts fail.
       if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -796,23 +798,470 @@
       }
       .quote .wrap {
         display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 40px;
-        align-items: end;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: clamp(40px, 5vw, 72px);
+        align-items: start;
+      }
+      /* the headline stays beside the form while it scrolls past */
+      .quote .wrap > div:first-child {
+        position: sticky;
+        top: calc(var(--header) + 40px);
       }
       .quote .body {
-        margin: 0 0 28px;
+        margin: 0 0 24px;
         max-width: 42ch;
       }
-      .quote-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
       .quote-note {
-        margin-top: 18px;
+        margin: 18px 0 0;
         font-size: 15px;
         color: var(--muted);
+      }
+
+      /* ---------- Quote form: tap-to-pick, two steps ---------- */
+      .hu-form {
+        --err: #b42318;
+        --pill-line: rgba(2, 34, 72, 0.18);
+        --ring: var(--gold-display);
+        position: relative;
+        padding: 24px;
+        background: var(--white);
+        border-radius: 18px;
+        box-shadow: var(--shadow-sm);
+        color: var(--ink-2);
+      }
+      .hu-form [hidden] {
+        display: none !important;
+      }
+      html:not(.js) .js-only,
+      html:not(.js) .hu-steps {
+        display: none !important;
+      }
+      .hu-form fieldset {
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+      .hu-form legend {
+        padding: 0;
+      }
+      .hu-steps {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-bottom: 20px;
+      }
+      .hu-steps span {
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(2, 34, 72, 0.1);
+        transition: background-color 0.3s;
+      }
+      .hu-steps span.on {
+        background: var(--gold);
+      }
+      .hu-step {
+        display: grid;
+        gap: 22px;
+      }
+      .hu-step + .hu-step {
+        margin-top: 28px;
+      } /* no-JS: both steps show, one after the other */
+      .js .hu-step + .hu-step {
+        margin-top: 0;
+      }
+      .step-title {
+        float: left; /* lets the legend sit in the grid like any other row */
+        width: 100%;
+        font: 400 22px/1.2 var(--f-display);
+        letter-spacing: -0.02em;
+        color: var(--heading);
+      }
+      .step-title + * {
+        clear: both;
+      }
+      .hu-form [tabindex="-1"]:focus {
+        outline: none;
+      }
+
+      /* labels: small caps captions, one style for pill groups and fields */
+      .pills > legend,
+      .hu-form .field > label,
+      .photos-label {
+        margin: 0 0 10px;
+        font: 600 12px/1.3 var(--f-body);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--heading);
+      }
+      .opt {
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: none;
+        color: var(--muted);
+      }
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .pills > legend {
+        float: left;
+        width: 100%;
+      }
+      .pill {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid var(--pill-line);
+        border-radius: 999px;
+        background: var(--white);
+        font: 500 15px/1.2 var(--f-body);
+        color: var(--heading);
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        transition:
+          background-color 0.18s,
+          border-color 0.18s,
+          color 0.18s,
+          box-shadow 0.18s;
+      }
+      .pill input {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+      .pill:hover {
+        border-color: var(--brand);
+        box-shadow: var(--shadow-hover);
+      }
+      /* selected: navy fill, white text, a gold dot as the brand mark */
+      .pill::before {
+        content: "";
+        flex: none;
+        width: 7px;
+        height: 7px;
+        margin-left: -4px;
+        border-radius: 50%;
+        background: var(--pill-line);
+        transition: background-color 0.18s;
+      }
+      .pill:has(input:checked) {
+        background: var(--brand);
+        border-color: var(--brand);
+        color: var(--white);
+        box-shadow: var(--shadow-sm);
+      }
+      .pill:has(input:checked)::before {
+        background: var(--gold);
+      }
+      .pill:has(input:focus-visible) {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+      .pills.invalid .pill:not(:has(input:checked)) {
+        border-color: var(--err);
+      }
+
+      /* text fields */
+      .hu-form .field {
+        display: grid;
+      }
+      .hu-form .field input,
+      .hu-form .field textarea {
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 14px;
+        border: 1px solid var(--pill-line);
+        border-radius: 12px;
+        background: var(--paper);
+        font: 400 16px/1.4 var(--f-body); /* 16px: no zoom-on-focus on iOS */
+        color: var(--ink);
+        transition:
+          border-color 0.18s,
+          background-color 0.18s;
+      }
+      .hu-form .field textarea {
+        resize: vertical;
+      }
+      .hu-form .field input:hover,
+      .hu-form .field textarea:hover {
+        border-color: rgba(2, 34, 72, 0.4);
+      }
+      .hu-form .field input:focus,
+      .hu-form .field textarea:focus {
+        border-color: var(--brand);
+        background: var(--white);
+      }
+      .hu-form .field input:focus-visible,
+      .hu-form .field textarea:focus-visible,
+      .hu-form .btn:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+      .hu-form .field.invalid input,
+      .hu-form .field.invalid textarea {
+        border-color: var(--err);
+      }
+      #hqZip {
+        max-width: 160px;
+      }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px 14px;
+      }
+      .hu-form .field-row + .hint {
+        margin-top: -14px;
+      }
+      .err {
+        flex-basis: 100%;
+        margin: 6px 0 0;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--err);
+      }
+      .pills > .err {
+        margin-top: 0;
+      }
+      .err:empty {
+        display: none;
+      }
+      .hu-form .hint,
+      .hu-form .privacy {
+        margin: 6px 0 0;
+        font-size: 13px;
+        line-height: 1.4;
+        color: var(--muted);
+      }
+      .hu-form .privacy {
+        margin: 0;
+      }
+
+      /* photos: dashed drop area + tiles with local previews */
+      .photos-label {
+        margin: 0 0 10px;
+      }
+      .drop {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: 10px;
+        padding: 22px 18px;
+        border: 1.5px dashed rgba(2, 34, 72, 0.28);
+        border-radius: 12px;
+        background: var(--paper);
+        text-align: center;
+        font-size: 14.5px;
+        line-height: 1.4;
+        color: var(--ink-2);
+        cursor: pointer;
+        transition:
+          border-color 0.18s,
+          background-color 0.18s;
+      }
+      .drop::before {
+        content: "+";
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--brand);
+        font: 300 24px/1 var(--f-body);
+        color: var(--gold);
+      }
+      .drop input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .drop:hover,
+      .drop.dragover {
+        border-color: var(--gold);
+        background: var(--sand);
+      }
+      .drop:has(input:focus-visible) {
+        border-color: var(--gold);
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+      .photos.invalid .drop {
+        border-color: var(--err);
+      }
+      .photo-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 72px);
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .photo-list:not(:empty) {
+        margin-top: 22px;
+      }
+      .tile {
+        position: relative;
+        width: 72px;
+        height: 72px;
+        border-radius: 10px;
+        background: var(--surface);
+        box-shadow: var(--shadow-subtle);
+      }
+      .tile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+      .tile-icon {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background: var(--sand);
+        color: var(--brand);
+      }
+      .tile-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+      .tile-remove {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 2px solid var(--white);
+        border-radius: 50%;
+        background: var(--brand);
+        font: 500 14px/1 var(--f-body);
+        color: var(--white);
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+      }
+      .tile-remove:hover {
+        background: var(--brand-deep);
+      }
+      .tile-remove:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 1px;
+      }
+      .tile[data-state="uploading"] img,
+      .tile[data-state="uploading"] .tile-icon {
+        opacity: 0.45;
+      }
+      .tile[data-state="uploading"]::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 22px;
+        height: 22px;
+        margin: -11px 0 0 -11px;
+        border: 2.5px solid rgba(2, 34, 72, 0.18);
+        border-top-color: var(--brand);
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        animation: hu-spin 0.8s linear infinite;
+      }
+      .tile[data-state="error"] {
+        outline: 2px solid var(--err);
+        outline-offset: 2px;
+      }
+      .tile[data-state="error"] img,
+      .tile[data-state="error"] .tile-icon {
+        opacity: 0.5;
+      }
+      @keyframes hu-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .hp {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .hu-form .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .hu-step[data-step="1"] .form-actions,
+      html:not(.js) .hu-form .form-actions {
+        justify-content: flex-end;
+      }
+
+      /* confirmation */
+      .sent {
+        display: grid;
+        gap: 10px;
+        padding: 8px 0 4px;
+      }
+      .sent p {
+        margin: 0;
+      }
+      .sent-ref {
+        justify-self: start;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--sand);
+        font: 600 13px/1.2 var(--f-body);
+        letter-spacing: 0.04em;
+        color: var(--gold-text);
+      }
+      .sent-title {
+        margin-top: 6px !important;
+        font: 300 clamp(30px, 3vw, 40px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        color: var(--heading);
+      }
+      .sent-note {
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hu-steps span,
+        .pill,
+        .pill::before,
+        .hu-form .field input,
+        .hu-form .field textarea,
+        .drop {
+          transition: none;
+        }
+        .tile[data-state="uploading"]::after {
+          animation-duration: 2.4s;
+        }
+      }
+      @media (max-width: 600px) {
+        .field-row {
+          grid-template-columns: 1fr;
+        }
       }
 
       /* ---------- Responsive ---------- */
@@ -862,7 +1311,8 @@
         .work-grid > :first-child {
           grid-column: 1 / -1;
         }
-        .crew {
+        .crew,
+        .quote .wrap > div:first-child {
           position: static;
         }
         .build .fallback {
@@ -917,6 +1367,24 @@
         .ba-cap {
           flex-direction: column;
           gap: 2px;
+        }
+        /* phones: the sand card and the form card share the width, so both slim down */
+        [data-division="homeupgrades"] .quote .wrap > div:last-child {
+          padding: 24px 14px 20px;
+        }
+        .quote .body,
+        .quote-note {
+          padding: 0 6px;
+        }
+        .hu-form {
+          padding: 20px 18px;
+        }
+        .hu-form .form-actions .btn {
+          flex: 1 1 auto;
+          justify-content: center;
+        }
+        .hu-form .form-actions .btn-ghost {
+          flex: 0 0 auto;
         }
       }
     </style>
@@ -1452,20 +1920,94 @@
               A few photos and a sentence about what you want is enough to
               start. We'll arrange a visit and send a written quote.
             </p>
-            <div class="quote-actions">
-              <a
-                class="btn btn-dark"
-                href="mailto:hello@thegenixgroup.com?subject=Home%20upgrade%20quote"
-                >Email about a project <span aria-hidden="true">→</span></a
-              >
-              <a class="btn btn-ghost" href="tel:+10000000000"
-                ><span class="ph">Call (000) 000-0000</span></a
-              >
-            </div>
-            <p class="quote-note">
-              Serving <span class="ph">[service area]</span>. The full quote
-              form comes with the Contact page.
-            </p>
+            <form class="hu-form" id="hu-quote-form" action="#" method="post" data-photos="on" novalidate>
+              <input type="hidden" name="site" value="homeupgrades" />
+              <div class="hu-steps" id="hqSteps" aria-hidden="true"><span class="on"></span><span></span></div>
+              <fieldset class="hu-step" data-step="1">
+                <legend class="step-title" id="hqStep1Title" tabindex="-1">1 · The project</legend>
+                <fieldset class="pills" id="hqProject" aria-describedby="hqProjectErr">
+                  <legend>What are we building?</legend>
+                  <label class="pill"><input type="radio" name="project" value="accent" required /> Accent wall &amp; TV unit</label>
+                  <label class="pill"><input type="radio" name="project" value="outdoor" /> Outdoor build</label>
+                  <label class="pill"><input type="radio" name="project" value="other" /> Something else</label>
+                  <p class="err" id="hqProjectErr"></p>
+                </fieldset>
+                <fieldset class="pills" id="hqProperty" aria-describedby="hqPropertyErr">
+                  <legend>For your…</legend>
+                  <label class="pill"><input type="radio" name="property" value="home" required /> Home</label>
+                  <label class="pill"><input type="radio" name="property" value="business" /> Business</label>
+                  <p class="err" id="hqPropertyErr"></p>
+                </fieldset>
+                <fieldset class="pills" id="hqTiming" aria-describedby="hqTimingErr">
+                  <legend>When to start</legend>
+                  <label class="pill"><input type="radio" name="timing" value="asap" required /> As soon as possible</label>
+                  <label class="pill"><input type="radio" name="timing" value="soon" /> In 1–3 months</label>
+                  <label class="pill"><input type="radio" name="timing" value="planning" /> Just planning</label>
+                  <p class="err" id="hqTimingErr"></p>
+                </fieldset>
+                <fieldset class="pills" id="hqBudget">
+                  <legend>Rough budget <span class="opt">· optional</span></legend>
+                  <label class="pill"><input type="radio" name="budget" value="under5" /> Under $5k</label>
+                  <label class="pill"><input type="radio" name="budget" value="5to15" /> $5–15k</label>
+                  <label class="pill"><input type="radio" name="budget" value="over15" /> $15k+</label>
+                  <label class="pill"><input type="radio" name="budget" value="unsure" /> Not sure</label>
+                </fieldset>
+                <div class="field">
+                  <label for="hqZip">Property ZIP</label>
+                  <input id="hqZip" name="zip" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}" maxlength="5" required aria-describedby="hqZipErr" />
+                  <p class="err" id="hqZipErr"></p>
+                </div>
+                <div class="form-actions js-only"><button type="button" class="btn btn-dark" id="hqNext">Continue <span aria-hidden="true">→</span></button></div>
+              </fieldset>
+              <fieldset class="hu-step" data-step="2">
+                <legend class="step-title" id="hqStep2Title" tabindex="-1">2 · Your details</legend>
+                <div class="field">
+                  <label for="hqNotes">Tell us about the space</label>
+                  <textarea id="hqNotes" name="notes" rows="4" minlength="10" maxlength="2000" required aria-describedby="hqNotesHint hqNotesErr"></textarea>
+                  <p class="hint" id="hqNotesHint">Room, size, what you have in mind.</p>
+                  <p class="err" id="hqNotesErr"></p>
+                </div>
+                <div class="photos" data-photos hidden>
+                  <p class="photos-label">Photos &amp; inspiration</p>
+                  <label class="drop" id="hqPhotos" for="hqPhotoInput">
+                    <input type="file" id="hqPhotoInput" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple />
+                    <span>Add up to 5 photos of your space or ideas you like.</span>
+                  </label>
+                  <ul class="photo-list" id="hqPhotoList" aria-live="polite"></ul>
+                  <p class="err" id="hqPhotosErr"></p>
+                </div>
+                <div class="field">
+                  <label for="hqLinks">Pinterest, Instagram or website links (optional)</label>
+                  <textarea id="hqLinks" name="links" rows="2" maxlength="1000"></textarea>
+                </div>
+                <div class="field"><label for="hqName">Name</label><input id="hqName" name="name" autocomplete="name" required aria-describedby="hqNameErr" /><p class="err" id="hqNameErr"></p></div>
+                <div class="field-row">
+                  <div class="field"><label for="hqPhone">Phone</label><input id="hqPhone" name="phone" type="tel" autocomplete="tel" aria-describedby="hqPhoneErr hqContactHint" /><p class="err" id="hqPhoneErr"></p></div>
+                  <div class="field"><label for="hqEmail">Email</label><input id="hqEmail" name="email" type="email" autocomplete="email" aria-describedby="hqEmailErr hqContactHint" /><p class="err" id="hqEmailErr"></p></div>
+                </div>
+                <p class="hint" id="hqContactHint">Phone or email, whichever you prefer.</p>
+                <fieldset class="pills" id="hqCallTime" hidden>
+                  <legend>Best time to call <span class="opt">· optional</span></legend>
+                  <label class="pill"><input type="radio" name="callTime" value="morning" /> Morning</label>
+                  <label class="pill"><input type="radio" name="callTime" value="afternoon" /> Afternoon</label>
+                  <label class="pill"><input type="radio" name="callTime" value="evening" /> Evening</label>
+                </fieldset>
+                <div class="hp" aria-hidden="true"><label for="hqHp">Leave this empty</label><input id="hqHp" name="company_site" tabindex="-1" autocomplete="off" /></div>
+                <p class="privacy">We use your details and photos only to reply to this request.</p>
+                <div class="form-actions">
+                  <button type="button" class="btn btn-ghost js-only" id="hqBack">← Back</button>
+                  <button type="submit" class="btn btn-gold" id="hqSend">Send request <span aria-hidden="true">→</span></button>
+                </div>
+              </fieldset>
+              <p class="sr-only" id="hqStatus" role="status" tabindex="-1"></p>
+              <div class="sent" id="hqSent" tabindex="-1" hidden>
+                <p class="sent-ref" id="hqRef">Request received</p>
+                <p class="sent-title">Request received.</p>
+                <p>We'll get back to you within two business days to arrange a visit.</p>
+                <p class="sent-note">Forgot a photo? Just reply to our confirmation email with it.</p>
+              </div>
+            </form>
+            <p class="quote-note">Serving California.</p>
           </div>
         </div>
       </section>
@@ -1566,6 +2108,7 @@
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
     <script src="shared/genix.js"></script>
     <script src="shared/quote-bar.js"></script>
+    <script src="js/hu-quote-form.js"></script>
     <script type="module">
       // Load the 3D build only as its section approaches (Three.js is ~340 KB)
       const section = document.getElementById("build");
