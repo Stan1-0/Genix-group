@@ -81,7 +81,17 @@ for (const [label, viewport, mobile] of [
       test('section order', async ({ page }) => {
         await page.goto(URL)
         const ids = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.id))
-        expect(ids).toEqual(['', 'services', 'work', 'build', 'process', 'quote'])
+        expect(ids).toEqual(['', '', 'services', 'work', 'build', 'process', 'quote'])
+      })
+
+      test('promise strip sits between the hero and services with four promises in order', async ({ page }) => {
+        await page.goto(URL)
+        const strip = page.locator('section.promises')
+        await expect(strip).toHaveAttribute('aria-label', 'Why Genix Home Upgrades')
+        await expect(strip.locator('li .promise-title')).toHaveText(['Care in every detail', 'No guesswork', 'For every kind of space', 'Your local project partner'])
+        await expect(strip.locator('li .promise-line')).toHaveText(['Thoughtful craftsmanship', 'Clear, honest communication', 'Residential & commercial', 'Serving California'])
+        const order = await page.evaluate(() => [...document.querySelectorAll('main > section')].map((s) => s.className.split(' ')[0] || s.id))
+        expect(order.slice(0, 3)).toEqual(['hero', 'promises', 'services'])
       })
 
       test('favicons respond 200', async ({ page }) => {

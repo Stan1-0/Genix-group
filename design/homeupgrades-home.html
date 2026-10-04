@@ -245,6 +245,75 @@
         font-weight: 600;
       }
 
+      /* ---------- Promises (strip under the hero) ---------- */
+      .promises {
+        background: var(--white);
+        border-top: 1px solid var(--line);
+        padding: clamp(28px, 3.5vw, 40px) 0;
+      }
+      .promises ul {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .promises li {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 4px clamp(16px, 2.2vw, 32px);
+        border-left: 1px solid var(--line);
+      }
+      .promises li:first-child {
+        border-left: 0;
+        padding-left: 0;
+      }
+      .promises li:last-child {
+        padding-right: 0;
+      }
+      .promises svg {
+        flex: none;
+        width: 28px;
+        height: 28px;
+        color: var(--brand);
+      }
+      .promises svg .gold {
+        color: var(--gold);
+      }
+      .promise-title {
+        margin: 0;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .promise-line {
+        margin: 2px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--muted);
+      }
+      @media (max-width: 960px) {
+        .promises ul {
+          grid-template-columns: 1fr 1fr;
+          row-gap: 20px;
+        }
+        .promises li:nth-child(odd) {
+          border-left: 0;
+          padding-left: 0;
+        }
+        .promises li:nth-child(even) {
+          padding-right: 0;
+        }
+      }
+      @media (max-width: 480px) {
+        .promises li {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+      }
       /* ---------- Services ---------- */
       .services {
         background: var(--white);
@@ -1513,6 +1582,53 @@
         </div>
       </section>
 
+      <!-- Promises -->
+      <section class="promises" aria-label="Why Genix Home Upgrades">
+        <div class="wrap">
+          <ul>
+            <li data-reveal>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M11 3l1.9 5.1L18 10l-5.1 1.9L11 17l-1.9-5.1L4 10l5.1-1.9L11 3z" />
+                <path d="M19 15v6M16 18h6" class="gold" />
+              </svg>
+              <div>
+                <p class="promise-title">Care in every detail</p>
+                <p class="promise-line">Thoughtful craftsmanship</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 5h16v11H10l-5 4v-4H4V5z" />
+                <path d="M8 9.5h8M8 12.5h5" class="gold" />
+              </svg>
+              <div>
+                <p class="promise-title">No guesswork</p>
+                <p class="promise-line">Clear, honest communication</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 21V4h9v17M14 9h5v12M3 21h18" />
+                <path d="M8 8h3M8 12h3M8 16h3" class="gold" />
+              </svg>
+              <div>
+                <p class="promise-title">For every kind of space</p>
+                <p class="promise-line">Residential &amp; commercial</p>
+              </div>
+            </li>
+            <li data-reveal>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+                <circle cx="12" cy="9.5" r="2.5" class="gold" />
+              </svg>
+              <div>
+                <p class="promise-title">Your local project partner</p>
+                <p class="promise-line">Serving California</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
       <!-- Services -->
       <section class="services" id="services">
         <div class="wrap">
