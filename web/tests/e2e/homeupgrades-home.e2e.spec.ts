@@ -452,8 +452,9 @@ test.describe('approach section', () => {
     await expect(s.locator('.approach-checks li')).toHaveText(['A clear plan before the work begins', 'Care for your home and your time', 'Practical ideas, thoughtfully finished'])
     await expect(s.locator('.approach-card')).toContainText('The Genix approach')
     await expect(s.locator('.approach-card')).toContainText("It's the little things that make a home.")
+    await expect(s.locator('.approach-card .approach-mark')).toBeVisible()
     expect(await s.locator('a.approach-link').getAttribute('href')).toMatch(/#quote$/)
-    await expect(s.locator('.approach-media img')).toHaveAttribute('alt', 'Slatted wood feature wall with a wall-mounted TV and floating console')
+    await expect(s.locator('.approach-media > img')).toHaveAttribute('alt', 'Slatted wood feature wall with a wall-mounted TV and floating console')
   })
   test('the 3D build is gone, and Three.js with it', async ({ page }) => {
     const found: Promise<boolean>[] = []
@@ -490,7 +491,7 @@ test.describe('approach section (no JavaScript)', () => {
   test('photo, card and copy readable', async ({ page }) => {
     await page.goto(URL, { waitUntil: 'load' })
     await page.locator('#approach').scrollIntoViewIfNeeded()
-    await expect(page.locator('#approach .approach-media img')).toBeVisible()
+    await expect(page.locator('#approach .approach-media > img')).toBeVisible()
     await expect(page.locator('#approach .approach-card')).toBeVisible()
     await expect(page.locator('#approach h2')).toBeVisible()
   })

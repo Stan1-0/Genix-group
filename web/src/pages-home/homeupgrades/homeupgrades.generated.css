@@ -751,11 +751,12 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
         bottom: -28px;
         width: min(300px, 72%);
         padding: 24px 28px 26px;
-        background: var(--gold);
-        color: var(--ink); /* 6.3:1 on the gold */
+        background: var(--brand); /* the logo's own navy */
+        color: #fdfdf7;
         border-radius: var(--r);
         box-shadow: rgba(0, 0, 0, 0.14) 0 8px 24px -6px, var(--shadow-subtle);
       }
+      /* the figure's photo rule is element-level; this class-level rule keeps the mark out of it */
       html[data-site="homeupgrades"] .approach-card-top {
         display: flex;
         align-items: flex-start;
@@ -764,12 +765,18 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
         margin-bottom: 18px;
         font: 500 13px/1.4 var(--f-body);
         letter-spacing: 0.01em;
-        color: #2a200e; /* muted dark brown: 5.3:1 on the gold */
+        color: #c9d2e0; /* 10:1 on the navy */
       }
-      html[data-site="homeupgrades"] .approach-card-top svg {
+      html[data-site="homeupgrades"] .approach-media .approach-mark {
         flex: none;
+        display: block;
+        width: auto;
+        height: 40px;
+        aspect-ratio: auto;
+        max-height: none;
+        border-radius: 0;
+        box-shadow: none;
         margin: -4px -4px 0 0;
-        color: var(--ink);
       }
       html[data-site="homeupgrades"] .approach-quote {
         display: block;
@@ -1623,6 +1630,9 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
           bottom: -24px;
           width: min(280px, 78%);
           padding: 20px 24px 22px;
+        }
+        html[data-site="homeupgrades"] .approach-media .approach-mark {
+          height: 34px;
         }
       }
       @media (max-width: 560px) {

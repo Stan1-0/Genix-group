@@ -38,21 +38,7 @@ export function Approach() {
           <figcaption className="approach-card">
             <span className="approach-card-top">
               <span>The Genix approach</span>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9" />
-                <path d="m18 15 4-4" />
-                <path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-1.13a6 6 0 0 0-2.65-.62H9.5l.92.82A6.18 6.18 0 0 1 12 9.42V11l2 2h1.172a2 2 0 0 1 1.414.586L18.5 15.5" />
-              </svg>
+              <Image className="approach-mark" src="/brand/genix-hu-mark.svg" alt="" width={604} height={425} unoptimized />
             </span>
             <span className="approach-quote">It&apos;s the little things that make a home.</span>
           </figcaption>
