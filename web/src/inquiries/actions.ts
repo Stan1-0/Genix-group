@@ -7,13 +7,11 @@ import { checkBotId } from 'botid/server'
 import config from '@payload-config'
 import { isSiteKey, siteOrigin, type SiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
-import { formDataToRaw } from './schema'
+import { FORM_SITES, formDataToRawFor, formFor } from './forms'
 import { processQuote, type QuoteResult } from './pipeline'
 import { createMailer, deliverInquiry } from './deliver'
 import { inquirySendMode } from './mode'
 import { botCheckFor } from './bot-check'
-
-const FORM_SITES: SiteKey[] = ['logistics']
 
 export async function submitQuote(_prev: QuoteResult | null, formData: FormData): Promise<QuoteResult> {
   const js = formData.get('js') === '1'
@@ -34,7 +32,7 @@ export async function submitQuote(_prev: QuoteResult | null, formData: FormData)
     phone = (await getSiteData(site)).phone // resolved before saving, so nothing after the save can fail the request
     const t = Number(formData.get('t'))
     result = await processQuote(
-      { site, raw: formDataToRaw(formData), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
+      { site, raw: formDataToRawFor(formFor(site), formData), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
       {
         payload,
         // BotID only for JS submissions: a no-JS post carries no BotID token (honeypot + rate limit cover it).

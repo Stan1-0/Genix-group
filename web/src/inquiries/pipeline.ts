@@ -1,12 +1,12 @@
 import type { Payload } from 'payload'
 import { SITES, type SiteKey } from '@/sites/config'
-import { hashIp, formatReference, quoteSummary } from './format'
-import { parseQuote, type FieldErrors } from './schema'
+import { hashIp, formatReference } from './format'
+import { formFor } from './forms'
 import { nextReference } from './reference'
 
 export type QuoteResult =
   | { ok: true; reference: string; inquiryId: number | string | null }
-  | { ok: false; fieldErrors?: FieldErrors; error?: 'rate' | 'server' }
+  | { ok: false; fieldErrors?: Record<string, string>; error?: 'rate' | 'server' }
 
 type Input = { site: SiteKey; raw: Record<string, unknown>; ip: string; honeypot: string; startedAt: number | null }
 type Deps = { payload: Payload; isBot: () => Promise<boolean>; now: () => Date; salt: string; production: boolean }
@@ -22,7 +22,8 @@ const fakeReference = (site: SiteKey) => formatReference(SITES[site].inquiryPref
 export async function processQuote(input: Input, deps: Deps): Promise<QuoteResult> {
   const now = deps.now()
   const today = new Date(now.getTime() - 8 * 3600_000).toISOString().slice(0, 10) // Pacific date (UTC-8, conservative)
-  const parsed = parseQuote(input.raw, today)
+  const def = formFor(input.site)
+  const parsed = def.parse(input.raw, today)
   if (!parsed.ok) return { ok: false, fieldErrors: parsed.errors }
 
   const tooFast = input.startedAt !== null && now.getTime() - input.startedAt < TOO_FAST_MS
@@ -37,14 +38,14 @@ export async function processQuote(input: Input, deps: Deps): Promise<QuoteResul
     await deps.payload.create({ collection: 'rate-hits', data: { ipHash } })
   }
 
-  const q = parsed.data
+  const c = def.contact(parsed.data)
   const reference = await nextReference(deps.payload, input.site)
   const doc = await deps.payload.create({
     collection: 'inquiries',
     data: {
-      reference, division: input.site, type: 'quote', status: 'new', summary: quoteSummary(q),
-      name: q.name, phone: q.phone, email: q.email, notes: q.notes,
-      details: { kind: q.kind, from: q.from, to: q.to, date: q.date, flexible: q.flexible, load: q.load, pallets: q.pallets },
+      reference, division: input.site, type: 'quote', status: 'new', summary: def.summary(parsed.data),
+      name: c.name, phone: c.phone, email: c.email, notes: c.notes,
+      details: def.details(parsed.data),
       ipHash,
     },
   })

@@ -2,7 +2,7 @@ import type { Payload, TypedUser } from 'payload'
 import { Resend } from 'resend'
 import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import { customerEmail, teamEmail } from './email'
-import type { QuoteInput } from './schema'
+import { formFor } from './forms'
 
 type Env = Record<string, string | undefined>
 export type Mail = { from: string; to: string; replyTo?: string; subject: string; html: string; text: string; idempotencyKey: string }
@@ -55,11 +55,9 @@ type DeliverOpts = { env: Env; phone: string | null; adminOrigin: string; retryD
 export async function deliverInquiry(payload: Payload, id: number | string, mailer: Mailer, opts: DeliverOpts): Promise<void> {
   const doc = await payload.findByID({ collection: 'inquiries', id })
   const site = doc.division as SiteKey
-  const d = (doc.details ?? {}) as Partial<QuoteInput>
-  const q: QuoteInput = {
-    kind: d.kind === 'move' ? 'move' : 'business', from: d.from ?? '', to: d.to ?? '', date: d.date ?? null, flexible: Boolean(d.flexible),
-    load: d.load ?? '', pallets: d.pallets ?? null, name: doc.name, phone: doc.phone ?? null, email: doc.email ?? null, notes: doc.notes ?? null,
-  }
+  const def = formFor(site)
+  const contact = { name: doc.name, phone: doc.phone ?? null, email: doc.email ?? null, notes: doc.notes ?? null }
+  const data = def.fromStored((doc.details ?? {}) as Record<string, unknown>, contact)
   const from = `Genix ${SITES[site].shortName} <${opts.env.INQUIRY_FROM || 'quotes@thegenixgroup.com'}>`
   const inbox = opts.env.INQUIRY_TO || 'hello@thegenixgroup.com'
   const update: Record<string, unknown> = { emailAttempts: (doc.emailAttempts ?? 0) + 1 }
@@ -67,21 +65,21 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
   const delay = opts.retryDelayMs ?? RETRY_DELAY_MS
 
   if (!doc.emailSent) {
-    const e = teamEmail({ site, reference: doc.reference, q, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}` })
+    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}` })
     try {
-      await twice(() => mailer({ from, to: inbox, replyTo: q.email ?? undefined, ...e, idempotencyKey: `${doc.reference}:team` }), delay)
+      await twice(() => mailer({ from, to: inbox, replyTo: contact.email ?? undefined, ...e, idempotencyKey: `${doc.reference}:team` }), delay)
       update.emailSent = true
     } catch (err) { errors.push((err as Error).message) }
   }
   // At most one auto-reply per recipient per 24 h, so the form can't be used to mail an address repeatedly.
   // A skipped reply is marked sent so the sweep doesn't retry it.
-  if (q.email && !doc.customerEmailSent && (await recentlyAutoReplied(payload, doc.id, q.email))) {
+  if (contact.email && !doc.customerEmailSent && (await recentlyAutoReplied(payload, doc.id, contact.email))) {
     update.customerEmailSent = true
     errors.push(CUSTOMER_SKIPPED)
-  } else if (q.email && !doc.customerEmailSent) {
-    const e = customerEmail({ site, reference: doc.reference, q, phone: opts.phone })
+  } else if (contact.email && !doc.customerEmailSent) {
+    const e = customerEmail({ site, reference: doc.reference, name: contact.name, rows: def.customerRows(data), phone: opts.phone })
     try {
-      await twice(() => mailer({ from, to: q.email!, replyTo: inbox, ...e, idempotencyKey: `${doc.reference}:customer` }), delay)
+      await twice(() => mailer({ from, to: contact.email!, replyTo: inbox, ...e, idempotencyKey: `${doc.reference}:customer` }), delay)
       update.customerEmailSent = true
     } catch (err) { errors.push((err as Error).message) }
   }
