@@ -67,14 +67,21 @@ The `<form>` has no `novalidate` in its markup; JS sets `noValidate` when it tak
 
 **Viewing:** thumbnails (email and admin) are Cloudinary *signed* delivery URLs for the authenticated asset: unguessable, non-expiring, 240×240 JPG (`c_fill,w_240,h_240`), so HEIC shows as JPG. Full-size links are `private_download_url` links that expire: 30 days in the email, 1 hour in the admin (generated fresh on each view). Reason: Cloudinary's free plan can't time-limit delivery URLs, only download URLs.
 
-**Clean-up:** the daily cron also lists `genix-inquiries/` resources older than 24 h that no inquiry references and deletes them; it continues past an inquiry it can't deliver rather than stopping. Deleting an inquiry (afterDelete hook) deletes its photos. Because the sweep deletes whatever the connected database doesn't reference, real Cloudinary keys belong only in Vercel Production, never in a local or preview environment.
+**Clean-up:** the daily cron also lists `genix-inquiries/` image resources older than 24 h that no inquiry references and deletes them; it continues past an inquiry it can't deliver rather than stopping. Because the sweep deletes whatever the connected database doesn't reference, real Cloudinary keys belong only in Vercel Production (untick Preview and Development when adding them), never in a local or preview environment. Guards:
+- **Production only:** the cron passes `production: VERCEL_ENV === 'production'`; anywhere else the clean-up lists nothing and deletes nothing.
+- **Circuit breaker:** if more than half of the images older than 24 h (and more than 10) look unreferenced, it aborts, deletes nothing and logs `photo cleanup aborted: N of M old photos look unreferenced — check DATABASE_URL / Cloudinary keys`.
+- **Stable references:** every Home Upgrades inquiry's photo ids are loaded in one unpaginated query before anything is deleted.
+- **Raw/video sweep:** any `raw` or `video` resource under `genix-inquiries/` (a grant replayed to another resource type) is deleted at any age; none is ever legitimate.
+- **Reference-aware delete:** deleting an inquiry (afterDelete hook) deletes its photos except ids another Home Upgrades inquiry still references; if that lookup fails, it deletes nothing (the cron catches the orphans).
+
+**Upload hardening and verification:** the signed upload also signs `overwrite: false`, so a replayed grant can't replace a photo already attached (the signed set is exactly `allowed_formats, overwrite, public_id, timestamp, type`). Verification on submit is a single Admin API call (`resources_by_ids`, type authenticated) for the considered ids; deleting rejected uploads is best-effort and never costs the visitor their valid photos. If Cloudinary settings are missing when the team email goes out, it says "N photo(s) attached — see the admin." instead of omitting them.
 
 **Settings** (owner, Vercel): `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. Without all three the photo block is not rendered and `/uploads` returns 404; the form works with links only. Secrets never reach the browser (only the api key and signature).
 
 ## 4. Testing
 
 - **Unit:** HU schema (each message; budget/callTime optional; links parsing ≤ 5 http(s); notes 10–2000); HU summary/subject/answers/customerRows (no free text in customer rows); photo-id validation (pattern, count); upload-grant rules (types, size, missing settings → disabled).
-- **Integration** (Cloudinary stubbed): HU submission saves `GX-HUP-…` with details + photos; invalid photo ids dropped; Logistics behaviour unchanged (existing tests stay green); cleanup deletes only unreferenced > 24 h; afterDelete removes photos.
+- **Integration** (Cloudinary stubbed): HU submission saves `GX-HUP-…` with details + photos; invalid photo ids dropped; Logistics behaviour unchanged (existing tests stay green); cleanup deletes only unreferenced > 24 h, only on Production, aborts on the circuit breaker, sweeps raw/video; afterDelete removes photos but keeps ids another inquiry shares.
 - **E2E:** pills → step 2 → send → real `GX-HUP-` reference; photo add/remove with Cloudinary mocked at the network level; no-JS post → `/quote/sent`; field errors; parity with the prototype (desktop + phone); links check.
 
 ## Related change

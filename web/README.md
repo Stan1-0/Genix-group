@@ -89,10 +89,12 @@ Vercel BotID needs no dashboard setup: it works once the site is deployed on Ver
 ### Home Upgrades photos (Cloudinary)
 The Home Upgrades quote form lets visitors attach up to 5 photos. They are stored on Cloudinary.
 1. Create a free account at cloudinary.com.
-2. Vercel → Settings → Environment Variables, **Production only**: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. Redeploy.
+2. Vercel → Settings → Environment Variables, **Production only**: `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. When adding each one, **untick Preview and Development** so only Production is ticked. Redeploy.
 
 Without all three the photo block is hidden and `/uploads` returns 404; the form still works with links only.
 
-**Warning: put real Cloudinary keys only in Vercel's Production environment, never in a local `web/.env` and not in Preview.** The daily cleanup deletes photos not referenced by the database it is connected to, so a local or preview database pointed at the live Cloudinary account would treat customers' photos as orphans and delete them.
+**Warning: put real Cloudinary keys only in Vercel's Production environment, never in a local `web/.env` and not in Preview.** The daily cleanup deletes photos not referenced by the database it is connected to, so a local or preview database pointed at the live Cloudinary account would treat customers' photos as orphans. Two guards back this up:
+- The cleanup runs **only on Production** (`VERCEL_ENV=production`); on Preview, locally and in tests it deletes nothing.
+- If more than half of the photos older than 24 hours (and more than 10) look unreferenced, it **aborts, deletes nothing and logs** `photo cleanup aborted: … check DATABASE_URL / Cloudinary keys` in the Vercel function logs. Check that Production's `DATABASE_URL` and Cloudinary keys belong together.
 
-Uploads are private (`authenticated`). Thumbnails in emails and /admin are signed URLs; full-size links expire (30 days in emails, 1 hour in /admin). Photos not attached to a saved enquiry are deleted by the daily cron after 24 hours, and deleting an inquiry in /admin deletes its photos.
+Uploads are private (`authenticated`). Thumbnails in emails and /admin are signed URLs; full-size links expire (30 days in emails, 1 hour in /admin). Photos not attached to a saved enquiry are deleted by the daily cron after 24 hours, and deleting an inquiry in /admin deletes its photos (except any another enquiry still uses).
