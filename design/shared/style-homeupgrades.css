@@ -51,7 +51,6 @@
 [data-division="homeupgrades"] .h-section {
   font-weight: 300; font-size: clamp(40px, 4.8vw, 60px); line-height: 0.98; letter-spacing: -0.041em;
 }
-[data-division="homeupgrades"] .step3d h3,
 [data-division="homeupgrades"] .quote h2 { font-weight: 300; letter-spacing: -0.045em; }
 [data-division="homeupgrades"] .svc h3,
 [data-division="homeupgrades"] .step h3 { font-weight: 400; font-size: 30px; line-height: 1.14; letter-spacing: -0.03em; }
@@ -62,12 +61,10 @@
 [data-division="homeupgrades"] .body { color: var(--ink-2); }
 
 /* Eyebrows: quiet captions instead of mono caps; the short gold rule stays as the brand mark */
-[data-division="homeupgrades"] .label,
-[data-division="homeupgrades"] .step3d .num {
+[data-division="homeupgrades"] .label {
   font: 500 14px/1.5 var(--f-body); letter-spacing: 0.01em; text-transform: none; color: var(--graphite);
 }
-[data-division="homeupgrades"] .label::before,
-[data-division="homeupgrades"] .step3d .num::before { width: 20px; }
+[data-division="homeupgrades"] .label::before { width: 20px; }
 [data-division="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
 
 /* ---------- Links + small interactive details: sky blue ---------- */
@@ -129,12 +126,6 @@
 }
 [data-division="homeupgrades"] .quote .body { margin-top: 0; }
 
-/* 3D section: captions sit on soft cards; stage tones matched to parchment */
-[data-division="homeupgrades"] .build { background: var(--paper); }
-[data-division="homeupgrades"] .build .stage::after { background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(253, 253, 247, 0.6) 100%); }
-[data-division="homeupgrades"] .progress3d i { border-radius: 2px; }
-[data-division="homeupgrades"] .build .fallback img { border-radius: var(--r-lg); }
-
 /* Placeholders keep their dashed gold marking, softened */
 [data-division="homeupgrades"] .ph { border-radius: 4px; }
 
@@ -146,6 +137,5 @@
 
 @media (max-width: 960px) {
   [data-division="homeupgrades"] .process { margin: 0 12px; }
-  [data-division="homeupgrades"] .step3d { border-radius: var(--r); box-shadow: var(--shadow-subtle); }
   [data-division="homeupgrades"] .quote .wrap > div:last-child { padding: 28px; }
 }

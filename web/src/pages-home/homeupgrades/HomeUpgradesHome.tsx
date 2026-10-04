@@ -2,7 +2,7 @@ import { JsonLd } from '@/components/site/JsonLd'
 import { MotionRoot } from '@/components/motion/MotionRoot'
 import { siteJsonLd } from '@/sites/seo'
 import type { SiteData } from '@/sites/data-shape'
-import { Build } from './sections/Build'
+import { Approach } from './sections/Approach'
 import { Hero } from './sections/Hero'
 import { Process } from './sections/Process'
 import { Promises } from './sections/Promises'
@@ -19,7 +19,7 @@ export function HomeUpgradesHome({ data }: { data: SiteData }) {
       <Promises />
       <Services />
       <Work />
-      <Build />
+      <Approach />
       <Process />
       <Quote data={data} />
       <MotionRoot />
