@@ -25,7 +25,9 @@ export async function settle(page: Page) {
       await new Promise((r) => setTimeout(r, 40))
     }
     window.scrollTo(0, 0)
-    await Promise.all(Array.from(document.images).map((img) => (img.complete ? null : new Promise((r) => { img.onload = img.onerror = r }))))
+    // Only images that render: a lazy image in a hidden block (e.g. the other audience's service cards) never loads.
+    const shown = (img: HTMLImageElement) => img.getClientRects().length > 0
+    await Promise.all(Array.from(document.images).map((img) => (img.complete || !shown(img) ? null : new Promise((r) => { img.onload = img.onerror = r }))))
   })
 }
 

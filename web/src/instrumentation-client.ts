@@ -1,4 +1,4 @@
-﻿import { initBotId } from 'botid/client/core'
+import { initBotId } from 'botid/client/core'
 
-// The quote form posts its Server Action to the Logistics home page.
+// BotID protects the quote Server Action (POST /, both sites' home pages) and Home Upgrades photo upload grants (POST /uploads).
 initBotId({ protect: [{ path: '/', method: 'POST' }, { path: '/uploads', method: 'POST' }] })
