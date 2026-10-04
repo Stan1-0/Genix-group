@@ -6,7 +6,7 @@ import { useEnhance } from '@/components/motion/useEnhance'
 /* Values verbatim from each prototype's #quoteBar. */
 const RULES: Record<'logistics' | 'homeupgrades', { after: string; hideOver: string }> = {
   logistics: { after: '#quote-form', hideOver: '#quote, .site-footer' },
-  homeupgrades: { after: '.hero-actions', hideOver: '#build, #quote, .site-footer' },
+  homeupgrades: { after: '.hero-actions', hideOver: '#quote, .site-footer' },
 }
 
 /** Phones: "Get a quote" stays one tap away once the hero action scrolls off

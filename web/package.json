@@ -43,7 +43,6 @@
     "resend": "^6.31.0",
     "server-only": "0.0.1",
     "sharp": "0.35.4",
-    "three": "0.180.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -55,7 +54,6 @@
     "@types/pngjs": "6.0.5",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@types/three": "0.180.0",
     "@vitejs/plugin-react": "4.5.2",
     "eslint": "^9.16.0",
     "eslint-config-next": "16.3.6",

@@ -36,7 +36,7 @@
     if (window.ScrollTrigger) lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     // Keep GSAP's default lag smoothing: with it off, one heavy frame (e.g. a
-    // blurred modal over the 3D canvas) makes running tweens skip to the end.
+    // blurred modal over a playing video) makes running tweens skip to the end.
   }
 
   document.fonts.ready.then(() => {
