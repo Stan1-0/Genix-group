@@ -15,7 +15,7 @@ export function Process() {
             sizes="(max-width: 900px) 100vw, 50vw"
             loading="lazy"
           />
-          <figcaption>The crew cutting panels on site for the TV-wall build above.</figcaption>
+          <figcaption>The crew cutting panels on site on a TV-wall build.</figcaption>
         </figure>
         <div>
           <p className="label" data-reveal>
