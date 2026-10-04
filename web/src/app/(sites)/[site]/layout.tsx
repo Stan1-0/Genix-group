@@ -35,7 +35,9 @@ export async function generateMetadata({ params }: Pick<Props, 'params'>): Promi
     description: data.seoDescription ?? undefined,
     icons: {
       icon: [
+        { url: `${cfg.icons}/favicon.ico`, sizes: '48x48' },
         { url: `${cfg.icons}/favicon.svg`, type: 'image/svg+xml' },
+        { url: `${cfg.icons}/favicon-96x96.png`, sizes: '96x96', type: 'image/png' },
         { url: `${cfg.icons}/favicon-32x32.png`, sizes: '32x32', type: 'image/png' },
       ],
       apple: `${cfg.icons}/apple-touch-icon.png`,
