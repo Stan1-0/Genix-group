@@ -5,7 +5,7 @@ const raw = { kind: 'business', from: '92101', to: '92024', date: '2026-10-05', 
 
 describe('form definitions', () => {
   it('lists the sites that take quotes', () => {
-    expect(FORM_SITES).toContain('logistics')
+    expect(FORM_SITES).toEqual(['logistics', 'homeupgrades'])
     expect(() => formFor('hub')).toThrow()
   })
   it('logistics: parse → stored details → back gives the same rows', () => {

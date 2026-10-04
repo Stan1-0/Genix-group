@@ -8,8 +8,8 @@ export type QuoteResult =
   | { ok: true; reference: string; inquiryId: number | string | null }
   | { ok: false; fieldErrors?: Record<string, string>; error?: 'rate' | 'server' }
 
-type Input = { site: SiteKey; raw: Record<string, unknown>; ip: string; honeypot: string; startedAt: number | null }
-type Deps = { payload: Payload; isBot: () => Promise<boolean>; now: () => Date; salt: string; production: boolean }
+type Input = { site: SiteKey; raw: Record<string, unknown>; photoIds: string[]; ip: string; honeypot: string; startedAt: number | null }
+type Deps = { payload: Payload; isBot: () => Promise<boolean>; now: () => Date; salt: string; production: boolean; verifyPhotos: (ids: string[]) => Promise<string[]> }
 
 const TOO_FAST_MS = 2000
 const LIMIT = 5
@@ -38,14 +38,21 @@ export async function processQuote(input: Input, deps: Deps): Promise<QuoteResul
     await deps.payload.create({ collection: 'rate-hits', data: { ipHash } })
   }
 
-  const c = def.contact(parsed.data)
+  let data = parsed.data
+  if (input.site === 'homeupgrades') {
+    let photos: string[] = []
+    try { photos = await deps.verifyPhotos(input.photoIds) } catch (err) { console.error('processQuote: photo verification failed', err) }
+    data = { ...(data as object), photos } as typeof data
+  }
+
+  const c = def.contact(data)
   const reference = await nextReference(deps.payload, input.site)
   const doc = await deps.payload.create({
     collection: 'inquiries',
     data: {
-      reference, division: input.site, type: 'quote', status: 'new', summary: def.summary(parsed.data),
+      reference, division: input.site, type: 'quote', status: 'new', summary: def.summary(data),
       name: c.name, phone: c.phone, email: c.email, notes: c.notes,
-      details: def.details(parsed.data),
+      details: def.details(data),
       ipHash,
     },
   })

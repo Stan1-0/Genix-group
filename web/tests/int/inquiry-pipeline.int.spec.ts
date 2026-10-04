@@ -9,8 +9,8 @@ let payload: Payload
 const NOW = new Date()
 const DAY = new Date(NOW.getTime() + 4 * 86_400_000).toISOString().slice(0, 10)
 const raw = { kind: 'business', from: '92101', to: '92024', date: DAY, flexible: '', load: 'pallets', pallets: '2', name: 'Ana', phone: '(619) 555-0100', email: 'ana@example.com', notes: '' }
-const deps = () => ({ payload, isBot: async () => false, now: () => NOW, salt: 'test-salt', production: true })
-const input = (over: Partial<Parameters<typeof processQuote>[0]> = {}) => ({ site: 'logistics' as const, raw, ip: '203.0.113.9', honeypot: '', startedAt: NOW.getTime() - 30_000, ...over })
+const deps = () => ({ payload, isBot: async () => false, now: () => NOW, salt: 'test-salt', production: true, verifyPhotos: async () => [] as string[] })
+const input = (over: Partial<Parameters<typeof processQuote>[0]> = {}) => ({ site: 'logistics' as const, raw, photoIds: [] as string[], ip: '203.0.113.9', honeypot: '', startedAt: NOW.getTime() - 30_000, ...over })
 
 beforeAll(async () => { payload = await getPayload({ config: await config }) })
 beforeEach(async () => {

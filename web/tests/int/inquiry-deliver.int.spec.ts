@@ -89,6 +89,17 @@ describe('deliverInquiry failure modes', () => {
   })
 })
 
+describe('retryUnsent resilience', () => {
+  it('one inquiry with no form definition does not stop the sweep', async () => {
+    await make({ division: 'hub', reference: 'GX-HUB-000001' })
+    const good = await make()
+    const sent: Mail[] = []
+    const r = await retryUnsent(payload, async (m) => { sent.push(m) }, { env, phoneFor: async () => null, adminOrigin: 'https://thegenixgroup.com', now: new Date(), retryDelayMs: 0 })
+    expect(r.retried).toBe(2)
+    expect(sent.map((m) => m.idempotencyKey)).toContain(`${good.reference}:team`)
+  })
+})
+
 describe('createMailer', () => {
   it('rejects without RESEND_API_KEY so nothing is marked sent', async () => {
     const mail: Mail = { from: 'a', to: 'b', subject: 's', html: 'h', text: 't', idempotencyKey: 'k' }

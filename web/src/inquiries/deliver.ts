@@ -3,6 +3,7 @@ import { Resend } from 'resend'
 import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import { customerEmail, teamEmail } from './email'
 import { formFor } from './forms'
+import { fullUrl, photoSettings, thumbUrl, type PhotoSettings } from './photos'
 
 type Env = Record<string, string | undefined>
 export type Mail = { from: string; to: string; replyTo?: string; subject: string; html: string; text: string; idempotencyKey: string }
@@ -50,7 +51,9 @@ async function recentlyAutoReplied(payload: Payload, id: number | string, email:
   return docs.some((d) => d.email?.trim().toLowerCase() === email.trim().toLowerCase())
 }
 
-type DeliverOpts = { env: Env; phone: string | null; adminOrigin: string; retryDelayMs?: number }
+type DeliverOpts = { env: Env; phone: string | null; adminOrigin: string; retryDelayMs?: number; photos?: { settings: PhotoSettings | null; nowSec: number } }
+const THIRTY_DAYS = 30 * 86_400
+const photoOpts = (env: Env) => ({ settings: photoSettings(env), nowSec: Math.floor(Date.now() / 1000) })
 
 export async function deliverInquiry(payload: Payload, id: number | string, mailer: Mailer, opts: DeliverOpts): Promise<void> {
   const doc = await payload.findByID({ collection: 'inquiries', id })
@@ -65,7 +68,10 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
   const delay = opts.retryDelayMs ?? RETRY_DELAY_MS
 
   if (!doc.emailSent) {
-    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}` })
+    const hu = site === 'homeupgrades' ? (data as { links: string[]; photos: string[] }) : null
+    const ps = opts.photos?.settings ?? null
+    const photoLinks = hu && ps && opts.photos ? hu.photos.map((id) => ({ thumb: thumbUrl(ps, id), full: fullUrl(ps, id, opts.photos!.nowSec + THIRTY_DAYS) })) : []
+    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}`, links: hu?.links ?? [], photos: photoLinks })
     try {
       await twice(() => mailer({ from, to: inbox, replyTo: contact.email ?? undefined, ...e, idempotencyKey: `${doc.reference}:team` }), delay)
       update.emailSent = true
@@ -77,7 +83,7 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
     update.customerEmailSent = true
     errors.push(CUSTOMER_SKIPPED)
   } else if (contact.email && !doc.customerEmailSent) {
-    const e = customerEmail({ site, reference: doc.reference, name: contact.name, rows: def.customerRows(data), phone: opts.phone })
+    const e = customerEmail({ site, reference: doc.reference, name: contact.name, rows: def.customerRows(data), phone: opts.phone, extraLine: site === 'homeupgrades' ? 'Forgot a photo? Just reply to this email with it.' : undefined })
     try {
       await twice(() => mailer({ from, to: contact.email!, replyTo: inbox, ...e, idempotencyKey: `${doc.reference}:customer` }), delay)
       update.customerEmailSent = true
@@ -93,7 +99,12 @@ export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env:
     where: { and: [{ emailAttempts: { less_than: MAX_ATTEMPTS } }, { or: [{ emailSent: { equals: false } }, { and: [{ customerEmailSent: { equals: false } }, { email: { exists: true } }] }] }] },
   })
   for (const doc of docs) {
-    await deliverInquiry(payload, doc.id, mailer, { env: opts.env, phone: await opts.phoneFor(doc.division as SiteKey), adminOrigin: opts.adminOrigin, retryDelayMs: opts.retryDelayMs })
+    // One inquiry that can't be delivered (e.g. a division with no form definition) must not stop the rest.
+    try {
+      await deliverInquiry(payload, doc.id, mailer, { env: opts.env, phone: await opts.phoneFor(doc.division as SiteKey), adminOrigin: opts.adminOrigin, retryDelayMs: opts.retryDelayMs, photos: photoOpts(opts.env) })
+    } catch (err) {
+      console.error(`retryUnsent: delivery failed for inquiry ${doc.id}`, err)
+    }
   }
   const cutoff = new Date(opts.now.getTime() - DAY_MS).toISOString()
   const pruned = await payload.delete({ collection: 'rate-hits', where: { createdAt: { less_than: cutoff } } })
@@ -106,5 +117,5 @@ export async function retryUnsent(payload: Payload, mailer: Mailer, opts: { env:
  */
 export async function resendInquiry(payload: Payload, id: number | string, user: unknown, mailer: Mailer, phone: string | null = null) {
   await payload.findByID({ collection: 'inquiries', id, depth: 0, overrideAccess: false, user: user as TypedUser })
-  await deliverInquiry(payload, id, mailer, { env: process.env, phone, adminOrigin: siteOrigin('hub') })
+  await deliverInquiry(payload, id, mailer, { env: process.env, phone, adminOrigin: siteOrigin('hub'), photos: photoOpts(process.env) })
 }

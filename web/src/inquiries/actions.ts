@@ -12,6 +12,7 @@ import { processQuote, type QuoteResult } from './pipeline'
 import { createMailer, deliverInquiry } from './deliver'
 import { inquirySendMode } from './mode'
 import { botCheckFor } from './bot-check'
+import { cloudinaryClient, photoSettings, verifyPhotos } from './photos'
 
 export async function submitQuote(_prev: QuoteResult | null, formData: FormData): Promise<QuoteResult> {
   const js = formData.get('js') === '1'
@@ -32,7 +33,7 @@ export async function submitQuote(_prev: QuoteResult | null, formData: FormData)
     phone = (await getSiteData(site)).phone // resolved before saving, so nothing after the save can fail the request
     const t = Number(formData.get('t'))
     result = await processQuote(
-      { site, raw: formDataToRawFor(formFor(site), formData), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
+      { site, raw: formDataToRawFor(formFor(site), formData), photoIds: formData.getAll('photos').map(String).slice(0, 10), ip, honeypot: String(formData.get('company_site') ?? ''), startedAt: Number.isFinite(t) && t > 0 ? t : null },
       {
         payload,
         // BotID only for JS submissions: a no-JS post carries no BotID token (honeypot + rate limit cover it).
@@ -40,6 +41,7 @@ export async function submitQuote(_prev: QuoteResult | null, formData: FormData)
         now: () => new Date(),
         salt: process.env.IP_HASH_SALT || 'dev-only-salt',
         production: process.env.VERCEL_ENV === 'production',
+        verifyPhotos: (ids) => { const s = photoSettings(process.env); return verifyPhotos(ids, s ? cloudinaryClient(s) : null) },
       },
     )
   } catch (err) {
@@ -51,7 +53,7 @@ export async function submitQuote(_prev: QuoteResult | null, formData: FormData)
     try {
       const id = result.inquiryId
       const p = payload
-      after(() => deliverInquiry(p, id, createMailer(process.env), { env: process.env, phone, adminOrigin: siteOrigin('hub') }).catch((e) => console.error('deliverInquiry', e)))
+      after(() => deliverInquiry(p, id, createMailer(process.env), { env: process.env, phone, adminOrigin: siteOrigin('hub'), photos: { settings: photoSettings(process.env), nowSec: Math.floor(Date.now() / 1000) } }).catch((e) => console.error('deliverInquiry', e)))
     } catch (err) {
       console.error('submitQuote: scheduling delivery failed (the sweep will retry)', err)
     }

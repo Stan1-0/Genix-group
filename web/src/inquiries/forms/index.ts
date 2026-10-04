@@ -1,9 +1,11 @@
 import type { SiteKey } from '@/sites/config'
+import { homeupgradesForm } from './homeupgrades'
 import { logisticsForm } from './logistics'
 import type { FormDef } from './types'
 
 const FORMS: Partial<Record<SiteKey, FormDef<unknown>>> = {
   logistics: logisticsForm as FormDef<unknown>,
+  homeupgrades: homeupgradesForm as FormDef<unknown>,
 }
 
 export const FORM_SITES = Object.keys(FORMS) as SiteKey[]
