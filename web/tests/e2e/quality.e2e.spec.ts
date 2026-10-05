@@ -27,7 +27,22 @@ for (const url of HOMES) {
   })
 }
 
-const SITE_ORIGINS = ['http://logistics.localhost:3000', 'http://homeupgrades.localhost:3000', 'http://localhost:3000', 'http://multimedia.localhost:3000']
+test('hub privacy page: no console errors or failed requests', async ({ page }) => {
+  const problems: string[] = []
+  page.on('console', (m) => { if (m.type() === 'error') problems.push(m.text()) })
+  page.on('requestfailed', (r) => r.failure()?.errorText !== 'net::ERR_ABORTED' && problems.push(`${r.url()} ${r.failure()?.errorText}`))
+  await page.goto('http://localhost:3000/privacy', { waitUntil: 'networkidle' })
+  expect(problems).toEqual([])
+})
+
+test('hub privacy page: no axe violations', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('http://localhost:3000/privacy', { waitUntil: 'networkidle' })
+  const { violations } = await new AxeBuilder({ page }).analyze()
+  expect(violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([])
+})
+
+const SITE_ORIGINS =['http://logistics.localhost:3000', 'http://homeupgrades.localhost:3000', 'http://localhost:3000', 'http://multimedia.localhost:3000']
 
 for (const origin of SITE_ORIGINS) {
   test(`${origin}: 404 page has no axe violations`, async ({ page }) => {

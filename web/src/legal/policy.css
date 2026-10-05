@@ -1,0 +1,32 @@
+/* Privacy policy page (hub). Uses the hub tokens from hub.generated.css; every rule is under .policy. */
+html[data-site="hub"] .policy { padding: clamp(112px, 14vw, 152px) 0 clamp(64px, 8vw, 104px); }
+html[data-site="hub"] .policy-body { max-width: 68ch; }
+html[data-site="hub"] .policy-body h1 { font: 600 clamp(36px, 5vw, 56px) / 1.05 var(--f-display); letter-spacing: -0.03em; color: var(--black); margin: 0 0 12px; }
+html[data-site="hub"] .policy-updated { margin: 0 0 32px; color: var(--muted); font-size: 15px; }
+html[data-site="hub"] .policy-body h2 { font: 600 clamp(22px, 2.4vw, 28px) / 1.2 var(--f-display); letter-spacing: -0.02em; color: var(--black); margin: 48px 0 12px; }
+html[data-site="hub"] .policy-body p,
+html[data-site="hub"] .policy-body li { font: 400 17px / 1.7 var(--f-body); color: var(--ink-2); overflow-wrap: anywhere; }
+html[data-site="hub"] .policy-body p { margin: 0 0 16px; }
+html[data-site="hub"] .policy-body ul { margin: 0 0 16px; padding-left: 1.2em; }
+html[data-site="hub"] .policy-body li { margin: 6px 0; }
+html[data-site="hub"] .policy-body strong { color: var(--ink); font-weight: 600; }
+html[data-site="hub"] .policy-body a { color: var(--black); text-decoration: underline; text-underline-offset: 3px; }
+html[data-site="hub"] .policy-body a:hover { color: var(--gold-text); }
+html[data-site="hub"] .policy-body a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+html[data-site="hub"] .policy-table { width: 100%; border-collapse: collapse; margin: 0 0 20px; font: 400 16px / 1.5 var(--f-body); color: var(--ink-2); }
+html[data-site="hub"] .policy-table th,
+html[data-site="hub"] .policy-table td { text-align: left; vertical-align: top; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--line); }
+html[data-site="hub"] .policy-table thead th { font-weight: 600; font-size: 14px; color: var(--muted); }
+html[data-site="hub"] .policy-table tbody th { font-weight: 600; color: var(--ink); width: 18%; }
+@media (max-width: 640px) {
+  html[data-site="hub"] .policy-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  html[data-site="hub"] .policy-table,
+  html[data-site="hub"] .policy-table tbody,
+  html[data-site="hub"] .policy-table tr,
+  html[data-site="hub"] .policy-table th,
+  html[data-site="hub"] .policy-table td { display: block; width: auto; }
+  html[data-site="hub"] .policy-table tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  html[data-site="hub"] .policy-table th,
+  html[data-site="hub"] .policy-table td { border: 0; padding: 2px 0; }
+  html[data-site="hub"] .policy-table td::before { content: attr(data-label); display: block; margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+}
