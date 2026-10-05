@@ -15,7 +15,7 @@ const inlineStyle = (page: string) => {
 // Same cascade order as each prototype's <head>.
 const SOURCES: Record<Exclude<SiteKey, 'multimedia'>, () => string[]> = {
   logistics: () => [file('shared/genix.css'), file('shared/style-logistics.css')],
-  homeupgrades: () => [file('shared/genix.css'), file('shared/style-homeupgrades.css'), inlineStyle('homeupgrades-home.html')],
+  homeupgrades: () => [file('shared/genix.css'), file('shared/style-homeupgrades.css'), file('shared/homeupgrades-home.css')],
   hub: () => [inlineStyle('hub-home.html')],
 }
 
