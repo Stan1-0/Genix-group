@@ -8,7 +8,7 @@ import { shouldRethrowOnCmsFailure } from './build-phase'
 
 /** Bump whenever SiteData's shape changes: cached entries can outlive a deploy,
     and an old-shape entry would otherwise be served until its tag is revalidated. */
-const SITE_DATA_SHAPE = 2
+const SITE_DATA_SHAPE = 3
 
 async function readSite(key: SiteKey): Promise<SiteData> {
   const payload = await getPayload({ config })

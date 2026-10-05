@@ -12,6 +12,7 @@ describe('toSiteData', () => {
       regions: [],
       seoTitle: null,
       seoDescription: null,
+      address: null,
     })
   })
   it('prefers CMS values and ignores empty strings', () => {
