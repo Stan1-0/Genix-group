@@ -42,7 +42,7 @@ test('hub privacy page: no axe violations', async ({ page }) => {
   expect(violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([])
 })
 
-const SITE_ORIGINS =['http://logistics.localhost:3000', 'http://homeupgrades.localhost:3000', 'http://localhost:3000', 'http://multimedia.localhost:3000']
+const SITE_ORIGINS = ['http://logistics.localhost:3000', 'http://homeupgrades.localhost:3000', 'http://localhost:3000', 'http://multimedia.localhost:3000']
 
 for (const origin of SITE_ORIGINS) {
   test(`${origin}: 404 page has no axe violations`, async ({ page }) => {

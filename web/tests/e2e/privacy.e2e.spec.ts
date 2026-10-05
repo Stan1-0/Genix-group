@@ -18,8 +18,12 @@ test('the hub serves the policy', async ({ page }) => {
 
 for (const host of ['logistics', 'homeupgrades', 'multimedia']) {
   test(`${host}: /privacy redirects permanently to the hub page`, async ({ page }) => {
-    // The site sends Critical-CH (Sec-CH-Prefers-Color-Scheme), so Chromium replays the request and reports
-    // an internal 307 before the real answer; assert the server's own 308 appears for the division URL.
+    // Verified by logging page.on('response') for this URL: Payload's withPayload (next.config) adds
+    // Accept-CH/Critical-CH: Sec-CH-Prefers-Color-Scheme to every response, and the browser's first reported
+    // hop is a 307 whose Location is the same URL and which carries none of the server's headers (our proxy.ts
+    // and permanentRedirect() never send one). That 307 is a browser-side restart, not app behaviour (the
+    // cause being Critical-CH is inferred from those headers). The server's own 308 to the hub comes after
+    // it, so the 308 cannot be asserted as the first hop; assert it appears, then the final landing.
     const statuses: { status: number; location: string | undefined }[] = []
     page.on('response', (r) => { if (r.url() === `http://${host}.localhost:3000/privacy`) statuses.push({ status: r.status(), location: r.headers()['location'] }) })
     await page.goto(`http://${host}.localhost:3000/privacy`)
