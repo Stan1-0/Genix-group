@@ -220,7 +220,7 @@ describe('ContactCard', () => {
   })
   it('links the phone and shows the stored email and area', () => {
     const out = html('logistics', { phone: '(619) 555-0100', email: 'ops@example.com', areaServed: 'United States' })
-    expect(out).toContain('href="tel:+6195550100"'.replace('+6', '6')) // digits only after cleaning
+    expect(out).toContain('href="tel:6195550100"') // the href keeps digits (and a leading +) only
     expect(out).toContain('(619) 555-0100')
     expect(out).toContain('href="mailto:ops@example.com"')
     expect(out).toContain('United States')
@@ -234,7 +234,7 @@ describe('ContactCard', () => {
 })
 ```
 
-Note the phone cleaning in the app is `phone.replace(/[^+\d]/g, '')`, so `(619) 555-0100` becomes `6195550100`: fix the expected `href` in the test to the real output (`tel:6195550100`) instead of the `.replace` trick above, which only exists to flag that the assertion must match actual output. Adapt `toSiteData` doc fields to the real `SiteDoc` shape in `web/src/sites/data-shape.ts` (the keys are `phone`, `email`, `areaServed`).
+Adapt `toSiteData` doc fields to the real `SiteDoc` shape in `web/src/sites/data-shape.ts` (the keys are `phone`, `email`, `areaServed`), and match the real escaped output (React renders `'` as `&#x27;`); change the test to the actual output, never the card's wording.
 
 - [ ] **Step 2: Run it** — `npx vitest run tests/unit/contact-card.test.ts` → FAIL (module missing).
 
