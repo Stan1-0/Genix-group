@@ -229,3 +229,26 @@ html:not(.js) .js-only { display: none !important; }
     .stop-dot { top: 0; left: -40px; margin-left: 0; }
   }
 }
+
+/* ---------- Contact page: details card under the hero lede (design/logistics-contact.html) ---------- */
+:where([data-division="logistics"]) {
+  .contact-hero .lead { margin-bottom: clamp(24px, 3vw, 36px); }
+  .contact-card { max-width: 440px; padding: 20px 22px; border: 1px solid var(--brand-line); border-radius: var(--r); }
+  .contact-card-title { margin: 0 0 14px; font: 500 11.5px/1.35 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+  .contact-card dl { display: grid; gap: 12px; margin: 0; }
+  .contact-card dl > div { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: baseline; padding-top: 12px; border-top: 1px solid var(--brand-line); }
+  .contact-card dl > div:first-child { padding-top: 0; border-top: 0; }
+  .contact-card dt { font: 500 11.5px/1.35 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-brand-muted); }
+  .contact-card dd { margin: 0; font-size: 18px; font-weight: 600; color: var(--white); overflow-wrap: anywhere; }
+  .contact-card dd a { color: inherit; text-decoration: none; }
+  .contact-card dd a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+  .contact-reply { margin: 16px 0 0; font-size: 15px; line-height: 1.5; color: var(--on-brand-muted); }
+
+  @media (max-width: 960px) {
+    .contact-card { max-width: none; }
+  }
+  @media (max-width: 560px) {
+    .contact-hero .lead { display: block; } /* the Contact page has no lanes below, so the lede stays */
+    .contact-card dl > div { grid-template-columns: 1fr; gap: 2px; }
+  }
+}

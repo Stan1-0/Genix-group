@@ -72,7 +72,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     cta: { label: 'Get a quote', href: '/#quote-form' },
     heroGold: 'On Time, Every Time.',
     offers: ['Business freight', 'Last-mile and courier delivery', 'Home and office moves'],
-    pages: ['/'],
+    pages: ['/', '/contact'],
   },
   homeupgrades: {
     key: 'homeupgrades',

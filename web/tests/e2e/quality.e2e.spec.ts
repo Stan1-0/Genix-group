@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
-const HOMES = ['http://logistics.localhost:3000/', 'http://homeupgrades.localhost:3000/', 'http://localhost:3000/']
+const HOMES = ['http://logistics.localhost:3000/', 'http://logistics.localhost:3000/contact', 'http://homeupgrades.localhost:3000/', 'http://localhost:3000/']
 
 for (const url of HOMES) {
   test(`${url}: no console errors or failed requests`, async ({ page }) => {

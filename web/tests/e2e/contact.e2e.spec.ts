@@ -1,0 +1,64 @@
+import { expect, test } from '@playwright/test'
+
+const LOG = 'http://logistics.localhost:3000/contact'
+
+test('logistics /contact: heading, details card, the quote form, metadata', async ({ page }) => {
+  await page.goto(LOG)
+  await expect(page.locator('h1')).toContainText('Real people. Real answers.')
+  await expect(page.locator('.contact-card a[href^="mailto:"]')).toBeVisible()
+  await expect(page.locator('.contact-card .contact-reply')).toContainText('within two business days')
+  await expect(page.locator('.contact-card')).not.toContainText(/hours/i)
+  await expect(page.locator('#quote-form')).toHaveCount(1)
+  await expect(page.locator('main#main')).toHaveCount(1)
+  expect(await page.title()).toBe('Contact | Genix Logistics')
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', LOG)
+  await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
+})
+
+for (const host of ['localhost:3000', 'multimedia.localhost:3000']) {
+  test(`${host}/contact is a 404`, async ({ page }) => {
+    const res = await page.goto(`http://${host}/contact`)
+    expect(res?.status()).toBe(404)
+  })
+}
+
+test('a request sent from /contact becomes a Logistics inquiry (JS)', async ({ page }) => {
+  await page.goto(LOG)
+  await page.waitForTimeout(2200) // past the 2 s "too fast" guard
+  await page.fill('#qFrom', '92101')
+  await page.fill('#qTo', '92024')
+  await page.check('#qFlex')
+  await page.selectOption('#qLoad', 'parcels')
+  await page.click('#qNext')
+  await page.fill('#qName', 'E2E Contact')
+  await page.fill('#qEmail', 'e2e@test.local')
+  await page.click('#qSend')
+  await expect(page.locator('#qSent')).toBeVisible()
+  await expect(page.locator('#qRef')).toHaveText(/^GX-LOG-\d{6}$/)
+})
+
+test.describe('no JS', () => {
+  test.use({ javaScriptEnabled: false })
+  test('/contact posts and lands on the sent page', async ({ page }) => {
+    await page.goto(LOG)
+    await page.fill('#qFrom', '92101')
+    await page.fill('#qTo', '92024')
+    await page.check('#qFlex')
+    await page.selectOption('#qLoad', 'parcels')
+    await page.fill('#qName', 'E2E NoJS Contact')
+    await page.fill('#qPhone', '(619) 555-0100')
+    await page.click('#qSend')
+    await expect(page).toHaveURL(/\/quote\/sent\?ref=GX-LOG-\d{6}$/)
+    await expect(page.getByRole('heading', { name: 'Request received.' })).toBeVisible()
+  })
+})
+
+test('the pinned quote bar never shows on /contact (phone), and nothing scrolls sideways at 320 px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto(LOG)
+  await page.mouse.wheel(0, 900)
+  await page.waitForTimeout(500)
+  await expect(page.getByTestId('quote-bar')).toBeHidden()
+  await page.setViewportSize({ width: 320, height: 800 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+})

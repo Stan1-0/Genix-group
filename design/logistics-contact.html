@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en" data-division="logistics">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | Genix Logistics</title>
+    <meta
+      name="description"
+      content="Contact Genix Logistics in San Diego for a freight, courier or move quote. Send the route and what's moving, or call us."
+    />
+    <link rel="canonical" href="https://logistics.thegenixgroup.com/contact" />
+    <link rel="icon" href="assets/logistics-icons/favicon.ico" sizes="48x48" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="assets/logistics-icons/favicon.svg"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/logistics-icons/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="assets/logistics-icons/site.webmanifest" />
+    <meta name="theme-color" content="#022248" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Genix Logistics" />
+    <meta property="og:url" content="https://logistics.thegenixgroup.com/contact" />
+    <meta property="og:title" content="Contact | Genix Logistics" />
+    <meta
+      property="og:description"
+      content="Contact Genix Logistics for a freight, courier or move quote. Part of The Genix Group."
+    />
+    <script>
+      // Mark JS as available (buttons that only work with JS are hidden without it).
+      // Hide split headlines until SplitText has cut them; never for reduced
+      // motion, and a timer reveals them if scripts fail.
+      document.documentElement.classList.add("js");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("h1-pending");
+        setTimeout(
+          () => document.documentElement.classList.remove("h1-pending"),
+          3000,
+        );
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared/genix.css" />
+    <link rel="stylesheet" href="shared/style-logistics.css" />
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap">
+        <a class="brand" href="logistics-home.html" aria-label="Genix Logistics home">
+          <img
+            src="assets/genix-logistics-logo.svg"
+            alt=""
+            width="876"
+            height="405"
+          />
+        </a>
+        <nav class="nav" id="nav" aria-label="Primary">
+          <a href="logistics-home.html#services">Services</a>
+          <a href="logistics-home.html#how">How it works</a>
+          <a href="logistics-home.html#areas">Where we go</a>
+          <a href="logistics-home.html#quote-form" class="nav-extra" hidden>Get a quote</a>
+        </nav>
+        <div class="header-end">
+          <a class="parent-link" href="hub-home.html"
+            >Part of The Genix Group ↗</a
+          >
+          <a class="btn btn-gold btn-sm" href="logistics-home.html#quote-form">Get a quote</a>
+        </div>
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          aria-expanded="false"
+          aria-controls="nav"
+          aria-label="Open menu"
+        >
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top" data-no-quote-bar>
+      <section class="hero on-dark contact-hero" id="hero">
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="mono hero-eyebrow">Contact</p>
+            <h1 class="h-display">
+              Real people. <span class="gold">Real answers.</span>
+            </h1>
+            <p class="lead">
+              Send the route and what's moving, or call us. We'll come back
+              with a price within two business days.
+            </p>
+            <div class="contact-card">
+              <h2 class="contact-card-title">Reach us directly</h2>
+              <dl>
+                <div>
+                  <dt>Email</dt>
+                  <dd>
+                    <a href="mailto:hello@thegenixgroup.com"
+                      >hello@thegenixgroup.com</a
+                    >
+                  </dd>
+                </div>
+                <div>
+                  <dt>Phone</dt>
+                  <dd><span class="ph">(000) 000-0000</span></dd>
+                </div>
+                <div>
+                  <dt>Area</dt>
+                  <dd>Based in San Diego · Nationwide</dd>
+                </div>
+              </dl>
+              <p class="contact-reply">
+                We'll get back to you within two business days with a price.
+              </p>
+            </div>
+          </div>
+
+          <form
+            class="label-card quote-form"
+            id="quote-form"
+            action="#"
+            method="post"
+            aria-labelledby="formTitle"
+          >
+            <p class="label-ref mono">
+              <span id="qRef">Quote request · New</span
+              ><span class="barcode" aria-hidden="true"></span>
+            </p>
+            <h2 class="sr-only" id="formTitle">Get a price</h2>
+            <fieldset class="kind">
+              <legend class="sr-only">What do you need moved?</legend>
+              <label
+                ><input type="radio" name="kind" value="business" checked />
+                Ship for your business</label
+              >
+              <label
+                ><input type="radio" name="kind" value="move" /> Plan a
+                move</label
+              >
+            </fieldset>
+
+            <fieldset
+              class="fields"
+              data-step="1"
+              aria-labelledby="qStep1Title"
+            >
+              <h3 class="step-title" id="qStep1Title" tabindex="-1">
+                1 · The route
+              </h3>
+              <div class="field">
+                <label class="mono" for="qFrom">Pickup ZIP</label>
+                <input
+                  id="qFrom"
+                  name="from"
+                  inputmode="numeric"
+                  autocomplete="postal-code"
+                  pattern="[0-9]{5}"
+                  title="5-digit ZIP code"
+                  required
+                  aria-describedby="qFromErr"
+                />
+                <p class="err" id="qFromErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qTo">Drop-off ZIP</label>
+                <input
+                  id="qTo"
+                  name="to"
+                  inputmode="numeric"
+                  pattern="[0-9]{5}"
+                  title="5-digit ZIP code"
+                  required
+                  aria-describedby="qToErr"
+                />
+                <p class="err" id="qToErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qDate">Date</label>
+                <input
+                  id="qDate"
+                  name="date"
+                  type="date"
+                  aria-describedby="qDateErr"
+                />
+                <label class="flex-date"
+                  ><input type="checkbox" id="qFlex" name="flexible" />
+                  Flexible</label
+                >
+                <p class="err" id="qDateErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qLoad">What's moving</label>
+                <select
+                  id="qLoad"
+                  name="load"
+                  required
+                  aria-describedby="qLoadErr"
+                >
+                  <option value="">Choose…</option>
+                  <optgroup label="Business" data-kind="business">
+                    <option value="pallets">Pallets</option>
+                    <option value="parcels">Parcels or boxes</option>
+                    <option value="truckload">Full truckload</option>
+                    <option value="courier">Same-day courier</option>
+                  </optgroup>
+                  <optgroup label="Move" data-kind="move">
+                    <option value="studio">Studio</option>
+                    <option value="1-2bed">1–2 bedroom home</option>
+                    <option value="3bed">3+ bedroom home</option>
+                    <option value="office">Office</option>
+                  </optgroup>
+                </select>
+                <p class="err" id="qLoadErr"></p>
+              </div>
+              <div class="field full" id="qPalletsField">
+                <label class="mono" for="qPallets">How many pallets</label>
+                <input
+                  id="qPallets"
+                  name="pallets"
+                  type="number"
+                  min="1"
+                  max="26"
+                  inputmode="numeric"
+                  aria-describedby="qPalletsErr"
+                />
+                <p class="err" id="qPalletsErr"></p>
+              </div>
+              <div class="form-actions js-only">
+                <button type="button" class="btn btn-gold" id="qNext">
+                  Continue <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </fieldset>
+
+            <fieldset
+              class="fields"
+              data-step="2"
+              aria-labelledby="qStep2Title"
+            >
+              <h3 class="step-title" id="qStep2Title" tabindex="-1">
+                2 · Your details
+              </h3>
+              <div class="field full">
+                <label class="mono" for="qName">Name</label>
+                <input
+                  id="qName"
+                  name="name"
+                  autocomplete="name"
+                  required
+                  aria-describedby="qNameErr"
+                />
+                <p class="err" id="qNameErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qPhone">Phone</label>
+                <input
+                  id="qPhone"
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  aria-describedby="qPhoneErr qContactHint"
+                />
+                <p class="err" id="qPhoneErr"></p>
+              </div>
+              <div class="field">
+                <label class="mono" for="qEmail">Email</label>
+                <input
+                  id="qEmail"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  aria-describedby="qEmailErr qContactHint"
+                />
+                <p class="err" id="qEmailErr"></p>
+              </div>
+              <p class="hint" id="qContactHint">
+                Phone or email, whichever you prefer.
+              </p>
+              <div class="field full">
+                <label class="mono" for="qNotes">Notes (optional)</label>
+                <textarea id="qNotes" name="notes" rows="3"></textarea>
+              </div>
+              <div class="hp" aria-hidden="true">
+                <label for="qHp">Leave this empty</label>
+                <input
+                  id="qHp"
+                  name="company_site"
+                  tabindex="-1"
+                  autocomplete="off"
+                />
+              </div>
+              <p class="mono privacy-note">
+                We use your details only to reply to this request. Read our
+                <a href="https://thegenixgroup.com/privacy">privacy policy</a>.
+              </p>
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost js-only" id="qBack">
+                  ← Back
+                </button>
+                <button type="submit" class="btn btn-gold" id="qSend">
+                  Send request <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </fieldset>
+
+            <div class="sent" id="qSent" tabindex="-1" hidden>
+              <p class="sent-title">Request received.</p>
+              <p>
+                We'll get back to you within two business days with a price.
+              </p>
+            </div>
+            <p class="sr-only" id="qStatus" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="brand-col">
+          <a class="footer-logo" href="logistics-home.html" aria-label="Genix Logistics home"
+            ><img
+              src="assets/genix-logistics-logo.svg"
+              alt=""
+              width="876"
+              height="405"
+          /></a>
+          <a class="part-of" href="hub-home.html"
+            ><img
+              src="assets/genix-mark.svg"
+              alt=""
+              width="360"
+              height="421"
+            /><span>Part of <b>The Genix Group</b></span></a
+          >
+        </div>
+        <div>
+          <h2>Services</h2>
+          <ul>
+            <li><a href="logistics-home.html#services">Business freight</a></li>
+            <li><a href="logistics-home.html#services">Last-mile &amp; courier</a></li>
+            <li><a href="logistics-home.html#services">Home &amp; office moves</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Company</h2>
+          <ul>
+            <li><a href="logistics-home.html#how">How it works</a></li>
+            <li><a href="logistics-home.html#areas">Where we go</a></li>
+            <li><a href="logistics-home.html#faq">Questions</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Contact</h2>
+          <ul>
+            <li>
+              <a href="mailto:hello@thegenixgroup.com"
+                >hello@thegenixgroup.com</a
+              >
+            </li>
+            <li><span class="ph">(000) 000-0000</span></li>
+            <li><a href="logistics-home.html#quote-form">Get a quote</a></li>
+          </ul>
+        </div>
+        <div class="legal">
+          <span>© 2026 Genix Logistics, part of The Genix Group</span>
+          <span>
+            <a href="homeupgrades-home.html"
+              ><span class="dot" style="background: var(--gold)"></span>Home
+              Upgrades</a
+            >
+            &nbsp;
+            <a href="https://multimedia.thegenixgroup.com"
+              ><span class="dot" style="background: var(--tell)"></span
+              >Multimedia</a
+            >
+            &nbsp;&nbsp;
+            <a href="https://thegenixgroup.com/privacy">Privacy policy</a>
+          </span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+    <script src="shared/genix.js"></script>
+    <script src="js/quote-form.js"></script>
+  </body>
+</html>

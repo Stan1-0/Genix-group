@@ -15,6 +15,7 @@ export function DivisionQuoteBar({ site, data }: { site: SiteKey; data: SiteData
   const cfg = SITES[site]
   const rules = RULES[site as 'logistics' | 'homeupgrades']
   useEnhance((signal) => {
+    if (document.querySelector('[data-no-quote-bar]')) return // this page already shows the form; the bar stays hidden
     const bar = document.getElementById('quoteBar')
     if (!bar) return
     const wide = matchMedia('(min-width: 961px)')
