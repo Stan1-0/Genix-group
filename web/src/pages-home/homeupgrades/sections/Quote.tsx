@@ -1,8 +1,11 @@
 import { HuQuoteForm } from '@/components/motion/HuQuoteForm'
+import { siteOrigin } from '@/sites/config'
 import type { SiteData } from '@/sites/data-shape'
 import { submitQuoteForm } from '@/inquiries/actions'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
 import { photoSettings } from '@/inquiries/photos'
+
+const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
 
 /* Quote band: the tap-to-pick quote form from design/homeupgrades-home.html.
    Without JS it is one ordinary form (both steps showing, no photo block) posting to
@@ -102,7 +105,7 @@ export function Quote({ data }: { data: SiteData }) {
                 <label className="pill"><input type="radio" name="callTime" value="evening" /> Evening</label>
               </fieldset>
               <div className="hp" aria-hidden="true"><label htmlFor="hqHp">Leave this empty</label><input id="hqHp" name="company_site" tabIndex={-1} autoComplete="off" /></div>
-              <p className="privacy">We use your details and photos only to reply to this request.</p>
+              <p className="privacy">We use your details and photos only to reply to this request. Read our <a href={PRIVACY_URL}>privacy policy</a>.</p>
               <div className="form-actions">
                 <button type="button" className="btn btn-ghost js-only" id="hqBack">← Back</button>
                 <button type="submit" className="btn btn-gold" id="hqSend">Send request <span aria-hidden="true">→</span></button>

@@ -1,9 +1,11 @@
 import { GoldHeading } from '../../GoldHeading'
+import { siteOrigin } from '@/sites/config'
 import { QuoteForm } from '@/components/motion/QuoteForm'
 import type { SiteData } from '@/sites/data-shape'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
 import { submitQuoteForm } from '@/inquiries/actions'
 
+const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
 const LEAD = 'Business deliveries and home moves, priced before we lift anything, with a real person to call when plans change.'
 
 /* Hero: the quote starter. Without JS the form posts to submitQuoteForm (lands on /quote/sent);
@@ -114,7 +116,7 @@ export function Hero({ data }: { data: SiteData }) {
               <label htmlFor="qHp">Leave this empty</label>
               <input id="qHp" name="company_site" tabIndex={-1} autoComplete="off" />
             </div>
-            <p className="mono privacy-note">We use your details only to reply to this request. Questions? <a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></p>
+            <p className="mono privacy-note">We use your details only to reply to this request. Read our <a href={PRIVACY_URL}>privacy policy</a>.</p>
             <div className="form-actions">
               <button type="button" className="btn btn-ghost js-only" id="qBack">← Back</button>
               <button type="submit" className="btn btn-gold" id="qSend">

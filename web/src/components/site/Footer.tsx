@@ -2,6 +2,8 @@ import { DIVISION_KEYS, SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import type { SiteData } from '@/sites/data-shape'
 import { Logo } from './Logo'
 
+const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
+
 const telHref = (phone: string) => `tel:${phone.replace(/[^+\d]/g, '')}`
 
 export function Footer({ site, data }: { site: SiteKey; data: SiteData }) {
@@ -47,6 +49,7 @@ export function Footer({ site, data }: { site: SiteKey; data: SiteData }) {
             {sisters.map((k) => (
               <a key={k} href={siteOrigin(k)} className="hover:text-white">{SITES[k].shortName}</a>
             ))}
+            <a href={PRIVACY_URL} className="hover:text-white">Privacy policy</a>
           </span>
         </div>
       </div>

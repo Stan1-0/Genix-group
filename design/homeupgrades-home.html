@@ -1075,6 +1075,11 @@
       .hu-form .privacy {
         margin: 0;
       }
+      .hu-form .privacy a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
 
       /* photos: dashed drop area + tiles with local previews */
       .photos-label {
@@ -2086,7 +2091,7 @@
                   <label class="pill"><input type="radio" name="callTime" value="evening" /> Evening</label>
                 </fieldset>
                 <div class="hp" aria-hidden="true"><label for="hqHp">Leave this empty</label><input id="hqHp" name="company_site" tabindex="-1" autocomplete="off" /></div>
-                <p class="privacy">We use your details and photos only to reply to this request.</p>
+                <p class="privacy">We use your details and photos only to reply to this request. Read our <a href="https://thegenixgroup.com/privacy">privacy policy</a>.</p>
                 <div class="form-actions">
                   <button type="button" class="btn btn-ghost js-only" id="hqBack">← Back</button>
                   <button type="submit" class="btn btn-gold" id="hqSend">Send request <span aria-hidden="true">→</span></button>
@@ -2187,6 +2192,8 @@
               ><span class="dot" style="background: var(--tell)"></span
               >Multimedia</a
             >
+            &nbsp;&nbsp;
+            <a href="https://thegenixgroup.com/privacy">Privacy policy</a>
           </span>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { siteOrigin } from '@/sites/config'
 import type { SiteData } from '@/sites/data-shape'
 
+const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
+
 /** Prototype footer for the hub (design/hub-home.html). */
 export function HubFooter({ data }: { data: SiteData }) {
   const email = data.email ?? 'hello@thegenixgroup.com'
@@ -48,7 +50,7 @@ export function HubFooter({ data }: { data: SiteData }) {
         </div>
         <div className="legal">
           <span>© 2026 The Genix Group</span>
-          <span>thegenixgroup.com</span>
+          <span><a href={PRIVACY_URL}>Privacy policy</a>&nbsp;&nbsp;thegenixgroup.com</span>
         </div>
       </div>
     </footer>

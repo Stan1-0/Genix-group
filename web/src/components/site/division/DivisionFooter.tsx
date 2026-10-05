@@ -1,6 +1,8 @@
 import { SITES, siteOrigin, type SiteKey } from '@/sites/config'
 import type { SiteData } from '@/sites/data-shape'
 
+const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
+
 type L = [label: string, href: string]
 
 /** Link columns that differ between the two prototype footers. */
@@ -104,6 +106,8 @@ export function DivisionFooter({ site, data }: { site: SiteKey; data: SiteData }
                 </a>
               </span>
             ))}
+            {'  '}
+            <a href={PRIVACY_URL}>Privacy policy</a>
           </span>
         </div>
       </div>

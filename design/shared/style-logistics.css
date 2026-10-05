@@ -158,6 +158,7 @@ html:not(.js) .js-only { display: none !important; }
   .hint { margin: 0 0 6px; font-size: 14px; color: var(--label-ink); }
   .form-actions { display: flex; gap: 12px; padding-top: 12px; }
   .form-actions .btn-gold { flex: 1; justify-content: center; }
+  .privacy-note a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
   .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
   /* after sending */

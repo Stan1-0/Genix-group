@@ -1336,6 +1336,11 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
       html[data-site="homeupgrades"] .hu-form .privacy {
         margin: 0;
       }
+      html[data-site="homeupgrades"] .hu-form .privacy a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
 
       /* photos: dashed drop area + tiles with local previews */
       html[data-site="homeupgrades"] .photos-label {
