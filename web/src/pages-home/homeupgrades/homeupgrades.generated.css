@@ -1553,9 +1553,6 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
       }
       html[data-site="homeupgrades"] .sent-ref {
         justify-self: start;
-        padding: 6px 12px;
-        border-radius: 999px;
-        background: var(--sand);
         font: 600 13px/1.2 var(--f-body);
         letter-spacing: 0.04em;
         color: var(--gold-text);
