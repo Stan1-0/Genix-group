@@ -98,3 +98,6 @@ Without all three the photo block is hidden and `/uploads` returns 404; the form
 - If more than half of the photos older than 24 hours (and more than 10) look unreferenced, it **aborts, deletes nothing and logs** `photo cleanup aborted: … check DATABASE_URL / Cloudinary keys` in the Vercel function logs. Check that Production's `DATABASE_URL` and Cloudinary keys belong together.
 
 Uploads are private (`authenticated`). Thumbnails in emails and /admin are signed URLs; full-size links expire (30 days in emails, 1 hour in /admin). Photos not attached to a saved enquiry are deleted by the daily cron after 24 hours, and deleting an inquiry in /admin deletes its photos (except any another enquiry still uses).
+
+### Privacy policy
+The group's privacy policy is `web/src/legal/privacy.tsx`, served at `thegenixgroup.com/privacy` (division sites redirect there; the quote forms and every footer link to it). When a new service provider handles visitors' data, a new kind of data is collected, or a new business gets a form, update the text and `PRIVACY_UPDATED` in that file. The hub's mailing address appears on the page only when street, city, state and ZIP are all filled in under Admin → Sites → hub.
