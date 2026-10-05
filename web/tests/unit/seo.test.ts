@@ -25,6 +25,10 @@ describe('sitemapXml / robotsTxt', () => {
     expect(xml).toContain('<loc>https://multimedia.thegenixgroup.com/</loc>')
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
   })
+  it('lists /privacy on the hub sitemap only', () => {
+    expect(sitemapXml('hub', root)).toContain('/privacy</loc>')
+    expect(sitemapXml('logistics', root)).not.toContain('/privacy')
+  })
   it('allows indexing only in production and points at the sitemap', () => {
     expect(robotsTxt('logistics', true, root)).toBe('User-agent: *\nAllow: /\n\nSitemap: https://logistics.thegenixgroup.com/sitemap.xml\n')
     expect(robotsTxt('logistics', false, root)).toBe('User-agent: *\nDisallow: /\n')

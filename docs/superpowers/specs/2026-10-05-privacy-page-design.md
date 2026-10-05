@@ -69,7 +69,7 @@ We use your details only to reply to your request: to send you a confirmation, a
 **Who handles it for us**
 | Service | What it does for us | What it receives |
 |---|---|---|
-| Resend | Sends our emails, including your confirmation | Your name, email address and a summary of your request |
+| Resend | Sends our emails, including your confirmation | Your contact details and everything in your request, including links to your photos |
 | Cloudinary | Stores the photos you upload (Home Upgrades) privately | Your photos |
 | Vercel | Hosts our sites, counts visits without cookies, and checks that forms aren't filled in by bots | Technical details such as your IP address and browser, and the pages you open |
 | Neon | Our database, where requests are saved | Everything you submit in a form |

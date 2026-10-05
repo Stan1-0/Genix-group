@@ -1,5 +1,5 @@
 /* Privacy policy page (hub). Uses the hub tokens from hub.generated.css; every rule is under .policy. */
-html[data-site="hub"] .policy { padding: clamp(112px, 14vw, 152px) 0 clamp(64px, 8vw, 104px); }
+html[data-site="hub"] .policy { padding: clamp(48px, 6vw, 80px) 0 clamp(64px, 8vw, 104px); }
 html[data-site="hub"] .policy-body { max-width: 68ch; }
 html[data-site="hub"] .policy-body h1 { font: 600 clamp(36px, 5vw, 56px) / 1.05 var(--f-display); letter-spacing: -0.03em; color: var(--black); margin: 0 0 12px; }
 html[data-site="hub"] .policy-updated { margin: 0 0 32px; color: var(--muted); font-size: 15px; }
@@ -24,6 +24,7 @@ html[data-site="hub"] .policy-table tbody th { font-weight: 600; color: var(--in
   html[data-site="hub"] .policy-table tbody,
   html[data-site="hub"] .policy-table tr,
   html[data-site="hub"] .policy-table th,
+  html[data-site="hub"] .policy-table tbody th,
   html[data-site="hub"] .policy-table td { display: block; width: auto; }
   html[data-site="hub"] .policy-table tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
   html[data-site="hub"] .policy-table th,

@@ -17,7 +17,7 @@ export const PRIVACY_HEADINGS = [
 ] as const
 
 const PROVIDERS: [name: string, does: string, gets: string][] = [
-  ['Resend', 'Sends our emails, including your confirmation', 'Your name, email address and a summary of your request'],
+  ['Resend', 'Sends our emails, including your confirmation', 'Your contact details and everything in your request, including links to your photos'],
   ['Cloudinary', 'Stores the photos you upload (Home Upgrades) privately', 'Your photos'],
   ['Vercel', "Hosts our sites, counts visits without cookies, and checks that forms aren't filled in by bots", 'Technical details such as your IP address and browser, and the pages you open'],
   ['Neon', 'Our database, where requests are saved', 'Everything you submit in a form'],
@@ -80,20 +80,20 @@ export function PrivacyPolicy({ email, address }: { email: string; address: Post
       </p>
 
       <h2>{handles}</h2>
-      <table className="policy-table">
-        <thead>
-          <tr>
-            <th scope="col">Service</th>
-            <th scope="col">What it does for us</th>
-            <th scope="col">What it receives</th>
+      <table className="policy-table" role="table">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th scope="col" role="columnheader">Service</th>
+            <th scope="col" role="columnheader">What it does for us</th>
+            <th scope="col" role="columnheader">What it receives</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           {PROVIDERS.map(([name, does, gets]) => (
-            <tr key={name}>
-              <th scope="row">{name}</th>
-              <td data-label="What it does for us">{does}</td>
-              <td data-label="What it receives">{gets}</td>
+            <tr key={name} role="row">
+              <th scope="row" role="rowheader">{name}</th>
+              <td role="cell" data-label="What it does for us">{does}</td>
+              <td role="cell" data-label="What it receives">{gets}</td>
             </tr>
           ))}
         </tbody>

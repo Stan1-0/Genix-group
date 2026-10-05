@@ -106,7 +106,7 @@ export function DivisionFooter({ site, data }: { site: SiteKey; data: SiteData }
                 </a>
               </span>
             ))}
-            {'  '}
+            {'  '}
             <a href={PRIVACY_URL}>Privacy policy</a>
           </span>
         </div>

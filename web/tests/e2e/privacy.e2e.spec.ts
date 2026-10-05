@@ -12,7 +12,7 @@ test('the hub serves the policy', async ({ page }) => {
   await expect(page.locator('.policy-table tbody th')).toHaveText(['Resend', 'Cloudinary', 'Vercel', 'Neon'])
   await expect(page.locator('.policy-body a[href="mailto:hello@thegenixgroup.com"]').first()).toBeVisible()
   expect(await page.title()).toBe('Privacy policy | The Genix Group')
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/privacy$/)
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${HUB}/privacy`)
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
 })
 
