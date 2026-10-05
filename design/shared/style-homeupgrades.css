@@ -139,3 +139,22 @@
   [data-division="homeupgrades"] .process { margin: 0 12px; }
   [data-division="homeupgrades"] .quote .wrap > div:last-child { padding: 28px; }
 }
+
+/* ---------- Contact page: details card under the heading of the Quote layout (design/homeupgrades-contact.html) ---------- */
+[data-division="homeupgrades"] .contact-card { max-width: 420px; margin-top: clamp(28px, 3.5vw, 40px); padding: 22px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-subtle); }
+[data-division="homeupgrades"] .contact-card-title { margin: 0 0 14px; font: 500 14px/1.4 var(--f-body); color: var(--gold-text); }
+[data-division="homeupgrades"] .contact-card dl { display: grid; gap: 12px; margin: 0; }
+[data-division="homeupgrades"] .contact-card dl > div { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: baseline; padding-top: 12px; border-top: 1px solid var(--line); }
+[data-division="homeupgrades"] .contact-card dl > div:first-child { padding-top: 0; border-top: 0; }
+[data-division="homeupgrades"] .contact-card dt { font: 500 14px/1.4 var(--f-body); color: var(--graphite); }
+[data-division="homeupgrades"] .contact-card dd { margin: 0; font-size: 18px; font-weight: 500; color: var(--heading); overflow-wrap: anywhere; }
+[data-division="homeupgrades"] .contact-card dd a { color: inherit; text-decoration: none; }
+[data-division="homeupgrades"] .contact-card dd a:hover { color: var(--sky-text); text-decoration: underline; text-underline-offset: 3px; }
+[data-division="homeupgrades"] .contact-reply { margin: 16px 0 0; font-size: 15px; line-height: 1.5; color: var(--graphite); }
+
+@media (max-width: 960px) {
+  [data-division="homeupgrades"] .contact-card { max-width: none; }
+}
+@media (max-width: 560px) {
+  [data-division="homeupgrades"] .contact-card dl > div { grid-template-columns: 1fr; gap: 2px; }
+}

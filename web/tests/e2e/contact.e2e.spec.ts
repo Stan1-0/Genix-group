@@ -62,3 +62,44 @@ test('the pinned quote bar never shows on /contact (phone), and nothing scrolls 
   await page.setViewportSize({ width: 320, height: 800 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
 })
+
+const HU = 'http://homeupgrades.localhost:3000/contact'
+
+test('homeupgrades /contact: heading, details card, the quote form, metadata', async ({ page }) => {
+  await page.goto(HU)
+  await expect(page.locator('h1')).toContainText("Let's talk about your space.")
+  await expect(page.locator('.contact-card a[href^="mailto:"]')).toBeVisible()
+  await expect(page.locator('.contact-card .contact-reply')).toContainText('to arrange a visit')
+  await expect(page.locator('.contact-card')).not.toContainText(/hours/i)
+  await expect(page.locator('#hu-quote-form')).toHaveCount(1)
+  await expect(page.locator('main#main')).toHaveCount(1)
+  expect(await page.title()).toBe('Contact | Genix Home Upgrades')
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', HU)
+})
+
+test('a request sent from the Home Upgrades /contact becomes an inquiry (no JS)', async ({ browser }) => {
+  const page = await (await browser.newContext({ javaScriptEnabled: false })).newPage()
+  await page.goto(HU)
+  // No JS: both steps are visible; the pills are radios.
+  await page.check('input[name="project"][value="accent"]')
+  await page.check('input[name="property"][value="home"]')
+  await page.check('input[name="timing"][value="soon"]')
+  await page.fill('#hqZip', '92101')
+  await page.fill('#hqNotes', 'Contact page e2e: slatted wall behind the TV')
+  await page.fill('#hqName', 'E2E Contact HU')
+  await page.fill('#hqPhone', '(619) 555-0100')
+  await page.click('#hqSend')
+  await expect(page).toHaveURL(/\/quote\/sent\?ref=GX-HUP-\d{6}$/)
+  await expect(page.getByRole('heading', { name: 'Request received.' })).toBeVisible()
+  await page.context().close()
+})
+
+test('the pinned quote bar never shows on the Home Upgrades /contact (phone), and nothing scrolls sideways at 320 px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto(HU)
+  await page.mouse.wheel(0, 900)
+  await page.waitForTimeout(500)
+  await expect(page.getByTestId('quote-bar')).toBeHidden()
+  await page.setViewportSize({ width: 320, height: 800 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+})

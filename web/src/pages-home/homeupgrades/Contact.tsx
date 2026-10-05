@@ -1,0 +1,26 @@
+import { HuQuoteFormBlock } from '@/components/forms/HuQuoteFormBlock'
+import { ContactCard } from '@/components/site/division/ContactCard'
+import type { SiteData } from '@/sites/data-shape'
+
+/* Contact page: the home Quote section's two-column layout with the details card under the heading and
+   the same quote form beside it (design/homeupgrades-contact.html). No motion: no MotionRoot here. */
+export function HomeUpgradesContact({ data }: { data: SiteData }) {
+  return (
+    <main id="main" data-no-quote-bar>
+      <section className="quote contact-quote" id="quote">
+        <div className="wrap">
+          <div>
+            <p className="label">Contact</p>
+            <h1 className="h-display">Let&apos;s talk about <span className="gold">your space.</span></h1>
+            <ContactCard site="homeupgrades" data={data} />
+          </div>
+          <div>
+            <p className="body">A few photos and a sentence about what you want is enough to start. We&apos;ll arrange a visit and send a written quote.</p>
+            <HuQuoteFormBlock data={data} />
+            <p className="quote-note">Serving California.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}

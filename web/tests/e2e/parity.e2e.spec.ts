@@ -6,6 +6,7 @@ import { expectSameLook, hideOverlays, PROTOTYPE, settle, VIEWPORTS } from './pa
 const PARITY: { site: string; proto: string; app: string; chrome: boolean; sections: boolean; extra?: string }[] = [
   { site: 'logistics', proto: '/logistics-home.html', app: 'http://logistics.localhost:3000/', chrome: true, sections: true },
   { site: 'logistics-contact', proto: '/logistics-contact.html', app: 'http://logistics.localhost:3000/contact', chrome: true, sections: true },
+  { site: 'homeupgrades-contact', proto: '/homeupgrades-contact.html', app: 'http://homeupgrades.localhost:3000/contact', chrome: true, sections: true },
   { site: 'homeupgrades', proto: '/homeupgrades-home.html', app: 'http://homeupgrades.localhost:3000/', chrome: true, sections: true },
   { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: true, extra: '#businesses > section' },
 ]

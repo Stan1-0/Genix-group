@@ -31,6 +31,7 @@ describe('sitemapXml / robotsTxt', () => {
   })
   it('lists /contact on the division sitemaps that have the page, never the hub or Multimedia', () => {
     expect(sitemapXml('logistics', root)).toContain('/contact</loc>')
+    expect(sitemapXml('homeupgrades', root)).toContain('/contact</loc>')
     expect(sitemapXml('hub', root)).not.toContain('/contact')
     expect(sitemapXml('multimedia', root)).not.toContain('/contact')
   })
