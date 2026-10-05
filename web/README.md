@@ -24,6 +24,10 @@ Other known issues (inherited from the approved prototypes, left as designed):
 - 404 pages: with two root layouts under a dynamic `[site]` segment, Next serves 404s from its client-rendered error shell (dev and production). The layout's early <head> script is therefore not run there (nothing on a 404 needs it), and dev logs React's "Encountered a script tag while rendering React component". Next's documented remedy, `global-not-found.js`, is experimental and would drop per-site theming.
 - Logistics: with JavaScript off, the quote form shows step 2 and its ghost Back button (`#qBack`) fails color-contrast (white on the light card). The prototype has the same issue; axe is checked after JS has run.
 
+## Contact pages
+
+`/contact` on Logistics and Home Upgrades reuses each home page's quote form through `src/components/forms/*`. Change a form there once and both pages update. Hub and Multimedia have no Contact page yet (`/contact` is a 404 there).
+
 ## Deploy (Vercel)
 The repo is ready to import as one Vercel project serving all four domains.
 

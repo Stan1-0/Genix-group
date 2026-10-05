@@ -17,6 +17,7 @@ const COLUMNS: Record<'logistics' | 'homeupgrades', { services: L[]; company: L[
       ['How it works', '/#how'],
       ['Where we go', '/#areas'],
       ['Questions', '/#faq'],
+      ['Contact', '/contact'],
     ],
     others: [
       { key: 'homeupgrades', dot: 'var(--gold)', label: 'Home Upgrades' },
@@ -33,6 +34,7 @@ const COLUMNS: Record<'logistics' | 'homeupgrades', { services: L[]; company: L[
       ['Our work', '/#work'],
       ['How we work', '/#process'],
       ['Get a quote', '/#quote'],
+      ['Contact', '/contact'],
     ],
     others: [
       { key: 'logistics', dot: 'var(--move)', label: 'Logistics' },
