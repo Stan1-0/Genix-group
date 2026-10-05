@@ -28,7 +28,7 @@ Extract each form once and render it on two pages.
 - Layout (desktop): page header (small `.label` "Contact", one headline, one sentence), then two columns: the form (left), a details card (right). Phones: one column, form first, details beneath. Reading widths and tokens follow each division's home page.
 - Details card: email (`data.email`, fallback `hello@thegenixgroup.com`), phone (`data.phone` as a `tel:` link, or the same `.ph` placeholder the footer uses when unset), service area (`data.areaServed`, or "Serving California" for Home Upgrades as on its home page), and a reply-time line reusing wording each home already has (Logistics: price within two business days; Home Upgrades: a visit within two business days). **No opening hours** (the data model holds none; do not invent them).
 - Wording: headline and sentences are written in the prototype, in each division's existing voice; the owner reviews them there.
-- The page renders its own `<main id="main">` (skip link target) and its footer carries `data-quote-bar-hide`, so the pinned quote bar stays off on this page (the form is already visible).
+- The page renders its own `<main id="main">` (skip link target) and the Contact `<main>` carries `data-no-quote-bar`; `DivisionQuoteBar` returns early when that element exists, so the pinned quote bar stays off on this page (the form is already visible). The other attribute, `data-quote-bar-hide`, only drives Multimedia's bar.
 - Metadata: title "Contact | Genix Logistics" / "Contact | Genix Home Upgrades" (the layout's template adds the suffix), a one-sentence description, canonical `https://<division host>/contact`, indexable.
 - Both division site configs list `/contact` in `pages`, so it appears in that site's `sitemap.xml` (not the hub's).
 

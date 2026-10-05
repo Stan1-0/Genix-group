@@ -9,16 +9,15 @@ export function HomeUpgradesContact({ data }: { data: SiteData }) {
     <main id="main" data-no-quote-bar>
       <section className="quote contact-quote" id="quote">
         <div className="wrap">
-          <div>
+          <div className="contact-copy">
             <p className="label">Contact</p>
             <h1 className="h-display">Let&apos;s talk about <span className="gold">your space.</span></h1>
-            <ContactCard site="homeupgrades" data={data} />
           </div>
-          <div>
+          <div className="contact-form">
             <p className="body">A few photos and a sentence about what you want is enough to start. We&apos;ll arrange a visit and send a written quote.</p>
             <HuQuoteFormBlock data={data} />
-            <p className="quote-note">Serving California.</p>
           </div>
+          <ContactCard site="homeupgrades" data={data} />
         </div>
       </section>
     </main>

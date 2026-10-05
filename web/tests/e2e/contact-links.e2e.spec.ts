@@ -23,10 +23,17 @@ for (const host of ['logistics', 'homeupgrades']) {
   })
 }
 
-test('the header nav fits at 1024 px (no overflow with the extra link)', async ({ page }) => {
-  await page.setViewportSize({ width: 1024, height: 800 })
-  for (const host of ['logistics', 'homeupgrades']) {
-    await page.goto(`http://${host}.localhost:3000/`)
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
-  }
-})
+for (const width of [961, 1000, 1024]) {
+  test(`the header nav fits at ${width} px (no overflow, no wrapping, with the extra link)`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 })
+    for (const host of ['logistics', 'homeupgrades']) {
+      await page.goto(`http://${host}.localhost:3000/`)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+      const tops = await page.locator('nav#nav a:visible').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().top)))
+      expect(tops.length).toBeGreaterThanOrEqual(4)
+      const heights = await page.locator('nav#nav a:visible').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().height)))
+      expect(Math.max(...heights), `${host} at ${width}: no nav label wraps onto two lines`).toBeLessThan(32)
+      expect(new Set(tops).size, `${host} at ${width}: nav links share one line`).toBe(1)
+    }
+  })
+}

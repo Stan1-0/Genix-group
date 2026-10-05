@@ -103,3 +103,21 @@ test('the pinned quote bar never shows on the Home Upgrades /contact (phone), an
   await page.setViewportSize({ width: 320, height: 800 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
 })
+
+for (const [name, url, form] of [['logistics', LOG, '#quote-form'], ['homeupgrades', HU, '#hu-quote-form']] as const) {
+  test(`${name} /contact: phone order is form then details; desktop keeps the card left of the form`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 800 })
+    await page.goto(url)
+    const phone = await page.evaluate((f) => ({
+      form: document.querySelector(f)!.getBoundingClientRect().top,
+      card: document.querySelector('.contact-card')!.getBoundingClientRect().top,
+    }), form)
+    expect(phone.form).toBeLessThan(phone.card)
+    await page.setViewportSize({ width: 1280, height: 900 })
+    const desk = await page.evaluate((f) => ({
+      form: document.querySelector(f)!.getBoundingClientRect(),
+      card: document.querySelector('.contact-card')!.getBoundingClientRect(),
+    }), form)
+    expect(desk.card.right).toBeLessThanOrEqual(desk.form.left)
+  })
+}

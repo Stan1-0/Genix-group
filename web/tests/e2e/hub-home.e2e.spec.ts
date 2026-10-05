@@ -73,8 +73,8 @@ for (const [label, viewport, mobile] of [
     test('route cards link to each division', async ({ page }) => {
       await page.goto(URL)
       const hrefs = await page.$$eval('.option', (els) => els.map((e) => e.getAttribute('href')!))
-      // No division has a /contact page yet: Logistics and Home Upgrades go to their home-page quote
-      // form, Multimedia (no form yet) to an email. links.e2e.spec.ts checks that these resolve.
+      // Logistics and Home Upgrades have /contact pages, but the hub cards still point at their home-page
+      // quote forms; Multimedia (no form yet) goes to an email. links.e2e.spec.ts checks that these resolve.
       expect(hrefs.map((h) => h.replace(/^https?:\/\/([a-z]+)\..*?\/(#quote)$/, '$1/$2'))).toEqual([
         'logistics/#quote',
         'homeupgrades/#quote',

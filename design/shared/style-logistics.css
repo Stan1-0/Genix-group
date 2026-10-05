@@ -231,8 +231,17 @@ html:not(.js) .js-only { display: none !important; }
 }
 
 /* ---------- Contact page: details card under the hero lede (design/logistics-contact.html) ---------- */
+/* DOM order is copy, form, card (the phone order). Desktop: copy and card stack in column 1, the form spans column 2. */
 :where([data-division="logistics"]) {
-  .contact-hero .lead { margin-bottom: clamp(24px, 3vw, 36px); }
+  .contact-hero .hero-copy { grid-area: copy; }
+  .contact-hero .quote-form { grid-area: form; }
+  .contact-hero .contact-card { grid-area: card; margin-top: clamp(24px, 3vw, 36px); }
+  .contact-hero .wrap {
+    grid-template-areas: "top form" "copy form" "card form" "bottom form";
+    grid-template-rows: minmax(0, 1fr) auto auto minmax(0, 1fr);
+    row-gap: 0;
+  }
+  .contact-hero .quote-form { align-self: center; }
   .contact-card { max-width: 440px; padding: 20px 22px; border: 1px solid var(--brand-line); border-radius: var(--r); }
   .contact-card-title { margin: 0 0 14px; font: 500 11.5px/1.35 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
   .contact-card dl { display: grid; gap: 12px; margin: 0; }
@@ -245,10 +254,22 @@ html:not(.js) .js-only { display: none !important; }
   .contact-reply { margin: 16px 0 0; font-size: 15px; line-height: 1.5; color: var(--on-brand-muted); }
 
   @media (max-width: 960px) {
+    .contact-hero .wrap { grid-template-areas: "copy" "form" "card"; grid-template-rows: none; row-gap: 24px; }
+    .contact-hero .quote-form { align-self: auto; }
+    .contact-hero .contact-card { margin-top: 0; }
     .contact-card { max-width: none; }
+    .contact-card dd a { display: inline-flex; align-items: center; min-height: 44px; }
   }
   @media (max-width: 560px) {
     .contact-hero .lead { display: block; } /* the Contact page has no lanes below, so the lede stays */
     .contact-card dl > div { grid-template-columns: 1fr; gap: 2px; }
+  }
+}
+
+/* ---------- Header: four nav links (Contact added) must stay on one line just above the desktop breakpoint ---------- */
+:where([data-division="logistics"]) {
+  @media (min-width: 961px) and (max-width: 1100px) {
+    .nav { gap: 18px; }
+    .nav a { white-space: nowrap; }
   }
 }

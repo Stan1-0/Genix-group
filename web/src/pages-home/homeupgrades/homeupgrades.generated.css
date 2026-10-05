@@ -362,7 +362,8 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .site-footer a:hover { 
 }
 
 /* ---------- Contact page: details card under the heading of the Quote layout (design/homeupgrades-contact.html) ---------- */
-html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card { max-width: 420px; margin-top: clamp(28px, 3.5vw, 40px); padding: 22px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-subtle); }
+/* DOM order is copy, form, card (the phone order). Desktop: copy and card stack in column 1, the form spans column 2. */
+html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card { max-width: 420px; margin-top: 0; padding: 22px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-subtle); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card-title { margin: 0 0 14px; font: 500 14px/1.4 var(--f-body); color: var(--gold-text); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dl { display: grid; gap: 12px; margin: 0; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dl > div { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: baseline; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -373,8 +374,21 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dd a { co
 html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dd a:hover { color: var(--sky-text); text-decoration: underline; text-underline-offset: 3px; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-reply { margin: 16px 0 0; font-size: 15px; line-height: 1.5; color: var(--graphite); }
 
+/* the card is the Quote layout's last child, so it must not pick up the sand form-card rule (:last-child, later in homeupgrades-home.css) */
+html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .wrap > div.contact-card { padding: 22px 24px; background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--shadow-subtle); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .wrap > div.contact-copy { position: static; }
+/* the sand form card now sits on .contact-form (it used to be the :last-child) */
+html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .wrap > div.contact-form { background: var(--sand); border-radius: var(--r-lg); padding: 36px; box-shadow: var(--shadow-subtle); }
+@media (min-width: 961px) {
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-quote .wrap { grid-template-areas: "copy form" "card form"; grid-template-rows: auto 1fr; row-gap: 0; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-copy { grid-area: copy; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-form { grid-area: form; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card { grid-area: card; margin-top: clamp(28px, 3.5vw, 40px); }
+}
 @media (max-width: 960px) {
   html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card { max-width: none; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .wrap > div.contact-form { padding: 24px 14px 20px; }
+  html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dd a { display: inline-flex; align-items: center; min-height: 44px; }
 }
 @media (max-width: 560px) {
   html[data-site="homeupgrades"][data-site="homeupgrades"] .contact-card dl > div { grid-template-columns: 1fr; gap: 2px; }
