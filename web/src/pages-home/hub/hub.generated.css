@@ -1071,4 +1071,161 @@
         opacity: 0;
       }
 
+      /* ---------- About page (hub-about.html) ---------- */
+      html[data-site="hub"] .about-hero {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0 clamp(48px, 6vw, 80px);
+      }
+      html[data-site="hub"] .about-hero h1 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 18ch;
+      }
+      html[data-site="hub"] .about-hero .body {
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 62ch;
+      }
+      html[data-site="hub"] .about-businesses {
+        background: var(--paper);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      html[data-site="hub"] .about-businesses h2,
+      html[data-site="hub"] .about-find h2 {
+        font: 600 clamp(28px, 3.4vw, 44px)/1.05 var(--f-display);
+        letter-spacing: -0.03em;
+        margin: 0 0 clamp(24px, 3vw, 40px);
+      }
+      html[data-site="hub"] .about-biz-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid var(--line);
+      }
+      html[data-site="hub"] .about-biz {
+        display: grid;
+        grid-template-columns: minmax(88px, 140px) 1fr;
+        gap: clamp(20px, 4vw, 56px);
+        padding: 32px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      html[data-site="hub"] .about-verb {
+        display: flex;
+        align-items: baseline;
+        margin: 0;
+        font: 500 12px/1.6 var(--f-mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      html[data-site="hub"] .about-verb .dot {
+        flex: none;
+        width: 10px;
+        height: 10px;
+        margin-right: 8px;
+        background: var(--c);
+        box-shadow: 0 0 0 1px rgba(17, 17, 16, 0.25);
+      }
+      html[data-site="hub"] .about-biz h3 {
+        font: 600 clamp(24px, 2.4vw, 32px)/1.1 var(--f-display);
+        letter-spacing: -0.02em;
+        margin: 0 0 8px;
+      }
+      html[data-site="hub"] .about-biz h3 a,
+      html[data-site="hub"] .about-find a:not(.about-cta) {
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+      html[data-site="hub"] .about-biz h3 a {
+        text-decoration: none;
+      }
+      html[data-site="hub"] .about-biz h3 a:hover {
+        text-decoration: underline;
+      }
+      html[data-site="hub"] .about-businesses :focus-visible,
+      html[data-site="hub"] .about-find :focus-visible {
+        outline-color: var(--black);
+      }
+      html[data-site="hub"] .about-tag {
+        margin: 0 0 14px;
+        font: 500 13px/1.5 var(--f-mono);
+        color: var(--muted);
+      }
+      html[data-site="hub"] .about-biz .body {
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 56ch;
+      }
+      html[data-site="hub"] .about-promises {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 4px 32px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
+        font-size: 16px;
+        font-weight: 500;
+      }
+      html[data-site="hub"] .about-promises li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      html[data-site="hub"] .about-promises li::before {
+        content: "";
+        flex: none;
+        width: 14px;
+        height: 2px;
+        background: var(--gold);
+      }
+      html[data-site="hub"] .about-find {
+        background: var(--white);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      html[data-site="hub"] .about-find .facts {
+        max-width: 720px;
+        margin-bottom: 32px;
+      }
+      html[data-site="hub"] .about-find .facts li span:last-child {
+        overflow-wrap: anywhere;
+      }
+      html[data-site="hub"] .about-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 24px;
+        background: var(--black);
+        color: var(--white);
+        font: 600 16px/1 var(--f-body);
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      html[data-site="hub"] .about-cta span {
+        color: var(--gold);
+        transition: color 0.2s;
+      }
+      html[data-site="hub"] .about-cta:hover {
+        background: var(--gold);
+        color: var(--black);
+      }
+      html[data-site="hub"] .about-cta:hover span {
+        color: var(--black);
+      }
+      html[data-site="hub"] .about-find .about-cta:focus-visible {
+        outline-offset: 4px;
+      }
+      @media (max-width: 640px) {
+        html[data-site="hub"] .about-biz {
+          grid-template-columns: 1fr;
+          gap: 12px;
+          padding: 28px 0;
+        }
+        html[data-site="hub"] .about-promises {
+          grid-template-columns: 1fr;
+        }
+      }
+
 html[data-site="hub"] { --f-display: var(--font-schibsted), system-ui, sans-serif; --f-body: var(--font-hanken), system-ui, sans-serif; --f-mono: var(--font-plex-mono), ui-monospace, monospace; }

@@ -52,7 +52,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     heroGold: null,
     heroTones: { 'We Haul It.': 'logistics', 'We Build It.': 'homeupgrades', 'We Show It.': 'multimedia' },
     offers: [],
-    pages: ['/', '/privacy'],
+    pages: ['/', '/privacy', '/about'],
   },
   logistics: {
     key: 'logistics',
