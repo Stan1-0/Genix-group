@@ -6,17 +6,12 @@ import type { SiteKey } from '../src/sites/config'
 const DESIGN = path.resolve(import.meta.dirname, '../../design')
 const OUT = path.resolve(import.meta.dirname, '../src/pages-home')
 const file = (p: string) => fs.readFileSync(path.join(DESIGN, p), 'utf8')
-const inlineStyle = (page: string) => {
-  const m = /<style>([\s\S]*?)<\/style>/.exec(file(page))
-  if (!m) throw new Error(`no <style> in ${page}`)
-  return m[1]
-}
 
 // Same cascade order as each prototype's <head>.
 const SOURCES: Record<Exclude<SiteKey, 'multimedia'>, () => string[]> = {
   logistics: () => [file('shared/genix.css'), file('shared/style-logistics.css')],
   homeupgrades: () => [file('shared/genix.css'), file('shared/style-homeupgrades.css'), file('shared/homeupgrades-home.css')],
-  hub: () => [inlineStyle('hub-home.html')],
+  hub: () => [file('shared/hub-home.css')],
 }
 
 for (const [site, sources] of Object.entries(SOURCES) as [Exclude<SiteKey, 'multimedia'>, () => string[]][]) {
