@@ -38,7 +38,7 @@ export function HubFooter({ data }: { data: SiteData }) {
           <ul>
             <li><a href="/about">Who we are</a></li>
             <li><a href="/#businesses">Our businesses</a></li>
-            <li><a href="/#contact">Get a quote</a></li>
+            <li><a href="/contact">Get a quote</a></li>
           </ul>
         </div>
         <div>

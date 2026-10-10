@@ -64,7 +64,7 @@ export function HubAbout({ data }: { data: SiteData }) {
             <li><span>Email</span><span><a href={`mailto:${email}`}>{email}</a></span></li>
             {data.address && <li><span>Address</span><span>{formatAddress(data.address)}</span></li>}
           </ul>
-          <a className="about-cta" href="/#contact">
+          <a className="about-cta" href="/contact">
             Start a conversation <span aria-hidden="true">↗</span>
           </a>
         </div>

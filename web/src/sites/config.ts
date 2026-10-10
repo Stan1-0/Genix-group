@@ -46,9 +46,9 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: [
       { label: 'Who we are', href: '/about' },
       { label: 'Our businesses', href: '/#businesses' },
-      { label: 'Get a quote', href: '/#contact' },
+      { label: 'Contact', href: '/contact' },
     ],
-    cta: { label: 'Start a conversation', href: '/#contact' },
+    cta: { label: 'Start a conversation', href: '/contact' },
     heroGold: null,
     heroTones: { 'We Haul It.': 'logistics', 'We Build It.': 'homeupgrades', 'We Show It.': 'multimedia' },
     offers: [],

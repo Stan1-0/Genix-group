@@ -59,8 +59,8 @@ export function Route({ data }: { data: SiteData }) {
           </a>
         </div>
         <p className="route-alt" data-reveal>
-          Need more than one, or not sure? Email <a href={`mailto:${email}`}>{email}</a> and
-          we&apos;ll bring the right teams together.
+          Need more than one, or not sure? <a href="/contact">Send us a message</a> or email{' '}
+          <a href={`mailto:${email}`}>{email}</a> and we&apos;ll bring the right teams together.
         </p>
       </div>
     </section>

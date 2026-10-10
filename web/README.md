@@ -108,3 +108,7 @@ The group's privacy policy is `web/src/legal/privacy.tsx`, served at `thegenixgr
 
 ### About page
 The group's About page is `web/src/pages-home/hub/About.tsx`, served at `thegenixgroup.com/about`. It reuses names, taglines and origins from `SITES`, and promise wording from the Logistics and Home Upgrades pages. Update the text there when a promise or business changes. Division and Multimedia About pages don't exist yet (`/about` is a 404 there). The mailing address shows only when street, city, state and ZIP are all set under Admin → Sites → hub.
+
+### Hub Contact form
+
+`thegenixgroup.com/contact` takes a short message through the same pipeline as the quote forms. Its definition is `web/src/inquiries/forms/hub.ts` (fields, messages, email rows); inquiries are saved with division `hub`, type `contact` and a `GX-HUB-` reference. Any new page that hosts a form must be added to `BOTID_PROTECT` in `web/src/inquiries/bot-check.ts`.

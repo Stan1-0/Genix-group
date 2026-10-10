@@ -12,7 +12,7 @@ test('hub /about: headings, three businesses, find-us facts, metadata', async ({
   expect(hrefs[0]).toMatch(/^http:\/\/logistics\.localhost:3000\/?$/)
   expect(hrefs[1]).toMatch(/^http:\/\/homeupgrades\.localhost:3000\/?$/)
   expect(hrefs[2]).toMatch(/^http:\/\/multimedia\.localhost:3000\/?$/)
-  await expect(page.locator('.about-cta')).toHaveAttribute('href', '/#contact')
+  await expect(page.locator('.about-cta')).toHaveAttribute('href', '/contact')
   await expect(page.locator('.facts a[href^="mailto:"]')).toBeVisible()
   await expect(page.locator('main#main')).toHaveCount(1)
   expect(await page.title()).toBe('About | The Genix Group')
