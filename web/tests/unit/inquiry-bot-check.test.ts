@@ -13,3 +13,16 @@ describe('botCheckFor', () => {
     expect(check).not.toHaveBeenCalled()
   })
 })
+
+describe('BotID protected paths', () => {
+  // A Server Action posts to the page its form is on. BotID only vouches for paths listed here;
+  // in production every other path is checked without the browser's token and classed as a bot.
+  it('covers every page with a quote form and the photo upload grant', async () => {
+    const { BOTID_PROTECT } = await import('@/inquiries/bot-check')
+    expect(BOTID_PROTECT).toEqual([
+      { path: '/', method: 'POST' }, // division home pages
+      { path: '/contact', method: 'POST' }, // division Contact pages
+      { path: '/uploads', method: 'POST' }, // Home Upgrades photo upload grants
+    ])
+  })
+})
