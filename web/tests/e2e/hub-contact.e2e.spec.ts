@@ -73,3 +73,33 @@ test('the hub sitemap lists /contact', async ({ page }) => {
   await page.goto(`${HUB}/sitemap.xml`)
   expect(await page.content()).toContain('/contact</loc>')
 })
+
+test('JS: a complete message gets a GX-HUB reference in place', async ({ page }) => {
+  await page.goto(`${HUB}/contact`)
+  await page.waitForTimeout(2200) // past the 2 s "too fast" guard
+  await page.check('input[name="about"][value="logistics"]')
+  await page.fill('#hcName', 'E2E Hub JS')
+  await page.fill('#hcEmail', 'e2e@test.local')
+  await page.fill('#hcMessage', 'Two pallets to Phoenix next month, please.')
+  await page.click('#hcSend')
+  await expect(page.locator('#hcSent')).toBeVisible()
+  await expect(page.locator('#hcRef')).toHaveText(/^GX-HUB-\d{6}$/)
+  await expect(page.locator('#hcSent')).toContainText('within two business days')
+  await expect(page.locator('#hcName')).toBeHidden()
+})
+
+test('JS: inline errors match the server and focus the first problem', async ({ page }) => {
+  await page.goto(`${HUB}/contact`)
+  await page.fill('#hcPhone', '555-0100')
+  await page.fill('#hcMessage', 'short')
+  await page.click('#hcSend')
+  await expect(page.locator('#hcAboutErr')).toHaveText('Choose which business this is about.')
+  await expect(page.locator('#hcNameErr')).toHaveText('Enter your name.')
+  await expect(page.locator('#hcEmailErr')).toHaveText('Enter your email so we can reply.')
+  await expect(page.locator('#hcPhoneErr')).toHaveText('Enter a phone number with area code.')
+  await expect(page.locator('#hcMessageErr')).toHaveText('Tell us a little more (at least 10 characters).')
+  await expect(page.locator('input[name="about"]').first()).toBeFocused()
+  await page.fill('#hcName', 'Ana')
+  await expect(page.locator('#hcNameErr')).toHaveText('') // typing clears that field's error
+  await expect(page.locator('#hcSent')).toBeHidden()
+})

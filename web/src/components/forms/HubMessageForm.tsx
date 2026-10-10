@@ -1,3 +1,4 @@
+import { HubContactForm } from '@/components/motion/HubContactForm'
 import { submitQuoteForm } from '@/inquiries/actions'
 import { ABOUT, type About } from '@/inquiries/forms/hub'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
@@ -11,6 +12,7 @@ const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
    posting to submitQuoteForm, which lands on /quote/sent. One instance per page: the ids are fixed. */
 export function HubMessageForm({ data, about }: { data: SiteData; about: About | null }) {
   return (
+    <>
     <form className="contact-form" id="message" action={submitQuoteForm} aria-labelledby="messageTitle"
       data-send-mode={inquirySendMode(process.env)} data-offline-message={offlineMessage(data.phone)} data-phone={data.phone ?? ''}>
       <input type="hidden" name="site" value="hub" />
@@ -41,5 +43,7 @@ export function HubMessageForm({ data, about }: { data: SiteData; about: About |
         <p>We&apos;ll reply by email within two business days.</p>
       </div>
     </form>
+    <HubContactForm />
+    </>
   )
 }

@@ -249,5 +249,47 @@
           .forEach((a) => a.addEventListener("click", () => set(false)));
       })();
     </script>
+    <script>
+      // Contact form demo: same five rules and messages as the real form; no network.
+      (() => {
+        const form = document.getElementById("message");
+        form.noValidate = true;
+        const $ = (id) => document.getElementById(id);
+        const KEYS = ["about", "name", "email", "phone", "message"];
+        const IDS = { about: "hcAbout", name: "hcName", email: "hcEmail", phone: "hcPhone", message: "hcMessage" };
+        const setErr = (k, msg) => {
+          $(IDS[k] + "Err").textContent = msg;
+          const el = $(IDS[k]);
+          (k === "about" ? el : el.closest(".field")).classList.toggle("invalid", !!msg);
+        };
+        form.addEventListener("input", (e) => {
+          const t = e.target;
+          const k = t.name === "about" ? "about" : KEYS.find((o) => IDS[o] === t.id);
+          if (k) setErr(k, "");
+        });
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const v = (id) => $(id).value.trim();
+          const errors = {};
+          if (!form.querySelector('input[name="about"]:checked')) errors.about = "Choose which business this is about.";
+          if (!v("hcName")) errors.name = "Enter your name.";
+          if (!v("hcEmail")) errors.email = "Enter your email so we can reply.";
+          else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("hcEmail"))) errors.email = "Enter an email like name@company.com.";
+          if (v("hcPhone") && v("hcPhone").replace(/\D/g, "").length < 10) errors.phone = "Enter a phone number with area code.";
+          if (v("hcMessage").length < 10) errors.message = "Tell us a little more (at least 10 characters).";
+          else if (v("hcMessage").length > 2000) errors.message = "Keep your message under 2,000 characters.";
+          KEYS.forEach((k) => setErr(k, errors[k] || ""));
+          const first = KEYS.find((k) => errors[k]);
+          if (first) {
+            (first === "about" ? form.querySelector('input[name="about"]') : $(IDS[first])).focus();
+            return;
+          }
+          [...form.children].forEach((el) => { if (el.id !== "hcSent") el.hidden = true; });
+          $("hcRef").textContent = "GX-HUB-000123";
+          $("hcSent").hidden = false;
+          $("hcSent").focus();
+        });
+      })();
+    </script>
   </body>
 </html>
