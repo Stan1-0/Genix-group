@@ -7,6 +7,8 @@ export type Parsed<T> = { ok: true; data: T } | { ok: false; errors: Record<stri
 /** One division's quote form: how to read it, store it and show it in emails and the admin. */
 export interface FormDef<T> {
   site: SiteKey
+  /** Stored as the inquiry's `type`, and picks the email wording. */
+  inquiryType: 'quote' | 'contact'
   fields: readonly string[]
   parse(raw: Record<string, unknown>, today: string): Parsed<T>
   contact(d: T): Contact

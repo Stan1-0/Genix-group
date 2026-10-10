@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { formatReference, hashIp, quoteSummary, teamSubject } from '@/inquiries/format'
 import { customerEmail, teamEmail } from '@/inquiries/email'
+import { hubForm } from '@/inquiries/forms/hub'
 import { logisticsForm } from '@/inquiries/forms/logistics'
 import { rateLimitedMessage, serverErrorMessage } from '@/inquiries/messages'
 import type { QuoteInput } from '@/inquiries/schema'
@@ -61,5 +62,31 @@ describe('messages', () => {
     expect(rateLimitedMessage(null)).toBe('Too many requests. Please email hello@thegenixgroup.com.')
     expect(serverErrorMessage('(619) 555-0100')).toBe("Couldn't send. Try again, or call (619) 555-0100.")
     expect(serverErrorMessage(null)).toBe("Couldn't send. Try again, or email hello@thegenixgroup.com.")
+  })
+})
+
+describe('contact emails', () => {
+  const m = { about: 'unsure' as const, name: 'Ana', email: 'ana@example.com', phone: '(619) 555-0100', message: 'Please call me <b>about</b> both' }
+  it('team email says message, names the business and keeps the reference', () => {
+    const e = teamEmail({ site: 'hub', kind: 'contact', reference: 'GX-HUB-000001', rows: hubForm.answers(m), subjectDetails: hubForm.subjectDetails(m), phone: m.phone, adminUrl: 'https://thegenixgroup.com/admin/collections/inquiries/9' })
+    expect(e.subject).toBe('[Group] Message · Not sure · GX-HUB-000001')
+    expect(e.html).toContain('New message · GX-HUB-000001')
+    expect(e.text.startsWith('New message · GX-HUB-000001')).toBe(true)
+    expect(e.html).toContain('Please call me &lt;b&gt;about&lt;/b&gt; both')
+  })
+  it('customer email says message, is signed by the group and never echoes the message or contact details', () => {
+    const e = customerEmail({ site: 'hub', kind: 'contact', reference: 'GX-HUB-000001', name: m.name, rows: hubForm.customerRows(m), phone: null })
+    expect(e.subject).toBe('We got your message · GX-HUB-000001')
+    expect(e.text).toContain('The Genix Group')
+    expect(e.text).not.toContain('Part of The Genix Group')
+    for (const s of ['Please call me', 'ana@example.com', '555-0100']) expect(e.text).not.toContain(s)
+  })
+  it('quote emails keep their wording', () => {
+    const t = teamEmail({ site: 'logistics', reference: 'GX-LOG-000001', rows: [['Name', 'Ana']], subjectDetails: 'x', phone: null, adminUrl: 'u' })
+    expect(t.subject).toBe('[Logistics] Quote · x · GX-LOG-000001')
+    expect(t.html).toContain('New quote request · GX-LOG-000001')
+    const c = customerEmail({ site: 'logistics', reference: 'GX-LOG-000001', name: 'Ana', rows: [], phone: null })
+    expect(c.subject).toBe('We got your request · GX-LOG-000001')
+    expect(c.text).toContain('Genix Logistics · Part of The Genix Group')
   })
 })

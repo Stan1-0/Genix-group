@@ -17,6 +17,7 @@ const answers = (q: QuoteInput): Row[] => [
 
 export const logisticsForm: FormDef<QuoteInput> = {
   site: 'logistics',
+  inquiryType: 'quote',
   fields: ['kind', 'from', 'to', 'date', 'flexible', 'load', 'pallets', 'name', 'phone', 'email', 'notes'],
   parse: (raw, today) => parseQuote(raw, today) as ReturnType<FormDef<QuoteInput>['parse']>,
   contact: (q) => ({ name: q.name, phone: q.phone, email: q.email, notes: q.notes }),

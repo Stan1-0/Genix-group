@@ -49,6 +49,7 @@ const answers = (q: HuQuote): Row[] => [
 
 export const homeupgradesForm: FormDef<HuQuote> = {
   site: 'homeupgrades',
+  inquiryType: 'quote',
   fields: ['project', 'property', 'timing', 'budget', 'zip', 'notes', 'links', 'callTime', 'name', 'phone', 'email'],
   parse(raw) {
     const errors: Record<string, string> = {}

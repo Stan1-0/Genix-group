@@ -22,16 +22,18 @@ const shell = (body: string) =>
 
 
 /** `unlinkedPhotos`: photos on the enquiry that can't be linked here (Cloudinary settings missing); the team is told to look in the admin. */
-export function teamEmail(a: { site: SiteKey; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[]; unlinkedPhotos?: number }): EmailContent {
-  const subject = `[${SITES[a.site].shortName}] Quote · ${a.subjectDetails} · ${a.reference}`
+export function teamEmail(a: { site: SiteKey; kind?: 'quote' | 'contact'; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[]; unlinkedPhotos?: number }): EmailContent {
+  const msg = a.kind === 'contact'
+  const subject = `[${SITES[a.site].shortName}] ${msg ? 'Message' : 'Quote'} · ${a.subjectDetails} · ${a.reference}`
+  const heading = `${msg ? 'New message' : 'New quote request'} · ${a.reference}`
   const links = a.links ?? []
   const photos = a.photos ?? []
   const note = !photos.length && a.unlinkedPhotos ? `${a.unlinkedPhotos} photo(s) attached — see the admin.` : ''
   const linksHtml = links.length ? `<p style="margin:20px 0 6px;font-weight:600">Inspiration links</p>${links.map((l) => `<p style="margin:0 0 4px"><a href="${esc(l)}" style="color:#012247">${esc(l)}</a></p>`).join('')}` : ''
   const photosHtml = photos.length ? `<p style="margin:20px 0 8px;font-weight:600">Photos (${photos.length})</p><p style="margin:0">${photos.map((p) => `<a href="${esc(p.full)}"><img src="${esc(p.thumb)}" width="120" height="120" alt="Photo" style="border-radius:8px;margin:0 6px 6px 0"></a>`).join('')}</p><p style="margin:4px 0 0;color:#625d55;font-size:13px">Full-size links expire after 30 days; the admin always has them.</p>` : ''
-  const html = shell(`<p style="margin:0 0 16px;font-weight:700">New quote request · ${esc(a.reference)}</p>${table(a.rows, a.phone)}${linksHtml}${photosHtml}${note ? `<p style="margin:20px 0 0;font-weight:600">${esc(note)}</p>` : ''}<p style="margin:20px 0 0"><a href="${esc(a.adminUrl)}" style="color:#012247">Open in the admin</a></p>`)
+  const html = shell(`<p style="margin:0 0 16px;font-weight:700">${esc(heading)}</p>${table(a.rows, a.phone)}${linksHtml}${photosHtml}${note ? `<p style="margin:20px 0 0;font-weight:600">${esc(note)}</p>` : ''}<p style="margin:20px 0 0"><a href="${esc(a.adminUrl)}" style="color:#012247">Open in the admin</a></p>`)
   const text = [
-    `New quote request · ${a.reference}`, '', ...a.rows.map(([k, v]) => `${k}: ${v}`),
+    heading, '', ...a.rows.map(([k, v]) => `${k}: ${v}`),
     ...(links.length ? ['', 'Inspiration links:', ...links] : []),
     ...(photos.length ? ['', `Photos (${photos.length}):`, ...photos.map((p) => p.full)] : []),
     ...(note ? ['', note] : []),
@@ -40,14 +42,15 @@ export function teamEmail(a: { site: SiteKey; reference: string; rows: Row[]; su
   return { subject, html, text }
 }
 
-export function customerEmail(a: { site: SiteKey; reference: string; name: string; rows: Row[]; phone: string | null; extraLine?: string }): EmailContent {
+export function customerEmail(a: { site: SiteKey; kind?: 'quote' | 'contact'; reference: string; name: string; rows: Row[]; phone: string | null; extraLine?: string }): EmailContent {
   const division = SITES[a.site].name
   const greet = a.name.trim().slice(0, 40)
   const promise = "We'll get back to you within two business days."
   const call = a.phone ? `Need us sooner? Call ${a.phone}.` : 'Need us sooner? Reply to this email.'
-  const subject = `We got your request · ${a.reference}`
+  const subject = `We got your ${a.kind === 'contact' ? 'message' : 'request'} · ${a.reference}`
+  const sign = a.site === 'hub' ? SITES.hub.name : `${division} · Part of The Genix Group`
   const extra = a.extraLine ? `<p style="margin:12px 0 0">${esc(a.extraLine)}</p>` : ''
-  const html = shell(`<p style="margin:0 0 12px">Thanks, ${esc(greet)}. ${promise}</p><p style="margin:0 0 16px">Your reference: <b>${esc(a.reference)}</b></p>${table(a.rows, null)}${extra}<p style="margin:20px 0 0">${esc(call)}</p><p style="margin:8px 0 0;color:#625d55">${esc(division)} · Part of The Genix Group</p>`)
-  const text = [`Thanks, ${greet}. ${promise}`, '', `Your reference: ${a.reference}`, '', ...a.rows.map(([k, v]) => `${k}: ${v}`), ...(a.extraLine ? ['', a.extraLine] : []), '', call, `${division} · Part of The Genix Group`].join('\n')
+  const html = shell(`<p style="margin:0 0 12px">Thanks, ${esc(greet)}. ${promise}</p><p style="margin:0 0 16px">Your reference: <b>${esc(a.reference)}</b></p>${table(a.rows, null)}${extra}<p style="margin:20px 0 0">${esc(call)}</p><p style="margin:8px 0 0;color:#625d55">${esc(sign)}</p>`)
+  const text = [`Thanks, ${greet}. ${promise}`, '', `Your reference: ${a.reference}`, '', ...a.rows.map(([k, v]) => `${k}: ${v}`), ...(a.extraLine ? ['', a.extraLine] : []), '', call, sign].join('\n')
   return { subject, html, text }
 }

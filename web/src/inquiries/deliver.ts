@@ -71,7 +71,7 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
     const hu = site === 'homeupgrades' ? (data as { links: string[]; photos: string[] }) : null
     const ps = opts.photos?.settings ?? null
     const photoLinks = hu && ps && opts.photos ? hu.photos.map((id) => ({ thumb: thumbUrl(ps, id), full: fullUrl(ps, id, opts.photos!.nowSec + THIRTY_DAYS) })) : []
-    const e = teamEmail({ site, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}`, links: hu?.links ?? [], photos: photoLinks, unlinkedPhotos: hu && !photoLinks.length ? hu.photos.length : 0 })
+    const e = teamEmail({ site, kind: def.inquiryType, reference: doc.reference, rows: def.answers(data), subjectDetails: def.subjectDetails(data), phone: contact.phone, adminUrl: `${opts.adminOrigin}/admin/collections/inquiries/${doc.id}`, links: hu?.links ?? [], photos: photoLinks, unlinkedPhotos: hu && !photoLinks.length ? hu.photos.length : 0 })
     try {
       await twice(() => mailer({ from, to: inbox, replyTo: contact.email ?? undefined, ...e, idempotencyKey: `${doc.reference}:team` }), delay)
       update.emailSent = true
@@ -83,7 +83,7 @@ export async function deliverInquiry(payload: Payload, id: number | string, mail
     update.customerEmailSent = true
     errors.push(CUSTOMER_SKIPPED)
   } else if (contact.email && !doc.customerEmailSent) {
-    const e = customerEmail({ site, reference: doc.reference, name: contact.name, rows: def.customerRows(data), phone: opts.phone, extraLine: site === 'homeupgrades' ? 'Forgot a photo? Just reply to this email with it.' : undefined })
+    const e = customerEmail({ site, kind: def.inquiryType, reference: doc.reference, name: contact.name, rows: def.customerRows(data), phone: opts.phone, extraLine: site === 'homeupgrades' ? 'Forgot a photo? Just reply to this email with it.' : undefined })
     try {
       await twice(() => mailer({ from, to: contact.email!, replyTo: inbox, ...e, idempotencyKey: `${doc.reference}:customer` }), delay)
       update.customerEmailSent = true

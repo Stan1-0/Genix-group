@@ -50,7 +50,7 @@ export async function processQuote(input: Input, deps: Deps): Promise<QuoteResul
   const doc = await deps.payload.create({
     collection: 'inquiries',
     data: {
-      reference, division: input.site, type: 'quote', status: 'new', summary: def.summary(data),
+      reference, division: input.site, type: def.inquiryType, status: 'new', summary: def.summary(data),
       name: c.name, phone: c.phone, email: c.email, notes: c.notes,
       details: def.details(data),
       ipHash,
