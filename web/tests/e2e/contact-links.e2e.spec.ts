@@ -17,8 +17,8 @@ for (const host of ['logistics', 'homeupgrades']) {
 
   test(`${host}: the Contact page's own nav still reaches the home sections`, async ({ page }) => {
     await page.goto(`${home}contact`)
-    const first = page.locator('nav#nav a').first()
-    await expect(first).toHaveAttribute('href', /^\/#/)
+    await expect(page.locator('nav#nav a').first()).toHaveAttribute('href', '/services')
+    await expect(page.locator('nav#nav a').nth(1)).toHaveAttribute('href', /^\/#/)
     await expect(page.locator('nav#nav a', { hasText: /^Contact$/ })).toHaveCount(1)
   })
 }

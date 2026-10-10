@@ -13,6 +13,9 @@ export function Lanes() {
           <p className="body" data-reveal>
             For businesses that ship every week, and for people moving once. Either way it starts with the same short form.
           </p>
+          <a className="svcpage-more" href="/services" data-reveal>
+            All services <span aria-hidden="true">→</span>
+          </a>
         </div>
         <div className="lane-grid swipe">
           <article className="lane-card" data-reveal>

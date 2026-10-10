@@ -65,7 +65,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     logo: { src: '/brand/genix-logistics-logo.svg', width: 876, height: 405 },
     icons: '/icons/logistics',
     nav: [
-      { label: 'Services', href: '/#services' },
+      { label: 'Services', href: '/services' },
       { label: 'How it works', href: '/#how' },
       { label: 'Where we go', href: '/#areas' },
       { label: 'Contact', href: '/contact' },
@@ -86,7 +86,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     logo: { src: '/brand/genix-home-upgrades-logo.svg', width: 976, height: 722 },
     icons: '/icons/homeupgrades',
     nav: [
-      { label: 'Services', href: '/#services' },
+      { label: 'Services', href: '/services' },
       { label: 'Our work', href: '/#work' },
       { label: 'How we work', href: '/#process' },
       { label: 'Contact', href: '/contact' },

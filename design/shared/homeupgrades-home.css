@@ -223,6 +223,30 @@
         margin: 0;
         max-width: 44ch;
       }
+      .svcpage-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        justify-self: start;
+        font-weight: 600;
+        color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 2px;
+      }
+      .svcpage-more:hover {
+        text-decoration-color: var(--gold);
+      }
+      .svcpage-more:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 2px;
+      }
+      @media (min-width: 961px) {
+        .sec-head .svcpage-more {
+          grid-column: 2;
+        }
+      }
       .svc-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

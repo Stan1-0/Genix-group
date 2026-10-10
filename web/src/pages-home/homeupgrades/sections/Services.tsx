@@ -19,6 +19,9 @@ export function Services() {
           <p className="body" data-reveal>
             One task or a whole to-do list. We make the next step simple.
           </p>
+          <a className="svcpage-more" href="/services" data-reveal>
+            All services <span aria-hidden="true">→</span>
+          </a>
         </div>
         <fieldset className="svc-toggle" data-reveal>
           <legend className="sr-only">Show services for</legend>
