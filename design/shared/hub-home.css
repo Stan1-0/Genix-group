@@ -1226,3 +1226,22 @@
           grid-template-columns: 1fr;
         }
       }
+
+      .intro .more {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        margin-top: 24px;
+        font: 600 16px/1 var(--f-body);
+        color: var(--black);
+        text-decoration: none;
+        border-bottom: 1px solid var(--black);
+      }
+      .intro .more:hover {
+        border-bottom-color: var(--gold);
+      }
+      .intro .more:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
+      }

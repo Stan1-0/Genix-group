@@ -105,3 +105,6 @@ Uploads are private (`authenticated`). Thumbnails in emails and /admin are signe
 
 ### Privacy policy
 The group's privacy policy is `web/src/legal/privacy.tsx`, served at `thegenixgroup.com/privacy` (division sites redirect there; the quote forms and every footer link to it). When a new service provider handles visitors' data, a new kind of data is collected, or a new business gets a form, update the text and `PRIVACY_UPDATED` in that file. The hub's mailing address appears on the page only when street, city, state and ZIP are all filled in under Admin → Sites → hub.
+
+### About page
+The group's About page is `web/src/pages-home/hub/About.tsx`, served at `thegenixgroup.com/about`. It reuses names, taglines and origins from `SITES`, and promise wording from the Logistics and Home Upgrades pages. Update the text there when a promise or business changes. Division and Multimedia About pages don't exist yet (`/about` is a 404 there). The mailing address shows only when street, city, state and ZIP are all set under Admin → Sites → hub.

@@ -44,7 +44,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     logo: { src: '/brand/genix-group-logo.svg', width: 1161, height: 340 },
     icons: '/icons/hub',
     nav: [
-      { label: 'Who we are', href: '/#about' },
+      { label: 'Who we are', href: '/about' },
       { label: 'Our businesses', href: '/#businesses' },
       { label: 'Get a quote', href: '/#contact' },
     ],

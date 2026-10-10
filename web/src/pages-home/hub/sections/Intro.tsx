@@ -28,6 +28,9 @@ export function Intro() {
               <span>Logistics ·{' '}Home{' '}Upgrades ·{' '}Multimedia</span>
             </li>
           </ul>
+          <a className="more" href="/about" data-reveal>
+            More about the group <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
