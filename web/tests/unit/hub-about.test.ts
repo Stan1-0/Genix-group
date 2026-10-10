@@ -19,7 +19,7 @@ describe('HubAbout', () => {
   it('links each business to its own host and shows its tagline', () => {
     const out = html()
     for (const [key, name] of [['logistics', 'Genix Logistics'], ['homeupgrades', 'Genix Home Upgrades'], ['multimedia', 'Genix Multimedia']] as const) {
-      expect(out).toMatch(new RegExp(`<a href="https?://${key}\.[^"]+">${name}</a>`))
+      expect(out).toMatch(new RegExp(`<a href="https?://${key}\\.[^"]+">${name}</a>`))
       expect(out).toContain(SITES[key].tagline)
     }
   })
