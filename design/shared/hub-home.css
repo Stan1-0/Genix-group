@@ -1245,3 +1245,238 @@
         outline: 2px solid var(--gold);
         outline-offset: 3px;
       }
+
+      /* ---------- Contact page (hub-contact.html) ---------- */
+      .contact-hero {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0 clamp(48px, 6vw, 80px);
+      }
+      .contact-hero h1 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 18ch;
+      }
+      .contact-hero .body {
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 62ch;
+      }
+      .contact-routes {
+        background: var(--paper);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      .contact-routes h2,
+      .contact-details h2,
+      .contact-form h2 {
+        font: 600 clamp(28px, 3.4vw, 44px)/1.05 var(--f-display);
+        letter-spacing: -0.03em;
+        margin: 0 0 clamp(24px, 3vw, 40px);
+      }
+      .contact-routes :focus-visible,
+      .contact-message :focus-visible,
+      .contact-sent :focus-visible {
+        outline-color: var(--black);
+      }
+      .contact-message {
+        background: var(--white);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: clamp(32px, 6vw, 96px);
+        align-items: start;
+      }
+      .contact-about {
+        border: 0;
+        margin: 0 0 24px;
+        padding: 0;
+        min-width: 0;
+      }
+      .contact-about legend,
+      .field label {
+        font: 600 15px/1.4 var(--f-body);
+        color: var(--ink);
+        padding: 0;
+      }
+      .contact-about legend {
+        margin-bottom: 4px;
+      }
+      .contact-about label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .contact-about input {
+        flex: none;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        accent-color: var(--black);
+      }
+      .field {
+        margin: 0 0 20px;
+        min-width: 0;
+      }
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+      }
+      .field input,
+      .field textarea {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 0;
+        background: var(--white);
+        color: var(--ink);
+        font: 400 16px/1.4 var(--f-body);
+      }
+      .field textarea {
+        resize: vertical;
+      }
+      .field input:hover,
+      .field textarea:hover {
+        border-color: var(--muted);
+      }
+      .field-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0 20px;
+      }
+      .contact-form .hint {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+        font-weight: 400;
+        margin: 6px 0 0;
+      }
+      .field label .hint {
+        display: inline;
+        margin: 0;
+      }
+      .field.invalid input,
+      .field.invalid textarea,
+      .contact-about.invalid {
+        border-color: #b3261e;
+      }
+      .contact-about.invalid {
+        border: 1px solid #b3261e;
+        padding: 12px;
+      }
+      .contact-form .err {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #b3261e;
+        margin: 6px 0 0;
+      }
+      .contact-form .err:empty {
+        margin: 0;
+      }
+      .contact-form .hp {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .privacy {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .privacy a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .contact-send {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 24px;
+        border: 0;
+        border-radius: 0;
+        cursor: pointer;
+        background: var(--black);
+        color: var(--white);
+        font: 600 16px/1 var(--f-body);
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      .contact-send span {
+        color: var(--gold);
+        transition: color 0.2s;
+      }
+      .contact-send:hover {
+        background: var(--gold);
+        color: var(--black);
+      }
+      .contact-send:hover span {
+        color: var(--black);
+      }
+      .contact-send:focus-visible {
+        outline-offset: 4px;
+      }
+      .sent {
+        background: var(--paper);
+        padding: 24px;
+        margin-top: 24px;
+      }
+      .sent[hidden] {
+        display: none;
+      }
+      .sent p {
+        margin: 0 0 8px;
+      }
+      .sent-ref {
+        font: 500 13px/1.5 var(--f-mono);
+        color: var(--muted);
+      }
+      .sent .sent-title {
+        font: 600 22px/1.2 var(--f-display);
+      }
+      .contact-details .facts li span:last-child {
+        overflow-wrap: anywhere;
+      }
+      .contact-details a {
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+      .contact-sent {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0 clamp(64px, 8vw, 110px);
+      }
+      .contact-sent .wrap > * {
+        max-width: 640px;
+      }
+      .contact-sent h1 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+      }
+      .contact-sent .body {
+        color: var(--ink-2);
+        margin: 0 0 32px;
+      }
+      .contact-sent .contact-send {
+        max-width: none;
+      }
+      @media (min-width: 641px) {
+        .field-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 960px) {
+        .contact-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }

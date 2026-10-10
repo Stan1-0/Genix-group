@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | The Genix Group</title>
+    <meta
+      name="description"
+      content="Contact The Genix Group: send a message, or go straight to Genix Logistics, Home Upgrades or Multimedia."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/genix-mark.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon-32.png"
+    />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="canonical" href="https://thegenixgroup.com/contact" />
+    <!-- Link previews (social, messaging, Slack…). Crawlers need absolute URLs. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Genix Group" />
+    <meta property="og:url" content="https://thegenixgroup.com/contact" />
+    <meta
+      property="og:title"
+      content="Contact | The Genix Group"
+    />
+    <meta
+      property="og:description"
+      content="Contact The Genix Group: send a message, or go straight to Genix Logistics, Home Upgrades or Multimedia."
+    />
+    <meta
+      property="og:image"
+      content="https://thegenixgroup.com/assets/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Genix Group logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="shared/hub-home.css" />
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="wrap">
+        <a class="logo" href="hub-home.html" aria-label="The Genix Group home">
+          <img
+            class="logo-mark"
+            src="assets/genix-mark.svg"
+            alt=""
+            width="290"
+            height="340"
+          />
+          <img
+            class="logo-word"
+            src="assets/genix-wordmark.svg"
+            alt=""
+            width="832"
+            height="326"
+          />
+        </a>
+        <nav class="nav" id="nav" aria-label="Primary">
+          <a href="hub-about.html">Who we are</a>
+          <a href="hub-home.html#businesses">Our businesses</a>
+          <a href="hub-home.html#contact">Get a quote</a>
+          <a href="hub-home.html#contact" class="nav-contact" hidden>Start a conversation</a>
+        </nav>
+        <a class="header-cta" href="hub-home.html#contact"
+          >Start a conversation <span aria-hidden="true">↗</span></a
+        >
+        <button
+          class="menu-btn"
+          id="menuBtn"
+          aria-expanded="false"
+          aria-controls="nav"
+          aria-label="Open menu"
+        >
+          <span></span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="contact-hero" id="contact-top">
+        <div class="wrap">
+          <p class="label">Contact</p>
+          <h1>Talk to the group.</h1>
+          <p class="body">Tell us what you need and we'll put the right team on it. Ready for a price? Go straight to the business.</p>
+        </div>
+      </section>
+      <section class="contact-routes" id="contact-routes">
+        <div class="wrap">
+          <h2>Go straight to a business</h2>
+          <div class="options">
+            <a class="option" href="https://logistics.thegenixgroup.com/contact" style="--c: var(--gold-text); --c-dark: var(--gold)">
+              <span class="verb">Move</span>
+              <b>Ship something</b>
+              <p>Freight, haulage, last-mile delivery and courier.</p>
+              <span class="go">Get a freight quote<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
+            </a>
+            <a class="option" href="https://homeupgrades.thegenixgroup.com/contact" style="--c: var(--make); --c-dark: var(--make-light)">
+              <span class="verb">Make</span>
+              <b>Upgrade a space</b>
+              <p>Accent walls, TV units, outdoor builds and handyman jobs.</p>
+              <span class="go">Plan an upgrade<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
+            </a>
+            <a class="option" href="hub-contact.html?about=multimedia#message" style="--c: var(--tell); --c-dark: var(--tell-light)">
+              <span class="verb">Tell</span>
+              <b>Tell your story</b>
+              <p>Photography, videography, branding and design.</p>
+              <span class="go">Send us a message<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="contact-message" id="contact-message">
+        <div class="wrap contact-grid">
+          <form class="contact-form" id="message" aria-labelledby="messageTitle" data-send-mode="resend" data-offline-message="" data-phone="">
+            <input type="hidden" name="site" value="hub" />
+            <input type="hidden" name="t" id="hcT" />
+            <h2 id="messageTitle">Send us a message</h2>
+            <fieldset class="contact-about" id="hcAbout" aria-describedby="hcAboutErr">
+              <legend>Which business is this about?</legend>
+              <label><input type="radio" name="about" value="logistics" required /> Genix Logistics</label>
+              <label><input type="radio" name="about" value="homeupgrades" /> Genix Home Upgrades</label>
+              <label><input type="radio" name="about" value="multimedia" /> Genix Multimedia</label>
+              <label><input type="radio" name="about" value="unsure" /> Not sure, or more than one</label>
+              <p class="err" id="hcAboutErr"></p>
+            </fieldset>
+            <div class="field"><label for="hcName">Name</label><input id="hcName" name="name" autocomplete="name" maxlength="120" required aria-describedby="hcNameErr" /><p class="err" id="hcNameErr"></p></div>
+            <div class="field-row">
+              <div class="field"><label for="hcEmail">Email</label><input id="hcEmail" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="hcEmailErr" /><p class="err" id="hcEmailErr"></p></div>
+              <div class="field"><label for="hcPhone">Phone <span class="hint">(optional)</span></label><input id="hcPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" aria-describedby="hcPhoneErr" /><p class="err" id="hcPhoneErr"></p></div>
+            </div>
+            <div class="field"><label for="hcMessage">Message</label><textarea id="hcMessage" name="message" rows="6" minlength="10" maxlength="2000" required aria-describedby="hcMessageHint hcMessageErr"></textarea><p class="hint" id="hcMessageHint">What you need, and any dates or places that matter.</p><p class="err" id="hcMessageErr"></p></div>
+            <div class="hp" aria-hidden="true"><label for="hcHp">Leave this empty</label><input id="hcHp" name="company_site" tabindex="-1" autocomplete="off" /></div>
+            <p class="privacy">We use your details only to reply to this message. Read our <a href="https://thegenixgroup.com/privacy">privacy policy</a>.</p>
+            <button type="submit" class="contact-send" id="hcSend">Send message <span aria-hidden="true">↗</span></button>
+            <p class="sr-only" id="hcStatus" role="status" tabindex="-1"></p>
+            <div class="sent" id="hcSent" tabindex="-1" hidden>
+              <p class="sent-ref" id="hcRef">Message received</p>
+              <p class="sent-title">Message received.</p>
+              <p>We'll reply by email within two business days.</p>
+            </div>
+          </form>
+          <div class="contact-details">
+            <h2>Find us</h2>
+            <ul class="facts">
+              <li><span>Head office</span><span>San Diego, CA</span></li>
+              <li><span>Email</span><span><a href="mailto:hello@thegenixgroup.com">hello@thegenixgroup.com</a></span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="brand">
+          <a class="logo-tile" href="hub-home.html" aria-label="The Genix Group home">
+            <span class="logo-tile-row">
+              <img
+                class="logo-mark"
+                src="assets/genix-mark.svg"
+                alt=""
+                width="290"
+                height="340"
+              />
+              <img
+                class="logo-word"
+                src="assets/genix-wordmark.svg"
+                alt=""
+                width="832"
+                height="326"
+              />
+            </span>
+          </a>
+        </div>
+        <div>
+          <h2>Businesses</h2>
+          <ul>
+            <li>
+              <a href="https://logistics.thegenixgroup.com"
+                ><span class="dot" style="background: var(--move)"></span>Genix
+                Logistics</a
+              >
+            </li>
+            <li>
+              <a href="https://homeupgrades.thegenixgroup.com"
+                ><span class="dot" style="background: var(--make)"></span>Genix
+                Home Upgrades</a
+              >
+            </li>
+            <li>
+              <a href="https://multimedia.thegenixgroup.com"
+                ><span class="dot" style="background: var(--tell)"></span>Genix
+                Multimedia</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>Group</h2>
+          <ul>
+            <li><a href="hub-about.html">Who we are</a></li>
+            <li><a href="hub-home.html#businesses">Our businesses</a></li>
+            <li><a href="hub-home.html#contact">Get a quote</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Head office</h2>
+          <ul>
+            <li>San Diego, California, USA</li>
+            <li>
+              <a href="mailto:hello@thegenixgroup.com"
+                >hello@thegenixgroup.com</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="legal">
+          <span>© 2026 The Genix Group</span><span><a href="https://thegenixgroup.com/privacy">Privacy policy</a>&nbsp;&nbsp;thegenixgroup.com</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu
+      (() => {
+        const header = document.getElementById("siteHeader");
+        const btn = document.getElementById("menuBtn");
+        const contact = header.querySelector(".nav-contact");
+        const set = (open) => {
+          header.classList.toggle("menu-open", open);
+          btn.setAttribute("aria-expanded", open);
+          btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+          contact.hidden = !open;
+        };
+        btn.addEventListener("click", () =>
+          set(!header.classList.contains("menu-open")),
+        );
+        header
+          .querySelectorAll(".nav a")
+          .forEach((a) => a.addEventListener("click", () => set(false)));
+      })();
+    </script>
+  </body>
+</html>

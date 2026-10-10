@@ -1247,4 +1247,239 @@
         outline-offset: 3px;
       }
 
+      /* ---------- Contact page (hub-contact.html) ---------- */
+      html[data-site="hub"] .contact-hero {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0 clamp(48px, 6vw, 80px);
+      }
+      html[data-site="hub"] .contact-hero h1 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+        max-width: 18ch;
+      }
+      html[data-site="hub"] .contact-hero .body {
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 62ch;
+      }
+      html[data-site="hub"] .contact-routes {
+        background: var(--paper);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      html[data-site="hub"] .contact-routes h2,
+      html[data-site="hub"] .contact-details h2,
+      html[data-site="hub"] .contact-form h2 {
+        font: 600 clamp(28px, 3.4vw, 44px)/1.05 var(--f-display);
+        letter-spacing: -0.03em;
+        margin: 0 0 clamp(24px, 3vw, 40px);
+      }
+      html[data-site="hub"] .contact-routes :focus-visible,
+      html[data-site="hub"] .contact-message :focus-visible,
+      html[data-site="hub"] .contact-sent :focus-visible {
+        outline-color: var(--black);
+      }
+      html[data-site="hub"] .contact-message {
+        background: var(--white);
+        padding: clamp(56px, 8vw, 110px) 0;
+      }
+      html[data-site="hub"] .contact-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: clamp(32px, 6vw, 96px);
+        align-items: start;
+      }
+      html[data-site="hub"] .contact-about {
+        border: 0;
+        margin: 0 0 24px;
+        padding: 0;
+        min-width: 0;
+      }
+      html[data-site="hub"] .contact-about legend,
+      html[data-site="hub"] .field label {
+        font: 600 15px/1.4 var(--f-body);
+        color: var(--ink);
+        padding: 0;
+      }
+      html[data-site="hub"] .contact-about legend {
+        margin-bottom: 4px;
+      }
+      html[data-site="hub"] .contact-about label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      html[data-site="hub"] .contact-about input {
+        flex: none;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        accent-color: var(--black);
+      }
+      html[data-site="hub"] .field {
+        margin: 0 0 20px;
+        min-width: 0;
+      }
+      html[data-site="hub"] .field label {
+        display: block;
+        margin-bottom: 6px;
+      }
+      html[data-site="hub"] .field input,
+      html[data-site="hub"] .field textarea {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 0;
+        background: var(--white);
+        color: var(--ink);
+        font: 400 16px/1.4 var(--f-body);
+      }
+      html[data-site="hub"] .field textarea {
+        resize: vertical;
+      }
+      html[data-site="hub"] .field input:hover,
+      html[data-site="hub"] .field textarea:hover {
+        border-color: var(--muted);
+      }
+      html[data-site="hub"] .field-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0 20px;
+      }
+      html[data-site="hub"] .contact-form .hint {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+        font-weight: 400;
+        margin: 6px 0 0;
+      }
+      html[data-site="hub"] .field label .hint {
+        display: inline;
+        margin: 0;
+      }
+      html[data-site="hub"] .field.invalid input,
+      html[data-site="hub"] .field.invalid textarea,
+      html[data-site="hub"] .contact-about.invalid {
+        border-color: #b3261e;
+      }
+      html[data-site="hub"] .contact-about.invalid {
+        border: 1px solid #b3261e;
+        padding: 12px;
+      }
+      html[data-site="hub"] .contact-form .err {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #b3261e;
+        margin: 6px 0 0;
+      }
+      html[data-site="hub"] .contact-form .err:empty {
+        margin: 0;
+      }
+      html[data-site="hub"] .contact-form .hp {
+        position: absolute;
+        left: -10000px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      html[data-site="hub"] .privacy {
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      html[data-site="hub"] .privacy a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      html[data-site="hub"] .contact-send {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 54px;
+        padding: 0 24px;
+        border: 0;
+        border-radius: 0;
+        cursor: pointer;
+        background: var(--black);
+        color: var(--white);
+        font: 600 16px/1 var(--f-body);
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      html[data-site="hub"] .contact-send span {
+        color: var(--gold);
+        transition: color 0.2s;
+      }
+      html[data-site="hub"] .contact-send:hover {
+        background: var(--gold);
+        color: var(--black);
+      }
+      html[data-site="hub"] .contact-send:hover span {
+        color: var(--black);
+      }
+      html[data-site="hub"] .contact-send:focus-visible {
+        outline-offset: 4px;
+      }
+      html[data-site="hub"] .sent {
+        background: var(--paper);
+        padding: 24px;
+        margin-top: 24px;
+      }
+      html[data-site="hub"] .sent[hidden] {
+        display: none;
+      }
+      html[data-site="hub"] .sent p {
+        margin: 0 0 8px;
+      }
+      html[data-site="hub"] .sent-ref {
+        font: 500 13px/1.5 var(--f-mono);
+        color: var(--muted);
+      }
+      html[data-site="hub"] .sent .sent-title {
+        font: 600 22px/1.2 var(--f-display);
+      }
+      html[data-site="hub"] .contact-details .facts li span:last-child {
+        overflow-wrap: anywhere;
+      }
+      html[data-site="hub"] .contact-details a {
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+      html[data-site="hub"] .contact-sent {
+        background: var(--white);
+        padding: clamp(80px, 11vw, 150px) 0 clamp(64px, 8vw, 110px);
+      }
+      html[data-site="hub"] .contact-sent .wrap > * {
+        max-width: 640px;
+      }
+      html[data-site="hub"] .contact-sent h1 {
+        font: 600 clamp(38px, 5vw, 72px)/1 var(--f-display);
+        letter-spacing: -0.04em;
+        margin: 0 0 clamp(24px, 3vw, 36px);
+      }
+      html[data-site="hub"] .contact-sent .body {
+        color: var(--ink-2);
+        margin: 0 0 32px;
+      }
+      html[data-site="hub"] .contact-sent .contact-send {
+        max-width: none;
+      }
+      @media (min-width: 641px) {
+        html[data-site="hub"] .field-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 960px) {
+        html[data-site="hub"] .contact-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
 html[data-site="hub"] { --f-display: var(--font-schibsted), system-ui, sans-serif; --f-body: var(--font-hanken), system-ui, sans-serif; --f-mono: var(--font-plex-mono), ui-monospace, monospace; }

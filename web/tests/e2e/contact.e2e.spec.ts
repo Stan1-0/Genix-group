@@ -15,7 +15,7 @@ test('logistics /contact: heading, details card, the quote form, metadata', asyn
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
 })
 
-for (const host of ['localhost:3000', 'multimedia.localhost:3000']) {
+for (const host of ['multimedia.localhost:3000']) {
   test(`${host}/contact is a 404`, async ({ page }) => {
     const res = await page.goto(`http://${host}/contact`)
     expect(res?.status()).toBe(404)

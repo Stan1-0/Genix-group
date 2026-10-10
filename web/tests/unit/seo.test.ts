@@ -33,10 +33,10 @@ describe('sitemapXml / robotsTxt', () => {
     expect(sitemapXml('hub', root)).toContain('/about</loc>')
     for (const k of ['logistics', 'homeupgrades', 'multimedia'] as const) expect(sitemapXml(k, root)).not.toContain('/about')
   })
-  it('lists /contact on the division sitemaps that have the page, never the hub or Multimedia', () => {
+  it('lists /contact on the hub and the division sitemaps that have the page, never Multimedia', () => {
     expect(sitemapXml('logistics', root)).toContain('/contact</loc>')
     expect(sitemapXml('homeupgrades', root)).toContain('/contact</loc>')
-    expect(sitemapXml('hub', root)).not.toContain('/contact')
+    expect(sitemapXml('hub', root)).toContain('/contact</loc>')
     expect(sitemapXml('multimedia', root)).not.toContain('/contact')
   })
   it('allows indexing only in production and points at the sitemap', () => {
