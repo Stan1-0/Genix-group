@@ -1340,6 +1340,10 @@
       .field textarea {
         resize: vertical;
       }
+      .contact-form .field input,
+      .contact-form .field textarea {
+        border-color: var(--muted);
+      }
       .field input:hover,
       .field textarea:hover {
         border-color: var(--muted);

@@ -23,7 +23,7 @@ The quote forms collect names, contact details and (Home Upgrades) photos, and t
 ## The page
 
 - Route: `web/src/app/(sites)/[site]/privacy/page.tsx`. On the **hub** it renders the policy; on any **division** host it permanently redirects (308) to `https://thegenixgroup.com/privacy` (`siteOrigin('hub')`).
-- Layout: the hub's header and footer around a plain, readable article — `<h1>Privacy policy</h1>`, "Last updated October 5, 2026", then `<h2>` sections in the order of the appendix. Reading width ≈ 68ch, comfortable line height, left-aligned; works from 320 px up. The service-provider list is a small table on desktop that stacks into short blocks on phones. Styles are scoped (`.legal …`) and use the hub's tokens (black + gold); no new animation.
+- Layout: the hub's header and footer around a plain, readable article — `<h1>Privacy policy</h1>`, "Last updated October 10, 2026", then `<h2>` sections in the order of the appendix. Reading width ≈ 68ch, comfortable line height, left-aligned; works from 320 px up. The service-provider list is a small table on desktop that stacks into short blocks on phones. Styles are scoped (`.legal …`) and use the hub's tokens (black + gold); no new animation.
 - Hub address (street, city, state, ZIP) from the `sites` record is added to the contact paragraph **only when all four are present**; otherwise omitted (no placeholders).
 - Metadata: title "Privacy policy | The Genix Group", description one sentence, canonical `https://thegenixgroup.com/privacy`, indexable. Added to the hub's `pages` so it appears in `sitemap.xml`.
 - Policy content lives in one module (`web/src/legal/privacy.tsx`: a typed data structure + a small renderer) so the page, tests and the "last updated" date share one source.
@@ -48,7 +48,7 @@ Per-site policies; admin-editable text; a cookie banner (nothing to consent to);
 ## Appendix — policy text (what the page will say)
 
 **Privacy policy**
-Last updated October 5, 2026
+Last updated October 10, 2026
 
 This policy explains what The Genix Group collects when you use thegenixgroup.com and the sites of our businesses, what we do with it, and your choices. We've kept it short on purpose.
 
@@ -59,7 +59,8 @@ The Genix Group runs three businesses: Genix Logistics (freight, courier runs an
 When you send a request through a form, we collect what you type: your name, your phone number or email, and the details of your request.
 - Genix Logistics: where something is going from and to (ZIP codes), the date, what's moving, and any notes.
 - Genix Home Upgrades: the kind of project, whether it's for a home or a business, when you'd like to start, a rough budget if you give one, your property ZIP, your description, any links you add, the photos you upload, and a best time to call if you choose one.
-- Genix Multimedia doesn't have a request form yet. If you email us, we keep your message.
+- Genix Multimedia doesn't have its own request form yet. You can message us through the group's contact form or by email, and we keep your message.
+- The Genix Group contact form: which of our businesses your message is about, and your message.
 
 We also collect two technical things. To limit spam, we keep a scrambled (hashed) version of your IP address; it can't be turned back into your address. And our host counts visits and page speed in a way that doesn't use cookies and doesn't identify you.
 

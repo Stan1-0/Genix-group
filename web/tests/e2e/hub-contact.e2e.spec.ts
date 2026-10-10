@@ -98,7 +98,7 @@ test('JS: inline errors match the server and focus the first problem', async ({ 
   await expect(page.locator('#hcEmailErr')).toHaveText('Enter your email so we can reply.')
   await expect(page.locator('#hcPhoneErr')).toHaveText('Enter a phone number with area code.')
   await expect(page.locator('#hcMessageErr')).toHaveText('Tell us a little more (at least 10 characters).')
-  await expect(page.locator('input[name="about"]').first()).toBeFocused()
+  await expect(page.locator('#hcName')).toBeFocused()
   await page.fill('#hcName', 'Ana')
   await expect(page.locator('#hcNameErr')).toHaveText('') // typing clears that field's error
   await expect(page.locator('#hcSent')).toBeHidden()

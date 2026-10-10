@@ -26,7 +26,7 @@ Other known issues (inherited from the approved prototypes, left as designed):
 
 ## Contact pages
 
-`/contact` on Logistics and Home Upgrades reuses each home page's quote form through `src/components/forms/*`. Change a form there once and both pages update. Hub and Multimedia have no Contact page yet (`/contact` is a 404 there).
+`/contact` on Logistics and Home Upgrades reuses each home page's quote form through `src/components/forms/*`. Change a form there once and both pages update. The hub has its own Contact page (see "Hub Contact form"); Multimedia has none yet (`/contact` is a 404 there).
 
 ## Deploy (Vercel)
 The repo is ready to import as one Vercel project serving all four domains.

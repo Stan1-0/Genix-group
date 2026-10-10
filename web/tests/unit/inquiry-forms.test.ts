@@ -60,6 +60,12 @@ describe('hub message form', () => {
     if (long.ok) throw new Error('expected errors')
     expect(long.errors).toEqual({ email: 'Enter an email like name@company.com.', message: 'Keep your message under 2,000 characters.' })
   })
+  it('counts CRLF line breaks as one character and stores LF only', () => {
+    const message = 'line\r\n'.repeat(334) + 'x' // 2,005 with CRLF, 1,671 after normalising
+    const r = def().parse({ ...ok, message }, '2026-10-10')
+    if (!r.ok) throw new Error('expected ok')
+    expect((r.data as { message: string }).message).not.toContain('\r')
+  })
   it('the customer rows carry only the About choice', () => {
     const r = def().parse({ ...ok, phone: '(619) 555-0100' }, '2026-10-10')
     if (!r.ok) throw new Error('expected ok')

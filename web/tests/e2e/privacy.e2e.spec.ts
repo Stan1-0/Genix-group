@@ -6,7 +6,7 @@ const HEADINGS = ['Who we are', 'What we collect', 'How we use it', 'Who handles
 test('the hub serves the policy', async ({ page }) => {
   await page.goto(`${HUB}/privacy`)
   await expect(page.locator('h1')).toHaveText('Privacy policy')
-  await expect(page.locator('.policy-updated')).toContainText('Last updated October 5, 2026')
+  await expect(page.locator('.policy-updated')).toContainText('Last updated October 10, 2026')
   await expect(page.locator('.policy-body h2')).toHaveText(HEADINGS)
   await expect(page.locator('.policy-table thead th')).toHaveText(['Service', 'What it does for us', 'What it receives'])
   await expect(page.locator('.policy-table tbody th')).toHaveText(['Resend', 'Cloudinary', 'Vercel', 'Neon'])

@@ -38,7 +38,7 @@ export function parseHubMessage(raw: Record<string, unknown>): Parsed<HubMessage
   else if (email.length > 254 || !EMAIL.test(email)) errors.email = HUB_MESSAGES.email
   const phone = str(raw.phone) || null
   if (phone && (phone.length > 40 || phone.replace(/\D/g, '').length < 10)) errors.phone = HUB_MESSAGES.phone
-  const message = str(raw.message)
+  const message = str(raw.message).replace(/\r\n?/g, '\n')
   if (message.length < 10) errors.message = HUB_MESSAGES.messageShort
   else if (message.length > 2000) errors.message = HUB_MESSAGES.messageLong
   if (Object.keys(errors).length) return { ok: false, errors }

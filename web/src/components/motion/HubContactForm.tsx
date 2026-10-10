@@ -5,7 +5,7 @@ import { parseHubMessage } from '@/inquiries/forms/hub'
 import { rateLimitedMessage, serverErrorMessage } from '@/inquiries/messages'
 
 const SEND_TIMEOUT_MS = 15_000
-const ORDER = ['about', 'name', 'email', 'phone', 'message'] as const
+const ORDER = ['name', 'email', 'phone', 'about', 'message'] as const
 type Key = (typeof ORDER)[number]
 const FIELD_ID: Record<Key, string> = { about: 'hcAbout', name: 'hcName', email: 'hcEmail', phone: 'hcPhone', message: 'hcMessage' }
 

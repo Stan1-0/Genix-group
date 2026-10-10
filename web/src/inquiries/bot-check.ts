@@ -9,6 +9,6 @@ export function botCheckFor(js: boolean, checkBotId: () => Promise<{ isBot: bool
     and comes back as a bot, which silently drops the request behind a fake reference. */
 export const BOTID_PROTECT = [
   { path: '/', method: 'POST' }, // division home pages
-  { path: '/contact', method: 'POST' }, // division Contact pages
+  { path: '/contact', method: 'POST' }, // Contact pages (divisions and the hub)
   { path: '/uploads', method: 'POST' }, // Home Upgrades photo upload grants
 ] as const

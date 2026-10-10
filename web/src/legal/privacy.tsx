@@ -1,6 +1,6 @@
 import { formatAddress, type PostalAddress } from '@/sites/data-shape'
 
-export const PRIVACY_UPDATED = { iso: '2026-10-05', label: 'October 5, 2026' } as const
+export const PRIVACY_UPDATED = { iso: '2026-10-10', label: 'October 10, 2026' } as const
 
 /** Section headings in page order; the page and its tests share this list. */
 export const PRIVACY_HEADINGS = [
@@ -62,7 +62,10 @@ export function PrivacyPolicy({ email, address }: { email: string; address: Post
           upload, and a best time to call if you choose one.
         </li>
         <li>
-          <strong>Genix Multimedia</strong> doesn&apos;t have a request form yet. If you email us, we keep your message.
+          <strong>Genix Multimedia</strong> doesn&apos;t have its own request form yet. You can message us through the group&apos;s contact form or by email, and we keep your message.
+        </li>
+        <li>
+          <strong>The Genix Group contact form:</strong> which of our businesses your message is about, and your message.
         </li>
       </ul>
       <p>

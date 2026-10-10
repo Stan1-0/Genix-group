@@ -124,6 +124,11 @@
             <input type="hidden" name="site" value="hub" />
             <input type="hidden" name="t" id="hcT" />
             <h2 id="messageTitle">Send us a message</h2>
+            <div class="field"><label for="hcName">Name</label><input id="hcName" name="name" autocomplete="name" maxlength="120" required aria-describedby="hcNameErr" /><p class="err" id="hcNameErr"></p></div>
+            <div class="field-row">
+              <div class="field"><label for="hcEmail">Email</label><input id="hcEmail" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="hcEmailErr" /><p class="err" id="hcEmailErr"></p></div>
+              <div class="field"><label for="hcPhone">Phone <span class="hint">(optional)</span></label><input id="hcPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" aria-describedby="hcPhoneErr" /><p class="err" id="hcPhoneErr"></p></div>
+            </div>
             <fieldset class="contact-about" id="hcAbout" aria-describedby="hcAboutErr">
               <legend>Which business is this about?</legend>
               <label><input type="radio" name="about" value="logistics" required /> Genix Logistics</label>
@@ -132,11 +137,6 @@
               <label><input type="radio" name="about" value="unsure" /> Not sure, or more than one</label>
               <p class="err" id="hcAboutErr"></p>
             </fieldset>
-            <div class="field"><label for="hcName">Name</label><input id="hcName" name="name" autocomplete="name" maxlength="120" required aria-describedby="hcNameErr" /><p class="err" id="hcNameErr"></p></div>
-            <div class="field-row">
-              <div class="field"><label for="hcEmail">Email</label><input id="hcEmail" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="hcEmailErr" /><p class="err" id="hcEmailErr"></p></div>
-              <div class="field"><label for="hcPhone">Phone <span class="hint">(optional)</span></label><input id="hcPhone" name="phone" type="tel" autocomplete="tel" maxlength="40" aria-describedby="hcPhoneErr" /><p class="err" id="hcPhoneErr"></p></div>
-            </div>
             <div class="field"><label for="hcMessage">Message</label><textarea id="hcMessage" name="message" rows="6" minlength="10" maxlength="2000" required aria-describedby="hcMessageHint hcMessageErr"></textarea><p class="hint" id="hcMessageHint">What you need, and any dates or places that matter.</p><p class="err" id="hcMessageErr"></p></div>
             <div class="hp" aria-hidden="true"><label for="hcHp">Leave this empty</label><input id="hcHp" name="company_site" tabindex="-1" autocomplete="off" /></div>
             <p class="privacy">We use your details only to reply to this message. Read our <a href="https://thegenixgroup.com/privacy">privacy policy</a>.</p>
@@ -255,7 +255,7 @@
         const form = document.getElementById("message");
         form.noValidate = true;
         const $ = (id) => document.getElementById(id);
-        const KEYS = ["about", "name", "email", "phone", "message"];
+        const KEYS = ["name", "email", "phone", "about", "message"];
         const IDS = { about: "hcAbout", name: "hcName", email: "hcEmail", phone: "hcPhone", message: "hcMessage" };
         const setErr = (k, msg) => {
           $(IDS[k] + "Err").textContent = msg;

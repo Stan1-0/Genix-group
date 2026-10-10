@@ -14,7 +14,7 @@ describe('PrivacyPolicy', () => {
     expect(out).toContain(`<time dateTime="${PRIVACY_UPDATED.iso}">${PRIVACY_UPDATED.label}</time>`)
     const headings = [...out.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1])
     expect(headings).toEqual([...PRIVACY_HEADINGS])
-    expect(PRIVACY_UPDATED.label).toBe('October 5, 2026')
+    expect(PRIVACY_UPDATED.label).toBe('October 10, 2026')
   })
   it('lists the four providers and states the three commitments', () => {
     const out = html()
@@ -22,6 +22,11 @@ describe('PrivacyPolicy', () => {
     expect(out).toContain('we never sell them')
     expect(out).toContain('We&#x27;ll reply within 45 days.')
     expect(out).toContain('including any photos you uploaded')
+  })
+  it('covers the hub contact form and the Multimedia wording', () => {
+    const out = html()
+    expect(out).toContain('The Genix Group contact form:')
+    expect(out).not.toContain('doesn&#x27;t have a request form yet')
   })
   it('links the contact email', () => {
     expect(html()).toContain('href="mailto:hello@thegenixgroup.com"')
