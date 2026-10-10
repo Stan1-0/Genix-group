@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { isAbout } from '@/inquiries/forms/hub'
+import { parseHuPreselect, parseLogisticsPreselect, type Query } from '@/inquiries/forms/preselect'
 import { HubContact } from '@/pages-home/hub/Contact'
 import { HomeUpgradesContact } from '@/pages-home/homeupgrades/Contact'
 import { LogisticsContact } from '@/pages-home/logistics/Contact'
@@ -8,7 +9,7 @@ import { isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
 import { pageMetadata } from '@/sites/seo'
 
-type Props = { params: Promise<{ site: string }>; searchParams: Promise<{ about?: string | string[] }> }
+type Props = { params: Promise<{ site: string }>; searchParams: Promise<Query> }
 
 const DESCRIPTIONS = {
   logistics: "Contact Genix Logistics in San Diego for a freight, courier or move quote. Send the route and what's moving, or call us.",
@@ -33,5 +34,8 @@ export default async function ContactPage({ params, searchParams }: Props) {
     const raw = (await searchParams).about
     return <HubContact data={data} about={isAbout(raw) ? raw : null} />
   }
-  return site === 'logistics' ? <LogisticsContact data={data} /> : <HomeUpgradesContact data={data} />
+  const query = await searchParams
+  return site === 'logistics'
+    ? <LogisticsContact data={data} preselect={parseLogisticsPreselect(query)} />
+    : <HomeUpgradesContact data={data} preselect={parseHuPreselect(query)} />
 }

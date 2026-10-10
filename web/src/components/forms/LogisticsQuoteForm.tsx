@@ -3,13 +3,14 @@ import { QuoteForm } from '@/components/motion/QuoteForm'
 import type { SiteData } from '@/sites/data-shape'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
 import { submitQuoteForm } from '@/inquiries/actions'
+import type { LogisticsPreselect } from '@/inquiries/forms/preselect'
 
 const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
 
 /* The Logistics quote form (hero card on the home page, the Contact page's right column).
    Without JS it posts to submitQuoteForm (lands on /quote/sent); with JS the quote-form enhancer
    validates inline and sends through submitQuote. One instance per page: the ids are fixed. */
-export function LogisticsQuoteForm({ data }: { data: SiteData }) {
+export function LogisticsQuoteForm({ data, preselect }: { data: SiteData; preselect?: LogisticsPreselect }) {
   return (
     <>
       <form className="label-card quote-form" id="quote-form" action={submitQuoteForm} aria-labelledby="formTitle"
@@ -24,10 +25,10 @@ export function LogisticsQuoteForm({ data }: { data: SiteData }) {
         <fieldset className="kind">
           <legend className="sr-only">What do you need moved?</legend>
           <label>
-            <input type="radio" name="kind" value="business" defaultChecked /> Ship for your business
+            <input type="radio" name="kind" value="business" defaultChecked={(preselect?.kind ?? 'business') === 'business'} /> Ship for your business
           </label>
           <label>
-            <input type="radio" name="kind" value="move" /> Plan a move
+            <input type="radio" name="kind" value="move" defaultChecked={preselect?.kind === 'move'} /> Plan a move
           </label>
         </fieldset>
 

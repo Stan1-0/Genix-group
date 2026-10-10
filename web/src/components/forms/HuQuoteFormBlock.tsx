@@ -4,6 +4,7 @@ import type { SiteData } from '@/sites/data-shape'
 import { submitQuoteForm } from '@/inquiries/actions'
 import { inquirySendMode, offlineMessage } from '@/inquiries/mode'
 import { photoSettings } from '@/inquiries/photos'
+import type { HuPreselect } from '@/inquiries/forms/preselect'
 
 const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
 
@@ -12,7 +13,7 @@ const PRIVACY_URL = `${siteOrigin('hub')}/privacy`
    which lands on /quote/sent. With JS, HuQuoteForm shows one step at a time, validates inline,
    uploads photos through /uploads and sends through submitQuote. The photo block only works when
    Cloudinary is configured (data-photos="on"). One instance per page: the ids are fixed. */
-export function HuQuoteFormBlock({ data }: { data: SiteData }) {
+export function HuQuoteFormBlock({ data, preselect }: { data: SiteData; preselect?: HuPreselect }) {
   return (
     <>
       <form className="hu-form" id="hu-quote-form" action={submitQuoteForm}
@@ -25,15 +26,15 @@ export function HuQuoteFormBlock({ data }: { data: SiteData }) {
           <legend className="step-title" id="hqStep1Title" tabIndex={-1}>1 · The project</legend>
           <fieldset className="pills" id="hqProject" aria-describedby="hqProjectErr">
             <legend>What are we building?</legend>
-            <label className="pill"><input type="radio" name="project" value="accent" required /> Accent wall &amp; TV unit</label>
-            <label className="pill"><input type="radio" name="project" value="outdoor" /> Outdoor build</label>
-            <label className="pill"><input type="radio" name="project" value="other" /> Something else</label>
+            <label className="pill"><input type="radio" name="project" value="accent" defaultChecked={preselect?.project === 'accent'} required /> Accent wall &amp; TV unit</label>
+            <label className="pill"><input type="radio" name="project" value="outdoor" defaultChecked={preselect?.project === 'outdoor'} /> Outdoor build</label>
+            <label className="pill"><input type="radio" name="project" value="other" defaultChecked={preselect?.project === 'other'} /> Something else</label>
             <p className="err" id="hqProjectErr"></p>
           </fieldset>
           <fieldset className="pills" id="hqProperty" aria-describedby="hqPropertyErr">
             <legend>For your…</legend>
-            <label className="pill"><input type="radio" name="property" value="home" required /> Home</label>
-            <label className="pill"><input type="radio" name="property" value="business" /> Business</label>
+            <label className="pill"><input type="radio" name="property" value="home" defaultChecked={preselect?.property === 'home'} required /> Home</label>
+            <label className="pill"><input type="radio" name="property" value="business" defaultChecked={preselect?.property === 'business'} /> Business</label>
             <p className="err" id="hqPropertyErr"></p>
           </fieldset>
           <fieldset className="pills" id="hqTiming" aria-describedby="hqTimingErr">

@@ -1,10 +1,11 @@
 import { LogisticsQuoteForm } from '@/components/forms/LogisticsQuoteForm'
 import { ContactCard } from '@/components/site/division/ContactCard'
+import type { LogisticsPreselect } from '@/inquiries/forms/preselect'
 import type { SiteData } from '@/sites/data-shape'
 
 /* Contact page: the home hero's two-column layout with the same quote form on the right and the
    details card under the lede (phones: lede, form, card) (design/logistics-contact.html). No motion: this page has no MotionRoot. */
-export function LogisticsContact({ data }: { data: SiteData }) {
+export function LogisticsContact({ data, preselect }: { data: SiteData; preselect?: LogisticsPreselect }) {
   return (
     <main id="main" data-no-quote-bar>
       <section className="hero on-dark contact-hero" id="hero">
@@ -14,7 +15,7 @@ export function LogisticsContact({ data }: { data: SiteData }) {
             <h1 className="h-display">Real people. <span className="gold">Real answers.</span></h1>
             <p className="lead">Send the route and what&apos;s moving, or call us. We&apos;ll come back with a price within two business days.</p>
           </div>
-          <LogisticsQuoteForm data={data} />
+          <LogisticsQuoteForm data={data} preselect={preselect} />
           <ContactCard site="logistics" data={data} />
         </div>
       </section>
