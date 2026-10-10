@@ -273,3 +273,32 @@ html:not(.js) .js-only { display: none !important; }
     .nav a { white-space: nowrap; }
   }
 }
+
+/* ---------- Services page (.svcpage-*): two services, no photos; the copy sets the rhythm ---------- */
+:where([data-division="logistics"]) {
+  .svcpage-hero { padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px); background: var(--paper); }
+  .svcpage-hero .h-display { margin: 14px 0 0; max-width: 18ch; }
+  .svcpage-lede { margin: 20px 0 0; max-width: 56ch; }
+  .svcpage-item { padding: clamp(56px, 8vw, 104px) 0; border-top: 1px solid rgba(2, 34, 72, 0.14); background: var(--paper); }
+  .svcpage-item:nth-child(even) { background: var(--white); }
+  .svcpage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .svcpage-grid:not(:has(.svcpage-media)) { grid-template-columns: minmax(0, 62ch); }
+  .svcpage-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-width: 0; }
+  .svcpage-copy .h-section, .svcpage-copy .body { margin: 0; }
+  .svcpage-list { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; gap: 8px; }
+  .svcpage-list li { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--heading); }
+  .svcpage-list li::before { content: ""; flex: none; width: 14px; height: 4px; background: var(--gold); }
+  .svcpage-send { margin: 0; max-width: 56ch; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+  .svcpage-send strong { color: var(--heading); }
+  .svcpage-media { margin: 0; position: relative; }
+  .svcpage-media img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r); }
+  .svcpage-quoting { padding: clamp(56px, 8vw, 96px) 0; background: var(--brand); color: var(--white); }
+  .svcpage-quoting .wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+  .svcpage-quoting .h-section { margin: 0; color: var(--white); }
+  .svcpage-quoting .svcpage-list li { color: var(--white); font-weight: 500; font-size: 18px; }
+
+  @media (max-width: 960px) {
+    .svcpage-grid { grid-template-columns: minmax(0, 1fr); }
+    .svcpage-grid:not(:has(.svcpage-media)) { grid-template-columns: minmax(0, 1fr); }
+  }
+}

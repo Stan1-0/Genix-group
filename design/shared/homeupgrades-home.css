@@ -1307,3 +1307,104 @@
         }
       }
     
+      /* ---------- Services page (.svcpage-*): one section per service, photo beside the copy ---------- */
+      .svcpage-hero {
+        padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+        background: var(--paper);
+      }
+      .svcpage-hero .h-display {
+        margin: 14px 0 0;
+        max-width: 20ch;
+      }
+      .svcpage-lede {
+        margin: 20px 0 0;
+        max-width: 52ch;
+      }
+      .svcpage-item {
+        padding: clamp(56px, 8vw, 104px) 0;
+        border-top: 1px solid var(--line);
+        background: var(--paper);
+      }
+      .svcpage-item:nth-child(even) {
+        background: var(--white);
+      }
+      .svcpage-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(32px, 5vw, 72px);
+        align-items: center;
+      }
+      .svcpage-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        min-width: 0;
+      }
+      .svcpage-copy .h-section,
+      .svcpage-copy .body {
+        margin: 0;
+      }
+      .svcpage-list {
+        list-style: none;
+        margin: 4px 0 8px;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        width: min(100%, 26rem);
+      }
+      .svcpage-list li {
+        font-size: 15px;
+        font-weight: 500;
+        padding: 10px 14px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--gold);
+      }
+      .svcpage-item:nth-child(even) .svcpage-list li {
+        background: var(--paper);
+      }
+      .svcpage-send {
+        margin: 0;
+        max-width: 52ch;
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: var(--ink-2);
+      }
+      .svcpage-send strong {
+        color: var(--heading);
+      }
+      .svcpage-media {
+        margin: 0;
+        position: relative;
+        background: var(--black);
+      }
+      .svcpage-media img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+      .svcpage-quoting {
+        padding: clamp(56px, 8vw, 96px) 0;
+        background: var(--sand);
+        border-top: 1px solid var(--line);
+      }
+      .svcpage-quoting .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .svcpage-quoting .h-section {
+        margin: 0;
+      }
+      .svcpage-quoting .svcpage-list li {
+        background: var(--white);
+      }
+      @media (max-width: 960px) {
+        .svcpage-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }

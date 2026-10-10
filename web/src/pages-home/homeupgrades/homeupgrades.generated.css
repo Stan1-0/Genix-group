@@ -1703,4 +1703,106 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         }
       }
     
+      /* ---------- Services page (.svcpage-*): one section per service, photo beside the copy ---------- */
+      html[data-site="homeupgrades"] .svcpage-hero {
+        padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+        background: var(--paper);
+      }
+      html[data-site="homeupgrades"] .svcpage-hero .h-display {
+        margin: 14px 0 0;
+        max-width: 20ch;
+      }
+      html[data-site="homeupgrades"] .svcpage-lede {
+        margin: 20px 0 0;
+        max-width: 52ch;
+      }
+      html[data-site="homeupgrades"] .svcpage-item {
+        padding: clamp(56px, 8vw, 104px) 0;
+        border-top: 1px solid var(--line);
+        background: var(--paper);
+      }
+      html[data-site="homeupgrades"] .svcpage-item:nth-child(even) {
+        background: var(--white);
+      }
+      html[data-site="homeupgrades"] .svcpage-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(32px, 5vw, 72px);
+        align-items: center;
+      }
+      html[data-site="homeupgrades"] .svcpage-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        min-width: 0;
+      }
+      html[data-site="homeupgrades"] .svcpage-copy .h-section,
+      html[data-site="homeupgrades"] .svcpage-copy .body {
+        margin: 0;
+      }
+      html[data-site="homeupgrades"] .svcpage-list {
+        list-style: none;
+        margin: 4px 0 8px;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+        width: min(100%, 26rem);
+      }
+      html[data-site="homeupgrades"] .svcpage-list li {
+        font-size: 15px;
+        font-weight: 500;
+        padding: 10px 14px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--gold);
+      }
+      html[data-site="homeupgrades"] .svcpage-item:nth-child(even) .svcpage-list li {
+        background: var(--paper);
+      }
+      html[data-site="homeupgrades"] .svcpage-send {
+        margin: 0;
+        max-width: 52ch;
+        font-size: 14.5px;
+        line-height: 1.5;
+        color: var(--ink-2);
+      }
+      html[data-site="homeupgrades"] .svcpage-send strong {
+        color: var(--heading);
+      }
+      html[data-site="homeupgrades"] .svcpage-media {
+        margin: 0;
+        position: relative;
+        background: var(--black);
+      }
+      html[data-site="homeupgrades"] .svcpage-media img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+      html[data-site="homeupgrades"] .svcpage-quoting {
+        padding: clamp(56px, 8vw, 96px) 0;
+        background: var(--sand);
+        border-top: 1px solid var(--line);
+      }
+      html[data-site="homeupgrades"] .svcpage-quoting .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      html[data-site="homeupgrades"] .svcpage-quoting .h-section {
+        margin: 0;
+      }
+      html[data-site="homeupgrades"] .svcpage-quoting .svcpage-list li {
+        background: var(--white);
+      }
+      @media (max-width: 960px) {
+        html[data-site="homeupgrades"] .svcpage-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
 html[data-site="homeupgrades"] { --f-display: var(--font-jakarta), system-ui, sans-serif; --f-body: var(--font-jakarta), system-ui, sans-serif; --f-mono: var(--font-jakarta), ui-monospace, monospace; }
