@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { getPayload, type Payload } from 'payload'
+import type { Payload } from 'payload'
 import { FALLBACK_PROJECTS } from '@/projects/fallback'
 
 const MIME: Record<string, string> = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.mp4': 'video/mp4' }
@@ -37,15 +37,4 @@ export async function seedProjects(payload: Payload, opts: { dir?: string } = {}
     created.push(p.title)
   }
   return { created, skipped }
-}
-
-// Script entry (`payload run`); skipped when imported by tests.
-if (process.argv.some((a) => a.endsWith('seed/projects.ts'))) {
-  const { default: config } = await import('@payload-config')
-  const payload = await getPayload({ config })
-  const { created, skipped } = await seedProjects(payload)
-  created.forEach((t) => console.log(`projects/${t}: created`))
-  skipped.forEach((t) => console.log(`projects/${t}: exists, left as is`))
-  console.log('Saved. The site shows these within an hour, or straight away after the next deploy.')
-  process.exit(0)
 }
