@@ -1349,7 +1349,7 @@
         border-top: 1px solid var(--line);
         background: var(--paper);
       }
-      .svcpage-item:nth-child(even) {
+      .svcpage-item:nth-of-type(even) {
         background: var(--white);
       }
       .svcpage-grid {
@@ -1385,7 +1385,7 @@
         border: 1px solid var(--line);
         border-left: 3px solid var(--gold);
       }
-      .svcpage-item:nth-child(even) .svcpage-list li {
+      .svcpage-item:nth-of-type(even) .svcpage-list li {
         background: var(--paper);
       }
       .svcpage-send {

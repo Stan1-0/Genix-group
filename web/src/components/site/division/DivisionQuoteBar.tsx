@@ -22,6 +22,10 @@ export function DivisionQuoteBar({ site, data }: { site: SiteKey; data: SiteData
     const after = bar.dataset.after ? document.querySelector(bar.dataset.after) : null
     const watch = [after, ...(bar.dataset.hideOver ? document.querySelectorAll(bar.dataset.hideOver) : [])].filter(Boolean) as Element[]
     const seen = new Map<Element, boolean>()
+    const primary = bar.querySelector<HTMLAnchorElement>('a.btn-gold')
+    const original = primary?.getAttribute('href') ?? null
+    const override = document.querySelector('main[data-quote-href]')?.getAttribute('data-quote-href') // e.g. /services sends the bar to /contact
+    if (primary && override) primary.setAttribute('href', override)
     bar.hidden = false
     bar.classList.add('off')
     bar.dataset.off = 'true'
@@ -39,7 +43,10 @@ export function DivisionQuoteBar({ site, data }: { site: SiteKey; data: SiteData
     })
     watch.forEach((el) => io.observe(el))
     wide.addEventListener('change', update, { signal })
-    return () => io.disconnect()
+    return () => {
+      io.disconnect()
+      if (primary && override && original !== null) primary.setAttribute('href', original)
+    }
   })
   const phone = data.phone
   return (

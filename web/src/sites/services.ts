@@ -4,8 +4,9 @@ import type { SiteData } from '@/sites/data-shape'
 export type ServiceSite = 'logistics' | 'homeupgrades'
 export type ServiceItem = { id: string; title: string; body: string; list: readonly string[]; image: { src: string; alt: string } | null; send: string; quoteHref: string }
 
-/* Copy is verbatim from the home pages (logistics sections/Lanes.tsx, homeupgrades sections/Services.tsx and
-   sections/Quote.tsx). Add nothing here that the sites don't already say. */
+/* Copy is taken from the home pages (logistics sections/Lanes.tsx, homeupgrades sections/Services.tsx and
+   sections/Quote.tsx), except the "What to send us" lines (which restate the form fields) and the meta
+   descriptions. Add nothing here that the sites don't already say. */
 const LOG_SEND = "Send us the pickup and drop-off ZIP codes, the date (or say you're flexible) and what's moving."
 const HU_SEND = 'A few photos and a sentence about what you want is enough to start.'
 

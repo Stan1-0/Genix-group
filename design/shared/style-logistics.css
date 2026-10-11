@@ -284,7 +284,7 @@ html:not(.js) .js-only { display: none !important; }
   .svcpage-hero .h-display { margin: 14px 0 0; max-width: 18ch; }
   .svcpage-lede { margin: 20px 0 0; max-width: 56ch; }
   .svcpage-item { padding: clamp(56px, 8vw, 104px) 0; border-top: 1px solid rgba(2, 34, 72, 0.14); background: var(--paper); }
-  .svcpage-item:nth-child(even) { background: var(--white); }
+  .svcpage-item:nth-of-type(even) { background: var(--white); }
   .svcpage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
   .svcpage-grid:not(:has(.svcpage-media)) { grid-template-columns: minmax(0, 62ch); }
   .svcpage-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-width: 0; }

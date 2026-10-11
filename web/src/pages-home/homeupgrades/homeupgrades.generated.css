@@ -1745,7 +1745,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         border-top: 1px solid var(--line);
         background: var(--paper);
       }
-      html[data-site="homeupgrades"] .svcpage-item:nth-child(even) {
+      html[data-site="homeupgrades"] .svcpage-item:nth-of-type(even) {
         background: var(--white);
       }
       html[data-site="homeupgrades"] .svcpage-grid {
@@ -1781,7 +1781,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         border: 1px solid var(--line);
         border-left: 3px solid var(--gold);
       }
-      html[data-site="homeupgrades"] .svcpage-item:nth-child(even) .svcpage-list li {
+      html[data-site="homeupgrades"] .svcpage-item:nth-of-type(even) .svcpage-list li {
         background: var(--paper);
       }
       html[data-site="homeupgrades"] .svcpage-send {

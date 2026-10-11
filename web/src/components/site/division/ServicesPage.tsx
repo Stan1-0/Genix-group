@@ -14,7 +14,7 @@ const SIZES: Record<string, { width: number; height: number }> = {
 export function ServicesPage({ site, data }: { site: ServiceSite; data: SiteData }) {
   const intro = SERVICES_INTRO[site]
   return (
-    <main id="main">
+    <main id="main" data-quote-href="/contact">
       <JsonLd data={servicesJsonLd(site, data)} />
       <section className="svcpage-hero" id="services-top">
         <div className="wrap">
@@ -39,7 +39,7 @@ export function ServicesPage({ site, data }: { site: ServiceSite; data: SiteData
                 </ul>
                 <p className="svcpage-send"><strong>What to send us:</strong> {s.send}</p>
                 <a className="btn btn-gold" href={s.quoteHref}>
-                  Get a quote <span aria-hidden="true">→</span>
+                  Get a quote<span className="sr-only"> for {s.title}</span> <span aria-hidden="true">→</span>
                 </a>
               </div>
               {s.image && dims && (
