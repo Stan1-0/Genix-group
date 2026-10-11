@@ -10,5 +10,6 @@ export function botCheckFor(js: boolean, checkBotId: () => Promise<{ isBot: bool
 export const BOTID_PROTECT = [
   { path: '/', method: 'POST' }, // division home pages
   { path: '/contact', method: 'POST' }, // Contact pages (divisions and the hub)
+  { path: '/services/*', method: 'POST' }, // Home Upgrades service detail pages (each has a quote form)
   { path: '/uploads', method: 'POST' }, // Home Upgrades photo upload grants
 ] as const

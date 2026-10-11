@@ -22,6 +22,7 @@ describe('BotID protected paths', () => {
     expect(BOTID_PROTECT).toEqual([
       { path: '/', method: 'POST' }, // division home pages
       { path: '/contact', method: 'POST' }, // division Contact pages
+      { path: '/services/*', method: 'POST' }, // Home Upgrades service detail pages
       { path: '/uploads', method: 'POST' }, // Home Upgrades photo upload grants
     ])
   })
