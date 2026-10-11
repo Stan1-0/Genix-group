@@ -15,10 +15,61 @@ export function ProjectViewer() {
     const title = document.getElementById('viewerTitle')
     const desc = document.getElementById('viewerDesc')
     const closeBtn = document.getElementById('viewerClose')
-    if (!dlg || !slot || !title || !desc || !closeBtn) return
+    const nav = document.getElementById('viewerNav')
+    const count = document.getElementById('viewerCount')
+    const prevBtn = document.getElementById('viewerPrev')
+    const nextBtn = document.getElementById('viewerNext')
+    if (!dlg || !slot || !title || !desc || !closeBtn || !nav || !count || !prevBtn || !nextBtn) return
     const canFlip = !reduce
     let opener: HTMLElement | null = null
     const ctx = gsap.context(() => {}, dlg)
+
+    // Photo stepping: the opened card's data-gallery ([{src, alt}], 2+ items) drives the prev/next buttons.
+    type Shot = { src: string; alt: string }
+    let gallery: Shot[] = []
+    let at = 0
+    const parseGallery = (raw: string | undefined): Shot[] => {
+      if (!raw) return []
+      try {
+        const list: unknown = JSON.parse(raw)
+        if (!Array.isArray(list)) return []
+        return list.filter(
+          (x): x is Shot => !!x && typeof x.src === 'string' && typeof x.alt === 'string',
+        )
+      } catch {
+        return []
+      }
+    }
+    const showShot = () => {
+      const img = slot.querySelector('img')
+      if (!img) return
+      img.src = gallery[at].src
+      img.alt = gallery[at].alt
+      count.textContent = `${at + 1} / ${gallery.length}`
+    }
+    const step = (by: number) => {
+      if (gallery.length < 2) return
+      at = (at + by + gallery.length) % gallery.length
+      showShot()
+    }
+    const resetNav = () => {
+      gallery = []
+      at = 0
+      nav.hidden = true
+      count.textContent = ''
+    }
+    prevBtn.addEventListener('click', () => step(-1), { signal })
+    nextBtn.addEventListener('click', () => step(1), { signal })
+    dlg.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'ArrowLeft') step(-1)
+        else if (e.key === 'ArrowRight') step(1)
+        else return
+        if (gallery.length > 1) e.preventDefault()
+      },
+      { signal },
+    )
 
     document.querySelectorAll<HTMLElement>('.work-card').forEach((card, i) => {
       card.addEventListener(
@@ -54,6 +105,15 @@ export function ProjectViewer() {
           media.className = 'viewer-media'
           media.dataset.flipId = flipId
           slot.appendChild(media)
+          resetNav()
+          if (card.dataset.kind !== 'video') {
+            const shots = parseGallery(card.dataset.gallery)
+            if (shots.length > 1) {
+              gallery = shots
+              nav.hidden = false
+              showShot()
+            }
+          }
           title.textContent = card.dataset.title ?? ''
           desc.textContent = card.dataset.desc ?? ''
           dlg.showModal()
@@ -101,6 +161,7 @@ export function ProjectViewer() {
       () => {
         slot.querySelector('video')?.pause()
         slot.innerHTML = ''
+        resetNav()
         window.genixLenis?.start()
         opener?.focus()
       },
@@ -116,6 +177,7 @@ export function ProjectViewer() {
         window.genixLenis?.start()
       }
       slot.innerHTML = ''
+      resetNav()
       title.textContent = ''
       desc.textContent = ''
       document.querySelectorAll<HTMLElement>('.work-card img').forEach((img) => img.removeAttribute('data-flip-id'))

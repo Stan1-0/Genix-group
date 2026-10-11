@@ -1019,7 +1019,14 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         height: auto;
         object-fit: contain;
       }
+      html[data-site="homeupgrades"] .viewer-media,
+      html[data-site="homeupgrades"] .viewer-nav {
+        grid-row: 1;
+        grid-column: 1;
+      }
       html[data-site="homeupgrades"] .viewer-cap {
+        grid-row: 2;
+        grid-column: 1;
         color: var(--white);
         text-align: center;
         max-width: 60ch;
@@ -1032,6 +1039,36 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
       html[data-site="homeupgrades"] .viewer-cap span {
         color: #d2ccc1;
         font-size: 16px;
+      }
+      /* photo stepping: bottom-centre over the media; shown only for 2+ photos */
+      html[data-site="homeupgrades"] .viewer-nav {
+        align-self: end;
+        justify-self: center;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: var(--white);
+        font-size: 15px;
+      }
+      html[data-site="homeupgrades"] .viewer-nav[hidden] {
+        display: none;
+      }
+      html[data-site="homeupgrades"] .viewer-nav button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(11, 11, 12, 0.6);
+        color: var(--white);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      html[data-site="homeupgrades"] .viewer-nav button:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
       }
       html[data-site="homeupgrades"] .viewer-close {
         position: fixed;
