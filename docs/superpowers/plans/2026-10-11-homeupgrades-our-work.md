@@ -35,6 +35,7 @@
 3. No `imageSizes` on `media`: `next/image` already resizes `/api/media/file/**` (in `localPatterns`). If video playback/seeking from `/api/media/file/**` fails (no Range support), switch the Blob plugin to `disablePayloadAccessControl: true` (direct Blob URLs) and add `*.public.blob.vercel-storage.com` to `images.remotePatterns` — decide by testing in Task 1.
 4. The dev DB stays unseeded: e2e and parity run on the fallback (identical to the prototype); the DB path is covered by int tests against the test DB; the viewer's photo stepping is e2e-tested by adding `data-gallery` to a card in the test.
 5. Vitest env sets `BLOB_READ_WRITE_TOKEN: ''` so int-test uploads go to local disk, never the live store.
+6. The seed skips a project when one with the same **title and order** exists (the spec said title only, but projects 1 and 3 are both titled "Accent wall").
 
 ## Review Focus
 
@@ -396,7 +397,7 @@ describe('seedProjects', () => {
 
 Run → FAIL.
 
-- [ ] **Step 2: Implement** `web/src/seed/projects.ts`. For each `FALLBACK_PROJECTS` entry, in order: skip if a project with the same `order` and `title` exists; otherwise upload the cover (and the video when present) from `web/public/brand/<file>` into `media` (alt = the fallback alt; for videos alt = the project title), then create the project with `title, category, caption, description, cover, video, featured, order, published: true` and `context: { disableRevalidate: true }`. Use `path.resolve(process.cwd(), 'public/brand')` by default (overridable by `opts.dir`). The script entry (when run by `payload run`) calls `seedProjects(await getPayload({ config }))`, prints created/skipped, then calls `revalidateTag` is not available in a script — so print "Saved. The site picks this up within an hour, or immediately after the next deploy." (the pages are ISR with tag `projects`; a deploy also clears it). Exit 0.
+- [ ] **Step 2: Implement** `web/src/seed/projects.ts`. For each `FALLBACK_PROJECTS` entry, in order: skip if a project with the same `order` and `title` exists; otherwise upload the cover (and the video when present) from `web/public/brand/<file>` into `media` (alt = the fallback alt; for videos alt = the project title), then create the project with `title, category, caption, description, cover, video, featured, order, published: true` and `context: { disableRevalidate: true }`. Use `path.resolve(process.cwd(), 'public/brand')` by default (overridable by `opts.dir`). The script entry (when run by `payload run`) calls `seedProjects(await getPayload({ config }))` and prints the created/skipped titles. `revalidateTag` can't run outside the Next server, so it finishes by printing "Saved. The site shows these within an hour, or straight away after the next deploy." (the pages use ISR with the `projects` tag; a deploy also clears it). Exit 0.
 
 - [ ] **Step 3: Run** — `npx vitest run tests/int/projects-seed.int.spec.ts` → PASS; full `npx vitest run` → pass. (Do not run `npm run seed:projects` against the dev DB — Ruling 4.)
 
