@@ -41,8 +41,21 @@ test('FAQs open and close with the keyboard', async ({ page }) => {
 test('Get a quote goes to the form on the page', async ({ page }) => {
   await page.goto(`${BASE}/outdoor`)
   await page.locator('.hero-actions a.btn-gold').click()
-  await expect(page).toHaveURL(`${BASE}/outdoor#quote`)
+  await expect(page).toHaveURL(`${BASE}/outdoor#hu-quote-form`)
   await expect(page.locator('#hu-quote-form')).toBeInViewport()
+})
+
+test('phone: Get a quote lands on the form, below the sticky header', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto(`${BASE}/handyman`)
+  await page.locator('.hero-actions a.btn-gold').click()
+  const form = page.locator('#hu-quote-form')
+  await expect(form).toBeInViewport()
+  await expect(async () => {
+    const top = await form.evaluate((el) => el.getBoundingClientRect().top)
+    const headerBottom = await page.locator('header').first().evaluate((el) => el.getBoundingClientRect().bottom)
+    expect(top).toBeGreaterThanOrEqual(headerBottom)
+  }).toPass()
 })
 
 test('a request sent from a detail page (no JS) becomes a Home Upgrades inquiry', async ({ browser }) => {
@@ -70,7 +83,7 @@ test('phone: no sideways scroll at 320 px and the pinned bar goes to the page fo
   await page.setViewportSize({ width: 390, height: 800 })
   await page.goto(`${BASE}/accent-walls`)
   await page.mouse.wheel(0, 1200)
-  await expect(page.getByTestId('quote-bar').locator('a.btn-gold')).toHaveAttribute('href', '#quote')
+  await expect(page.getByTestId('quote-bar').locator('a.btn-gold')).toHaveAttribute('href', '#hu-quote-form')
   await page.setViewportSize({ width: 320, height: 800 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
 })

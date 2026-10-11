@@ -28,7 +28,7 @@ export function ServiceDetailPage({ item, data }: { item: ServiceItem; data: Sit
   const preselect = parseHuPreselect(Object.fromEntries(new URLSearchParams(item.quoteHref.split('?')[1] ?? '')))
   const others = SERVICES.homeupgrades.filter((s) => s.id !== item.id)
   return (
-    <main id="main" data-quote-href="#quote">
+    <main id="main" data-quote-href="#hu-quote-form">
       <JsonLd data={serviceDetailJsonLd(item, data)} />
       <section className="svcd-hero" id="service-top">
         <div className="wrap svcd-hero-grid">
@@ -45,7 +45,7 @@ export function ServiceDetailPage({ item, data }: { item: ServiceItem; data: Sit
             <p className="svcd-lead">{d.lead}</p>
             <p className="body">{d.intro}</p>
             <div className="hero-actions">
-              <a className="btn btn-gold" href="#quote">
+              <a className="btn btn-gold" href="#hu-quote-form">
                 Get a quote <span aria-hidden="true">→</span>
               </a>
               <Call data={data} />
@@ -141,7 +141,7 @@ export function ServiceDetailPage({ item, data }: { item: ServiceItem; data: Sit
           <h2 className="h-section">{CLOSING.h2}</h2>
           <p className="body">{CLOSING.lede}</p>
           <div className="svcd-close-actions">
-            <a className="btn btn-gold" href="#quote">
+            <a className="btn btn-gold" href="#hu-quote-form">
               Get a quote <span aria-hidden="true">→</span>
             </a>
             <Call data={data} />

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ServiceDetailPage } from '@/components/site/division/ServiceDetailPage'
-import { isSiteKey } from '@/sites/config'
 import { getSiteData } from '@/sites/data'
 import { pageMetadata } from '@/sites/seo'
 import { HU_SERVICE_SLUGS, huServiceBySlug } from '@/sites/services'
@@ -24,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // One page per Home Upgrades service; everything else is a 404.
 export default async function ServiceDetail({ params }: Props) {
   const { site, slug } = await params
-  const item = isSiteKey(site) && site === 'homeupgrades' ? huServiceBySlug(slug) : undefined
+  const item = site === 'homeupgrades' ? huServiceBySlug(slug) : undefined
   if (!item?.detail) notFound()
   return <ServiceDetailPage item={item} data={await getSiteData('homeupgrades')} />
 }

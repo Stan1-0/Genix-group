@@ -1665,6 +1665,9 @@
         background: var(--paper);
         scroll-margin-top: var(--header);
       }
+      .svcd-faq-quote #hu-quote-form {
+        scroll-margin-top: calc(var(--header) + 16px);
+      }
       .svcd-faq-grid {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);

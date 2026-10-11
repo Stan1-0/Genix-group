@@ -2061,6 +2061,9 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         background: var(--paper);
         scroll-margin-top: var(--header);
       }
+      html[data-site="homeupgrades"] .svcd-faq-quote #hu-quote-form {
+        scroll-margin-top: calc(var(--header) + 16px);
+      }
       html[data-site="homeupgrades"] .svcd-faq-grid {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
