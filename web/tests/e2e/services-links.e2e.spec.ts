@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 const FOOTER = {
   logistics: [['Business freight', '/services#freight'], ['Last-mile & courier', '/services#freight'], ['Home & office moves', '/services#moves']],
-  homeupgrades: [['Accent walls & TV units', '/services#accent-walls'], ['Outdoor builds', '/services#outdoor'], ['Handyman services', '/services#handyman']],
+  homeupgrades: [['Accent walls & TV units', '/services/accent-walls'], ['Outdoor builds', '/services/outdoor'], ['Handyman services', '/services/handyman']],
 } as const
 
 for (const [site, links] of Object.entries(FOOTER)) {
@@ -17,6 +17,6 @@ for (const [site, links] of Object.entries(FOOTER)) {
   })
   test(`${site}: every footer anchor exists on the Services page`, async ({ page }) => {
     await page.goto(`${home}services`)
-    for (const [, href] of links) await expect(page.locator(href.slice('/services'.length))).toHaveCount(1)
+    for (const [, href] of links) await expect(page.locator(`#${href.split(/[#/]/).pop()}`)).toHaveCount(1)
   })
 }

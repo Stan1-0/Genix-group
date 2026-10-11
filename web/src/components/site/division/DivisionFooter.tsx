@@ -26,9 +26,9 @@ const COLUMNS: Record<'logistics' | 'homeupgrades', { services: L[]; company: L[
   },
   homeupgrades: {
     services: [
-      ['Accent walls & TV units', '/services#accent-walls'],
-      ['Outdoor builds', '/services#outdoor'],
-      ['Handyman services', '/services#handyman'],
+      ['Accent walls & TV units', '/services/accent-walls'],
+      ['Outdoor builds', '/services/outdoor'],
+      ['Handyman services', '/services/handyman'],
     ],
     company: [
       ['Our work', '/work'],

@@ -132,3 +132,7 @@ Deleting a photo or video in Media that a project still uses fails; remove it fr
 ### Services pages
 
 `/services` on Logistics and Home Upgrades is built from `web/src/sites/services.ts` (copy taken from the home pages; no claims the sites don't already make). Each "Get a quote" button opens `/contact` with the service pre-selected (`?kind=` / `?project=` / `?property=`, allow-listed in `web/src/inquiries/forms/preselect.ts`). Change a service there and both the page and its structured data update.
+
+### Home Upgrades service pages
+
+`/services/accent-walls`, `/services/outdoor`, `/services/handyman` and `/services/reception` on Home Upgrades are built from the `detail` block on each Home Upgrades item in `web/src/sites/services.ts` (copy approved by the owner; add no new claims). Each page has the Home Upgrades quote form with that service pre-selected. `/services/*` must stay in `BOTID_PROTECT` in `web/src/inquiries/bot-check.ts`, or production drops JavaScript submissions from these pages.

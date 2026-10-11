@@ -41,6 +41,11 @@ export function ServicesPage({ site, data }: { site: ServiceSite; data: SiteData
                 <a className="btn btn-gold" href={s.quoteHref}>
                   Get a quote<span className="sr-only"> for {s.title}</span> <span aria-hidden="true">→</span>
                 </a>
+                {s.detail && (
+                  <a className="svcpage-more" href={`/services/${s.id}`}>
+                    More about {s.title} <span aria-hidden="true">→</span>
+                  </a>
+                )}
               </div>
               {s.image && dims && (
                 <figure className="svcpage-media">
