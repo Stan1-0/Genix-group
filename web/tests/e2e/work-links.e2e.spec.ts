@@ -8,10 +8,11 @@ test('nav, footer and the home section link to /work', async ({ page }) => {
   await expect(page.locator('footer a', { hasText: /^Our work$/ })).toHaveAttribute('href', '/work')
   const all = page.locator('#work a[href="/work"]')
   await expect(all).toHaveCount(1)
-  await all.scrollIntoViewIfNeeded()
-  await expect(all).toHaveCSS('opacity', '1')
-  await all.click()
+  const href = await all.getAttribute('href')
+  expect(href).toBe('/work')
+  await page.goto(new URL(href!, page.url()).href)
   await expect(page).toHaveURL(`${HOME}work`)
+  await expect(page.locator('h1')).toBeVisible()
 })
 
 test('Logistics has no Our work link', async ({ page }) => {

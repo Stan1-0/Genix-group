@@ -43,6 +43,13 @@ describe('projects collection', () => {
     expect(err).not.toBeNull()
     expect(err.data.errors).toEqual([expect.objectContaining({ path: 'video', message: 'Choose an MP4 video.' })])
   })
+  it('refuses an SVG cover', async () => {
+    const data = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10"/></svg>')
+    const svg = await payload.create({ collection: 'media', data: { alt: 'Logo' }, file: { data, mimetype: 'image/svg+xml', name: 'logo.svg', size: data.length } })
+    const err = await payload.create({ collection: 'projects', data: { title: 'S', category: 'C', description: 'D long enough.', cover: svg.id }, context: { disableRevalidate: true } }).then(() => null, (e) => e)
+    expect(err).not.toBeNull()
+    expect(err.data.errors).toEqual([expect.objectContaining({ path: 'cover', message: 'Use a JPG, PNG or WebP photo.' })])
+  })
   it('stores uploads on local disk, not the live Blob store', async () => {
     const m = await upload('local-check.png')
     expect(m.url).toMatch(/^\/api\/media\/file\//)
@@ -54,3 +61,4 @@ describe('projects collection', () => {
     expect((await getProjects({ featured: true, limit: 3 })).map((p) => p.id)).toEqual(['feature-wall', 'tv-unit', 'slat-wall'])
   })
 })
+

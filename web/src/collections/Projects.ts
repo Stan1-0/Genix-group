@@ -15,6 +15,18 @@ const mp4Only: UploadFieldSingleValidation = async (value, { req }) => {
   return m?.mimeType === 'video/mp4' || 'Choose an MP4 video.'
 }
 
+/** Photos must be raster images: SVGs have no width/height, so the project would silently vanish from the site. */
+const rasterOnly = (required: boolean) => async (value: unknown, { req }: { req: { payload: { findByID: (a: Record<string, unknown>) => Promise<{ mimeType?: string | null } | null> } } }) => {
+  const ids = (Array.isArray(value) ? value : value ? [value] : []).map((v) => (typeof v === 'object' ? (v as { id: string | number }).id : v))
+  if (!ids.length) return required ? 'This field is required.' : true
+  for (const id of ids) {
+    const m = await req.payload.findByID({ collection: 'media', id, depth: 0, req })
+    const t = m?.mimeType ?? ''
+    if (!t.startsWith('image/') || t === 'image/svg+xml') return 'Use a JPG, PNG or WebP photo.'
+  }
+  return true
+}
+
 /** Home Upgrades projects: the /work page and the home "Recent work" (featured). */
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -35,8 +47,8 @@ export const Projects: CollectionConfig = {
     { name: 'category', type: 'text', required: true, maxLength: 40, admin: { description: 'The small line on the card, e.g. "Accent wall".' } },
     { name: 'caption', type: 'text', maxLength: 60, admin: { description: 'Optional short line under the title on the card.' } },
     { name: 'description', type: 'textarea', required: true, maxLength: 300, admin: { description: 'One or two sentences shown when the project is opened.' } },
-    { name: 'cover', type: 'upload', relationTo: 'media', required: true },
-    { name: 'photos', type: 'upload', relationTo: 'media', hasMany: true, maxRows: 8 },
+    { name: 'cover', type: 'upload', relationTo: 'media', required: true, validate: rasterOnly(true) as never },
+    { name: 'photos', type: 'upload', relationTo: 'media', hasMany: true, maxRows: 8, validate: rasterOnly(false) as never },
     {
       name: 'video',
       type: 'upload',
@@ -49,3 +61,4 @@ export const Projects: CollectionConfig = {
     { name: 'published', type: 'checkbox', defaultValue: true, admin: { position: 'sidebar' } },
   ],
 }
+

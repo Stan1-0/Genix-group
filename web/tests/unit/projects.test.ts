@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { FALLBACK_PROJECTS } from '@/projects/fallback'
-import { selectProjects, toProject } from '@/projects/map'
+import { featuredOrFirst, selectProjects, toProject } from '@/projects/map'
 
 describe('FALLBACK_PROJECTS', () => {
   it('holds the five seeded projects in order, three featured', () => {
@@ -25,6 +25,21 @@ describe('selectProjects', () => {
   })
 })
 
+describe('featuredOrFirst', () => {
+  const p = (id: string, order: number, featured: boolean) => ({ ...FALLBACK_PROJECTS[0], id, order, featured })
+  it('falls back to the first N when none is featured', () => {
+    const list = [p('c', 30, false), p('a', 10, false), p('b', 20, false), p('d', 40, false)]
+    expect(featuredOrFirst(list, 3).map((x) => x.id)).toEqual(['a', 'b', 'c'])
+  })
+  it('keeps only the featured ones when some are', () => {
+    const list = [p('a', 10, false), p('b', 20, true), p('c', 30, true)]
+    expect(featuredOrFirst(list, 3).map((x) => x.id)).toEqual(['b', 'c'])
+  })
+  it('returns [] for an empty list', () => {
+    expect(featuredOrFirst([], 3)).toEqual([])
+  })
+})
+
 describe('toProject', () => {
   const media = (filename: string, mimeType = 'image/jpeg') => ({ id: 1, url: `/api/media/file/${filename}`, alt: `Alt for ${filename}`, width: 800, height: 600, mimeType, filename })
   it('maps a populated doc', () => {
@@ -38,3 +53,5 @@ describe('toProject', () => {
     expect(out!.video).toBeNull()
   })
 })
+
+

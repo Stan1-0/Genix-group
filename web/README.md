@@ -119,8 +119,16 @@ The group's About page is `web/src/pages-home/hub/About.tsx`, served at `thegeni
 
 If the database has no published projects (or can't be read), the site falls back to the five built-in projects, so the section is never empty.
 
-One-time production seed: with the production env vars in `web/.env.production.local` (from `vercel env pull`), run `npm run seed:projects` once; it skips projects that already exist (same title and order). It adds the photo files to media on each run for projects it creates. If you rename or reorder a seeded project in the admin, don't re-run the seed: it would add that project again.
+One-time production seed: run it once, from this folder, with the production values given inline (`payload run` never reads `.env.production.local`, and `vercel env pull` pulls the development environment and can leave sensitive values empty, so don't rely on env files):
+```bash
+DATABASE_URL="<neon production url>" BLOB_READ_WRITE_TOKEN="<production blob token>" npm run seed:projects
+```
+```powershell
+$env:DATABASE_URL="<neon production url>"; $env:BLOB_READ_WRITE_TOKEN="<production blob token>"; npm run seed:projects
+```
+Copy `DATABASE_URL` from Vercel → Settings → Environment Variables (Production) or the Neon dashboard, and the Blob token from Vercel → Storage → Blob → your store → `.env.local` tab (or the `BLOB_READ_WRITE_TOKEN` variable). The script prints the database host and whether Blob storage is on before it writes anything, and refuses to run when the database is not local and the Blob token is empty (so production rows can never point at files left on this computer's disk). It skips projects that already exist (same title and order) and adds the photo files to media for each project it creates. If you rename or reorder a seeded project in the admin, don't re-run the seed: it would add that project again. The site shows the seeded projects after any project is next saved in the admin (that refreshes the cache).
 
+Deleting a photo or video in Media that a project still uses fails; remove it from the project first.
 ### Services pages
 
 `/services` on Logistics and Home Upgrades is built from `web/src/sites/services.ts` (copy taken from the home pages; no claims the sites don't already make). Each "Get a quote" button opens `/contact` with the service pre-selected (`?kind=` / `?project=` / `?property=`, allow-listed in `web/src/inquiries/forms/preselect.ts`). Change a service there and both the page and its structured data update.

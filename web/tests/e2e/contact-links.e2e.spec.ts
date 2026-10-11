@@ -17,8 +17,9 @@ for (const host of ['logistics', 'homeupgrades']) {
 
   test(`${host}: the Contact page's own nav still reaches the home sections`, async ({ page }) => {
     await page.goto(`${home}contact`)
-    await expect(page.locator('nav#nav a').first()).toHaveAttribute('href', '/services')
-    await expect(page.locator('nav#nav a').nth(1)).toHaveAttribute('href', /^\/#/)
+    expect(await page.locator('nav#nav a[href^="/#"]').count()).toBeGreaterThan(0)
+    await expect(page.locator('nav#nav a[href="/services"]')).toHaveCount(1)
+    await expect(page.locator('nav#nav a[href="/contact"]')).toHaveCount(1)
     await expect(page.locator('nav#nav a', { hasText: /^Contact$/ })).toHaveCount(1)
   })
 }
@@ -37,3 +38,4 @@ for (const width of [961, 1000, 1024]) {
     }
   })
 }
+

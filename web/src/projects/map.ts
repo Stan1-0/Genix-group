@@ -32,3 +32,9 @@ export function selectProjects(list: readonly Project[], opts: { featured?: bool
   const kept = opts.featured ? sorted.filter((p) => p.featured) : sorted
   return opts.limit === undefined ? kept : kept.slice(0, opts.limit)
 }
+
+/** Featured projects (sorted, limited); when none is featured, the first `limit` projects instead. */
+export function featuredOrFirst(list: readonly Project[], limit: number): Project[] {
+  const featured = selectProjects(list, { featured: true, limit })
+  return featured.length ? featured : selectProjects(list, { limit })
+}

@@ -3,7 +3,7 @@ import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { FALLBACK_PROJECTS } from './fallback'
-import { selectProjects, toProject } from './map'
+import { featuredOrFirst, selectProjects, toProject } from './map'
 import type { Project } from './types'
 
 async function readProjects(): Promise<Project[]> {
@@ -20,5 +20,9 @@ export async function getProjects(opts: { featured?: boolean; limit?: number } =
   } catch (err) {
     console.error('getProjects: falling back to the static projects', err)
   }
-  return selectProjects(list.length ? list : FALLBACK_PROJECTS, opts)
+  const source = list.length ? list : FALLBACK_PROJECTS
+  // Home asks for featured ones; if an editor has featured none, show the first few rather than nothing.
+  if (opts.featured && opts.limit !== undefined) return featuredOrFirst(source, opts.limit)
+  return selectProjects(source, opts)
 }
+
