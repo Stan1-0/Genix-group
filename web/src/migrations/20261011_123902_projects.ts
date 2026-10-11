@@ -43,13 +43,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+  // Drop the locked-documents FK and index before the tables (DROP TABLE ... CASCADE would remove the FK first,
+  // making a later plain DROP CONSTRAINT fail).
   await db.execute(sql`
-   ALTER TABLE "projects" DISABLE ROW LEVEL SECURITY;
+   ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_projects_fk";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_projects_id_idx";
+  ALTER TABLE "projects" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "projects_rels" DISABLE ROW LEVEL SECURITY;
   DROP TABLE "projects" CASCADE;
   DROP TABLE "projects_rels" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_projects_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_projects_id_idx";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "projects_id";`)
 }

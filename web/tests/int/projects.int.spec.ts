@@ -39,13 +39,15 @@ describe('projects collection', () => {
   })
   it('refuses a non-MP4 video', async () => {
     const notVideo = await upload('still.png')
-    await expect(make({ title: 'V', video: notVideo.id })).rejects.toThrow()
+    const err = await make({ title: 'V', video: notVideo.id }).then(() => null, (e) => e)
+    expect(err).not.toBeNull()
+    expect(err.data.errors).toEqual([expect.objectContaining({ path: 'video', message: 'Choose an MP4 video.' })])
   })
   it('stores uploads on local disk, not the live Blob store', async () => {
     const m = await upload('local-check.png')
     expect(m.url).toMatch(/^\/api\/media\/file\//)
   })
-  it('getProjects serves the five fallback projects when there are no published projects (or the cache is unavailable)', async () => {
+  it('getProjects error/fallback path: unstable_cache throws outside Next, so the five fallback projects are served (draft-only table)', async () => {
     await make({ title: 'Draft only', published: false })
     const all = await getProjects()
     expect(all.map((p) => p.id)).toEqual(FALLBACK_PROJECTS.map((p) => p.id))
