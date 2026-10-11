@@ -1469,3 +1469,53 @@
           grid-template-columns: minmax(0, 1fr);
         }
       }
+
+      /* ---------- Our work page (.workpage-*): every project in a grid of the home's cards ---------- */
+      .workpage-hero {
+        padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+        background: var(--paper);
+      }
+      .workpage-hero .h-display {
+        margin: 14px 0 0;
+        max-width: 20ch;
+      }
+      .workpage-hero .body {
+        margin: 20px 0 0;
+        max-width: 52ch;
+      }
+      .workpage-grid {
+        padding-top: clamp(40px, 6vw, 72px);
+      }
+      .workpage-grid .work-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: clamp(340px, 34vw, 480px);
+      }
+      .workpage-grid .work-grid > :first-child {
+        grid-column: auto;
+      }
+      .workpage-cta {
+        padding: clamp(56px, 8vw, 96px) 0;
+        background: var(--sand);
+        border-top: 1px solid var(--line);
+      }
+      .workpage-cta .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .workpage-cta .h-section {
+        margin: 0;
+      }
+      @media (max-width: 960px) {
+        .workpage-grid .work-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-rows: clamp(280px, 48vw, 420px);
+        }
+      }
+      @media (max-width: 640px) {
+        .workpage-grid .work-grid {
+          grid-template-columns: minmax(0, 1fr);
+          grid-auto-rows: 72vw;
+        }
+      }

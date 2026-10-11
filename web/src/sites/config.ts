@@ -94,7 +94,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     cta: { label: 'Get a quote', href: '/#quote' },
     heroGold: 'to Beautiful.',
     offers: ['Accent walls and TV units', 'Outdoor builds', 'Handyman services'],
-    pages: ['/', '/contact', '/services'],
+    pages: ['/', '/contact', '/services', '/work'],
   },
   multimedia: {
     key: 'multimedia',

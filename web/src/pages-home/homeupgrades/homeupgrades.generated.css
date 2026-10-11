@@ -1866,4 +1866,54 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         }
       }
 
+      /* ---------- Our work page (.workpage-*): every project in a grid of the home's cards ---------- */
+      html[data-site="homeupgrades"] .workpage-hero {
+        padding: clamp(56px, 8vw, 104px) 0 clamp(40px, 6vw, 72px);
+        background: var(--paper);
+      }
+      html[data-site="homeupgrades"] .workpage-hero .h-display {
+        margin: 14px 0 0;
+        max-width: 20ch;
+      }
+      html[data-site="homeupgrades"] .workpage-hero .body {
+        margin: 20px 0 0;
+        max-width: 52ch;
+      }
+      html[data-site="homeupgrades"] .workpage-grid {
+        padding-top: clamp(40px, 6vw, 72px);
+      }
+      html[data-site="homeupgrades"] .workpage-grid .work-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: clamp(340px, 34vw, 480px);
+      }
+      html[data-site="homeupgrades"] .workpage-grid .work-grid > :first-child {
+        grid-column: auto;
+      }
+      html[data-site="homeupgrades"] .workpage-cta {
+        padding: clamp(56px, 8vw, 96px) 0;
+        background: var(--sand);
+        border-top: 1px solid var(--line);
+      }
+      html[data-site="homeupgrades"] .workpage-cta .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      html[data-site="homeupgrades"] .workpage-cta .h-section {
+        margin: 0;
+      }
+      @media (max-width: 960px) {
+        html[data-site="homeupgrades"] .workpage-grid .work-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-auto-rows: clamp(280px, 48vw, 420px);
+        }
+      }
+      @media (max-width: 640px) {
+        html[data-site="homeupgrades"] .workpage-grid .work-grid {
+          grid-template-columns: minmax(0, 1fr);
+          grid-auto-rows: 72vw;
+        }
+      }
+
 html[data-site="homeupgrades"] { --f-display: var(--font-jakarta), system-ui, sans-serif; --f-body: var(--font-jakarta), system-ui, sans-serif; --f-mono: var(--font-jakarta), ui-monospace, monospace; }

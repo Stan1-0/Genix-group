@@ -9,6 +9,7 @@ const PARITY: { site: string; proto: string; app: string; chrome: boolean; secti
   { site: 'homeupgrades-contact', proto: '/homeupgrades-contact.html', app: 'http://homeupgrades.localhost:3000/contact', chrome: true, sections: true },
   { site: 'logistics-services', proto: '/logistics-services.html', app: 'http://logistics.localhost:3000/services', chrome: true, sections: true },
   { site: 'homeupgrades-services', proto: '/homeupgrades-services.html', app: 'http://homeupgrades.localhost:3000/services', chrome: true, sections: true },
+  { site: 'homeupgrades-work', proto: '/homeupgrades-work.html', app: 'http://homeupgrades.localhost:3000/work', chrome: true, sections: true },
   { site: 'homeupgrades', proto: '/homeupgrades-home.html', app: 'http://homeupgrades.localhost:3000/', chrome: true, sections: true },
   { site: 'hub', proto: '/hub-home.html', app: 'http://localhost:3000/', chrome: true, sections: true, extra: '#businesses > section' },
   { site: 'hub-about', proto: '/hub-about.html', app: 'http://localhost:3000/about', chrome: true, sections: true },

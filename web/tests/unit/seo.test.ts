@@ -39,6 +39,13 @@ describe('sitemapXml / robotsTxt', () => {
     expect(sitemapXml('hub', root)).toContain('/contact</loc>')
     expect(sitemapXml('multimedia', root)).not.toContain('/contact')
   })
+  it('lists /work on the Home Upgrades sitemap only', () => {
+    expect(sitemapXml('homeupgrades', root)).toContain('/work</loc>')
+    expect(sitemapXml('logistics', root)).not.toContain('/work</loc>')
+    expect(sitemapXml('hub', root)).not.toContain('/work</loc>')
+    expect(sitemapXml('multimedia', root)).not.toContain('/work</loc>')
+  })
+
   it('lists /services on the Logistics and Home Upgrades sitemaps only', () => {
     expect(sitemapXml('logistics', root)).toContain('/services</loc>')
     expect(sitemapXml('homeupgrades', root)).toContain('/services</loc>')
