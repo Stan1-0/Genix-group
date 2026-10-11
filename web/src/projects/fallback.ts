@@ -1,0 +1,11 @@
+import type { Project } from './types'
+
+/* The five seeded projects, served from public/brand when the database has none
+   (e.g. production before `npm run seed:projects`). Copy comes from the home's Recent work cards. */
+export const FALLBACK_PROJECTS: readonly Project[] = [
+  { id: 'feature-wall', title: 'Accent wall', category: 'Accent wall', caption: 'Black panelling, gold inlays', description: 'Black diagonal panelling with gold inlay strips.', cover: { src: '/brand/hu-project-feature-wall.jpg', alt: 'Black accent wall with diagonal panelling and gold inlay strips', width: 1289, height: 1600 }, photos: [], video: null, featured: true, order: 10 },
+  { id: 'tv-unit', title: 'Custom TV unit', category: 'TV unit', caption: 'Start to finish in 13 seconds', description: 'From cutting the panels to the finished, backlit wall.', cover: { src: '/brand/hu-project-poster.jpg', alt: 'Finished custom TV wall with warm LED backlighting', width: 900, height: 675 }, photos: [], video: { src: '/brand/hu-project.mp4' }, featured: true, order: 20 },
+  { id: 'slat-wall', title: 'Accent wall', category: 'Accent wall', caption: 'Black slats, gold inlays, floating shelf', description: 'Black slats and diagonal gold inlays framing a floating shelf.', cover: { src: '/brand/hu-project-slat-wall.jpg', alt: 'Black feature wall with vertical slats, diagonal gold inlay strips and a floating shelf', width: 1200, height: 1600 }, photos: [], video: { src: '/brand/hu-project-slat-wall.mp4' }, featured: true, order: 30 },
+  { id: 'marble-wall', title: 'Marble TV wall', category: 'Accent wall & TV unit', caption: null, description: 'Backlit marble TV wall with a slatted wood surround.', cover: { src: '/brand/hu-project-marble-wall.jpg', alt: 'Backlit marble TV wall with slatted wood surround', width: 1402, height: 1122 }, photos: [], video: null, featured: false, order: 40 },
+  { id: 'tv-mount', title: 'TV wall mounting', category: 'TV wall mounting', caption: null, description: 'A slatted wood feature wall with a wall-mounted TV and floating console.', cover: { src: '/brand/hu-tv-mount.jpg', alt: 'Slatted wood feature wall with a wall-mounted TV and floating console', width: 3710, height: 1944 }, photos: [], video: null, featured: false, order: 50 },
+]

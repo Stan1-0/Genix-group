@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     sites: Site;
+    projects: Project;
     inquiries: Inquiry;
     'inquiry-counters': InquiryCounter;
     'rate-hits': RateHit;
@@ -83,6 +84,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     sites: SitesSelect<false> | SitesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     'inquiry-counters': InquiryCountersSelect<false> | InquiryCountersSelect<true>;
     'rate-hits': RateHitsSelect<false> | RateHitsSelect<true>;
@@ -226,6 +228,40 @@ export interface Site {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * The small line on the card, e.g. "Accent wall".
+   */
+  category: string;
+  /**
+   * Optional short line under the title on the card.
+   */
+  caption?: string | null;
+  /**
+   * One or two sentences shown when the project is opened.
+   */
+  description: string;
+  cover: number | Media;
+  photos?: (number | Media)[] | null;
+  /**
+   * Optional MP4 video. The cover photo is shown before it plays.
+   */
+  video?: (number | null) | Media;
+  featured?: boolean | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inquiries".
  */
 export interface Inquiry {
@@ -312,6 +348,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sites';
         value: number | Site;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'inquiries';
@@ -445,6 +485,24 @@ export interface SitesSelect<T extends boolean = true> {
       };
   seoTitle?: T;
   seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  caption?: T;
+  description?: T;
+  cover?: T;
+  photos?: T;
+  video?: T;
+  featured?: T;
+  order?: T;
+  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -14,6 +14,8 @@ export default defineConfig({
       DATABASE_URL: process.env.TEST_DATABASE_URL ?? 'postgres://postgres:postgres@127.0.0.1:5434/genix_test',
       PAYLOAD_SECRET: 'test-secret-not-for-production',
       ROOT_DOMAIN: 'thegenixgroup.com',
+      // Never upload to the live Blob store from tests: an empty token disables the plugin (local disk).
+      BLOB_READ_WRITE_TOKEN: '',
     },
     fileParallelism: false,
     // A cold Payload import on the first run can exceed the 5 s / 10 s defaults.
