@@ -1519,3 +1519,326 @@
           grid-auto-rows: 72vw;
         }
       }
+
+      /* ---------- Service detail pages (.svcd-*): one service, its questions and the quote form ---------- */
+      .svcd-hero {
+        padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 8vw, 96px);
+        background: var(--paper);
+      }
+      .svcd-hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: clamp(32px, 5vw, 80px);
+        align-items: center;
+      }
+      .svcd-hero-copy {
+        min-width: 0;
+      }
+      .svcd-crumbs {
+        margin: 0 0 24px;
+      }
+      .svcd-crumbs ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .svcd-crumbs li + li::before {
+        content: "\203A";
+        margin: 0 8px;
+      }
+      .svcd-crumbs a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        color: var(--muted);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .svcd-crumbs a:hover {
+        color: var(--heading);
+      }
+      .svcd-hero .h-display {
+        margin: 14px 0 0;
+        font-size: clamp(40px, 4.8vw, 64px);
+      }
+      .svcd-lead {
+        margin: 22px 0 12px;
+        max-width: 32ch;
+        font: 600 clamp(20px, 1.9vw, 24px) / 1.3 var(--f-body);
+        letter-spacing: -0.01em;
+        color: var(--heading);
+      }
+      .svcd-hero .body {
+        margin: 0 0 32px;
+        max-width: 46ch;
+      }
+      .svcd-media {
+        margin: 0;
+        position: relative;
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        border-radius: var(--r-lg);
+        background: var(--black);
+        box-shadow: var(--shadow-sm);
+      }
+      .svcd-media img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .svcd-fit {
+        padding: clamp(64px, 8vw, 104px) 0;
+        background: var(--white);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      .svcd-fit .h-section {
+        margin: 14px 0 0;
+        max-width: 24ch;
+      }
+      .svcd-fit .body {
+        margin: 20px 0 0;
+        max-width: 52ch;
+      }
+      .svcd-cards {
+        list-style: none;
+        margin: clamp(32px, 4vw, 48px) 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .svcd-cards li {
+        padding: 24px 24px 26px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        box-shadow: var(--shadow-subtle);
+      }
+      .svcd-cards svg {
+        display: block;
+        color: var(--brand);
+      }
+      .svcd-cards h3 {
+        margin: 16px 0 8px;
+        font: 500 22px / 1.2 var(--f-display);
+        letter-spacing: -0.02em;
+      }
+      .svcd-cards p {
+        margin: 0;
+        font-size: 16px;
+        color: var(--ink-2);
+      }
+      .svcd-process {
+        margin: 0 var(--gutter);
+        padding: clamp(56px, 6vw, 76px) 0;
+        border-radius: var(--r-lg);
+        background: var(--brand);
+        color: var(--white);
+      }
+      .svcd-process .wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+        grid-template-rows: auto 1fr;
+        column-gap: clamp(40px, 6vw, 96px);
+      }
+      .svcd-process .label,
+      .svcd-process .h-section {
+        grid-column: 1;
+      }
+      .svcd-process .h-section {
+        margin: 14px 0 0;
+      }
+      .svcd-process .steps {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        margin: 0;
+      }
+      .svcd-faq-quote {
+        padding: clamp(64px, 8vw, 104px) 0;
+        background: var(--paper);
+        scroll-margin-top: var(--header);
+      }
+      .svcd-faq-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(32px, 5vw, 72px);
+        align-items: start;
+      }
+      .svcd-faq {
+        min-width: 0;
+      }
+      .svcd-faq .h-section {
+        margin: 14px 0 28px;
+      }
+      .svcd-faq details {
+        border-top: 1px solid var(--line);
+      }
+      .svcd-faq details:last-of-type {
+        border-bottom: 1px solid var(--line);
+      }
+      .svcd-faq summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 56px;
+        padding: 14px 0;
+        list-style: none;
+        cursor: pointer;
+        font: 500 18px / 1.35 var(--f-body);
+        color: var(--heading);
+      }
+      .svcd-faq summary::-webkit-details-marker {
+        display: none;
+      }
+      .svcd-faq summary::after {
+        content: "+";
+        flex: none;
+        width: 24px;
+        text-align: center;
+        font: 400 26px / 1 var(--f-body);
+        color: var(--gold-text);
+      }
+      .svcd-faq details[open] summary::after {
+        content: "\2212";
+      }
+      .svcd-faq summary:focus-visible {
+        outline: 2px solid var(--sky);
+        outline-offset: 2px;
+      }
+      .svcd-faq details p {
+        margin: 0 0 20px;
+        max-width: 52ch;
+        font-size: 16px;
+        color: var(--ink-2);
+      }
+      .svcd-form {
+        min-width: 0;
+        padding: 36px;
+        border-radius: var(--r-lg);
+        background: var(--sand);
+        box-shadow: var(--shadow-subtle);
+      }
+      .svcd-more {
+        padding: clamp(64px, 8vw, 104px) 0;
+        background: var(--white);
+        border-top: 1px solid var(--line);
+      }
+      .svcd-more .h-section {
+        margin: 14px 0 0;
+      }
+      .svcd-more-grid {
+        list-style: none;
+        margin: clamp(32px, 4vw, 48px) 0 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .svcd-more-grid a {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        border-radius: var(--r);
+        background: var(--paper);
+        box-shadow: var(--shadow-subtle);
+        color: inherit;
+        text-decoration: none;
+      }
+      .svcd-more-grid a:hover {
+        box-shadow: var(--shadow-hover);
+      }
+      .svcd-more-grid a:focus-visible {
+        outline-offset: -2px;
+      }
+      .svcd-more-img {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+        background: var(--black);
+      }
+      .svcd-more-img img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .svcd-more-body {
+        padding: 22px 24px 26px;
+      }
+      .svcd-more-body h3 {
+        margin: 0 0 8px;
+        font: 500 24px / 1.15 var(--f-display);
+        letter-spacing: -0.02em;
+        color: var(--heading);
+      }
+      .svcd-more-body p {
+        margin: 0;
+        font-size: 16px;
+        color: var(--ink-2);
+      }
+      .svcd-close {
+        padding: clamp(56px, 8vw, 96px) 0;
+        background: var(--sand);
+        border-top: 1px solid var(--line);
+      }
+      .svcd-close .wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+      .svcd-close .h-section {
+        margin: 0;
+      }
+      .svcd-close .body {
+        margin: 0;
+        max-width: 46ch;
+      }
+      .svcd-close-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      @media (max-width: 960px) {
+        .svcd-hero-grid,
+        .svcd-faq-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .svcd-media {
+          aspect-ratio: 4 / 3;
+        }
+        .svcd-cards,
+        .svcd-more-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .svcd-process {
+          margin: 0 12px;
+        }
+        .svcd-process .wrap {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: none;
+        }
+        .svcd-process .steps {
+          grid-column: 1;
+          grid-row: auto;
+          margin: 36px 0 0 17px; /* the step markers sit 17px left of the list */
+        }
+        .svcd-form {
+          padding: 28px;
+        }
+      }
+      @media (max-width: 560px) {
+        .svcd-form {
+          padding: 24px 14px 20px;
+        }
+      }

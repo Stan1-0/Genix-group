@@ -52,6 +52,13 @@ describe('sitemapXml / robotsTxt', () => {
     expect(sitemapXml('hub', root)).not.toContain('/services')
     expect(sitemapXml('multimedia', root)).not.toContain('/services')
   })
+  it('lists the four Home Upgrades service pages on its sitemap only', () => {
+    const hu = sitemapXml('homeupgrades', root)
+    for (const slug of ['accent-walls', 'outdoor', 'handyman', 'reception']) {
+      expect(hu).toContain('/services/' + slug + '</loc>')
+      for (const k of ['logistics', 'hub', 'multimedia'] as const) expect(sitemapXml(k, root)).not.toContain('/services/' + slug)
+    }
+  })
   it('allows indexing only in production and points at the sitemap', () => {
     expect(robotsTxt('logistics', true, root)).toBe('User-agent: *\nAllow: /\n\nSitemap: https://logistics.thegenixgroup.com/sitemap.xml\n')
     expect(robotsTxt('logistics', false, root)).toBe('User-agent: *\nDisallow: /\n')

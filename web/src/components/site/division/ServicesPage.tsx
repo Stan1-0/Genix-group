@@ -6,7 +6,7 @@ import { QUOTING, SERVICES, SERVICES_INTRO, servicesJsonLd, type ServiceSite } f
 /* Services page for a division (design/logistics-services.html, design/homeupgrades-services.html): one section per
    service from the shared data, a closing "How quoting works" band. No motion: this page has no MotionRoot. Photos
    render as the Home Upgrades home does (next/image; the Unsplash ones carry its "Stock photo" mark). */
-const SIZES: Record<string, { width: number; height: number }> = {
+export const SIZES: Record<string, { width: number; height: number }> = {
   '/brand/hu-project-marble-wall.jpg': { width: 1402, height: 1122 },
   '/brand/hu-handyman.jpg': { width: 1600, height: 1067 },
 }

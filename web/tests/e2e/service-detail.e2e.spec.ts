@@ -1,0 +1,76 @@
+import { expect, test } from '@playwright/test'
+
+const BASE = 'http://homeupgrades.localhost:3000/services'
+const PAGES = {
+  'accent-walls': { title: 'Accent walls & TV units', project: 'accent', property: 'home' },
+  outdoor: { title: 'Outdoor builds', project: 'outdoor', property: null },
+  handyman: { title: 'Handyman services', project: 'other', property: null },
+  reception: { title: 'Accent walls for reception areas', project: 'accent', property: 'business' },
+} as const
+
+for (const [slug, p] of Object.entries(PAGES)) {
+  test(`${slug}: hero, fit cards, process, FAQs, form pre-selected, more services, metadata`, async ({ page }) => {
+    await page.goto(`${BASE}/${slug}`)
+    await expect(page.locator('h1')).toHaveText(p.title)
+    await expect(page.locator('.svcd-crumbs a')).toHaveText(['Home', 'Services'])
+    await expect(page.locator('.svcd-cards li')).toHaveCount(3)
+    await expect(page.locator('.svcd-process .step')).toHaveCount(4)
+    await expect(page.locator(`input[name="project"][value="${p.project}"]`)).toBeChecked()
+    if (p.property) await expect(page.locator(`input[name="property"][value="${p.property}"]`)).toBeChecked()
+    const more = await page.locator('.svcd-more a').evaluateAll((as) => as.map((a) => a.getAttribute('href')))
+    expect(more).toHaveLength(3)
+    expect(more).not.toContain(`/services/${slug}`)
+    expect(await page.title()).toBe(`${p.title} | Genix Home Upgrades`)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${BASE}/${slug}`)
+    const ld = await page.locator('script[type="application/ld+json"]').allTextContents()
+    expect(ld.some((t) => t.includes('"FAQPage"') && t.includes('"BreadcrumbList"'))).toBe(true)
+    await expect(page.locator('main')).not.toContainText(/\bfree\b/i)
+  })
+}
+
+test('FAQs open and close with the keyboard', async ({ page }) => {
+  await page.goto(`${BASE}/handyman`)
+  const first = page.locator('.svcd-faq details').first()
+  await first.locator('summary').focus()
+  await page.keyboard.press('Enter')
+  await expect(first).toHaveAttribute('open', '')
+  await page.keyboard.press('Enter')
+  await expect(first).not.toHaveAttribute('open', '')
+})
+
+test('Get a quote goes to the form on the page', async ({ page }) => {
+  await page.goto(`${BASE}/outdoor`)
+  await page.locator('.hero-actions a.btn-gold').click()
+  await expect(page).toHaveURL(`${BASE}/outdoor#quote`)
+  await expect(page.locator('#hu-quote-form')).toBeInViewport()
+})
+
+test('a request sent from a detail page (no JS) becomes a Home Upgrades inquiry', async ({ browser }) => {
+  const page = await (await browser.newContext({ javaScriptEnabled: false })).newPage()
+  await page.goto(`${BASE}/handyman`)
+  await page.check('input[name="property"][value="home"]')
+  await page.check('input[name="timing"][value="soon"]')
+  await page.fill('#hqZip', '92101')
+  await page.fill('#hqNotes', 'Detail page e2e: hang two shelves and mount a TV')
+  await page.fill('#hqName', 'E2E Service Detail')
+  await page.fill('#hqPhone', '(619) 555-0100')
+  await page.click('#hqSend')
+  await expect(page).toHaveURL(/\/quote\/sent\?ref=GX-HUP-\d{6}$/)
+  await page.context().close()
+})
+
+for (const url of [`${BASE}/unknown`, `${BASE}/Outdoor`, 'http://logistics.localhost:3000/services/outdoor', 'http://localhost:3000/services/outdoor', 'http://multimedia.localhost:3000/services/outdoor']) {
+  test(`${url} is a 404`, async ({ page }) => {
+    const res = await page.goto(url)
+    expect(res?.status()).toBe(404)
+  })
+}
+
+test('phone: no sideways scroll at 320 px and the pinned bar goes to the page form', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto(`${BASE}/accent-walls`)
+  await page.mouse.wheel(0, 1200)
+  await expect(page.getByTestId('quote-bar').locator('a.btn-gold')).toHaveAttribute('href', '#quote')
+  await page.setViewportSize({ width: 320, height: 800 })
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+})
