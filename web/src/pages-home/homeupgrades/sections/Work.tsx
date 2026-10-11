@@ -23,6 +23,9 @@ export async function Work() {
             <p className="body" data-reveal>
               Real projects by the Genix crew. Tap one to see it larger.
             </p>
+            <a className="svcpage-more" href="/work" data-reveal>
+              All our work <span aria-hidden="true">→</span>
+            </a>
           </div>
           <div className="work-grid">
             {projects.map((p) => (

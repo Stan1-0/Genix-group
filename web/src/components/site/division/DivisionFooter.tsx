@@ -31,7 +31,7 @@ const COLUMNS: Record<'logistics' | 'homeupgrades', { services: L[]; company: L[
       ['Handyman services', '/services#handyman'],
     ],
     company: [
-      ['Our work', '/#work'],
+      ['Our work', '/work'],
       ['How we work', '/#process'],
       ['Get a quote', '/#quote'],
       ['Contact', '/contact'],

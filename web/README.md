@@ -113,6 +113,14 @@ The group's About page is `web/src/pages-home/hub/About.tsx`, served at `thegeni
 
 `thegenixgroup.com/contact` takes a short message through the same pipeline as the quote forms. Its definition is `web/src/inquiries/forms/hub.ts` (fields, messages, email rows); inquiries are saved with division `hub`, type `contact` and a `GX-HUB-` reference. Any new page that hosts a form must be added to `BOTID_PROTECT` in `web/src/inquiries/bot-check.ts`.
 
+### Our work (Home Upgrades projects)
+
+`homeupgrades.thegenixgroup.com/work` and the home "Recent work" section read the Projects collection. To add a project: Admin → Content → Projects → Create new. A cover photo is required; add up to 8 more photos and, optionally, an MP4 video (uploads go straight to Blob, so large files are fine). Tick "Show on the home page" to feature it (the home shows up to three). Lower Order shows first. Untick Published to hide a project. Changes appear within seconds.
+
+If the database has no published projects (or can't be read), the site falls back to the five built-in projects, so the section is never empty.
+
+One-time production seed: with the production env vars in `web/.env.production.local` (from `vercel env pull`), run `npm run seed:projects` once; it skips projects that already exist (same title and order). It adds the photo files to media on each run for projects it creates. If you rename or reorder a seeded project in the admin, don't re-run the seed: it would add that project again.
+
 ### Services pages
 
 `/services` on Logistics and Home Upgrades is built from `web/src/sites/services.ts` (copy taken from the home pages; no claims the sites don't already make). Each "Get a quote" button opens `/contact` with the service pre-selected (`?kind=` / `?project=` / `?property=`, allow-listed in `web/src/inquiries/forms/preselect.ts`). Change a service there and both the page and its structured data update.

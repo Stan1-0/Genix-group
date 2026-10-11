@@ -87,7 +87,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     icons: '/icons/homeupgrades',
     nav: [
       { label: 'Services', href: '/services' },
-      { label: 'Our work', href: '/#work' },
+      { label: 'Our work', href: '/work' },
       { label: 'How we work', href: '/#process' },
       { label: 'Contact', href: '/contact' },
     ],
