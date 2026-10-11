@@ -16,6 +16,7 @@
     "test:int": "vitest run tests/int",
     "test:e2e": "playwright test",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/seed.ts",
+    "seed:projects": "cross-env NODE_OPTIONS=--no-deprecation payload run src/seed/projects.ts",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
