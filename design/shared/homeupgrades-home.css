@@ -809,6 +809,7 @@
       .hu-form {
         --err: #b42318;
         --pill-line: rgba(2, 34, 72, 0.18);
+        --field-line: rgba(2, 34, 72, 0.55); /* text-field outline: ≥3:1 (WCAG 1.4.11) */
         --ring: var(--gold-display);
         position: relative;
         padding: 24px;
@@ -968,7 +969,7 @@
         width: 100%;
         min-height: 48px;
         padding: 12px 14px;
-        border: 1px solid var(--pill-line);
+        border: 1px solid var(--field-line);
         border-radius: 12px;
         background: var(--paper);
         font: 400 16px/1.4 var(--f-body); /* 16px: no zoom-on-focus on iOS */
@@ -982,7 +983,7 @@
       }
       .hu-form .field input:hover,
       .hu-form .field textarea:hover {
-        border-color: rgba(2, 34, 72, 0.4);
+        border-color: var(--brand);
       }
       .hu-form .field input:focus,
       .hu-form .field textarea:focus {
