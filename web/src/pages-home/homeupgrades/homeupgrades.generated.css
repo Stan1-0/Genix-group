@@ -1116,7 +1116,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
       }
       html[data-site="homeupgrades"] .steps {
         list-style: none;
-        margin: 40px 0 0;
+        margin: 40px 0 0 17px; /* the step circles sit 17px left of the list */
         padding: 0 0 0 28px;
         position: relative;
         counter-reset: step;

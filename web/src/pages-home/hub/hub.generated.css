@@ -952,6 +952,13 @@
         html[data-site="hub"] .menu-btn {
           display: grid;
         }
+        /* the open menu lies over the hero lockup (z 41), so it shows the header logo in its place */
+        html[data-site="hub"] .site-header.menu-open {
+          z-index: 42;
+        }
+        html[data-site="hub"].logo-dock:not(.logo-docked) .site-header.menu-open .logo {
+          visibility: visible;
+        }
         html[data-site="hub"] .menu-open .nav {
           display: flex;
           flex-direction: column;
