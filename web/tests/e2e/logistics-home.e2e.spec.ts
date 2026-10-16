@@ -32,7 +32,7 @@ for (const [label, viewport, mobile] of [
     } else {
       test('title', async ({ page }) => {
         await page.goto(URL)
-        expect(await page.title()).toBe('Genix Logistics | Reliable Freight. Real People. On Time, Every Time.')
+        expect(await page.title()).toBe('Genix Logistics | Freight, Courier & Moving Services in San Diego')
       })
 
       test('division theme', async ({ page }) => {

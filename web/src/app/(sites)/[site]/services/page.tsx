@@ -13,7 +13,7 @@ export const revalidate = 3600
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { site } = await params
   if (site !== 'logistics' && site !== 'homeupgrades') return {}
-  return pageMetadata(site, '/services', { title: 'Services', description: SERVICES_INTRO[site].description })
+  return pageMetadata(site, '/services', { title: SERVICES_INTRO[site].seoTitle, description: SERVICES_INTRO[site].description })
 }
 
 // Services pages exist for the two divisions with services to list; everything else is a 404.

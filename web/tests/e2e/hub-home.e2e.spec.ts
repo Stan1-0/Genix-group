@@ -5,7 +5,7 @@ import { expectBasics, settled, watchPage } from './basics'
    reduced-motion checks that need no motion (the motion checks are in the second half of this file).
    One check -> one expect. */
 const URL = 'http://localhost:3000/'
-const TITLE = 'The Genix Group | We Haul It. We Build It. We Show It.'
+const TITLE = 'The Genix Group | Freight, Home Upgrades & Multimedia, Based in San Diego'
 
 for (const [label, viewport, mobile] of [
   ['desktop', { width: 1440, height: 900 }, false],

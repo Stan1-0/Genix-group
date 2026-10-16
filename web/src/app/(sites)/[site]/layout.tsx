@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Pick<Props, 'params'>): Promi
   const data = await getSiteData(site)
   return {
     metadataBase: new URL(siteOrigin(site)),
-    title: { default: `${cfg.name} | ${cfg.tagline}`, template: `%s | ${cfg.name}` },
+    title: { default: `${cfg.name} | ${cfg.seoTitle}`, template: `%s | ${cfg.name}` },
     description: data.seoDescription ?? undefined,
     icons: {
       icon: [

@@ -6,3 +6,14 @@
 html[data-site="hub"] .now[hidden] {
   visibility: hidden;
 }
+
+/* Division service chips link to that division's service page; they keep the chip's look and underline on hover. */
+html[data-site="hub"] .chips a {
+  color: inherit;
+  text-decoration: none;
+}
+html[data-site="hub"] .chips a:hover,
+html[data-site="hub"] .chips a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

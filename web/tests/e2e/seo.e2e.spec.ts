@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test('logistics home: title, canonical, JSON-LD and share image', async ({ page }) => {
   await page.goto('http://logistics.localhost:3000/')
-  await expect(page).toHaveTitle('Genix Logistics | Reliable Freight. Real People. On Time, Every Time.')
+  await expect(page).toHaveTitle('Genix Logistics | Freight, Courier & Moving Services in San Diego')
   // Next 16.3.6's metadata resolver renders a root canonical as the bare origin (no
   // trailing slash) unless `trailingSlash: true` is set in next.config — see
   // node_modules/next/dist/lib/metadata/resolvers/resolve-url.js resolveAbsoluteUrlWithPathname.
@@ -31,4 +31,23 @@ test('each host serves its own sitemap and robots.txt', async ({ page }) => {
   expect(await res!.text()).toContain('<loc>http://homeupgrades.localhost:3000/</loc>')
   const robots = await page.goto('http://homeupgrades.localhost:3000/robots.txt')
   expect(await robots!.text()).toBe('User-agent: *\nDisallow: /\n') // ALLOW_INDEXING is off locally
+})
+
+test('each host serves an llms.txt for AI assistants that names the division and links its services', async ({ page }) => {
+  const hub = await page.goto('http://localhost:3000/llms.txt')
+  expect(hub?.status()).toBe(200)
+  expect(hub?.headers()['content-type']).toContain('text/markdown')
+  const hubTxt = await hub!.text()
+  expect(hubTxt).toContain('# The Genix Group')
+  expect(hubTxt).toContain('http://logistics.localhost:3000/services/moves')
+  const log = await page.goto('http://logistics.localhost:3000/llms.txt')
+  expect(await log!.text()).toMatch(/^# Genix Logistics\n/)
+})
+
+test('hub service chips link to the division that does the job', async ({ page }) => {
+  await page.goto('http://localhost:3000/')
+  await expect(page.locator('#div-move .chips a', { hasText: 'Home & office moves' })).toHaveAttribute('href', 'http://logistics.localhost:3000/services/moves')
+  await expect(page.locator('#div-make .chips a', { hasText: 'Handyman' })).toHaveAttribute('href', 'http://homeupgrades.localhost:3000/services/handyman')
+  const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').first().textContent()) ?? '{}')
+  expect(ld.subOrganization[0].knowsAbout).toContain('Home moves')
 })

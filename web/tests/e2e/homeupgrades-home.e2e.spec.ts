@@ -70,7 +70,7 @@ for (const [label, viewport, mobile] of [
     } else {
       test('title', async ({ page }) => {
         await page.goto(URL)
-        expect(await page.title()).toBe('Genix Home Upgrades | From Blueprint to Beautiful.')
+        expect(await page.title()).toBe('Genix Home Upgrades | Accent Walls, TV Units, Outdoor Builds & Handyman in California')
       })
 
       test('division theme', async ({ page }) => {

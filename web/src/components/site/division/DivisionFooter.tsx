@@ -9,9 +9,9 @@ type L = [label: string, href: string]
 const COLUMNS: Record<'logistics' | 'homeupgrades', { services: L[]; company: L[]; others: { key: SiteKey; dot: string; label: string }[] }> = {
   logistics: {
     services: [
-      ['Business freight', '/services#freight'],
-      ['Last-mile & courier', '/services#freight'],
-      ['Home & office moves', '/services#moves'],
+      ['Business freight', '/services/freight'],
+      ['Last-mile & courier', '/services/freight'],
+      ['Home & office moves', '/services/moves'],
     ],
     company: [
       ['How it works', '/#how'],

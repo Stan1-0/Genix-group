@@ -2,10 +2,10 @@ import { expect, test } from '@playwright/test'
 
 const BASE = 'http://homeupgrades.localhost:3000/services'
 const PAGES = {
-  'accent-walls': { title: 'Accent walls & TV units', project: 'accent', property: 'home' },
-  outdoor: { title: 'Outdoor builds', project: 'outdoor', property: null },
-  handyman: { title: 'Handyman services', project: 'other', property: null },
-  reception: { title: 'Accent walls for reception areas', project: 'accent', property: 'business' },
+  'accent-walls': { title: 'Accent walls & TV units', seo: 'Accent Walls & Custom TV Units in California', project: 'accent', property: 'home' },
+  outdoor: { title: 'Outdoor builds', seo: 'Decks, Patios & Pergolas in California', project: 'outdoor', property: null },
+  handyman: { title: 'Handyman services', seo: 'Handyman & TV Wall Mounting in California', project: 'other', property: null },
+  reception: { title: 'Accent walls for reception areas', seo: 'Reception Accent Walls for Businesses in California', project: 'accent', property: 'business' },
 } as const
 
 for (const [slug, p] of Object.entries(PAGES)) {
@@ -20,7 +20,7 @@ for (const [slug, p] of Object.entries(PAGES)) {
     const more = await page.locator('.svcd-more a').evaluateAll((as) => as.map((a) => a.getAttribute('href')))
     expect(more).toHaveLength(3)
     expect(more).not.toContain(`/services/${slug}`)
-    expect(await page.title()).toBe(`${p.title} | Genix Home Upgrades`)
+    expect(await page.title()).toBe(`${p.seo} | Genix Home Upgrades`)
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${BASE}/${slug}`)
     const ld = await page.locator('script[type="application/ld+json"]').allTextContents()
     expect(ld.some((t) => t.includes('"FAQPage"') && t.includes('"BreadcrumbList"'))).toBe(true)
@@ -72,7 +72,7 @@ test('a request sent from a detail page (no JS) becomes a Home Upgrades inquiry'
   await page.context().close()
 })
 
-for (const url of [`${BASE}/unknown`, `${BASE}/Outdoor`, 'http://logistics.localhost:3000/services/outdoor', 'http://localhost:3000/services/outdoor', 'http://multimedia.localhost:3000/services/outdoor']) {
+for (const url of [`${BASE}/unknown`, `${BASE}/Outdoor`, 'http://logistics.localhost:3000/services/outdoor', 'http://homeupgrades.localhost:3000/services/freight', 'http://localhost:3000/services/moves', 'http://localhost:3000/services/outdoor', 'http://multimedia.localhost:3000/services/outdoor']) {
   test(`${url} is a 404`, async ({ page }) => {
     const res = await page.goto(url)
     expect(res?.status()).toBe(404)
@@ -86,4 +86,32 @@ test('phone: no sideways scroll at 320 px and the pinned bar goes to the page fo
   await expect(page.getByTestId('quote-bar').locator('a.btn-gold')).toHaveAttribute('href', '#hu-quote-form')
   await page.setViewportSize({ width: 320, height: 800 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true)
+})
+
+const LOG = 'http://logistics.localhost:3000/services'
+const LOG_PAGES = {
+  freight: { title: 'Freight & deliveries', seo: 'Freight, Pallet & Courier Delivery from San Diego', quote: '/contact?kind=business', other: '/services/moves' },
+  moves: { title: 'Home & office moves', seo: 'Home & Office Movers in San Diego', quote: '/contact?kind=move', other: '/services/freight' },
+} as const
+
+for (const [slug, p] of Object.entries(LOG_PAGES)) {
+  test(`logistics ${slug}: own page with search title, quote link, FAQs and Service JSON-LD`, async ({ page }) => {
+    const res = await page.goto(`${LOG}/${slug}`)
+    expect(res?.status()).toBe(200)
+    await expect(page.locator('html')).toHaveAttribute('data-site', 'logistics')
+    await expect(page.locator('h1')).toHaveText(p.title)
+    expect(await page.title()).toBe(`${p.seo} | Genix Logistics`)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${LOG}/${slug}`)
+    await expect(page.locator('.promises li')).toHaveCount(3)
+    await expect(page.locator('.faq-list details')).toHaveCount(3)
+    await expect(page.locator(`main a[href="${p.quote}"]`).first()).toBeVisible()
+    await expect(page.locator(`main a[href="${p.other}"]`)).toHaveCount(1)
+    const ld = await page.locator('script[type="application/ld+json"]').allTextContents()
+    expect(ld.some((t) => t.includes('"Service"') && t.includes('"Genix Logistics"') && t.includes('"FAQPage"'))).toBe(true)
+  })
+}
+
+test('the Logistics services page links each service to its own page', async ({ page }) => {
+  await page.goto(LOG)
+  for (const slug of Object.keys(LOG_PAGES)) await expect(page.locator(`a.svcpage-more[href="/services/${slug}"]`)).toHaveCount(1)
 })
