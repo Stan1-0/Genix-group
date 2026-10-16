@@ -34,6 +34,6 @@ describe('servicesJsonLd', () => {
     const ld = servicesJsonLd('homeupgrades', toSiteData('homeupgrades', null), root) as { '@type': string; itemListElement: { position: number; item: { '@type': string; name: string; url: string; provider: { name: string } } }[] }
     expect(ld['@type']).toBe('ItemList')
     expect(ld.itemListElement).toHaveLength(4)
-    expect(ld.itemListElement[0]).toMatchObject({ position: 1, item: { '@type': 'Service', name: 'Accent walls & TV units', url: 'https://homeupgrades.thegenixgroup.com/services#accent-walls', provider: { name: 'Genix Home Upgrades' } } })
+    expect(ld.itemListElement[0]).toMatchObject({ position: 1, item: { '@type': 'Service', name: 'Accent walls & TV units', url: 'https://homeupgrades.thegenixgroup.com/services/accent-walls', provider: { name: 'Genix Home Upgrades' } } })
   })
 })

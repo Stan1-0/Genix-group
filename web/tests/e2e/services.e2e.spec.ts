@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
 
 const SITES = {
-  logistics: { proto: 'http://localhost:4321/logistics-services.html', home: 'http://logistics.localhost:3000/', homeBar: '/#quote-form', url: 'http://logistics.localhost:3000/services', title: 'Services | Genix Logistics', ids: ['freight', 'moves'], hrefs: ['/contact?kind=business', '/contact?kind=move'] },
-  homeupgrades: { proto: 'http://localhost:4321/homeupgrades-services.html', home: 'http://homeupgrades.localhost:3000/', homeBar: '/#quote', url: 'http://homeupgrades.localhost:3000/services', title: 'Services | Genix Home Upgrades', ids: ['accent-walls', 'outdoor', 'handyman', 'reception'], hrefs: ['/contact?project=accent&property=home', '/contact?project=outdoor', '/contact?project=other', '/contact?project=accent&property=business'] },
+  logistics: { proto: 'http://localhost:4321/logistics-services.html', home: 'http://logistics.localhost:3000/', homeBar: '/#quote-form', url: 'http://logistics.localhost:3000/services', title: 'Freight, Courier & Moving Services in San Diego | Genix Logistics', ids: ['freight', 'moves'], hrefs: ['/contact?kind=business', '/contact?kind=move'] },
+  homeupgrades: { proto: 'http://localhost:4321/homeupgrades-services.html', home: 'http://homeupgrades.localhost:3000/', homeBar: '/#quote', url: 'http://homeupgrades.localhost:3000/services', title: 'Accent Walls, TV Units, Outdoor Builds & Handyman Services in California | Genix Home Upgrades', ids: ['accent-walls', 'outdoor', 'handyman', 'reception'], hrefs: ['/contact?project=accent&property=home', '/contact?project=outdoor', '/contact?project=other', '/contact?project=accent&property=business'] },
 } as const
 
 for (const [site, s] of Object.entries(SITES)) {

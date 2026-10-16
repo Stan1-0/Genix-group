@@ -5,9 +5,9 @@ import { toSiteData } from '@/sites/data-shape'
 const root = 'thegenixgroup.com'
 
 describe('pageMetadata', () => {
-  it('uses "<Site> | <Tagline>" on the home page with an absolute canonical', () => {
+  it('uses "<Site> | <what it does, where>" on the home page with an absolute canonical', () => {
     const m = pageMetadata('logistics', '/', {}, root)
-    expect(m.title).toEqual({ absolute: 'Genix Logistics | Reliable Freight. Real People. On Time, Every Time.' })
+    expect(m.title).toEqual({ absolute: 'Genix Logistics | Freight, Courier & Moving Services in San Diego' })
     expect(m.alternates?.canonical).toBe('https://logistics.thegenixgroup.com/')
   })
   it('uses "<Page> | <Site>" elsewhere', () => {
@@ -59,6 +59,12 @@ describe('sitemapXml / robotsTxt', () => {
       for (const k of ['logistics', 'hub', 'multimedia'] as const) expect(sitemapXml(k, root)).not.toContain('/services/' + slug)
     }
   })
+  it('lists the two Logistics service pages on its sitemap only', () => {
+    for (const slug of ['freight', 'moves']) {
+      expect(sitemapXml('logistics', root)).toContain('/services/' + slug + '</loc>')
+      for (const k of ['homeupgrades', 'hub', 'multimedia'] as const) expect(sitemapXml(k, root)).not.toContain('/services/' + slug)
+    }
+  })
   it('allows indexing only in production and points at the sitemap', () => {
     expect(robotsTxt('logistics', true, root)).toBe('User-agent: *\nAllow: /\n\nSitemap: https://logistics.thegenixgroup.com/sitemap.xml\n')
     expect(robotsTxt('logistics', false, root)).toBe('User-agent: *\nDisallow: /\n')
@@ -71,6 +77,15 @@ describe('siteJsonLd', () => {
     const ld = siteJsonLd('hub', toSiteData('hub', null), root)
     expect(ld).toMatchObject({ '@type': 'Organization', name: 'The Genix Group', url: 'https://thegenixgroup.com/' })
     expect((ld.subOrganization as { name: string }[]).map((o) => o.name)).toEqual(['Genix Logistics', 'Genix Home Upgrades', 'Genix Multimedia'])
+  })
+  it('says on the hub which division to ask for which service', () => {
+    const ld = siteJsonLd('hub', toSiteData('hub', null), root)
+    const subs = ld.subOrganization as { name: string; url: string; knowsAbout: string[]; description: string }[]
+    expect(subs[0]).toMatchObject({ name: 'Genix Logistics', url: 'https://logistics.thegenixgroup.com/' })
+    expect(subs[0].knowsAbout).toContain('Home moves')
+    expect(subs[1].knowsAbout).toContain('TV wall mounting')
+    expect(subs[2].knowsAbout).toContain('Photography')
+    expect(subs.every((o) => o.description.length > 20)).toBe(true)
   })
   it('gives the hub the prototype address and area served', () => {
     const ld = siteJsonLd('hub', toSiteData('hub', null), root)

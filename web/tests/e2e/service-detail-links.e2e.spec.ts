@@ -17,7 +17,8 @@ test('the footer service links go to the detail pages', async ({ page }) => {
   }
 })
 
-test('Logistics /services has no detail links', async ({ page }) => {
+test('Logistics /services links each service to its page', async ({ page }) => {
   await page.goto('http://logistics.localhost:3000/services')
-  await expect(page.locator('a[href^="/services/"]')).toHaveCount(0)
+  for (const slug of ['freight', 'moves']) await expect(page.locator(`#${slug} a[href="/services/${slug}"]`)).toHaveCount(1)
+  await expect(page.locator('#freight a.btn-gold')).toHaveAttribute('href', '/contact?kind=business') // quote button unchanged
 })

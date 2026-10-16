@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 const FOOTER = {
-  logistics: [['Business freight', '/services#freight'], ['Last-mile & courier', '/services#freight'], ['Home & office moves', '/services#moves']],
+  logistics: [['Business freight', '/services/freight'], ['Last-mile & courier', '/services/freight'], ['Home & office moves', '/services/moves']],
   homeupgrades: [['Accent walls & TV units', '/services/accent-walls'], ['Outdoor builds', '/services/outdoor'], ['Handyman services', '/services/handyman']],
 } as const
 

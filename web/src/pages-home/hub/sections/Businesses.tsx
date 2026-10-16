@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { siteOrigin } from '@/sites/config'
 
-/* The three division panels. Panel inset / video playback attach in Task 11. */
+/* The three division panels. Panel inset / video playback attach in Task 11. Service chips link to the division's
+   own service page, so the hub points search engines at the site that does each job. */
 export function Businesses() {
   const logistics = siteOrigin('logistics')
   const homeupgrades = siteOrigin('homeupgrades')
@@ -33,9 +34,9 @@ export function Businesses() {
               real person to call when plans change.
             </p>
             <ul className="chips">
-              <li>Business freight</li>
-              <li>Last-mile &amp; courier</li>
-              <li>Home &amp; office moves</li>
+              <li><a href={`${logistics}/services/freight`}>Business freight</a></li>
+              <li><a href={`${logistics}/services/freight`}>Last-mile &amp; courier</a></li>
+              <li><a href={`${logistics}/services/moves`}>Home &amp; office moves</a></li>
             </ul>
             <div className="panel-cta">
               <a className="btn-accent" href={`${logistics}/#quote-form`}>
@@ -77,10 +78,10 @@ export function Businesses() {
               first site visit to the final finish.
             </p>
             <ul className="chips">
-              <li>Accent walls</li>
-              <li>TV units</li>
-              <li>Outdoor builds</li>
-              <li>Handyman</li>
+              <li><a href={`${homeupgrades}/services/accent-walls`}>Accent walls</a></li>
+              <li><a href={`${homeupgrades}/services/accent-walls`}>TV units</a></li>
+              <li><a href={`${homeupgrades}/services/outdoor`}>Outdoor builds</a></li>
+              <li><a href={`${homeupgrades}/services/handyman`}>Handyman</a></li>
             </ul>
             <div className="panel-cta">
               <a className="btn-accent" href={`${homeupgrades}/#quote`}>

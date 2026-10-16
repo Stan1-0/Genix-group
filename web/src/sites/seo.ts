@@ -9,7 +9,7 @@ export function pageMetadata(
   root?: string,
 ): Metadata {
   const cfg = SITES[site]
-  const title = opts.title ? `${opts.title} | ${cfg.name}` : `${cfg.name} | ${cfg.tagline}`
+  const title = opts.title ? `${opts.title} | ${cfg.name}` : `${cfg.name} | ${cfg.seoTitle}`
   const url = new URL(path, siteOrigin(site, root) + '/').toString()
   const description = opts.description ?? undefined
   return {
@@ -49,11 +49,20 @@ export function siteJsonLd(site: SiteKey, data: SiteData, root?: string): Record
       ...base,
       address: { '@type': 'PostalAddress', addressLocality: 'San Diego', addressRegion: 'CA', addressCountry: 'US' },
       areaServed: { '@type': 'Country', name: 'United States' },
-      subOrganization: DIVISION_KEYS.map((k) => ({ '@type': SITES[k].schemaType, name: SITES[k].name, url: `${siteOrigin(k, root)}/` })),
+      // Which division to ask for what, so search engines and AI assistants send a service query to the right site.
+      subOrganization: DIVISION_KEYS.map((k) => ({
+        '@type': SITES[k].schemaType,
+        name: SITES[k].name,
+        url: `${siteOrigin(k, root)}/`,
+        description: SITES[k].summary,
+        knowsAbout: SITES[k].knowsAbout,
+      })),
     }
   }
   return {
     ...base,
+    description: cfg.summary,
+    ...(cfg.knowsAbout.length ? { knowsAbout: cfg.knowsAbout } : {}),
     ...(data.areaServed ? { areaServed: { '@type': data.areaServed.type, name: data.areaServed.name } } : {}),
     ...(cfg.offers.length ? { makesOffer: cfg.offers.map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })) } : {}),
     parentOrganization: { '@type': 'Organization', name: SITES.hub.name, url: `${siteOrigin('hub', root)}/` },
