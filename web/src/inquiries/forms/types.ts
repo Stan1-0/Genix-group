@@ -1,6 +1,7 @@
 import type { SiteKey } from '@/sites/config'
 
 export type Row = [label: string, value: string]
+export type InquiryType = 'quote' | 'contact' | 'application'
 export type Contact = { name: string; phone: string | null; email: string | null; notes: string | null }
 export type Parsed<T> = { ok: true; data: T } | { ok: false; errors: Record<string, string> }
 
@@ -8,7 +9,7 @@ export type Parsed<T> = { ok: true; data: T } | { ok: false; errors: Record<stri
 export interface FormDef<T> {
   site: SiteKey
   /** Stored as the inquiry's `type`, and picks the email wording. */
-  inquiryType: 'quote' | 'contact'
+  inquiryType: InquiryType
   fields: readonly string[]
   parse(raw: Record<string, unknown>, today: string): Parsed<T>
   contact(d: T): Contact

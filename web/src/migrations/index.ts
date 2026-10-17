@@ -2,6 +2,7 @@ import * as migration_20260928_012055_initial from './20260928_012055_initial';
 import * as migration_20260928_230142_coverage_area_served from './20260928_230142_coverage_area_served';
 import * as migration_20261001_000956_inquiries from './20261001_000956_inquiries';
 import * as migration_20261011_123902_projects from './20261011_123902_projects';
+import * as migration_20261017_185312_inquiry_application_type from './20261017_185312_inquiry_application_type';
 
 export const migrations = [
   {
@@ -22,6 +23,11 @@ export const migrations = [
   {
     up: migration_20261011_123902_projects.up,
     down: migration_20261011_123902_projects.down,
-    name: '20261011_123902_projects'
+    name: '20261011_123902_projects',
+  },
+  {
+    up: migration_20261017_185312_inquiry_application_type.up,
+    down: migration_20261017_185312_inquiry_application_type.down,
+    name: '20261017_185312_inquiry_application_type'
   },
 ];

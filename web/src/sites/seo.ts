@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DIVISION_KEYS, SITES, siteOrigin, type SiteKey } from './config'
 import type { SiteData } from './data-shape'
+import { jobPath, openJobs } from './jobs'
 
 export function pageMetadata(
   site: SiteKey,
@@ -23,7 +24,10 @@ export function pageMetadata(
 
 export function sitemapXml(site: SiteKey, root?: string): string {
   const origin = siteOrigin(site, root)
-  const urls = SITES[site].pages.map((p) => `  <url><loc>${origin}${p}</loc></url>`).join('\n')
+  // Open jobs (and their /careers index) come from jobs.ts, so closing a role drops it from the sitemap too.
+  const jobs = openJobs(site)
+  const paths = [...SITES[site].pages, ...(jobs.length ? ['/careers', ...jobs.map(jobPath)] : [])]
+  const urls = paths.map((p) => `  <url><loc>${origin}${p}</loc></url>`).join('\n')
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
 }
 

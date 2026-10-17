@@ -1,5 +1,5 @@
 import { SITES, type SiteKey } from '@/sites/config'
-import type { Row } from './forms/types'
+import type { InquiryType, Row } from './forms/types'
 
 export type EmailContent = { subject: string; html: string; text: string }
 export type PhotoLink = { thumb: string; full: string }
@@ -22,10 +22,16 @@ const shell = (body: string) =>
 
 
 /** `unlinkedPhotos`: photos on the enquiry that can't be linked here (Cloudinary settings missing); the team is told to look in the admin. */
-export function teamEmail(a: { site: SiteKey; kind?: 'quote' | 'contact'; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[]; unlinkedPhotos?: number }): EmailContent {
-  const msg = a.kind === 'contact'
-  const subject = `[${SITES[a.site].shortName}] ${msg ? 'Message' : 'Quote'} · ${a.subjectDetails} · ${a.reference}`
-  const heading = `${msg ? 'New message' : 'New quote request'} · ${a.reference}`
+const TEAM_WORDS: Record<InquiryType, [subject: string, heading: string]> = {
+  quote: ['Quote', 'New quote request'],
+  contact: ['Message', 'New message'],
+  application: ['Job application', 'New job application'],
+}
+
+export function teamEmail(a: { site: SiteKey; kind?: InquiryType; reference: string; rows: Row[]; subjectDetails: string; phone: string | null; adminUrl: string; links?: string[]; photos?: PhotoLink[]; unlinkedPhotos?: number }): EmailContent {
+  const [word, title] = TEAM_WORDS[a.kind ?? 'quote']
+  const subject = `[${SITES[a.site].shortName}] ${word} · ${a.subjectDetails} · ${a.reference}`
+  const heading = `${title} · ${a.reference}`
   const links = a.links ?? []
   const photos = a.photos ?? []
   const note = !photos.length && a.unlinkedPhotos ? `${a.unlinkedPhotos} photo(s) attached — see the admin.` : ''
@@ -42,12 +48,12 @@ export function teamEmail(a: { site: SiteKey; kind?: 'quote' | 'contact'; refere
   return { subject, html, text }
 }
 
-export function customerEmail(a: { site: SiteKey; kind?: 'quote' | 'contact'; reference: string; name: string; rows: Row[]; phone: string | null; extraLine?: string }): EmailContent {
+export function customerEmail(a: { site: SiteKey; kind?: InquiryType; reference: string; name: string; rows: Row[]; phone: string | null; extraLine?: string }): EmailContent {
   const division = SITES[a.site].name
   const greet = a.name.trim().slice(0, 40)
-  const promise = "We'll get back to you within two business days."
+  const promise = a.kind === 'application' ? 'We read every application and will call you if your experience is a fit.' : "We'll get back to you within two business days."
   const call = a.phone ? `Need us sooner? Call ${a.phone}.` : 'Need us sooner? Reply to this email.'
-  const subject = `We got your ${a.kind === 'contact' ? 'message' : 'request'} · ${a.reference}`
+  const subject = `We got your ${a.kind === 'contact' ? 'message' : a.kind === 'application' ? 'application' : 'request'} · ${a.reference}`
   const sign = a.site === 'hub' ? SITES.hub.name : `${division} · Part of The Genix Group`
   const extra = a.extraLine ? `<p style="margin:12px 0 0">${esc(a.extraLine)}</p>` : ''
   const html = shell(`<p style="margin:0 0 12px">Thanks, ${esc(greet)}. ${promise}</p><p style="margin:0 0 16px">Your reference: <b>${esc(a.reference)}</b></p>${table(a.rows, null)}${extra}<p style="margin:20px 0 0">${esc(call)}</p><p style="margin:8px 0 0;color:#625d55">${esc(sign)}</p>`)
