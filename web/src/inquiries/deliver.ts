@@ -58,7 +58,7 @@ const photoOpts = (env: Env) => ({ settings: photoSettings(env), nowSec: Math.fl
 export async function deliverInquiry(payload: Payload, id: number | string, mailer: Mailer, opts: DeliverOpts): Promise<void> {
   const doc = await payload.findByID({ collection: 'inquiries', id })
   const site = doc.division as SiteKey
-  const def = formFor(site)
+  const def = formFor(site, doc.type)
   const contact = { name: doc.name, phone: doc.phone ?? null, email: doc.email ?? null, notes: doc.notes ?? null }
   const data = def.fromStored((doc.details ?? {}) as Record<string, unknown>, contact)
   const from = `Genix ${SITES[site].shortName} <${opts.env.INQUIRY_FROM || 'quotes@thegenixgroup.com'}>`

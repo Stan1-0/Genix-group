@@ -1,6 +1,7 @@
 import { DIVISION_KEYS, SITES, siteOrigin, type SiteKey } from './config'
 import type { SiteData } from './data-shape'
 import { SERVICES, isServiceSite } from './services'
+import { jobPath, openJobs, payLabel } from './jobs'
 
 /* /llms.txt (llmstxt.org): a plain-Markdown summary for AI assistants (ChatGPT, Claude, Gemini, Perplexity) of who
    does what, so a question about a service is answered with the Genix division that runs it and a link to its page.
@@ -55,6 +56,10 @@ export function llmsTxt(site: SiteKey, data: SiteData, root?: string): string {
 
   out.push(`${cfg.name} is part of ${hub.name} (${siteOrigin('hub', root)}/). ${cfg.seoTitle}.`, '')
   out.push('## Services', '', ...serviceLines(site, root), '')
+  const jobs = openJobs(site)
+  if (jobs.length) {
+    out.push('## Jobs', '', ...jobs.map((j) => `- [${j.title}](${siteOrigin(site, root)}${jobPath(j)}): ${payLabel(j)}, ${j.location.locality}, ${j.location.region}. ${j.summary}`), '')
+  }
   const contact = contactLines(site, data, root)
   if (contact.length) out.push('## Contact', '', ...contact, '')
   out.push(

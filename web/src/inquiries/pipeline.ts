@@ -8,7 +8,7 @@ export type QuoteResult =
   | { ok: true; reference: string; inquiryId: number | string | null }
   | { ok: false; fieldErrors?: Record<string, string>; error?: 'rate' | 'server' }
 
-type Input = { site: SiteKey; raw: Record<string, unknown>; photoIds: string[]; ip: string; honeypot: string; startedAt: number | null }
+type Input = { site: SiteKey; form?: 'application'; raw: Record<string, unknown>; photoIds: string[]; ip: string; honeypot: string; startedAt: number | null }
 type Deps = { payload: Payload; isBot: () => Promise<boolean>; now: () => Date; salt: string; production: boolean; verifyPhotos: (ids: string[]) => Promise<string[]> }
 
 const TOO_FAST_MS = 2000
@@ -22,7 +22,7 @@ const fakeReference = (site: SiteKey) => formatReference(SITES[site].inquiryPref
 export async function processQuote(input: Input, deps: Deps): Promise<QuoteResult> {
   const now = deps.now()
   const today = new Date(now.getTime() - 8 * 3600_000).toISOString().slice(0, 10) // Pacific date (UTC-8, conservative)
-  const def = formFor(input.site)
+  const def = formFor(input.site, input.form)
   const parsed = def.parse(input.raw, today)
   if (!parsed.ok) return { ok: false, fieldErrors: parsed.errors }
 

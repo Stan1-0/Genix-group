@@ -268,7 +268,7 @@ export interface Inquiry {
   id: number;
   reference: string;
   division: 'hub' | 'logistics' | 'homeupgrades' | 'multimedia';
-  type: 'quote' | 'contact' | 'booking';
+  type: 'quote' | 'contact' | 'booking' | 'application';
   status: 'new' | 'contacted' | 'closed';
   summary?: string | null;
   name: string;

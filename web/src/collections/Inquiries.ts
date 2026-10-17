@@ -83,7 +83,7 @@ export const Inquiries: CollectionConfig = {
   fields: [
     { name: 'reference', type: 'text', required: true, unique: true, index: true, access: locked, admin: { readOnly: true } },
     { name: 'division', type: 'select', required: true, options: SITE_KEYS.map((k) => ({ label: k, value: k })), access: locked, admin: { readOnly: true } },
-    { name: 'type', type: 'select', required: true, defaultValue: 'quote', options: ['quote', 'contact', 'booking'], access: locked, admin: { readOnly: true } },
+    { name: 'type', type: 'select', required: true, defaultValue: 'quote', options: ['quote', 'contact', 'booking', 'application'], access: locked, admin: { readOnly: true } },
     {
       name: 'status', type: 'select', required: true, defaultValue: 'new',
       options: [{ label: 'New', value: 'new' }, { label: 'Contacted', value: 'contacted' }, { label: 'Closed', value: 'closed' }],

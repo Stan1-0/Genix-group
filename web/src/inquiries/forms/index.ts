@@ -1,8 +1,9 @@
 import type { SiteKey } from '@/sites/config'
 import { homeupgradesForm } from './homeupgrades'
 import { hubForm } from './hub'
+import { jobApplicationForm } from './job'
 import { logisticsForm } from './logistics'
-import type { FormDef } from './types'
+import type { FormDef, InquiryType } from './types'
 
 const FORMS: Partial<Record<SiteKey, FormDef<unknown>>> = {
   logistics: logisticsForm as FormDef<unknown>,
@@ -12,7 +13,12 @@ const FORMS: Partial<Record<SiteKey, FormDef<unknown>>> = {
 
 export const FORM_SITES = Object.keys(FORMS) as SiteKey[]
 
-export function formFor(site: SiteKey): FormDef<unknown> {
+/** The site's own form, or a job application (stored with type 'application') when `type` says so. */
+export function formFor(site: SiteKey, type?: InquiryType | string | null): FormDef<unknown> {
+  if (type === 'application') {
+    if (site !== jobApplicationForm.site) throw new Error(`no job application form for ${site}`)
+    return jobApplicationForm as FormDef<unknown>
+  }
   const def = FORMS[site]
   if (!def) throw new Error(`no quote form for ${site}`)
   return def
@@ -24,4 +30,4 @@ export function formDataToRawFor(def: FormDef<unknown>, fd: FormData): Record<st
   return out
 }
 
-export type { FormDef, Row, Contact } from './types'
+export type { FormDef, Row, Contact, InquiryType } from './types'
