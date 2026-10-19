@@ -649,6 +649,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         gap: 16px;
       }
       html[data-site="homeupgrades"] .svc {
+        position: relative;
         display: flex;
         flex-direction: column;
         border: 1px solid var(--line);
@@ -722,6 +723,21 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         font-size: 15px;
         text-decoration: none;
         border-bottom: 2px solid var(--gold);
+      }
+      /* The whole card is the link: the "More about" link's box stretches over the card,
+         so it stays one link (one tab stop) with the service's name */
+      html[data-site="homeupgrades"] .svc .more::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      html[data-site="homeupgrades"] .svc .more:focus-visible {
+        outline: none;
+      }
+      html[data-site="homeupgrades"] .svc:has(.more:focus-visible) {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
       }
 
       /* Audience toggle (Home | Business): CSS only. Radios precede their labels;

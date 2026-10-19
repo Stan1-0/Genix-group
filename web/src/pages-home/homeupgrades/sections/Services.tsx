@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-/* Services: upgrade cards with a Home | Business toggle (CSS only: radios + :has in the prototype CSS,
+/* Services: upgrade cards (each card is one link to its service page: the link stretches over the card) with a Home | Business toggle (CSS only: radios + :has in the prototype CSS,
    cards tagged with data-aud). Renovation is commented out. Stock photos are remote (Unsplash, allowed
    in next.config) and marked as stock. */
 export function Services() {
@@ -82,8 +82,8 @@ export function Services() {
                 <li>Accent walls</li>
                 <li>Customized TV unit</li>
               </ul>
-              <a className="more" href="#quote">
-                Ask about an accent wall <span aria-hidden="true">→</span>
+              <a className="more" href="/services/accent-walls">
+                More about Accent walls &amp; TV units <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
@@ -107,8 +107,8 @@ export function Services() {
                 <li>Patios</li>
                 <li>Pergolas</li>
               </ul>
-              <a className="more" href="#quote">
-                Ask about an outdoor build <span aria-hidden="true">→</span>
+              <a className="more" href="/services/outdoor">
+                More about Outdoor builds <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
@@ -131,8 +131,8 @@ export function Services() {
                 <li>Repairs</li>
                 <li>Fittings</li>
               </ul>
-              <a className="more" href="#quote">
-                Ask about a handyman job <span aria-hidden="true">→</span>
+              <a className="more" href="/services/handyman">
+                More about Handyman services <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
@@ -159,8 +159,8 @@ export function Services() {
                 <li>Stone &amp; wood finishes</li>
                 <li>Feature lighting</li>
               </ul>
-              <a className="more" href="#quote">
-                Ask about a reception wall <span aria-hidden="true">→</span>
+              <a className="more" href="/services/reception">
+                More about Accent walls for reception areas <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
