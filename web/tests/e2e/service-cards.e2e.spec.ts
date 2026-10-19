@@ -12,13 +12,20 @@ const CARDS = [
 for (const c of CARDS) {
   test(`home "What we do": the whole ${c.slug} card opens its service page`, async ({ page }) => {
     await page.goto(HOME)
-    if (c.aud === 'business') await page.locator('label[for="svc-aud-business"]').click()
+    if (c.aud === 'business') {
+      // a click before the page finishes starting can be undone by hydration, so retry until it sticks
+      await expect(async () => {
+        await page.locator('label[for="svc-aud-business"]').click()
+        await expect(page.locator('#svc-aud-business')).toBeChecked({ timeout: 1000 })
+      }).toPass()
+    }
     const card = page.locator('.svc').filter({ has: page.getByRole('heading', { name: c.title, exact: true }) })
     // one link per card, named after the service
     await expect(card.getByRole('link')).toHaveCount(1)
     await expect(card.getByRole('link')).toHaveAccessibleName(`More about ${c.title}`)
     await card.scrollIntoViewIfNeeded()
-    await card.locator('.svc-img').click() // the photo, not the link text
+    // tap the photo area (top-left of the card), not the link text: the stretched link answers
+    await card.click({ position: { x: 40, y: 40 } })
     await expect(page).toHaveURL(`${HOME}services/${c.slug}`)
   })
 }
