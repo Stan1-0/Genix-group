@@ -1862,3 +1862,53 @@
           padding: 24px 14px 20px;
         }
       }
+
+      /* Inspiration on a service page: style cards built from the Recent-work cards (.work-card), so the viewer and
+         card styles carry over. Even columns, one per photo up to four; two on tablets, one on phones. */
+      .svcd-inspo {
+        padding: clamp(64px, 8vw, 104px) 0;
+      }
+      .svcd-inspo-head {
+        margin-bottom: clamp(32px, 4vw, 48px);
+      }
+      .svcd-inspo-head .h-section {
+        margin: 16px 0 0;
+        max-width: 24ch;
+      }
+      .svcd-inspo-head .body {
+        margin: 16px 0 0;
+        max-width: 65ch;
+      }
+      .svcd-inspo-grid {
+        grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+        grid-auto-rows: clamp(300px, 26vw, 420px);
+      }
+      .svcd-inspo-grid[data-count="1"] { --cols: 1; }
+      .svcd-inspo-grid[data-count="2"] { --cols: 2; }
+      .svcd-inspo-grid[data-count="3"] { --cols: 3; }
+      .svcd-inspo-grid > :first-child {
+        grid-column: auto;
+      }
+      @media (max-width: 960px) {
+        .svcd-inspo-grid {
+          --cols: 2;
+          grid-auto-rows: clamp(260px, 46vw, 400px);
+        }
+        .svcd-inspo-grid[data-count="1"] { --cols: 1; }
+      }
+      @media (max-width: 640px) {
+        .svcd-inspo-grid,
+        .svcd-inspo-grid[data-count] {
+          --cols: 1;
+          grid-auto-rows: 72vw;
+        }
+      }
+      /* Reduced motion: the card photo doesn't zoom on hover (home Recent work, /work and service Inspiration). */
+      @media (prefers-reduced-motion: reduce) {
+        .work-card img {
+          transition: none;
+        }
+        .work-card:hover img {
+          transform: none;
+        }
+      }

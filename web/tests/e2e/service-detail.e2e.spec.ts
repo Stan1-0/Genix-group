@@ -115,3 +115,21 @@ test('the Logistics services page links each service to its own page', async ({ 
   await page.goto(LOG)
   for (const slug of Object.keys(LOG_PAGES)) await expect(page.locator(`a.svcpage-more[href="/services/${slug}"]`)).toHaveCount(1)
 })
+
+test.describe('inspiration', () => {
+  test('accent walls shows its style cards, and one opens in the viewer', async ({ page }) => {
+    await page.goto(`${BASE}/accent-walls`)
+    const cards = page.locator('#inspiration .work-card')
+    await expect(cards).toHaveCount(4)
+    await expect(page.locator('#inspiration .work-cap b').first()).toHaveText('Backlit marble & slatted wood')
+    await cards.nth(2).click()
+    await expect(page.locator('#viewer')).toHaveJSProperty('open', true)
+    await expect(page.locator('#viewerTitle')).toHaveText('Geometric panelling')
+    await page.keyboard.press('Escape')
+    await expect(page.locator('#viewer')).toHaveJSProperty('open', false)
+  })
+  test('a service without suitable photos has no inspiration section', async ({ page }) => {
+    await page.goto(`${BASE}/outdoor`)
+    await expect(page.locator('#inspiration')).toHaveCount(0)
+  })
+})
