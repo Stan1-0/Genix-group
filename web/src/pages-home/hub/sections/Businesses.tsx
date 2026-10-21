@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { siteOrigin } from '@/sites/config'
 
-/* The three division panels. Panel inset / video playback attach in Task 11. Service chips link to the division's
+/* The three division panels. Panel inset / video playback attach in Task 11. Real recent-work cards carry a
+   full-card .case-open button that opens the project viewer (as on the Home Upgrades site); placeholders don't. Service chips link to the division's
    own service page, so the hub points search engines at the site that does each job. */
 export function Businesses() {
   const logistics = siteOrigin('logistics')
@@ -94,7 +95,7 @@ export function Businesses() {
           </div>
           <div className="cases">
             <h4>Recent work</h4>
-            <figure className="case">
+            <figure className="case" data-viewer-scope>
               <div className="case-thumb">
                 <Image
                   src="/brand/hu-project-feature-wall.jpg"
@@ -109,8 +110,17 @@ export function Businesses() {
                 <b>Accent wall</b>
                 <span>Black diagonal panelling with gold inlay strips.</span>
               </figcaption>
+              <button
+                type="button"
+                className="case-open"
+                aria-label="View larger: Accent wall"
+                data-kind="img"
+                data-src="/brand/hu-project-feature-wall.jpg"
+                data-title="Accent wall"
+                data-desc="Black diagonal panelling with gold inlay strips."
+              ></button>
             </figure>
-            <figure className="case">
+            <figure className="case" data-viewer-scope>
               <div className="case-thumb">
                 {/* preload="none" + poster: the video downloads only once the card is on screen (the hero reel already
                     loads this file; fetching it twice on page load cost 2.2 MB) */}
@@ -128,6 +138,16 @@ export function Businesses() {
                 <b>Customized TV unit</b>
                 <span>Our crew on site, remodeling a TV area.</span>
               </figcaption>
+              <button
+                type="button"
+                className="case-open"
+                aria-label="Play larger: Customized TV unit"
+                data-kind="video"
+                data-src="/brand/hu-project.mp4"
+                data-poster="/brand/hu-project-poster.jpg"
+                data-title="Customized TV unit"
+                data-desc="Our crew on site, remodeling a TV area."
+              ></button>
             </figure>
           </div>
         </div>

@@ -788,6 +788,123 @@
         text-align: center;
         padding: 8px;
       }
+      /* A real recent-work card opens the project viewer: a full-card button laid over the figure. */
+      html[data-site="hub"] .case[data-viewer-scope] {
+        position: relative;
+        transition: border-color 0.2s, background 0.2s;
+      }
+      html[data-site="hub"] .case-open {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: zoom-in;
+      }
+      html[data-site="hub"] .case-open:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 3px;
+      }
+      html[data-site="hub"] .case[data-viewer-scope]:hover {
+        border-color: var(--gold);
+        background: rgba(11, 11, 12, 0.98);
+      }
+
+      /* Project viewer (as on the Home Upgrades site; native dialog, Flip grows the photo out of its card) */
+      html[data-site="hub"] .viewer {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        max-width: none;
+        max-height: none;
+        width: 100%;
+        height: 100%;
+      }
+      html[data-site="hub"] .viewer::backdrop {
+        background: rgba(11, 11, 12, 0.95);
+      }
+      html[data-site="hub"] .viewer-inner {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        place-items: center;
+        padding: clamp(16px, 4vw, 56px);
+        gap: 16px;
+      }
+      html[data-site="hub"] .viewer-media {
+        max-width: min(1100px, 100%);
+        max-height: calc(100svh - 190px);
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+      html[data-site="hub"] .viewer-media,
+      html[data-site="hub"] .viewer-nav {
+        grid-row: 1;
+        grid-column: 1;
+      }
+      html[data-site="hub"] .viewer-cap {
+        grid-row: 2;
+        grid-column: 1;
+        color: var(--white);
+        text-align: center;
+        max-width: 60ch;
+      }
+      html[data-site="hub"] .viewer-cap b {
+        font: 600 22px/1.2 var(--f-display);
+        display: block;
+        margin-bottom: 4px;
+      }
+      html[data-site="hub"] .viewer-cap span {
+        color: #d2ccc1;
+        font-size: 16px;
+      }
+      html[data-site="hub"] .viewer-nav {
+        align-self: end;
+        justify-self: center;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        color: var(--white);
+        font-size: 15px;
+      }
+      html[data-site="hub"] .viewer-nav[hidden] {
+        display: none;
+      }
+      html[data-site="hub"] .viewer-nav button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(11, 11, 12, 0.6);
+        color: var(--white);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      html[data-site="hub"] .viewer-nav button:focus-visible {
+        outline: 2px solid var(--gold);
+        outline-offset: 2px;
+      }
+      html[data-site="hub"] .viewer-close {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(11, 11, 12, 0.6);
+        color: var(--white);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
 
       /* ---------- Route: what do you need? ---------- */
       html[data-site="hub"] .route {
