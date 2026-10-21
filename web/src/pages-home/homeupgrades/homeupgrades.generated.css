@@ -281,12 +281,13 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-cap b { font-weight
 html[data-site="homeupgrades"][data-site="homeupgrades"] .hero .lead { font-weight: 400; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .body { color: var(--ink-2); }
 
-/* Eyebrows: quiet captions instead of mono caps; the short gold rule stays as the brand mark */
+/* Eyebrows: gold captions beside the short gold rule (the brand mark). On paper the text uses --gold-text
+   (5.4:1; the rule's own --gold is only 2.8:1, too light for 14px text); on dark bands the bright gold reads (5.3:1). */
 html[data-site="homeupgrades"][data-site="homeupgrades"] .label {
-  font: 500 14px/1.5 var(--f-body); letter-spacing: 0.01em; text-transform: none; color: var(--graphite);
+  font: 600 14px/1.5 var(--f-body); letter-spacing: 0.02em; text-transform: none; color: var(--gold-text);
 }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .label::before { width: 20px; }
-html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .label { color: var(--gold); }
 
 /* ---------- Links + small interactive details: sky blue ---------- */
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc .more { color: var(--sky-text); border-bottom-color: currentColor; }
