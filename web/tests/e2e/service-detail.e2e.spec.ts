@@ -128,6 +128,21 @@ test.describe('inspiration', () => {
     await page.keyboard.press('Escape')
     await expect(page.locator('#viewer')).toHaveJSProperty('open', false)
   })
+  test('is a carousel: arrows step through the cards and disable at each end', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 })
+    await page.goto(`${BASE}/accent-walls`)
+    const prev = page.locator('.svcd-inspo-prev')
+    const next = page.locator('.svcd-inspo-next')
+    await expect(page.locator('.svcd-inspo-nav')).toBeVisible()
+    await expect(prev).toBeDisabled()
+    await next.click()
+    await expect.poll(() => page.locator('#inspoTrack').evaluate((t) => t.scrollLeft)).toBeGreaterThan(0)
+    await expect(next).toBeDisabled()
+    await expect(prev).toBeEnabled()
+    await page.goto(`${BASE}/handyman`) // two cards fit: no arrows
+    await expect(page.locator('#inspiration .work-card')).toHaveCount(2)
+    await expect(page.locator('.svcd-inspo-nav')).toBeHidden()
+  })
   test('a service without suitable photos has no inspiration section', async ({ page }) => {
     await page.goto(`${BASE}/outdoor`)
     await expect(page.locator('#inspiration')).toHaveCount(0)
