@@ -61,9 +61,9 @@
 [data-division="homeupgrades"] .body { color: var(--ink-2); }
 
 /* Eyebrows: gold captions beside the short gold rule (the brand mark). On paper the text uses --gold-text
-   (5.4:1; the rule's own --gold is only 2.8:1, too light for 14px text); on dark bands the bright gold reads (5.3:1). */
+   (5.4:1; the rule's own --gold is only 2.8:1, too light for 16px text); on dark bands the bright gold reads (5.3:1). */
 [data-division="homeupgrades"] .label {
-  font: 600 14px/1.5 var(--f-body); letter-spacing: 0.02em; text-transform: none; color: var(--gold-text);
+  font: 600 16px/1.5 var(--f-body); letter-spacing: 0.02em; text-transform: none; color: var(--gold-text);
 }
 [data-division="homeupgrades"] .label::before { width: 20px; }
 [data-division="homeupgrades"] .on-dark .label { color: var(--gold); }
