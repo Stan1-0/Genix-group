@@ -16,7 +16,7 @@ const mp4Only: UploadFieldSingleValidation = async (value, { req }) => {
 }
 
 /** Photos must be raster images: SVGs have no width/height, so the project would silently vanish from the site. */
-const rasterOnly = (required: boolean) => async (value: unknown, { req }: { req: { payload: { findByID: (a: Record<string, unknown>) => Promise<{ mimeType?: string | null } | null> } } }) => {
+export const rasterOnly = (required: boolean) => async (value: unknown, { req }: { req: { payload: { findByID: (a: Record<string, unknown>) => Promise<{ mimeType?: string | null } | null> } } }) => {
   const ids = (Array.isArray(value) ? value : value ? [value] : []).map((v) => (typeof v === 'object' ? (v as { id: string | number }).id : v))
   if (!ids.length) return required ? 'This field is required.' : true
   for (const id of ids) {
