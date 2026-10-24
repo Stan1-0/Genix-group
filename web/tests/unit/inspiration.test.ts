@@ -57,7 +57,7 @@ describe('starter photos and admin collection', () => {
     }
   })
   it('offers only the services with an Inspiration section in the admin', () => {
-    const service = Inspiration.fields.find((f) => 'name' in f && f.name === 'service') as {
+    const service = Inspiration.fields.find((f) => 'name' in f && f.name === 'service') as unknown as {
       options: { value: string }[]
       filterOptions: (a: { options: { value: string }[] }) => { value: string }[]
     }
