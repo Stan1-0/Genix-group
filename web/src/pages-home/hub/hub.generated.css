@@ -185,6 +185,13 @@
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--line);
       }
+      /* Asked for less see-through chrome: the paper goes solid and the blur stops. */
+      @media (prefers-reduced-transparency: reduce) {
+        html[data-site="hub"] .site-header {
+          background: var(--paper);
+          backdrop-filter: none;
+        }
+      }
       html[data-site="hub"] .site-header .wrap {
         display: flex;
         align-items: center;
@@ -334,7 +341,8 @@
         background: transparent;
         transition:
           background 0.25s,
-          color 0.25s;
+          color 0.25s,
+          transform 0.12s ease-out;
       }
       html[data-site="hub"] .route-btn i {
         font-style: normal;
@@ -694,7 +702,7 @@
         box-shadow: inset 0 0 0 1.5px var(--edge, transparent);
         font: 600 16px/1 var(--f-body);
         text-decoration: none;
-        transition: filter 0.2s, background 0.2s, color 0.2s;
+        transition: filter 0.2s, background 0.2s, color 0.2s, transform 0.12s ease-out;
       }
       html[data-site="hub"] .btn-accent:hover {
         filter: brightness(1.1);
@@ -932,7 +940,8 @@
         overflow: hidden;
         transition:
           color 0.35s,
-          border-color 0.35s;
+          border-color 0.35s,
+          transform 0.12s ease-out;
       }
       html[data-site="hub"] .option::before {
         content: "";
@@ -945,13 +954,17 @@
       html[data-site="hub"] .option > * {
         position: relative;
       }
+      /* :active joins every :hover state below — a phone has no hover, and the black fill
+         is this panel's whole answer to being touched. */
       html[data-site="hub"] .option:hover,
-      html[data-site="hub"] .option:focus-visible {
+      html[data-site="hub"] .option:focus-visible,
+      html[data-site="hub"] .option:active {
         color: var(--white);
         border-color: var(--black);
       }
       html[data-site="hub"] .option:hover::before,
-      html[data-site="hub"] .option:focus-visible::before {
+      html[data-site="hub"] .option:focus-visible::before,
+      html[data-site="hub"] .option:active::before {
         transform: none;
       }
       html[data-site="hub"] .option .verb {
@@ -963,7 +976,8 @@
       }
       /* the option fills black on hover: switch the label to its on-dark colour */
       html[data-site="hub"] .option:hover .verb,
-      html[data-site="hub"] .option:focus-visible .verb {
+      html[data-site="hub"] .option:focus-visible .verb,
+      html[data-site="hub"] .option:active .verb {
         color: var(--c-dark, var(--c));
       }
       html[data-site="hub"] .option b {
@@ -979,12 +993,14 @@
         transition: color 0.35s;
       }
       html[data-site="hub"] .option:hover p,
-      html[data-site="hub"] .option:focus-visible p {
+      html[data-site="hub"] .option:focus-visible p,
+      html[data-site="hub"] .option:active p {
         color: #d2ccc1;
       }
       /* division colours are too dark to read on the black hover fill */
       html[data-site="hub"] .option:hover .verb,
-      html[data-site="hub"] .option:focus-visible .verb {
+      html[data-site="hub"] .option:focus-visible .verb,
+      html[data-site="hub"] .option:active .verb {
         color: var(--gold);
       }
       html[data-site="hub"] .option .go {
@@ -1003,7 +1019,8 @@
         color: var(--gold);
       }
       html[data-site="hub"] .option:hover .go svg,
-      html[data-site="hub"] .option:focus-visible .go svg {
+      html[data-site="hub"] .option:focus-visible .go svg,
+      html[data-site="hub"] .option:active .go svg {
         transform: translate(3px, -3px);
       }
       html[data-site="hub"] .route-alt {
@@ -1088,6 +1105,18 @@
         html[data-site="hub"].logo-dock:not(.logo-docked) .site-header.menu-open .logo {
           visibility: visible;
         }
+        /* The panel grows out of the button it belongs to and leaves the same way:
+           in-from-nowhere, out-to-nowhere reads as two unrelated events. `display` rides
+           in the transition with allow-discrete, so the panel is still there while it goes. */
+        html[data-site="hub"] .nav {
+          opacity: 0;
+          transform: scale(0.97) translateY(-8px);
+          transform-origin: top right;
+          transition:
+            display 0.26s allow-discrete,
+            opacity 0.18s ease,
+            transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
         html[data-site="hub"] .menu-open .nav {
           display: flex;
           flex-direction: column;
@@ -1099,6 +1128,14 @@
           background: var(--paper);
           border-bottom: 1px solid var(--line);
           padding: 8px var(--gutter) 20px;
+          opacity: 1;
+          transform: none;
+        }
+        @starting-style {
+          html[data-site="hub"] .menu-open .nav {
+            opacity: 0;
+            transform: scale(0.97) translateY(-8px);
+          }
         }
         html[data-site="hub"] .menu-open .nav a {
           padding: 14px 0;
@@ -1337,7 +1374,7 @@
         color: var(--white);
         font: 600 16px/1 var(--f-body);
         text-decoration: none;
-        transition: background 0.2s, color 0.2s;
+        transition: background 0.2s, color 0.2s, transform 0.12s ease-out;
       }
       html[data-site="hub"] .about-cta span {
         color: var(--gold);
@@ -1550,7 +1587,7 @@
         color: var(--white);
         font: 600 16px/1 var(--f-body);
         text-decoration: none;
-        transition: background 0.2s, color 0.2s;
+        transition: background 0.2s, color 0.2s, transform 0.12s ease-out;
       }
       html[data-site="hub"] .contact-send span {
         color: var(--gold);
@@ -1619,6 +1656,71 @@
       @media (max-width: 960px) {
         html[data-site="hub"] .contact-grid {
           grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      /* ---------- Press feedback ----------
+         A phone has no :hover, and :hover carries every state on this page — the option
+         panels, the route buttons, the dots. The cue lands on pointer-down and lets go on
+         release. Big surfaces barely move; small controls move more. Base transitions
+         already carry `transform` where one existed. */
+      html[data-site="hub"] .header-cta,
+      html[data-site="hub"] .host,
+      html[data-site="hub"] .now-dots button,
+      html[data-site="hub"] .intro .more,
+      html[data-site="hub"] .menu-btn {
+        transition: transform 0.12s ease-out;
+      }
+      html[data-site="hub"] .route-btn:active,
+      html[data-site="hub"] .btn-accent:active,
+      html[data-site="hub"] .about-cta:active,
+      html[data-site="hub"] .contact-send:active,
+      html[data-site="hub"] .header-cta:active,
+      html[data-site="hub"] .host:active,
+      html[data-site="hub"] .intro .more:active {
+        transform: scale(0.97);
+      }
+      html[data-site="hub"] .now-dots button:active,
+      html[data-site="hub"] .menu-btn:active {
+        transform: scale(0.92);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html[data-site="hub"] .header-cta,
+        html[data-site="hub"] .host,
+        html[data-site="hub"] .now-dots button,
+        html[data-site="hub"] .intro .more,
+        html[data-site="hub"] .menu-btn {
+          transition: none;
+        }
+        /* Keep a press cue — feedback, not travel — as brightness instead of movement.
+           .option keeps its colour change: that is not movement. */
+        html[data-site="hub"] .route-btn:active,
+        html[data-site="hub"] .btn-accent:active,
+        html[data-site="hub"] .about-cta:active,
+        html[data-site="hub"] .contact-send:active,
+        html[data-site="hub"] .header-cta:active,
+        html[data-site="hub"] .host:active,
+        html[data-site="hub"] .intro .more:active,
+        html[data-site="hub"] .now-dots button:active,
+        html[data-site="hub"] .menu-btn:active {
+          transform: none;
+          filter: brightness(0.94);
+        }
+      }
+
+      /* ---------- Reduced motion: the backstop ----------
+         The named blocks above list selectors one at a time, so anything added later shipped
+         unguarded. This catches every transition and animation on the page. A rule that must
+         keep moving would re-enable itself after this with !important; the hub has none. */
+      @media (prefers-reduced-motion: reduce) {
+        html[data-site="hub"],
+        html[data-site="hub"] *,
+        html[data-site="hub"] *::before,
+        html[data-site="hub"] *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
         }
       }
 

@@ -37,6 +37,16 @@ html:not(.js) .js-only { display: none !important; }
   .svcpage-more:focus-visible { outline: 2px solid var(--heading); outline-offset: 2px; }
   @media (min-width: 961px) { .sec-head .svcpage-more { grid-column: 2; } }
 
+  /* Press: a phone has no :hover, so the tap needs its own answer (see shared/genix.css).
+     A full-width row gets a tint instead of a scale — shrinking a wide row shifts its text. */
+  .svcpage-more { transition: transform 0.12s ease-out; }
+  .svcpage-more:active { transform: scale(0.97); }
+  .faq-list summary:active { background: rgba(2, 34, 72, 0.05); }
+  @media (prefers-reduced-motion: reduce) {
+    .svcpage-more { transition: none; }
+    .svcpage-more:active { transform: none; filter: brightness(0.94); }
+  }
+
   /* gold lane marking along the top of a section */
   .lane-top { position: relative; }
   .lane-top::before {

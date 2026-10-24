@@ -87,6 +87,10 @@
         place-items: center;
         cursor: ew-resize;
         outline: none;
+        /* --edge: a few pixels of give once the drag passes 0% or 100%, so the end of the
+           range resists instead of reading as frozen. The split stays at the photo's edge —
+           there is nothing beyond it to show. Set by the drag script (reduced motion: never). */
+        transform: translateX(var(--edge, 0px));
       }
       .ba-handle::before {
         content: "";
@@ -374,7 +378,7 @@
         font-size: 15px;
         color: var(--ink-2);
         cursor: pointer;
-        transition: background 0.25s, color 0.25s;
+        transition: background 0.25s, color 0.25s, transform 0.12s ease-out;
       }
       .svc-toggle input:checked + label {
         background: var(--black);
@@ -503,7 +507,7 @@
         color: var(--brand);
         text-decoration: none;
         border-bottom: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
-        transition: border-color 0.25s;
+        transition: border-color 0.25s, transform 0.12s ease-out;
       }
       .approach-link:hover {
         border-bottom-color: var(--gold);
@@ -621,7 +625,13 @@
       }
       .viewer::backdrop {
         background: rgba(11, 11, 12, 0.95);
+        transition: opacity 0.4s ease;
       } /* no blur: invisible at 95% and costly per frame */
+      /* Closing: the photo flies back to its card, so the backdrop has to clear with it
+         (::backdrop is its own box — fading the dialog leaves it behind). */
+      .viewer.closing::backdrop {
+        opacity: 0;
+      }
       .viewer-inner {
         position: fixed;
         inset: 0;
@@ -933,7 +943,8 @@
           background-color 0.18s,
           border-color 0.18s,
           color 0.18s,
-          box-shadow 0.18s;
+          box-shadow 0.18s,
+          transform 0.12s ease-out;
       }
       .pill input {
         position: absolute;
@@ -1261,8 +1272,11 @@
         .drop {
           transition: none;
         }
+        /* The upload spinner is status, not decoration: it keeps turning, just slower.
+           !important because shared/genix.css's backstop stops every animation. */
         .tile[data-state="uploading"]::after {
-          animation-duration: 2.4s;
+          animation-duration: 2.4s !important;
+          animation-iteration-count: infinite !important;
         }
       }
       /* High contrast: the navy fill disappears, so mark the chosen pill with an outline */
@@ -1863,6 +1877,60 @@
         }
       }
 
+      /* ---------- Press feedback ----------
+         A phone has no :hover, and :hover is the only state these cards carry — so a tap
+         used to read as nothing happening until the next page painted. The cue lands on
+         pointer-down and lets go on release. Base transitions carry `transform` already;
+         the scale is small on big surfaces, larger on small controls. */
+      .work-card,
+      .viewer-nav button,
+      .viewer-close,
+      .tile-remove,
+      .svcpage-more {
+        transition: transform 0.12s ease-out;
+      }
+      .svc:active,
+      .work-card:active {
+        transform: scale(0.99);
+      }
+      .svc-toggle label:active,
+      .pill:active,
+      .approach-link:active,
+      .svcpage-more:active {
+        transform: scale(0.97);
+      }
+      .viewer-nav button:active,
+      .viewer-close:active,
+      .tile-remove:active {
+        transform: scale(0.92);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .work-card,
+        .viewer-nav button,
+        .viewer-close,
+        .tile-remove,
+        .svcpage-more {
+          transition: none;
+        }
+        .approach-link {
+          transition: border-color 0.25s;
+        }
+        /* Keep a press cue — feedback, not travel — as brightness instead of movement. */
+        .svc:active,
+        .work-card:active,
+        .svc-toggle label:active,
+        .pill:active,
+        .approach-link:active,
+        .svcpage-more:active,
+        .viewer-nav button:active,
+        .viewer-close:active,
+        .tile-remove:active,
+        .svcd-inspo-nav button:active:not(:disabled) {
+          transform: none;
+          filter: brightness(0.94);
+        }
+      }
+
       /* Inspiration on a service page: a sideways snap carousel of style cards built from the Recent-work cards
          (.work-card, so the viewer and card styles carry over). The next card peeks in so the row reads as
          scrollable; the arrow buttons (InspirationCarousel) appear only when the cards overflow. */
@@ -1903,10 +1971,14 @@
         cursor: pointer;
         display: grid;
         place-items: center;
-        transition: border-color 0.2s, opacity 0.2s;
+        transition: border-color 0.2s, opacity 0.2s, transform 0.12s ease-out;
       }
       .svcd-inspo-nav button:hover:not(:disabled) {
         border-color: var(--gold);
+      }
+      /* Press, as everywhere else: a phone has no hover (see the press block at the end) */
+      .svcd-inspo-nav button:active:not(:disabled) {
+        transform: scale(0.92);
       }
       .svcd-inspo-nav button:disabled {
         opacity: 0.35;

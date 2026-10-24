@@ -88,7 +88,7 @@
         document.documentElement.classList.add("h1-pending");
         setTimeout(
           () => document.documentElement.classList.remove("h1-pending"),
-          3000,
+          800,
         );
       }
     </script>
@@ -929,9 +929,21 @@
         };
         ba.addEventListener("pointerdown", takeOver, true);
         handle.addEventListener("keydown", takeOver, true);
+        // Past either end the split stops (there is no photo beyond it) but the handle keeps
+        // a few pixels of give, so the boundary resists instead of reading as frozen.
+        // Draggable's edgeResistance has already damped how far `p` gets out of range.
+        const EDGE_MAX = 26;
         const set = (p) => {
           pos = Math.max(0, Math.min(100, p));
           ba.style.setProperty("--pos", pos + "%");
+          const over = p < 0 ? p : p > 100 ? p - 100 : 0;
+          if (over && !reduce) {
+            const px = (over / 100) * ba.getBoundingClientRect().width; // only read the rect at the edges
+            ba.style.setProperty(
+              "--edge",
+              Math.max(-EDGE_MAX, Math.min(EDGE_MAX, px)).toFixed(1) + "px",
+            );
+          } else ba.style.removeProperty("--edge");
           handle.setAttribute("aria-valuenow", Math.round(pos));
           handle.setAttribute(
             "aria-valuetext",
@@ -980,6 +992,8 @@
             trigger: ba,
             inertia: !!window.InertiaPlugin && !reduce,
             bounds: { minX: 0, maxX: width() },
+            // Default is 1: a dead stop at each end. 0.7 lets the drag travel a little past, damped.
+            edgeResistance: 0.7,
             onPress(e) {
               gsap.killTweensOf(proxy);
               ba.classList.add("dragging");
@@ -1173,28 +1187,51 @@
           });
         });
 
+        // Closing retraces the opening: the photo flies back into the card it grew out
+        // of, and the backdrop clears with it. A plain fade left the photo nowhere.
+        let closing = false;
         const close = () => {
-          if (!dlg.open) return;
-          const done = () => {
+          if (!dlg.open || closing) return;
+          const media = slot.querySelector(".viewer-media");
+          const thumb = opener?.querySelector("img");
+          if (!canFlip || !media || !thumb) {
             dlg.close();
-          };
-          if (canFlip)
-            gsap.to(dlg, {
-              opacity: 0,
-              duration: 0.2,
-              onComplete: () => {
-                done();
-                gsap.set(dlg, { opacity: 1 });
-              },
-            });
-          else done();
+            return;
+          }
+          closing = true;
+          dlg.classList.add("closing"); // the CSS fades ::backdrop — its own box, which the dialog's opacity never reached
+          thumb.style.visibility = "hidden"; // or the photo lands beside a copy of itself
+          gsap.to(".viewer-cap, .viewer-close, .viewer-nav", {
+            opacity: 0,
+            duration: 0.15,
+            overwrite: true,
+          });
+          Flip.fit(media, thumb, {
+            duration: 0.45,
+            ease: "power3.inOut",
+            scale: true,
+            onComplete: () => dlg.close(),
+          });
         };
         document.getElementById("viewerClose").addEventListener("click", close);
         dlg.addEventListener("click", (e) => {
           if (e.target === dlg || e.target.classList.contains("viewer-inner"))
             close();
         });
+        // Esc dismisses along the same path; the browser's instant close skips the flight.
+        dlg.addEventListener("cancel", (e) => {
+          if (!canFlip || closing) return;
+          e.preventDefault();
+          close();
+        });
         dlg.addEventListener("close", () => {
+          closing = false;
+          dlg.classList.remove("closing");
+          // Clear what the close tween set: the next open's gsap.from() reads these as its end value.
+          gsap.set(dlg.querySelectorAll(".viewer-cap, .viewer-close, .viewer-nav"), {
+            clearProps: "opacity",
+          });
+          opener?.querySelector("img")?.style.removeProperty("visibility");
           slot.querySelector("video")?.pause();
           slot.innerHTML = "";
           resetNav();

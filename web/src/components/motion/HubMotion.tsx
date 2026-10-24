@@ -15,7 +15,8 @@ export function HubMotion() {
     }
 
     // Lenis: smooth mouse-wheel scrolling on desktop (touch stays native), driving ScrollTrigger
-    const lenis = new Lenis({ anchors: { offset: -72 } })
+    // lerp 0.18, not the 0.1 default: see MotionRoot — the wheel must not lag the hand.
+    const lenis = new Lenis({ lerp: 0.18, anchors: { offset: -72 } })
     window.genixLenis = lenis
     lenis.on('scroll', ScrollTrigger.update)
     const tick = (t: number) => lenis.raf(t * 1000)

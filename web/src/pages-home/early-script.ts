@@ -1,7 +1,9 @@
 /* Runs in <head> before first paint (ported from each prototype's head script):
    marks JS as available and hides split headlines until SplitText has cut them.
-   Never hidden for reduced motion; a timer reveals them if motion never loads. */
-export const EARLY_SCRIPT = `document.documentElement.classList.add("js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("h1-pending");setTimeout(function(){document.documentElement.classList.remove("h1-pending")},3000)}`
+   Never hidden for reduced motion; a timer reveals them if motion never loads. 800ms, not
+   3s: document.fonts.ready normally settles well inside it, and a headline that jumps once
+   beats a headline that is not there. */
+export const EARLY_SCRIPT = `document.documentElement.classList.add("js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("h1-pending");setTimeout(function(){document.documentElement.classList.remove("h1-pending")},800)}`
 
 /* Hub home only (`/`; the dock script only runs there): the prototype's dock script adds `logo-dock` to <html> at load, which hides the
    header logo until the hero lockup docks into it (scrollY 0 = not docked). Applied here so

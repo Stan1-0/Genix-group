@@ -18,7 +18,9 @@ export function MotionRoot() {
     }
     root.classList.add('js-motion')
     const offset = -parseInt(getComputedStyle(root).getPropertyValue('--header')) || -76
-    const lenis = new Lenis({ anchors: { offset } })
+    // lerp 0.18, not the 0.1 default: smoothing the wheel costs latency on the one thing the
+    // user drives directly, and the default reads as the page lagging the finger.
+    const lenis = new Lenis({ lerp: 0.18, anchors: { offset } })
     window.genixLenis = lenis
     lenis.on('scroll', ScrollTrigger.update)
     const tick = (t: number) => lenis.raf(t * 1000)
@@ -60,11 +62,41 @@ export function MotionRoot() {
           input.addEventListener(
             'change',
             () => {
+              // The set going out may still carry the exit tween's opacity; it must not come back faded.
+              gsap.set('.svc', { clearProps: 'opacity,transform' })
               const cards = gsap.utils.toArray<HTMLElement>('.svc').filter((c) => c.offsetParent !== null)
               gsap.fromTo(cards, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', stagger: 0.08, overwrite: true })
             },
             { signal },
           ),
+        )
+        // The swap itself is CSS (:has + display: none), which drops the old cards mid-frame — one
+        // set arrived out of nothing while the other simply stopped existing. Take the click before
+        // the radio flips, see the leaving cards out, then let the swap run. Keyboard selection has
+        // no click to intercept and keeps the entrance fade only.
+        document.querySelector('.svc-toggle')?.addEventListener(
+          'click',
+          (e) => {
+            const label = (e.target as HTMLElement).closest('label')
+            if (!label) return
+            const input = document.getElementById(label.htmlFor) as HTMLInputElement | null
+            if (!input || input.checked) return
+            e.preventDefault() // we flip it ourselves, once the old cards are out
+            const leaving = gsap.utils.toArray<HTMLElement>('.svc').filter((c) => c.offsetParent !== null)
+            gsap.to(leaving, {
+              opacity: 0,
+              y: -8,
+              duration: 0.18,
+              ease: 'power2.in',
+              stagger: 0.03,
+              overwrite: true,
+              onComplete: () => {
+                input.checked = true
+                input.dispatchEvent(new Event('change', { bubbles: true }))
+              },
+            })
+          },
+          { capture: true, signal },
         )
       })
       if (document.readyState === 'complete') ScrollTrigger.refresh()
