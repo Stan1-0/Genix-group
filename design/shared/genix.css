@@ -106,7 +106,7 @@ a { color: inherit; }
   min-height: 52px; padding: 0 24px;
   font: 600 16px/1 var(--f-body);
   text-decoration: none; border: 0; cursor: pointer;
-  transition: background 0.2s, color 0.2s, filter 0.2s;
+  transition: background 0.2s, color 0.2s, filter 0.2s, transform 0.12s ease-out;
 }
 .btn-sm { min-height: 44px; padding: 0 18px; font-size: 15px; }
 .btn-gold { background: var(--gold); color: var(--heading); } /* navy on gold on Home Upgrades, black on gold on the hub */
@@ -119,12 +119,22 @@ a { color: inherit; }
 .on-dark .btn-ghost { color: var(--white); }
 .on-dark .btn-ghost:hover { background: var(--white); color: var(--black); }
 
+/* Press: the control answers on pointer-down, not on release. Every other state
+   here is :hover, which a phone never has — without this a tap reads as nothing
+   happening until the next page paints. */
+.btn:active { transform: scale(0.98); }
+.menu-btn:active { transform: scale(0.96); }
+
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 40;
   background: color-mix(in srgb, var(--paper) 94%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+}
+/* Asked for less see-through chrome: the paper goes solid and the blur stops. */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header { background: var(--paper); backdrop-filter: none; }
 }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header); }
 .brand { display: inline-flex; align-items: center; min-height: 44px; }
@@ -186,10 +196,26 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 960px) {
   .nav, .parent-link, .header-end .btn { display: none; }
   .menu-btn { display: grid; }
+  /* The panel grows out of the button it belongs to and leaves the same way: in-from-nowhere,
+     out-to-nowhere reads as two unrelated events. `display` rides in the transition with
+     allow-discrete, so the panel is still there while it goes. */
+  .nav {
+    opacity: 0;
+    transform: scale(0.97) translateY(-8px);
+    transform-origin: top right;
+    transition:
+      display 0.26s allow-discrete,
+      opacity 0.18s ease,
+      transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   .menu-open .nav {
     display: flex; flex-direction: column; gap: 0;
     position: absolute; left: 0; right: 0; top: var(--header);
     background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 20px;
+    opacity: 1; transform: none;
+  }
+  @starting-style {
+    .menu-open .nav { opacity: 0; transform: scale(0.97) translateY(-8px); }
   }
   .menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
   .menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
@@ -227,4 +253,22 @@ html.lenis, html.lenis body { height: auto; }
   .quote-bar .btn-gold { flex: 1; justify-content: center; }
   .quote-bar.off { transform: translateY(110%); }
 }
-@media (prefers-reduced-motion: reduce) { .quote-bar { transition: none; } }
+/* ---------- Reduced motion: the backstop ----------
+   The named blocks below list selectors one at a time, so anything added later shipped
+   unguarded. This catches every transition and animation on the page; a rule that must keep
+   moving (a progress spinner) re-enables itself afterwards with !important. Keep this first,
+   so the exceptions can be read as exceptions. */
+@media (prefers-reduced-motion: reduce) {
+  html, *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quote-bar { transition: none; }
+  /* Keep a press cue — it is feedback, not travel — but make it brightness, not movement. */
+  .btn { transition: background 0.2s, color 0.2s, filter 0.2s; }
+  .btn:active, .menu-btn:active { transform: none; filter: brightness(0.94); }
+}

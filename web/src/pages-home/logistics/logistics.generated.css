@@ -100,7 +100,7 @@ html[data-site="logistics"] .btn {
   min-height: 52px; padding: 0 24px;
   font: 600 16px/1 var(--f-body);
   text-decoration: none; border: 0; cursor: pointer;
-  transition: background 0.2s, color 0.2s, filter 0.2s;
+  transition: background 0.2s, color 0.2s, filter 0.2s, transform 0.12s ease-out;
 }
 html[data-site="logistics"] .btn-sm { min-height: 44px; padding: 0 18px; font-size: 15px; }
 html[data-site="logistics"] .btn-gold { background: var(--gold); color: var(--heading); } /* navy on gold on Home Upgrades, black on gold on the hub */
@@ -113,12 +113,22 @@ html[data-site="logistics"] .btn-ghost:hover { background: var(--brand); border-
 html[data-site="logistics"] .on-dark .btn-ghost { color: var(--white); }
 html[data-site="logistics"] .on-dark .btn-ghost:hover { background: var(--white); color: var(--black); }
 
+/* Press: the control answers on pointer-down, not on release. Every other state
+   here is :hover, which a phone never has — without this a tap reads as nothing
+   happening until the next page paints. */
+html[data-site="logistics"] .btn:active { transform: scale(0.98); }
+html[data-site="logistics"] .menu-btn:active { transform: scale(0.96); }
+
 /* ---------- Header ---------- */
 html[data-site="logistics"] .site-header {
   position: sticky; top: 0; z-index: 40;
   background: color-mix(in srgb, var(--paper) 94%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+}
+/* Asked for less see-through chrome: the paper goes solid and the blur stops. */
+@media (prefers-reduced-transparency: reduce) {
+  html[data-site="logistics"] .site-header { background: var(--paper); backdrop-filter: none; }
 }
 html[data-site="logistics"] .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header); }
 html[data-site="logistics"] .brand { display: inline-flex; align-items: center; min-height: 44px; }
@@ -180,10 +190,26 @@ html[data-site="logistics"].lenis.lenis-stopped { overflow: hidden; }
 @media (max-width: 960px) {
   html[data-site="logistics"] .nav, html[data-site="logistics"] .parent-link, html[data-site="logistics"] .header-end .btn { display: none; }
   html[data-site="logistics"] .menu-btn { display: grid; }
+  /* The panel grows out of the button it belongs to and leaves the same way: in-from-nowhere,
+     out-to-nowhere reads as two unrelated events. `display` rides in the transition with
+     allow-discrete, so the panel is still there while it goes. */
+  html[data-site="logistics"] .nav {
+    opacity: 0;
+    transform: scale(0.97) translateY(-8px);
+    transform-origin: top right;
+    transition:
+      display 0.26s allow-discrete,
+      opacity 0.18s ease,
+      transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   html[data-site="logistics"] .menu-open .nav {
     display: flex; flex-direction: column; gap: 0;
     position: absolute; left: 0; right: 0; top: var(--header);
     background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 20px;
+    opacity: 1; transform: none;
+  }
+  @starting-style {
+    html[data-site="logistics"] .menu-open .nav { opacity: 0; transform: scale(0.97) translateY(-8px); }
   }
   html[data-site="logistics"] .menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
   html[data-site="logistics"] .menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
@@ -221,7 +247,25 @@ html[data-site="logistics"] .quote-bar { display: none; } /* wider screens: the 
   html[data-site="logistics"] .quote-bar .btn-gold { flex: 1; justify-content: center; }
   html[data-site="logistics"] .quote-bar.off { transform: translateY(110%); }
 }
-@media (prefers-reduced-motion: reduce) { html[data-site="logistics"] .quote-bar { transition: none; } }
+/* ---------- Reduced motion: the backstop ----------
+   The named blocks below list selectors one at a time, so anything added later shipped
+   unguarded. This catches every transition and animation on the page; a rule that must keep
+   moving (a progress spinner) re-enables itself afterwards with !important. Keep this first,
+   so the exceptions can be read as exceptions. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-site="logistics"], html[data-site="logistics"] *, html[data-site="logistics"] *::before, html[data-site="logistics"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-site="logistics"] .quote-bar { transition: none; }
+  /* Keep a press cue — it is feedback, not travel — but make it brightness, not movement. */
+  html[data-site="logistics"] .btn { transition: background 0.2s, color 0.2s, filter 0.2s; }
+  html[data-site="logistics"] .btn:active, html[data-site="logistics"] .menu-btn:active { transform: none; filter: brightness(0.94); }
+}
 
 /* Genix Logistics style layer: "navy manifest".
    The language of a shipping label: dashed label cards, mono field labels,
@@ -261,6 +305,16 @@ html[data-site="logistics"] {
   .svcpage-more:hover { text-decoration-color: var(--gold); }
   .svcpage-more:focus-visible { outline: 2px solid var(--heading); outline-offset: 2px; }
   @media (min-width: 961px) { .sec-head .svcpage-more { grid-column: 2; } }
+
+  /* Press: a phone has no :hover, so the tap needs its own answer (see shared/genix.css).
+     A full-width row gets a tint instead of a scale — shrinking a wide row shifts its text. */
+  .svcpage-more { transition: transform 0.12s ease-out; }
+  .svcpage-more:active { transform: scale(0.97); }
+  .faq-list summary:active { background: rgba(2, 34, 72, 0.05); }
+  @media (prefers-reduced-motion: reduce) {
+    .svcpage-more { transition: none; }
+    .svcpage-more:active { transform: none; filter: brightness(0.94); }
+  }
 
   /* gold lane marking along the top of a section */
   .lane-top { position: relative; }

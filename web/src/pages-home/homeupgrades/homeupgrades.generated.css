@@ -96,7 +96,7 @@ html[data-site="homeupgrades"] .btn {
   min-height: 52px; padding: 0 24px;
   font: 600 16px/1 var(--f-body);
   text-decoration: none; border: 0; cursor: pointer;
-  transition: background 0.2s, color 0.2s, filter 0.2s;
+  transition: background 0.2s, color 0.2s, filter 0.2s, transform 0.12s ease-out;
 }
 html[data-site="homeupgrades"] .btn-sm { min-height: 44px; padding: 0 18px; font-size: 15px; }
 html[data-site="homeupgrades"] .btn-gold { background: var(--gold); color: var(--heading); } /* navy on gold on Home Upgrades, black on gold on the hub */
@@ -109,12 +109,22 @@ html[data-site="homeupgrades"] .btn-ghost:hover { background: var(--brand); bord
 html[data-site="homeupgrades"] .on-dark .btn-ghost { color: var(--white); }
 html[data-site="homeupgrades"] .on-dark .btn-ghost:hover { background: var(--white); color: var(--black); }
 
+/* Press: the control answers on pointer-down, not on release. Every other state
+   here is :hover, which a phone never has — without this a tap reads as nothing
+   happening until the next page paints. */
+html[data-site="homeupgrades"] .btn:active { transform: scale(0.98); }
+html[data-site="homeupgrades"] .menu-btn:active { transform: scale(0.96); }
+
 /* ---------- Header ---------- */
 html[data-site="homeupgrades"] .site-header {
   position: sticky; top: 0; z-index: 40;
   background: color-mix(in srgb, var(--paper) 94%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
+}
+/* Asked for less see-through chrome: the paper goes solid and the blur stops. */
+@media (prefers-reduced-transparency: reduce) {
+  html[data-site="homeupgrades"] .site-header { background: var(--paper); backdrop-filter: none; }
 }
 html[data-site="homeupgrades"] .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header); }
 html[data-site="homeupgrades"] .brand { display: inline-flex; align-items: center; min-height: 44px; }
@@ -176,10 +186,26 @@ html[data-site="homeupgrades"].lenis.lenis-stopped { overflow: hidden; }
 @media (max-width: 960px) {
   html[data-site="homeupgrades"] .nav, html[data-site="homeupgrades"] .parent-link, html[data-site="homeupgrades"] .header-end .btn { display: none; }
   html[data-site="homeupgrades"] .menu-btn { display: grid; }
+  /* The panel grows out of the button it belongs to and leaves the same way: in-from-nowhere,
+     out-to-nowhere reads as two unrelated events. `display` rides in the transition with
+     allow-discrete, so the panel is still there while it goes. */
+  html[data-site="homeupgrades"] .nav {
+    opacity: 0;
+    transform: scale(0.97) translateY(-8px);
+    transform-origin: top right;
+    transition:
+      display 0.26s allow-discrete,
+      opacity 0.18s ease,
+      transform 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   html[data-site="homeupgrades"] .menu-open .nav {
     display: flex; flex-direction: column; gap: 0;
     position: absolute; left: 0; right: 0; top: var(--header);
     background: var(--paper); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 20px;
+    opacity: 1; transform: none;
+  }
+  @starting-style {
+    html[data-site="homeupgrades"] .menu-open .nav { opacity: 0; transform: scale(0.97) translateY(-8px); }
   }
   html[data-site="homeupgrades"] .menu-open .nav a { padding: 14px 0; font-size: 18px; border-bottom: 1px solid var(--line); }
   html[data-site="homeupgrades"] .menu-open .nav a:last-child { border-bottom: 0; color: var(--black); font-weight: 600; }
@@ -217,7 +243,25 @@ html[data-site="homeupgrades"] .quote-bar { display: none; } /* wider screens: t
   html[data-site="homeupgrades"] .quote-bar .btn-gold { flex: 1; justify-content: center; }
   html[data-site="homeupgrades"] .quote-bar.off { transform: translateY(110%); }
 }
-@media (prefers-reduced-motion: reduce) { html[data-site="homeupgrades"] .quote-bar { transition: none; } }
+/* ---------- Reduced motion: the backstop ----------
+   The named blocks below list selectors one at a time, so anything added later shipped
+   unguarded. This catches every transition and animation on the page; a rule that must keep
+   moving (a progress spinner) re-enables itself afterwards with !important. Keep this first,
+   so the exceptions can be read as exceptions. */
+@media (prefers-reduced-motion: reduce) {
+  html[data-site="homeupgrades"], html[data-site="homeupgrades"] *, html[data-site="homeupgrades"] *::before, html[data-site="homeupgrades"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-site="homeupgrades"] .quote-bar { transition: none; }
+  /* Keep a press cue — it is feedback, not travel — but make it brightness, not movement. */
+  html[data-site="homeupgrades"] .btn { transition: background 0.2s, color 0.2s, filter 0.2s; }
+  html[data-site="homeupgrades"] .btn:active, html[data-site="homeupgrades"] .menu-btn:active { transform: none; filter: brightness(0.94); }
+}
 
 /* Home Upgrades style layer — "sunlit architectural model".
    Adapted from a style reference (parchment paper, light airy headlines,
@@ -321,7 +365,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .quote { padding: clamp
 /* ---------- Media + cards: 12px radius, soft lift ---------- */
 html[data-site="homeupgrades"][data-site="homeupgrades"] .ba { border-radius: var(--r-lg); box-shadow: var(--shadow-sm); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-tag { border-radius: 8px; font: 500 13px/1 var(--f-body); letter-spacing: 0.01em; text-transform: none; padding: 8px 12px; }
-html[data-site="homeupgrades"][data-site="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s; }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s, transform 0.12s ease-out; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc:hover { box-shadow: var(--shadow-hover); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }
@@ -483,6 +527,10 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         place-items: center;
         cursor: ew-resize;
         outline: none;
+        /* --edge: a few pixels of give once the drag passes 0% or 100%, so the end of the
+           range resists instead of reading as frozen. The split stays at the photo's edge —
+           there is nothing beyond it to show. Set by the drag script (reduced motion: never). */
+        transform: translateX(var(--edge, 0px));
       }
       html[data-site="homeupgrades"] .ba-handle::before {
         content: "";
@@ -770,7 +818,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         font-size: 15px;
         color: var(--ink-2);
         cursor: pointer;
-        transition: background 0.25s, color 0.25s;
+        transition: background 0.25s, color 0.25s, transform 0.12s ease-out;
       }
       html[data-site="homeupgrades"] .svc-toggle input:checked + label {
         background: var(--black);
@@ -899,7 +947,7 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         color: var(--brand);
         text-decoration: none;
         border-bottom: 1px solid color-mix(in srgb, var(--brand) 40%, transparent);
-        transition: border-color 0.25s;
+        transition: border-color 0.25s, transform 0.12s ease-out;
       }
       html[data-site="homeupgrades"] .approach-link:hover {
         border-bottom-color: var(--gold);
@@ -1017,7 +1065,13 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
       }
       html[data-site="homeupgrades"] .viewer::backdrop {
         background: rgba(11, 11, 12, 0.95);
+        transition: opacity 0.4s ease;
       } /* no blur: invisible at 95% and costly per frame */
+      /* Closing: the photo flies back to its card, so the backdrop has to clear with it
+         (::backdrop is its own box — fading the dialog leaves it behind). */
+      html[data-site="homeupgrades"] .viewer.closing::backdrop {
+        opacity: 0;
+      }
       html[data-site="homeupgrades"] .viewer-inner {
         position: fixed;
         inset: 0;
@@ -1329,7 +1383,8 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
           background-color 0.18s,
           border-color 0.18s,
           color 0.18s,
-          box-shadow 0.18s;
+          box-shadow 0.18s,
+          transform 0.12s ease-out;
       }
       html[data-site="homeupgrades"] .pill input {
         position: absolute;
@@ -1657,8 +1712,11 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         html[data-site="homeupgrades"] .drop {
           transition: none;
         }
+        /* The upload spinner is status, not decoration: it keeps turning, just slower.
+           !important because shared/genix.css's backstop stops every animation. */
         html[data-site="homeupgrades"] .tile[data-state="uploading"]::after {
-          animation-duration: 2.4s;
+          animation-duration: 2.4s !important;
+          animation-iteration-count: infinite !important;
         }
       }
       /* High contrast: the navy fill disappears, so mark the chosen pill with an outline */
@@ -2256,6 +2314,59 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
       @media (max-width: 560px) {
         html[data-site="homeupgrades"] .svcd-form {
           padding: 24px 14px 20px;
+        }
+      }
+
+      /* ---------- Press feedback ----------
+         A phone has no :hover, and :hover is the only state these cards carry — so a tap
+         used to read as nothing happening until the next page painted. The cue lands on
+         pointer-down and lets go on release. Base transitions carry `transform` already;
+         the scale is small on big surfaces, larger on small controls. */
+      html[data-site="homeupgrades"] .work-card,
+      html[data-site="homeupgrades"] .viewer-nav button,
+      html[data-site="homeupgrades"] .viewer-close,
+      html[data-site="homeupgrades"] .tile-remove,
+      html[data-site="homeupgrades"] .svcpage-more {
+        transition: transform 0.12s ease-out;
+      }
+      html[data-site="homeupgrades"] .svc:active,
+      html[data-site="homeupgrades"] .work-card:active {
+        transform: scale(0.99);
+      }
+      html[data-site="homeupgrades"] .svc-toggle label:active,
+      html[data-site="homeupgrades"] .pill:active,
+      html[data-site="homeupgrades"] .approach-link:active,
+      html[data-site="homeupgrades"] .svcpage-more:active {
+        transform: scale(0.97);
+      }
+      html[data-site="homeupgrades"] .viewer-nav button:active,
+      html[data-site="homeupgrades"] .viewer-close:active,
+      html[data-site="homeupgrades"] .tile-remove:active {
+        transform: scale(0.92);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html[data-site="homeupgrades"] .work-card,
+        html[data-site="homeupgrades"] .viewer-nav button,
+        html[data-site="homeupgrades"] .viewer-close,
+        html[data-site="homeupgrades"] .tile-remove,
+        html[data-site="homeupgrades"] .svcpage-more {
+          transition: none;
+        }
+        html[data-site="homeupgrades"] .approach-link {
+          transition: border-color 0.25s;
+        }
+        /* Keep a press cue — feedback, not travel — as brightness instead of movement. */
+        html[data-site="homeupgrades"] .svc:active,
+        html[data-site="homeupgrades"] .work-card:active,
+        html[data-site="homeupgrades"] .svc-toggle label:active,
+        html[data-site="homeupgrades"] .pill:active,
+        html[data-site="homeupgrades"] .approach-link:active,
+        html[data-site="homeupgrades"] .svcpage-more:active,
+        html[data-site="homeupgrades"] .viewer-nav button:active,
+        html[data-site="homeupgrades"] .viewer-close:active,
+        html[data-site="homeupgrades"] .tile-remove:active {
+          transform: none;
+          filter: brightness(0.94);
         }
       }
 

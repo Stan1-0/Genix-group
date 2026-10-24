@@ -100,7 +100,7 @@
 /* ---------- Media + cards: 12px radius, soft lift ---------- */
 [data-division="homeupgrades"] .ba { border-radius: var(--r-lg); box-shadow: var(--shadow-sm); }
 [data-division="homeupgrades"] .ba-tag { border-radius: 8px; font: 500 13px/1 var(--f-body); letter-spacing: 0.01em; text-transform: none; padding: 8px 12px; }
-[data-division="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s; }
+[data-division="homeupgrades"] .svc { background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow-subtle); overflow: hidden; transition: box-shadow 0.3s, transform 0.12s ease-out; }
 [data-division="homeupgrades"] .svc:hover { box-shadow: var(--shadow-hover); }
 [data-division="homeupgrades"] .svc-body { padding: 28px 28px 30px; }
 [data-division="homeupgrades"] .svc li { background: var(--paper); border: 0; border-radius: var(--r-pill); padding: 6px 12px; box-shadow: var(--shadow-subtle); }

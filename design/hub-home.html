@@ -86,7 +86,7 @@
         document.documentElement.classList.add("h1-pending");
         setTimeout(
           () => document.documentElement.classList.remove("h1-pending"),
-          3000,
+          800,
         );
       }
     </script>
@@ -787,7 +787,8 @@
         // Lenis: smooth mouse-wheel scrolling on desktop (touch stays native),
         // driving ScrollTrigger — same as the division sites
         if (window.Lenis) {
-          const lenis = new Lenis({ anchors: { offset: -72 } });
+          // lerp 0.18, not the 0.1 default: the wheel must not lag the hand
+          const lenis = new Lenis({ lerp: 0.18, anchors: { offset: -72 } });
           window.genixLenis = lenis;
           lenis.on("scroll", ScrollTrigger.update);
           gsap.ticker.add((t) => lenis.raf(t * 1000));

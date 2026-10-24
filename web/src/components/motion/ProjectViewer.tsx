@@ -129,25 +129,36 @@ export function ProjectViewer() {
       )
     })
 
+    // Closing retraces the opening: the photo flies back into the card it grew out of, and the
+    // backdrop clears with it. A plain fade left the photo nowhere and broke that thread.
+    let closing = false
     const close = () => {
-      if (!dlg.open) return
-      const done = () => {
+      if (!dlg.open || closing) return
+      const media = slot.querySelector<HTMLElement>('.viewer-media')
+      const thumb = opener?.querySelector('img')
+      if (!canFlip || !media || !thumb) {
         dlg.close()
+        return
       }
-      if (canFlip)
-        ctx.add(() => {
-          gsap.to(dlg, {
-            opacity: 0,
-            duration: 0.2,
-            onComplete: () => {
-              done()
-              gsap.set(dlg, { opacity: 1 })
-            },
-          })
-        })
-      else done()
+      closing = true
+      ctx.add(() => {
+        dlg.classList.add('closing') // the CSS fades ::backdrop — its own box, so the dialog's opacity never reached it
+        thumb.style.visibility = 'hidden' // or the photo lands beside a copy of itself
+        gsap.to('.viewer-cap, .viewer-close, .viewer-nav', { opacity: 0, duration: 0.15, overwrite: true })
+        Flip.fit(media, thumb, { duration: 0.45, ease: 'power3.inOut', scale: true, onComplete: () => dlg.close() })
+      })
     }
     closeBtn.addEventListener('click', close, { signal })
+    // Esc dismisses along the same path; the browser's instant close would skip the flight.
+    dlg.addEventListener(
+      'cancel',
+      (e) => {
+        if (!canFlip || closing) return
+        e.preventDefault()
+        close()
+      },
+      { signal },
+    )
     dlg.addEventListener(
       'click',
       (e) => {
@@ -159,6 +170,11 @@ export function ProjectViewer() {
     dlg.addEventListener(
       'close',
       () => {
+        closing = false
+        dlg.classList.remove('closing')
+        // Clear what the close tween set: the next open's gsap.from() reads these as its end value.
+        gsap.set(dlg.querySelectorAll('.viewer-cap, .viewer-close, .viewer-nav'), { clearProps: 'opacity' })
+        opener?.querySelector<HTMLImageElement>('img')?.style.removeProperty('visibility')
         slot.querySelector('video')?.pause()
         slot.innerHTML = ''
         resetNav()
@@ -180,7 +196,11 @@ export function ProjectViewer() {
       resetNav()
       title.textContent = ''
       desc.textContent = ''
-      document.querySelectorAll<HTMLElement>('.work-card img').forEach((img) => img.removeAttribute('data-flip-id'))
+      document.querySelectorAll<HTMLElement>('.work-card img').forEach((img) => {
+        img.removeAttribute('data-flip-id')
+        img.style.removeProperty('visibility')
+      })
+      dlg.classList.remove('closing')
       dlg.removeAttribute('style')
     }
   })

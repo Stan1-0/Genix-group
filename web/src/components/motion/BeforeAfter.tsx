@@ -31,9 +31,18 @@ export function BeforeAfter() {
     }
     ba.addEventListener('pointerdown', takeOver, { capture: true, signal })
     handle.addEventListener('keydown', takeOver, { capture: true, signal })
+    // Past either end the split stops (there is no photo beyond it) but the handle keeps a few
+    // pixels of give, so the boundary resists instead of reading as frozen. Draggable's own
+    // edgeResistance has already damped how far `p` gets out of range by the time we see it.
+    const EDGE_MAX = 26
     const set = (p: number) => {
       pos = Math.max(0, Math.min(100, p))
       ba.style.setProperty('--pos', pos + '%')
+      const over = p < 0 ? p : p > 100 ? p - 100 : 0
+      if (over && !reduce) {
+        const px = (over / 100) * ba.getBoundingClientRect().width // only read the rect at the edges
+        ba.style.setProperty('--edge', Math.max(-EDGE_MAX, Math.min(EDGE_MAX, px)).toFixed(1) + 'px')
+      } else ba.style.removeProperty('--edge')
       handle.setAttribute('aria-valuenow', String(Math.round(pos)))
       handle.setAttribute('aria-valuetext', `${Math.round(pos)}% mid-build`)
     }
@@ -75,6 +84,8 @@ export function BeforeAfter() {
         trigger: ba,
         inertia: !reduce,
         bounds: { minX: 0, maxX: width() },
+        // Default is 1: a dead stop at each end. 0.7 lets the drag travel a little past, damped.
+        edgeResistance: 0.7,
         onPress(this: Draggable, e: PointerEvent) {
           gsap.killTweensOf(proxy)
           ba.classList.add('dragging')

@@ -389,28 +389,51 @@
           });
         });
 
+        // Closing retraces the opening: the photo flies back into the card it grew out
+        // of, and the backdrop clears with it. A plain fade left the photo nowhere.
+        let closing = false;
         const close = () => {
-          if (!dlg.open) return;
-          const done = () => {
+          if (!dlg.open || closing) return;
+          const media = slot.querySelector(".viewer-media");
+          const thumb = opener?.querySelector("img");
+          if (!canFlip || !media || !thumb) {
             dlg.close();
-          };
-          if (canFlip)
-            gsap.to(dlg, {
-              opacity: 0,
-              duration: 0.2,
-              onComplete: () => {
-                done();
-                gsap.set(dlg, { opacity: 1 });
-              },
-            });
-          else done();
+            return;
+          }
+          closing = true;
+          dlg.classList.add("closing"); // the CSS fades ::backdrop — its own box, which the dialog's opacity never reached
+          thumb.style.visibility = "hidden"; // or the photo lands beside a copy of itself
+          gsap.to(".viewer-cap, .viewer-close, .viewer-nav", {
+            opacity: 0,
+            duration: 0.15,
+            overwrite: true,
+          });
+          Flip.fit(media, thumb, {
+            duration: 0.45,
+            ease: "power3.inOut",
+            scale: true,
+            onComplete: () => dlg.close(),
+          });
         };
         document.getElementById("viewerClose").addEventListener("click", close);
         dlg.addEventListener("click", (e) => {
           if (e.target === dlg || e.target.classList.contains("viewer-inner"))
             close();
         });
+        // Esc dismisses along the same path; the browser's instant close skips the flight.
+        dlg.addEventListener("cancel", (e) => {
+          if (!canFlip || closing) return;
+          e.preventDefault();
+          close();
+        });
         dlg.addEventListener("close", () => {
+          closing = false;
+          dlg.classList.remove("closing");
+          // Clear what the close tween set: the next open's gsap.from() reads these as its end value.
+          gsap.set(dlg.querySelectorAll(".viewer-cap, .viewer-close, .viewer-nav"), {
+            clearProps: "opacity",
+          });
+          opener?.querySelector("img")?.style.removeProperty("visibility");
           slot.querySelector("video")?.pause();
           slot.innerHTML = "";
           resetNav();
