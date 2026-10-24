@@ -10,6 +10,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
 import { Projects } from './collections/Projects'
+import { Inspiration } from './collections/Inspiration'
 import { Inquiries } from './collections/Inquiries'
 import { InquiryCounters } from './collections/InquiryCounters'
 import { RateHits } from './collections/RateHits'
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Sites, Projects, Inquiries, InquiryCounters, RateHits],
+  collections: [Users, Media, Sites, Projects, Inspiration, Inquiries, InquiryCounters, RateHits],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

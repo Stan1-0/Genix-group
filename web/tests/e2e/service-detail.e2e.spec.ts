@@ -115,3 +115,36 @@ test('the Logistics services page links each service to its own page', async ({ 
   await page.goto(LOG)
   for (const slug of Object.keys(LOG_PAGES)) await expect(page.locator(`a.svcpage-more[href="/services/${slug}"]`)).toHaveCount(1)
 })
+
+test.describe('inspiration', () => {
+  test('accent walls shows its style cards, and one opens in the viewer', async ({ page }) => {
+    await page.goto(`${BASE}/accent-walls`)
+    const cards = page.locator('#inspiration .work-card')
+    await expect(cards).toHaveCount(4)
+    await expect(page.locator('#inspiration .work-cap b').first()).toHaveText('Backlit marble & slatted wood')
+    await cards.nth(2).click()
+    await expect(page.locator('#viewer')).toHaveJSProperty('open', true)
+    await expect(page.locator('#viewerTitle')).toHaveText('Geometric panelling')
+    await page.keyboard.press('Escape')
+    await expect(page.locator('#viewer')).toHaveJSProperty('open', false)
+  })
+  test('is a carousel: arrows step through the cards and disable at each end', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 })
+    await page.goto(`${BASE}/accent-walls`)
+    const prev = page.locator('.svcd-inspo-prev')
+    const next = page.locator('.svcd-inspo-next')
+    await expect(page.locator('.svcd-inspo-nav')).toBeVisible()
+    await expect(prev).toBeDisabled()
+    await next.click()
+    await expect.poll(() => page.locator('#inspoTrack').evaluate((t) => t.scrollLeft)).toBeGreaterThan(0)
+    await expect(next).toBeDisabled()
+    await expect(prev).toBeEnabled()
+    await page.goto(`${BASE}/handyman`) // two cards fit: no arrows
+    await expect(page.locator('#inspiration .work-card')).toHaveCount(2)
+    await expect(page.locator('.svcd-inspo-nav')).toBeHidden()
+  })
+  test('a service without suitable photos has no inspiration section', async ({ page }) => {
+    await page.goto(`${BASE}/outdoor`)
+    await expect(page.locator('#inspiration')).toHaveCount(0)
+  })
+})

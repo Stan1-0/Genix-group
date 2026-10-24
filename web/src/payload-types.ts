@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     sites: Site;
     projects: Project;
+    inspiration: Inspiration;
     inquiries: Inquiry;
     'inquiry-counters': InquiryCounter;
     'rate-hits': RateHit;
@@ -85,6 +86,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     sites: SitesSelect<false> | SitesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    inspiration: InspirationSelect<false> | InspirationSelect<true>;
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     'inquiry-counters': InquiryCountersSelect<false> | InquiryCountersSelect<true>;
     'rate-hits': RateHitsSelect<false> | RateHitsSelect<true>;
@@ -262,6 +264,36 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inspiration".
+ */
+export interface Inspiration {
+  id: number;
+  /**
+   * The service page this photo appears on.
+   */
+  service: 'accent-walls' | 'outdoor' | 'handyman' | 'reception';
+  /**
+   * The style it shows, e.g. "Fluted wood" or "Backlit marble".
+   */
+  style: string;
+  /**
+   * A JPG, PNG or WebP photo. Give it alt text in the media library.
+   */
+  image: number | Media;
+  /**
+   * Optional: one line shown when the photo is opened.
+   */
+  caption?: string | null;
+  /**
+   * Lower numbers come first.
+   */
+  order?: number | null;
+  published?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "inquiries".
  */
 export interface Inquiry {
@@ -352,6 +384,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'inspiration';
+        value: number | Inspiration;
       } | null)
     | ({
         relationTo: 'inquiries';
@@ -501,6 +537,20 @@ export interface ProjectsSelect<T extends boolean = true> {
   photos?: T;
   video?: T;
   featured?: T;
+  order?: T;
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inspiration_select".
+ */
+export interface InspirationSelect<T extends boolean = true> {
+  service?: T;
+  style?: T;
+  image?: T;
+  caption?: T;
   order?: T;
   published?: T;
   updatedAt?: T;

@@ -5,6 +5,8 @@ import { parseHuPreselect } from '@/inquiries/forms/preselect'
 import { telHref } from '@/pages-home/homeupgrades/sections/phone'
 import type { SiteData } from '@/sites/data-shape'
 import { CLOSING, PROCESS, SERVICES, serviceDetailJsonLd, type ServiceItem } from '@/sites/services'
+import { InspirationSection } from './InspirationSection'
+import type { InspirationPhoto } from '@/inspiration/types'
 import { SIZES } from './ServicesPage'
 
 /* One Home Upgrades service (design/homeupgrades-service.html): hero, benefit cards, the process, FAQs beside the
@@ -20,7 +22,7 @@ function Call({ data }: { data: SiteData }) {
   )
 }
 
-export function ServiceDetailPage({ item, data }: { item: ServiceItem; data: SiteData }) {
+export function ServiceDetailPage({ item, data, inspiration = [] }: { item: ServiceItem; data: SiteData; inspiration?: InspirationPhoto[] }) {
   const d = item.detail
   if (!d) return null
   const dims = item.image ? (SIZES[item.image.src] ?? DEFAULT_SIZE) : null
@@ -77,6 +79,7 @@ export function ServiceDetailPage({ item, data }: { item: ServiceItem; data: Sit
           </ul>
         </div>
       </section>
+      <InspirationSection service={item.title} photos={inspiration} />
       <section className="svcd-process on-dark" id="process">
         <div className="wrap">
           <p className="label">{PROCESS.label}</p>

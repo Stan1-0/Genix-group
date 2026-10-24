@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { LogisticsServiceDetailPage } from '@/components/site/division/LogisticsServiceDetailPage'
 import { ServiceDetailPage } from '@/components/site/division/ServiceDetailPage'
 import { getSiteData } from '@/sites/data'
+import { getInspiration } from '@/inspiration/data'
 import { pageMetadata } from '@/sites/seo'
 import { isServiceSite, serviceBySlug, serviceSlugs } from '@/sites/services'
 
@@ -35,6 +36,6 @@ export default async function ServiceDetail({ params }: Props) {
   return site === 'logistics' ? (
     <LogisticsServiceDetailPage item={item} data={data} />
   ) : (
-    <ServiceDetailPage item={item} data={data} />
+    <ServiceDetailPage item={item} data={data} inspiration={await getInspiration(item.id)} />
   )
 }

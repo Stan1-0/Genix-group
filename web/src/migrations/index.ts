@@ -3,6 +3,7 @@ import * as migration_20260928_230142_coverage_area_served from './20260928_2301
 import * as migration_20261001_000956_inquiries from './20261001_000956_inquiries';
 import * as migration_20261011_123902_projects from './20261011_123902_projects';
 import * as migration_20261017_185312_inquiry_application_type from './20261017_185312_inquiry_application_type';
+import * as migration_20261021_011051_inspiration from './20261021_011051_inspiration';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20261017_185312_inquiry_application_type.up,
     down: migration_20261017_185312_inquiry_application_type.down,
-    name: '20261017_185312_inquiry_application_type'
+    name: '20261017_185312_inquiry_application_type',
+  },
+  {
+    up: migration_20261021_011051_inspiration.up,
+    down: migration_20261021_011051_inspiration.down,
+    name: '20261021_011051_inspiration'
   },
 ];

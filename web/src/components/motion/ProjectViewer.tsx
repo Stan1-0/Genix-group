@@ -6,8 +6,10 @@ import { useEnhance } from './useEnhance'
 gsap.registerPlugin(Flip)
 
 /** Recent-work project viewer (design/homeupgrades-home.html). Native <dialog> (Esc and focus handling for free).
-    With Flip the photo grows out of its card; with reduced motion it simply opens. */
-export function ProjectViewer() {
+    With Flip the photo grows out of its card; with reduced motion it simply opens.
+    `selector` picks the openers (Home Upgrades: the .work-card buttons; hub: the .case-open buttons laid over each
+    recent-work figure). The thumbnail is the opener's own <img>/<video>, else the one in its [data-viewer-scope]. */
+export function ProjectViewer({ selector = '.work-card' }: { selector?: string } = {}) {
   useEnhance((signal) => {
     const reduce = prefersReducedMotion()
     const dlg = document.getElementById('viewer') as HTMLDialogElement | null
@@ -71,12 +73,17 @@ export function ProjectViewer() {
       { signal },
     )
 
-    document.querySelectorAll<HTMLElement>('.work-card').forEach((card, i) => {
+    const thumbOf = (card: HTMLElement) =>
+      card.querySelector<HTMLImageElement | HTMLVideoElement>('img, video') ??
+      card.closest('[data-viewer-scope]')?.querySelector<HTMLImageElement | HTMLVideoElement>('img, video') ??
+      null
+    document.querySelectorAll<HTMLElement>(selector).forEach((card, i) => {
       card.addEventListener(
         'click',
         () => {
           opener = card
-          const thumb = card.querySelector('img')!
+          const thumb = thumbOf(card)
+          if (!thumb) return
           const flipId = 'work-' + i
           thumb.dataset.flipId = flipId
           const state = canFlip ? Flip.getState(thumb) : null
@@ -99,7 +106,7 @@ export function ProjectViewer() {
           } else {
             const img = document.createElement('img')
             img.src = card.dataset.src ?? ''
-            img.alt = thumb.alt
+            img.alt = thumb instanceof HTMLImageElement ? thumb.alt : (card.dataset.title ?? '')
             media = img
           }
           media.className = 'viewer-media'
@@ -135,7 +142,7 @@ export function ProjectViewer() {
     const close = () => {
       if (!dlg.open || closing) return
       const media = slot.querySelector<HTMLElement>('.viewer-media')
-      const thumb = opener?.querySelector('img')
+      const thumb = opener ? thumbOf(opener) : null // hub openers sit over their figure, so the thumb is not inside them
       if (!canFlip || !media || !thumb) {
         dlg.close()
         return
@@ -174,7 +181,7 @@ export function ProjectViewer() {
         dlg.classList.remove('closing')
         // Clear what the close tween set: the next open's gsap.from() reads these as its end value.
         gsap.set(dlg.querySelectorAll('.viewer-cap, .viewer-close, .viewer-nav'), { clearProps: 'opacity' })
-        opener?.querySelector<HTMLImageElement>('img')?.style.removeProperty('visibility')
+        if (opener) thumbOf(opener)?.style.removeProperty('visibility')
         slot.querySelector('video')?.pause()
         slot.innerHTML = ''
         resetNav()
@@ -196,9 +203,10 @@ export function ProjectViewer() {
       resetNav()
       title.textContent = ''
       desc.textContent = ''
-      document.querySelectorAll<HTMLElement>('.work-card img').forEach((img) => {
-        img.removeAttribute('data-flip-id')
-        img.style.removeProperty('visibility')
+      document.querySelectorAll<HTMLElement>(selector).forEach((card) => {
+        const thumb = thumbOf(card)
+        thumb?.removeAttribute('data-flip-id')
+        thumb?.style.removeProperty('visibility')
       })
       dlg.classList.remove('closing')
       dlg.removeAttribute('style')

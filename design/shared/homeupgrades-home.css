@@ -1924,8 +1924,110 @@
         .svcpage-more:active,
         .viewer-nav button:active,
         .viewer-close:active,
-        .tile-remove:active {
+        .tile-remove:active,
+        .svcd-inspo-nav button:active:not(:disabled) {
           transform: none;
           filter: brightness(0.94);
+        }
+      }
+
+      /* Inspiration on a service page: a sideways snap carousel of style cards built from the Recent-work cards
+         (.work-card, so the viewer and card styles carry over). The next card peeks in so the row reads as
+         scrollable; the arrow buttons (InspirationCarousel) appear only when the cards overflow. */
+      .svcd-inspo {
+        padding: clamp(64px, 8vw, 104px) 0;
+        overflow-x: clip; /* the phone track bleeds to the screen edge; clip, not hidden, so this isn't a scroll box */
+      }
+      .svcd-inspo-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: clamp(32px, 4vw, 48px);
+      }
+      .svcd-inspo-head .h-section {
+        margin: 16px 0 0;
+        max-width: 24ch;
+      }
+      .svcd-inspo-head .body {
+        margin: 16px 0 0;
+        max-width: 65ch;
+      }
+      .svcd-inspo-nav {
+        display: flex;
+        gap: 8px;
+        flex: none;
+      }
+      .svcd-inspo-nav[hidden] {
+        display: none;
+      }
+      .svcd-inspo-nav button {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: var(--white);
+        color: var(--heading);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: border-color 0.2s, opacity 0.2s, transform 0.12s ease-out;
+      }
+      .svcd-inspo-nav button:hover:not(:disabled) {
+        border-color: var(--gold);
+      }
+      /* Press, as everywhere else: a phone has no hover (see the press block at the end) */
+      .svcd-inspo-nav button:active:not(:disabled) {
+        transform: scale(0.92);
+      }
+      .svcd-inspo-nav button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .svcd-inspo-track {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      .svcd-inspo-track::-webkit-scrollbar {
+        display: none;
+      }
+      .svcd-inspo-track > .work-card {
+        flex: 0 0 clamp(280px, 30%, 400px);
+        height: clamp(360px, 32vw, 480px);
+        scroll-snap-align: start;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .svcd-inspo-track {
+          scroll-behavior: smooth;
+        }
+      }
+      @media (max-width: 960px) {
+        .svcd-inspo-track {
+          margin-inline: calc(-1 * var(--gutter));
+          padding-inline: var(--gutter);
+          scroll-padding-inline: var(--gutter);
+        }
+        .svcd-inspo-track > .work-card {
+          flex-basis: min(82%, 360px);
+          height: clamp(320px, 100vw, 460px);
+        }
+      }
+      @media (max-width: 640px) {
+        .svcd-inspo-nav {
+          display: none; /* phones swipe; the peeking card shows there is more */
+        }
+      }
+      /* Reduced motion: the card photo doesn't zoom on hover (home Recent work, /work and service Inspiration). */
+      @media (prefers-reduced-motion: reduce) {
+        .work-card img {
+          transition: none;
+        }
+        .work-card:hover img {
+          transform: none;
         }
       }

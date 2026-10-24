@@ -322,15 +322,17 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] .step h3 { font-weight:
 html[data-site="homeupgrades"][data-site="homeupgrades"] .work-cap b,
 html[data-site="homeupgrades"][data-site="homeupgrades"] .viewer-cap b,
 html[data-site="homeupgrades"][data-site="homeupgrades"] .ba-cap b { font-weight: 500; letter-spacing: -0.02em; }
-html[data-site="homeupgrades"][data-site="homeupgrades"] .hero .lead { font-weight: 400; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; }
+/* The hero subheading in gold, echoing the gold half of the headline (--gold-text: 5.4:1 on paper; the brighter golds are too light for 20px text) */
+html[data-site="homeupgrades"][data-site="homeupgrades"] .hero .lead { font-weight: 600; font-size: clamp(20px, 1.7vw, 23px); line-height: 1.3; letter-spacing: -0.01em; color: var(--gold-text); }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .body { color: var(--ink-2); }
 
-/* Eyebrows: quiet captions instead of mono caps; the short gold rule stays as the brand mark */
+/* Eyebrows: gold captions beside the short gold rule (the brand mark). On paper the text uses --gold-text
+   (5.4:1; the rule's own --gold is only 2.8:1, too light for 16px text); on dark bands the bright gold reads (5.3:1). */
 html[data-site="homeupgrades"][data-site="homeupgrades"] .label {
-  font: 500 14px/1.5 var(--f-body); letter-spacing: 0.01em; text-transform: none; color: var(--graphite);
+  font: 600 16px/1.5 var(--f-body); letter-spacing: 0.02em; text-transform: none; color: var(--gold-text);
 }
 html[data-site="homeupgrades"][data-site="homeupgrades"] .label::before { width: 20px; }
-html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .label { color: var(--on-brand-muted); }
+html[data-site="homeupgrades"][data-site="homeupgrades"] .on-dark .label { color: var(--gold); }
 
 /* ---------- Links + small interactive details: sky blue ---------- */
 html[data-site="homeupgrades"][data-site="homeupgrades"] .svc .more { color: var(--sky-text); border-bottom-color: currentColor; }
@@ -2364,9 +2366,111 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         html[data-site="homeupgrades"] .svcpage-more:active,
         html[data-site="homeupgrades"] .viewer-nav button:active,
         html[data-site="homeupgrades"] .viewer-close:active,
-        html[data-site="homeupgrades"] .tile-remove:active {
+        html[data-site="homeupgrades"] .tile-remove:active,
+        html[data-site="homeupgrades"] .svcd-inspo-nav button:active:not(:disabled) {
           transform: none;
           filter: brightness(0.94);
+        }
+      }
+
+      /* Inspiration on a service page: a sideways snap carousel of style cards built from the Recent-work cards
+         (.work-card, so the viewer and card styles carry over). The next card peeks in so the row reads as
+         scrollable; the arrow buttons (InspirationCarousel) appear only when the cards overflow. */
+      html[data-site="homeupgrades"] .svcd-inspo {
+        padding: clamp(64px, 8vw, 104px) 0;
+        overflow-x: clip; /* the phone track bleeds to the screen edge; clip, not hidden, so this isn't a scroll box */
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: clamp(32px, 4vw, 48px);
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-head .h-section {
+        margin: 16px 0 0;
+        max-width: 24ch;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-head .body {
+        margin: 16px 0 0;
+        max-width: 65ch;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-nav {
+        display: flex;
+        gap: 8px;
+        flex: none;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-nav[hidden] {
+        display: none;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-nav button {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: var(--white);
+        color: var(--heading);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: border-color 0.2s, opacity 0.2s, transform 0.12s ease-out;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-nav button:hover:not(:disabled) {
+        border-color: var(--gold);
+      }
+      /* Press, as everywhere else: a phone has no hover (see the press block at the end) */
+      html[data-site="homeupgrades"] .svcd-inspo-nav button:active:not(:disabled) {
+        transform: scale(0.92);
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-nav button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-track {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-track::-webkit-scrollbar {
+        display: none;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-track > .work-card {
+        flex: 0 0 clamp(280px, 30%, 400px);
+        height: clamp(360px, 32vw, 480px);
+        scroll-snap-align: start;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        html[data-site="homeupgrades"] .svcd-inspo-track {
+          scroll-behavior: smooth;
+        }
+      }
+      @media (max-width: 960px) {
+        html[data-site="homeupgrades"] .svcd-inspo-track {
+          margin-inline: calc(-1 * var(--gutter));
+          padding-inline: var(--gutter);
+          scroll-padding-inline: var(--gutter);
+        }
+        html[data-site="homeupgrades"] .svcd-inspo-track > .work-card {
+          flex-basis: min(82%, 360px);
+          height: clamp(320px, 100vw, 460px);
+        }
+      }
+      @media (max-width: 640px) {
+        html[data-site="homeupgrades"] .svcd-inspo-nav {
+          display: none; /* phones swipe; the peeking card shows there is more */
+        }
+      }
+      /* Reduced motion: the card photo doesn't zoom on hover (home Recent work, /work and service Inspiration). */
+      @media (prefers-reduced-motion: reduce) {
+        html[data-site="homeupgrades"] .work-card img {
+          transition: none;
+        }
+        html[data-site="homeupgrades"] .work-card:hover img {
+          transform: none;
         }
       }
 
