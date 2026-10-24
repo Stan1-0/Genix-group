@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { revalidateTag } from 'next/cache'
 import { isLoggedIn } from '@/payload/access'
+import { INSPIRATION_SERVICES } from '@/inspiration/map'
 import { SERVICES } from '@/sites/services'
 import { rasterOnly } from './Projects'
 
@@ -31,7 +32,9 @@ export const Inspiration: CollectionConfig = {
       name: 'service',
       type: 'select',
       required: true,
+      // Every service stays a DB option (no enum migration); only the pages with a section are offered.
       options: SERVICES.homeupgrades.map((s) => ({ label: s.title, value: s.id })),
+      filterOptions: ({ options }) => options.filter((o) => INSPIRATION_SERVICES.includes(typeof o === 'string' ? o : o.value)),
       admin: { description: 'The service page this photo appears on.' },
     },
     { name: 'style', type: 'text', required: true, maxLength: 40, admin: { description: 'The style it shows, e.g. "Fluted wood" or "Backlit marble".' } },

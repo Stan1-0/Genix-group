@@ -139,12 +139,11 @@ test.describe('inspiration', () => {
     await expect.poll(() => page.locator('#inspoTrack').evaluate((t) => t.scrollLeft)).toBeGreaterThan(0)
     await expect(next).toBeDisabled()
     await expect(prev).toBeEnabled()
-    await page.goto(`${BASE}/handyman`) // two cards fit: no arrows
-    await expect(page.locator('#inspiration .work-card')).toHaveCount(2)
-    await expect(page.locator('.svcd-inspo-nav')).toBeHidden()
   })
-  test('a service without suitable photos has no inspiration section', async ({ page }) => {
+  test('a service without suitable photos, or without a section, has no inspiration section', async ({ page }) => {
     await page.goto(`${BASE}/outdoor`)
+    await expect(page.locator('#inspiration')).toHaveCount(0)
+    await page.goto(`${BASE}/handyman`)
     await expect(page.locator('#inspiration')).toHaveCount(0)
   })
 })

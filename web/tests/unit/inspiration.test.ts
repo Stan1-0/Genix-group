@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { inspirationFor, toInspiration } from '@/inspiration/map'
+import { INSPIRATION_SERVICES, inspirationFor, toInspiration } from '@/inspiration/map'
 import { FALLBACK_INSPIRATION } from '@/inspiration/fallback'
 import { SERVICES } from '@/sites/services'
 import { Inspiration } from '@/collections/Inspiration'
@@ -33,9 +33,13 @@ describe('inspirationFor', () => {
   })
   it('falls back to starter photos, or none for a service without suitable ones', () => {
     expect(inspirationFor('accent-walls', []).length).toBe(4)
-    expect(inspirationFor('handyman', []).map((p) => p.style)).toEqual(['TV wall mounting', 'Fixes & fittings'])
     expect(inspirationFor('outdoor', [])).toEqual([])
     expect(inspirationFor('reception', [])).toEqual([])
+  })
+  it('shows nothing on a service page without an Inspiration section, even with published photos', () => {
+    const handyman = [toInspiration(doc({ id: 3, service: 'handyman', style: 'Shelves' }))!]
+    expect(inspirationFor('handyman', handyman)).toEqual([])
+    expect(inspirationFor('handyman', [])).toEqual([])
   })
   it('caps the gallery', () => {
     const many = Array.from({ length: 12 }, (_, i) => toInspiration(doc({ id: i, style: `S${i}` }))!)
@@ -52,8 +56,14 @@ describe('starter photos and admin collection', () => {
       expect(p.image.alt.length).toBeGreaterThan(10)
     }
   })
-  it('offers exactly the Home Upgrades services in the admin', () => {
-    const service = Inspiration.fields.find((f) => 'name' in f && f.name === 'service') as { options: { value: string }[] }
+  it('offers only the services with an Inspiration section in the admin', () => {
+    const service = Inspiration.fields.find((f) => 'name' in f && f.name === 'service') as {
+      options: { value: string }[]
+      filterOptions: (a: { options: { value: string }[] }) => { value: string }[]
+    }
     expect(service.options.map((o) => o.value)).toEqual(SERVICES.homeupgrades.map((s) => s.id))
+    expect(service.filterOptions({ options: service.options }).map((o) => o.value)).toEqual(['accent-walls', 'outdoor', 'reception'])
+    for (const id of INSPIRATION_SERVICES) expect(SERVICES.homeupgrades.map((s) => s.id)).toContain(id)
+    for (const p of FALLBACK_INSPIRATION) expect(INSPIRATION_SERVICES).toContain(p.service)
   })
 })
