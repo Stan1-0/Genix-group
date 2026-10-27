@@ -2001,6 +2001,21 @@
         height: clamp(360px, 32vw, 480px);
         scroll-snap-align: start;
       }
+      .svcd-inspo-credit {
+        margin-top: 16px;
+        max-width: 65ch;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      .svcd-inspo-credit a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .svcd-inspo-credit a:hover {
+        color: var(--ink);
+      }
       @media (prefers-reduced-motion: no-preference) {
         .svcd-inspo-track {
           scroll-behavior: smooth;

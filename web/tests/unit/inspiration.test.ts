@@ -32,9 +32,8 @@ describe('inspirationFor', () => {
     expect(inspirationFor('accent-walls', own).every((p) => p.service === 'accent-walls')).toBe(true)
   })
   it('falls back to starter photos, or none for a service without suitable ones', () => {
-    expect(inspirationFor('accent-walls', []).length).toBe(4)
-    expect(inspirationFor('outdoor', [])).toEqual([])
-    expect(inspirationFor('reception', [])).toEqual([])
+    expect(inspirationFor('accent-walls', [])[0].style).toBe('Backlit marble & slatted wood')
+    expect(inspirationFor('handyman', [])).toEqual([])
   })
   it('shows nothing on a service page without an Inspiration section, even with published photos', () => {
     const handyman = [toInspiration(doc({ id: 3, service: 'handyman', style: 'Shelves' }))!]
@@ -48,13 +47,22 @@ describe('inspirationFor', () => {
 })
 
 describe('starter photos and admin collection', () => {
-  it('only point at real Home Upgrades services and local brand photos with alt text', () => {
+  it('point at real services, with alt text, and are local brand photos or credited Unsplash photos', () => {
     const ids = SERVICES.homeupgrades.map((s) => s.id)
     for (const p of FALLBACK_INSPIRATION) {
       expect(ids).toContain(p.service)
-      expect(p.image.src.startsWith('/brand/')).toBe(true)
       expect(p.image.alt.length).toBeGreaterThan(10)
+      expect(p.style.length).toBeLessThanOrEqual(40)
+      expect((p.caption ?? '').length).toBeLessThanOrEqual(120)
+      if (p.image.src.startsWith('/brand/')) continue
+      expect(p.image.src).toMatch(/^https:\/\/images\.unsplash\.com\/photo-[\w-]+\?/)
+      expect(p.credit?.url).toMatch(/^https:\/\/unsplash\.com\/@[\w-]+\?utm_source=genix_group&utm_medium=referral$/)
     }
+    expect(new Set(FALLBACK_INSPIRATION.map((p) => p.id)).size).toBe(FALLBACK_INSPIRATION.length)
+  })
+  it('give every service with a section starter photos, within the gallery cap', () => {
+    for (const id of INSPIRATION_SERVICES) expect(inspirationFor(id, []).length).toBeGreaterThanOrEqual(5)
+    expect(inspirationFor('accent-walls', []).length).toBe(8)
   })
   it('offers only the services with an Inspiration section in the admin', () => {
     const service = Inspiration.fields.find((f) => 'name' in f && f.name === 'service') as unknown as {

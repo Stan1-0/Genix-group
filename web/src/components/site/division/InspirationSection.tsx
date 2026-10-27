@@ -14,9 +14,10 @@ const chevron = (d: string) => (
    cards (.work-card, so the home's card styles and the project viewer apply). Swipe or scroll the track; the
    previous/next buttons (InspirationCarousel) step one card and hide when every card already fits. Editors manage the
    photos in the admin (Content → Inspiration); with none, the page passes the starter photos, or nothing and the
-   section is left out. */
+   section is left out. Stock photos credit their photographers (and Unsplash) under the track. */
 export function InspirationSection({ service, photos }: { service: string; photos: InspirationPhoto[] }) {
   if (!photos.length) return null
+  const credits = [...new Map(photos.flatMap((p) => (p.credit ? [[p.credit.url, p.credit] as const] : []))).values()]
   return (
     <section className="svcd-inspo" id="inspiration" aria-labelledby="inspoTitle">
       <div className="wrap">
@@ -66,6 +67,24 @@ export function InspirationSection({ service, photos }: { service: string; photo
             </button>
           ))}
         </div>
+        {credits.length > 0 && (
+          <p className="svcd-inspo-credit">
+            Stock photos by{' '}
+            {credits.map((c, i) => (
+              <span key={c.url}>
+                {i > 0 && (i === credits.length - 1 ? ' and ' : ', ')}
+                <a href={c.url} target="_blank" rel="noopener noreferrer">
+                  {c.name}
+                </a>
+              </span>
+            ))}{' '}
+            on{' '}
+            <a href="https://unsplash.com/?utm_source=genix_group&utm_medium=referral" target="_blank" rel="noopener noreferrer">
+              Unsplash
+            </a>
+            .
+          </p>
+        )}
       </div>
       <ViewerDialog />
       <ProjectViewer />

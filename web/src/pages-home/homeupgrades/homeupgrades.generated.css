@@ -2443,6 +2443,21 @@ html[data-site="homeupgrades"][data-site="homeupgrades"] section.contact-quote .
         height: clamp(360px, 32vw, 480px);
         scroll-snap-align: start;
       }
+      html[data-site="homeupgrades"] .svcd-inspo-credit {
+        margin-top: 16px;
+        max-width: 65ch;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-credit a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      html[data-site="homeupgrades"] .svcd-inspo-credit a:hover {
+        color: var(--ink);
+      }
       @media (prefers-reduced-motion: no-preference) {
         html[data-site="homeupgrades"] .svcd-inspo-track {
           scroll-behavior: smooth;
