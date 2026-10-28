@@ -107,7 +107,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     cta: { label: 'Get a quote', href: '/#quote' },
     heroGold: 'to Beautiful.',
     summary: 'Accent walls, TV units, outdoor builds and handyman jobs for homes, businesses and churches, from the first site visit to the final finish.',
-    knowsAbout: ['Accent walls', 'Custom TV units', 'Marble wall panels', 'Decks', 'Patios', 'Pergolas', 'Handyman services', 'TV wall mounting', 'Reception accent walls', 'Church dome accent walls'],
+    knowsAbout: ['Accent walls', 'Custom TV units', 'Marble wall panels', 'Decks', 'Patios', 'Pergolas', 'Handyman services', 'TV wall mounting', 'Reception accent walls', 'Church auditorium accent walls'],
     offers: ['Accent walls and TV units', 'Outdoor builds', 'Handyman services'],
     pages: ['/', '/contact', '/services', '/services/accent-walls', '/services/outdoor', '/services/handyman', '/services/reception', '/work'],
   },

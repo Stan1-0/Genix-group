@@ -149,19 +149,19 @@ export function Services() {
               <span className="svc-stock">Stock photo</span>
             </div>
             <div className="svc-body">
-              <h3>Accent walls for receptions &amp; church domes</h3>
+              <h3>Accent walls for receptions &amp; church auditoriums</h3>
               <p>
                 The first thing visitors see, built to set the tone: a statement wall behind your
-                front desk, or a church dome finished with decorative panels and lighting.
+                front desk, or a feature wall behind the stage in your church auditorium.
               </p>
               <ul>
                 <li>Reception walls</li>
-                <li>Church domes</li>
+                <li>Church auditoriums</li>
                 <li>Stone &amp; wood finishes</li>
                 <li>Feature lighting</li>
               </ul>
               <a className="more" href="/services/reception">
-                More about Accent walls for receptions &amp; church domes <span aria-hidden="true">→</span>
+                More about Accent walls for receptions &amp; church auditoriums <span aria-hidden="true">→</span>
               </a>
             </div>
           </article>
