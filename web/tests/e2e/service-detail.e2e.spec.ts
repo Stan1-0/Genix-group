@@ -120,8 +120,10 @@ test.describe('inspiration', () => {
   test('accent walls shows its style cards, and one opens in the viewer', async ({ page }) => {
     await page.goto(`${BASE}/accent-walls`)
     const cards = page.locator('#inspiration .work-card')
-    await expect(cards).toHaveCount(4)
+    await expect(cards).toHaveCount(8)
     await expect(page.locator('#inspiration .work-cap b').first()).toHaveText('Backlit marble & slatted wood')
+    // The Unsplash starters are credited, each photographer once.
+    await expect(page.locator('.svcd-inspo-credit a[href^="https://unsplash.com/@"]')).toHaveCount(4)
     await cards.nth(2).click()
     await expect(page.locator('#viewer')).toHaveJSProperty('open', true)
     await expect(page.locator('#viewerTitle')).toHaveText('Geometric panelling')
@@ -137,14 +139,24 @@ test.describe('inspiration', () => {
     await expect(prev).toBeDisabled()
     await next.click()
     await expect.poll(() => page.locator('#inspoTrack').evaluate((t) => t.scrollLeft)).toBeGreaterThan(0)
-    await expect(next).toBeDisabled()
     await expect(prev).toBeEnabled()
-    await page.goto(`${BASE}/handyman`) // two cards fit: no arrows
-    await expect(page.locator('#inspiration .work-card')).toHaveCount(2)
-    await expect(page.locator('.svcd-inspo-nav')).toBeHidden()
+    for (let i = 0; i < 10 && (await next.isEnabled()); i++) {
+      await next.click()
+      await page.waitForTimeout(400)
+    }
+    await expect(next).toBeDisabled()
   })
-  test('a service without suitable photos has no inspiration section', async ({ page }) => {
+  test('outdoor and reception show their starter styles', async ({ page }) => {
     await page.goto(`${BASE}/outdoor`)
+    await expect(page.locator('#inspiration .work-card')).toHaveCount(7)
+    await page.goto(`${BASE}/reception`)
+    await expect(page.locator('#inspiration .work-card')).toHaveCount(6)
+    const img = page.locator('#inspiration .work-card img').first()
+    await img.scrollIntoViewIfNeeded()
+    await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(0)
+  })
+  test('handyman has no inspiration section', async ({ page }) => {
+    await page.goto(`${BASE}/handyman`)
     await expect(page.locator('#inspiration')).toHaveCount(0)
   })
 })

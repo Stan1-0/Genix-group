@@ -1,6 +1,10 @@
 import { FALLBACK_INSPIRATION } from './fallback'
 import type { InspirationPhoto } from './types'
 
+/** The service pages with an Inspiration section: where the customer is choosing a look. Handyman is a list of jobs,
+    not styles, so it has none (its "handyman" value stays in the admin's DB enum but isn't offered). */
+export const INSPIRATION_SERVICES: readonly string[] = ['accent-walls', 'reception', 'outdoor']
+
 type Media = { url?: string | null; alt?: string | null; width?: number | null; height?: number | null }
 const isMedia = (m: unknown): m is Media => typeof m === 'object' && m !== null && typeof (m as Media).url === 'string'
 
@@ -21,8 +25,10 @@ export function toInspiration(doc: unknown): InspirationPhoto | null {
   }
 }
 
-/** The service's published photos in order; the starter photos when it has none. At most `limit`. */
+/** The service's published photos in order; the starter photos when it has none. At most `limit`. None for a service
+    outside INSPIRATION_SERVICES. */
 export function inspirationFor(service: string, published: readonly InspirationPhoto[], limit = 8): InspirationPhoto[] {
+  if (!INSPIRATION_SERVICES.includes(service)) return []
   const own = published.filter((p) => p.service === service)
   const source = own.length ? own : FALLBACK_INSPIRATION.filter((p) => p.service === service)
   return source
