@@ -3,7 +3,7 @@ import type { Contact, FormDef, Row } from './types'
 
 export const HU_LABELS = {
   project: { accent: 'Accent wall & TV unit', outdoor: 'Outdoor build', other: 'Something else' },
-  property: { home: 'Home', business: 'Business' },
+  property: { home: 'Home', business: 'Business', church: 'Church' },
   timing: { asap: 'As soon as possible', soon: 'In 1–3 months', planning: 'Just planning' },
   budget: { under5: 'Under $5k', '5to15': '$5–15k', over15: '$15k+', unsure: 'Not sure' },
   callTime: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' },
@@ -56,7 +56,7 @@ export const homeupgradesForm: FormDef<HuQuote> = {
     const project = pick(HU_LABELS.project, raw.project)
     if (!project) errors.project = "Choose what we're building."
     const property = pick(HU_LABELS.property, raw.property)
-    if (!property) errors.property = 'Choose home or business.'
+    if (!property) errors.property = 'Choose home, business or church.'
     const timing = pick(HU_LABELS.timing, raw.timing)
     if (!timing) errors.timing = "Choose when you'd like to start."
     const budget = pick(HU_LABELS.budget, raw.budget)

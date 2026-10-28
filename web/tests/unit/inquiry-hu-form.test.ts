@@ -12,10 +12,14 @@ describe('homeupgrades form', () => {
   it('uses the exact messages', () => {
     const r = f.parse({ zip: '921', notes: 'short', name: '', phone: '', email: '' }, TODAY)
     expect(r).toEqual({ ok: false, errors: {
-      project: "Choose what we're building.", property: 'Choose home or business.', timing: "Choose when you'd like to start.",
+      project: "Choose what we're building.", property: 'Choose home, business or church.', timing: "Choose when you'd like to start.",
       zip: 'Enter a 5-digit ZIP code.', notes: 'Tell us a little about the space.', name: 'Enter your name.',
       phone: 'Add a phone number or an email so we can reply.',
     } })
+  })
+  it('accepts a church, labelled in the summary', () => {
+    const r = f.parse({ ...good, property: 'church' }, TODAY)
+    expect(r.ok && f.summary(r.data)).toBe('Accent wall & TV unit · 92101 · Church · In 1–3 months')
   })
   it('budget and call time are optional; call time needs a phone', () => {
     const r = f.parse({ ...good, budget: '', callTime: 'morning', phone: '', email: 'ana@example.com' }, TODAY)

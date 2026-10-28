@@ -6,7 +6,7 @@ const CARDS = [
   { aud: 'home', title: 'Accent walls & TV units', slug: 'accent-walls' },
   { aud: 'home', title: 'Outdoor builds', slug: 'outdoor' },
   { aud: 'home', title: 'Handyman services', slug: 'handyman' },
-  { aud: 'business', title: 'Accent walls for reception areas', slug: 'reception' },
+  { aud: 'business', title: 'Accent walls for receptions & church domes', slug: 'reception' },
 ]
 
 for (const c of CARDS) {

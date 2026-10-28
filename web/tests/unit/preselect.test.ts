@@ -13,6 +13,7 @@ describe('parseLogisticsPreselect', () => {
 describe('parseHuPreselect', () => {
   it('accepts the allowed project and property values independently', () => {
     expect(parseHuPreselect({ project: 'accent', property: 'business' })).toEqual({ project: 'accent', property: 'business' })
+    expect(parseHuPreselect({ property: 'church' })).toEqual({ property: 'church' })
     expect(parseHuPreselect({ project: 'outdoor' })).toEqual({ project: 'outdoor' })
     expect(parseHuPreselect({ project: 'renovation', property: 'home' })).toEqual({ property: 'home' })
     expect(parseHuPreselect({ project: ['accent'], property: 'office' })).toEqual({})

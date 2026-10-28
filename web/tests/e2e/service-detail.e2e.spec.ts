@@ -5,7 +5,7 @@ const PAGES = {
   'accent-walls': { title: 'Accent walls & TV units', seo: 'Accent Walls & Custom TV Units in California', project: 'accent', property: 'home' },
   outdoor: { title: 'Outdoor builds', seo: 'Decks, Patios & Pergolas in California', project: 'outdoor', property: null },
   handyman: { title: 'Handyman services', seo: 'Handyman & TV Wall Mounting in California', project: 'other', property: null },
-  reception: { title: 'Accent walls for reception areas', seo: 'Reception Accent Walls for Businesses in California', project: 'accent', property: 'business' },
+  reception: { title: 'Accent walls for receptions & church domes', seo: 'Reception & Church Dome Accent Walls in California', project: 'accent', property: 'business' },
 } as const
 
 for (const [slug, p] of Object.entries(PAGES)) {
@@ -146,11 +146,12 @@ test.describe('inspiration', () => {
     }
     await expect(next).toBeDisabled()
   })
-  test('outdoor and reception show their starter styles', async ({ page }) => {
+  test('outdoor and reception (front desks, then church domes) show their starter styles', async ({ page }) => {
     await page.goto(`${BASE}/outdoor`)
     await expect(page.locator('#inspiration .work-card')).toHaveCount(7)
     await page.goto(`${BASE}/reception`)
-    await expect(page.locator('#inspiration .work-card')).toHaveCount(6)
+    await expect(page.locator('#inspiration .work-card')).toHaveCount(8)
+    await expect(page.locator('#inspiration .work-cap b').nth(4)).toHaveText('Coffered gold dome')
     const img = page.locator('#inspiration .work-card img').first()
     await img.scrollIntoViewIfNeeded()
     await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(0)

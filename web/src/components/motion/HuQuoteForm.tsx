@@ -138,7 +138,7 @@ export function HuQuoteForm() {
       const bad: HTMLElement[] = []
       for (const [id, name, msg] of [
         ['hqProject', 'project', "Choose what we're building."],
-        ['hqProperty', 'property', 'Choose home or business.'],
+        ['hqProperty', 'property', 'Choose home, business or church.'],
         ['hqTiming', 'timing', "Choose when you'd like to start."],
       ] as const) {
         const m = picked(name) ? '' : msg

@@ -41,7 +41,7 @@ test('step 1 errors use the exact messages', async ({ page }) => {
   await page.goto(URL + '#quote')
   await page.click('#hqNext')
   await expect(page.locator('#hqProjectErr')).toHaveText("Choose what we're building.")
-  await expect(page.locator('#hqPropertyErr')).toHaveText('Choose home or business.')
+  await expect(page.locator('#hqPropertyErr')).toHaveText('Choose home, business or church.')
   await expect(page.locator('#hqTimingErr')).toHaveText("Choose when you'd like to start.")
   await expect(page.locator('#hqZipErr')).toHaveText('Enter a 5-digit ZIP code.')
 })

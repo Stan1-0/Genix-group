@@ -35,6 +35,7 @@ export function HuQuoteFormBlock({ data, preselect }: { data: SiteData; preselec
             <legend>For your…</legend>
             <label className="pill"><input type="radio" name="property" value="home" defaultChecked={preselect?.property === 'home'} required /> Home</label>
             <label className="pill"><input type="radio" name="property" value="business" defaultChecked={preselect?.property === 'business'} /> Business</label>
+            <label className="pill"><input type="radio" name="property" value="church" defaultChecked={preselect?.property === 'church'} /> Church</label>
             <p className="err" id="hqPropertyErr"></p>
           </fieldset>
           <fieldset className="pills" id="hqTiming" aria-describedby="hqTimingErr">
